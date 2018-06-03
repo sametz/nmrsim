@@ -10,7 +10,7 @@ spins are used.
 """
 import numpy as np
 
-from uw_dnmr.model.nmrmath import dnmr_AB, d2s_func
+from .nmrmath import dnmr_AB, d2s_func
 
 
 def lorentz(v, v0, I, w):

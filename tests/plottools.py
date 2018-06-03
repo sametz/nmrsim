@@ -1,18 +1,17 @@
-"""Tools for testing and debugging pyqtgraph plotting of data"""
+"""Plot utility for human-evaluated tests of data plots."""
 
-import pyqtgraph as pg
+import matplotlib.pyplot as plt
 
 
 def popplot(x, y, invertx=True):
+    """Create a pop-up plot of x, y data.
+
+    Arguments
+    ---------
+    x, y: np.array-like objects of x and y coordinate data.
+    invertx: invert the x axis if true (the standard for NMR spectra).
     """
-    Pop up a pyqtgraph plot of x, y.
-    :param x: numpy array of x coordinates
-    :param y: numpy array of matching y coordinates
-    :param invertx: Boolean indicating if x axis shoudl be "flipped" NMR-style
-    :return: Pop-up graph of x, y data.
-    """
-    popup = pg.plot()
-    popup.getViewBox().invertX(invertx)  # Reverse x axis "NMR style"
-    popup.plot(x, y)
-    # noinspection PyUnresolvedReferences
-    pg.QtGui.QApplication.exec_()
+    plt.plot(x, y)
+    if invertx:
+        plt.gca().invert_xaxis()
+    plt.show()
