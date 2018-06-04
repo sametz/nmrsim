@@ -230,6 +230,15 @@ def test_reduce_peaks():
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
+def test_normalize():
+    intensities = [1, 3, 4]
+    normalize(intensities)
+    assert intensities == [0.125, 0.375, 0.5]
+    double_intensities = [1, 3, 3, 1]
+    normalize(double_intensities, 2)
+    assert double_intensities == [0.25, 0.75, 0.75, 0.25]
+
+
 def test_first_order():
     refspec = [(293.0, 0.75), (300.0, 1.5), (307.0, 0.75),
                (432.5, 0.0625), (439.5, 0.3125), (446.5, 0.625),
@@ -251,6 +260,12 @@ def test_first_order():
 # Non-QM Second-Order Calculations
 #############################################################################
 
+def test_convert_refspec():
+    refspec = [(1, 1), (2, 3), (3, 3), (4, 1)]
+    new_refspec = normalize_spectrum(refspec, 2)
+    print(sum([y for x, y in new_refspec]))
+    assert new_refspec == [(1, 0.25), (2, 0.75), (3, 0.75), (4, 0.25)]
+
 
 def test_AB():
     from uw_dnmr.windnmr_defaults import ABdict
@@ -259,8 +274,18 @@ def test_AB():
                (153.60468635614927, 1.6246950475544244),
                (165.60468635614927, 0.3753049524455757)]
 
-    testspec = AB(**ABdict, normalize_=False)
-    np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
+    refspec_normalized = normalize_spectrum(refspec, 2)
+    print('ref normalized:')
+    print(refspec_normalized)
+    print(sum([y for x, y in refspec_normalized]))
+    print(sum(refspec_normalized[1]))
+    testspec = AB(**ABdict)
+    print('testspec:')
+    print(testspec)
+    print(sum([y for x, y in testspec]))
+    np.testing.assert_array_almost_equal(testspec,
+                                         refspec_normalized,
+                                         decimal=2)
 
 
 def test_AB2():
@@ -274,8 +299,15 @@ def test_AB2():
                (30.134498392075365, 1.5421221179826525),
                (31.75794977340369, 1.3201931947004837),
                (55.300397938882746, 0.001346383244293953)]
-
-    testspec = AB2(**dcp, normalize_=False)
+    refspec = normalize_spectrum(refspec, 3)
+    print('ref normalized;')
+    print(refspec)
+    print(sum([y for x, y in refspec]))
+    testspec = sorted(AB2(**dcp))
+    # testspec.sort()
+    print('testspec:')
+    print(testspec)
+    print(sum([y for x, y in testspec]))
     np.testing.assert_array_almost_equal(sorted(testspec), refspec, decimal=2)
 
 
@@ -295,8 +327,14 @@ def test_ABX():
                       (105.0, 1),
                       (80.69806479936946, 0.009709662154539944),
                       (119.30193520063054, 0.009709662154539944)])
-
-    testspec = sorted(ABX(**ABXdict, normalize_=False))
+    refspec = normalize_spectrum(refspec, 3)
+    print('ref normalized;')
+    print(refspec)
+    print(sum([y for x, y in refspec]))
+    testspec = sorted(ABX(**ABXdict))
+    print('testspec:')
+    print(testspec)
+    print(sum([y for x, y in testspec]))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 

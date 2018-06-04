@@ -1,8 +1,17 @@
-"""
+"""Functions for the calculation of NMR spectra.
+
 This version of nmrmath features speed-optimized hamiltonian, simsignals,
 and transition_matrix functions. Up to at least 8 spins, the new non-sparse
 Hamilton code is about 10x faster. The overall performance is dramatically
 better than the original code.
+
+Formulas for simulating two uncoupled spin-1/2 nuclei are derived from:
+Sandstrom, J. "Dynamic NMR Spectroscopy". Academic Press, 1982, p. 15.
+
+Formulas for simulating two coupled spin-1/2 nuclei are derived from:
+Brown, K.C.; Tyson, R. L.; Weil, J. A. _J. Chem. Educ._ 1998, 75, 1632.
+(NOTE: Hans Reich pointed out that the paper has a sign typo in Equation (2b)!
+the last term is minus-over-plus, not plus-over-minus.)
 """
 
 import numpy as np
@@ -196,7 +205,7 @@ def nspinspec(freqs, couplings, normalize=True):
 
 
 ##############################################################################
-# Non-QM solutions for specific multiplets
+# First-order simulation
 ##############################################################################
 
 # doublet, multiplet, add_peaks, and reduce_peaks are used to generate
@@ -320,6 +329,11 @@ def normalize_spectrum(spectrum, n=1):
     freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
     normalize(int_, n)
     return list(zip(freq, int_))
+
+
+##############################################################################
+# Non-QM solutions for specific second-order patterns
+##############################################################################
 
 
 def AB(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
@@ -651,6 +665,15 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize_=True, **kwargs):
     return spectrum
 
 
+##############################################################################
+# Simulation of DNMR lineshapes
+##############################################################################
+
+# There are multiple, redundant routines for calculating DNMR lineshapes. All
+#  previous approaches are preserved here for now.
+# TODO: review, refactor, and select the best-performing functions based on
+# speed test results.
+
 def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):
     """
     A translation of the equation from Sandström's Dynamic NMR Spectroscopy,
@@ -681,6 +704,13 @@ def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):
 
     I = (P * (1 + tau * ((pb / T2a) + (pa / T2b))) + Q * R) / (P ** 2 + R ** 2)
     return I
+
+
+def two_spin(v, va, vb, ka, wa, wb, pa):
+    """pyDNMR renamed dnmr_2spin and some arguments. This is temporary glue
+    to make sure that pyDNMR will work with the nmrtools library.
+    """
+    return dnmr_2spin(v, va, vb, ka, wa, wb, pa)
 
 
 def d2s_func(va, vb, ka, wa, wb, pa):
@@ -751,45 +781,6 @@ def d2s_func(va, vb, ka, wa, wb, pa):
     return maker
 
 
-def d2s_func_old(va, vb, ka, Wa, Wb, pa):
-    """
-    A function factory that creates tailored
-    dnmr_2spin-like functions for greater speed.
-    v: frequency whose amplitude is to be calculated
-    va, vb: frequencies of a and b singlets (slow exchange limit) (va > vb)
-    ka: rate constant for state A--> state B
-    pa: fraction of population in state Adv: frequency difference (va - vb)
-    between a and b singlets (slow exchange)
-    Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s
-
-    returns: a function that takes v (x coord or numpy linspace) as an argument
-    and returns intensity (y).
-    """
-    pi = np.pi
-    pi_squared = pi ** 2
-    T2a = 1 / (pi * Wa)
-    T2b = 1 / (pi * Wb)
-    pb = 1 - pa
-    tau = pb / ka
-    dv = va - vb
-    Dv = (va + vb) / 2
-    P = tau * (1 / (T2a * T2b) + pi_squared * (dv ** 2)) + (pa / T2a + pb / T2b)
-    p = 1 + tau * ((pb / T2a) + (pa / T2b))
-    Q = tau * (- pi * dv * (pa - pb))
-    R = pi * dv * tau * ((1 / T2b) - (1 / T2a)) + pi * dv * (pa - pb)
-    r = 2 * pi * (1 + tau * ((1 / T2a) + (1 / T2b)))
-
-    def maker(v):
-        # TODO: fix this function so inner scope uses _Dv, _P etc
-        nonlocal Dv, P, Q, R
-        Dv -= v
-        P -= tau * 4 * pi_squared * (Dv ** 2)
-        Q += tau * 2 * pi * Dv
-        R += Dv * r
-        return(P * p + Q * R) / (P ** 2 + R ** 2)
-    return maker
-
-
 def reich(v, va, vb, ka, Wa, Wb, pa):
     """
     A traslation of the actual VB code used in WINDNMR. Was used for error
@@ -821,6 +812,79 @@ def reich(v, va, vb, ka, Wa, Wb, pa):
     Q = pitau * Delfreq - tau * R3
     R = 2 * PI * Delfreq * r1 + Rr2 + R3
     return (P * popratio2 + Q * R) / ((P * P) + (R * R))
+
+
+class TwoSinglets:
+    """
+    Attempt at using a class instead of separate functions to represent two
+    uncoupled spin-1/2 nuclei undergoing exchange.
+    """
+
+    pi = np.pi
+    pi_squared = pi ** 2
+
+    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, percent_a=50):
+        """
+        Initialize the system with the required parameters:
+        :param va: Frequency of nucleus a
+        :param vb: Frequency of nucleus b (must be < va)
+        :param k: Rate of nuclear exchange
+        :param wa: With at half height for va signal at the slow exchange limit
+        :param wb: With at half height for vb signal at the slow exchange limit
+        :param percent_a: Fractional population of state 'a'
+        """
+        # Idea is to complete the frequency-independent calculations when the
+        #  class is instantiated, and thus calculations may be faster.
+        self.l_limit = vb - 50
+        self.r_limit = va + 50
+
+        T2a = 1 / (self.pi * wa)
+        T2b = 1 / (self.pi * wb)
+        pa = percent_a / 100
+        pb = 1 - pa
+        self.tau = pb / k
+        dv = va - vb
+        self.Dv = (va + vb) / 2
+        self.P = self.tau * (1 / (T2a * T2b) + self.pi_squared * (dv ** 2)) \
+            + (pa / T2a + pb / T2b)
+        self.p = 1 + self.tau * ((pb / T2a) + (pa / T2b))
+        self.Q = self.tau * (- self.pi * dv * (pa - pb))
+        self.R = self.pi * dv * self.tau * ((1 / T2b) - (1 / T2a)) \
+            + self.pi * dv * (pa - pb)
+        self.r = 2 * self.pi * (1 + self.tau * ((1 / T2a) + (1 / T2b)))
+
+    def intensity(self, v):
+        """
+        Yield a function for the lineshape for TwoSinglets
+        :param v: frequency
+        :return: a frequency-dependent function that returns the intensity of
+        the spectrum at frequency v
+        """
+        # TODO: add to docstring
+        p = self.p
+        Dv = self.Dv
+        P = self.P
+        Q = self.Q
+        R = self.R
+        r = self.r
+        tau = self.tau
+        Dv -= v
+        P -= tau * 4 * self.pi_squared * (Dv ** 2)
+        Q += tau * 2 * self.pi * Dv
+        R += Dv * r
+        return (P * p + Q * R) / (P ** 2 + R ** 2)
+
+    def spectrum(self):
+        """
+        Calculate a DNMR spectrum, using the parameters TwoSinglets was
+        instantiated with.
+        :return: a tuple of numpy arrays (x = numpy linspace representing
+        frequencies, y = numpy array of intensities along those frequencies)pwd
+        """
+        x = np.linspace(self.l_limit, self.r_limit, 800)
+        y = self.intensity(x)
+
+        return x, y
 
 
 def dnmr_AB(v, v1, v2, J, k, W):
@@ -866,54 +930,3 @@ def dnmr_AB(v, v1, v2, J, k, W):
 
     I = (n1 / d1) + (n2 / d2)
     return I
-
-
-if __name__ == '__main__':
-    from nspin import reich_list
-    from nmrplot import nmrplot as nmrplt
-
-    test_freqs, test_couplings = reich_list()[8]
-
-    # refactor reich_list to do this!
-    # test_couplings = test_couplings.todense()
-    # spectrum = nspinspec(test_freqs, test_couplings)
-    # nmrplt(nspinspec(test_freqs, test_couplings), y=24)
-    # ab2test = AB2(7.9, 26.5, 13.25, 0.5, 0, 300)
-    # abxtest = ABX(12.0, 2.0, 8.0, 15.0, 7.5, 0.5, 0, 300)
-    # nmrplt(abxtest)
-    # print(abxtest)
-
-    # v1 = (1200, 2)
-    # v2 = (450, 2)
-    # v3 = (300, 3)
-    # J12 = 7
-    # J23 = 7
-    # m1 = first_order(v1, [(J12, 2)])
-    # m2 = first_order(v2, [(J12, 2), (J23, 3)])
-    # m3 = first_order(v3, [(J23, 2)])
-    # testspec = reduce_peaks(sorted(m1 + m2 + m3))
-    # print(testspec)
-    # nmrplt(testspec)
-    # nmrplt(m1)
-    # # print(m2)
-    # nmrplt(m2)
-    # nmrplt(m3)
-
-    # m1 = multiplet(v1, [(J12, 2)])
-    # m2 = multiplet(v2, [(J12, 2), (J23, 3)])
-    # m3 = multiplet(v3, [(J23, 2)])
-    #
-    # testspec = sorted(m1 + m2 + m3)
-    # print(testspec)
-    # nmrplt(testspec)
-    # nmrplt(m1)
-    # nmrplt(m2)
-    # nmrplt(m3)
-    # abx3spec = ABX3(-12.0, 7.0, 7.0, 14.0, 150.0, 0.5, 0.0, 300.0)
-    # nmrplt(abx3spec)
-    # aaxxspec = AAXX(15, -10, 40, 6, 150, 0.5, 0, 300)
-    # print(sorted(aaxxspec))
-    # nmrplt(aaxxspec)
-    aabbspec = AABB(40, 15, -10, 40, 6, 150, 0.5, 0, 300)
-    print(sorted(aabbspec))
-    nmrplt(aabbspec)
