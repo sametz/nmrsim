@@ -259,7 +259,7 @@ def test_AB():
                (153.60468635614927, 1.6246950475544244),
                (165.60468635614927, 0.3753049524455757)]
 
-    testspec = AB(**ABdict)
+    testspec = AB(**ABdict, normalize_=False)
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
@@ -275,7 +275,7 @@ def test_AB2():
                (31.75794977340369, 1.3201931947004837),
                (55.300397938882746, 0.001346383244293953)]
 
-    testspec = AB2(**dcp)
+    testspec = AB2(**dcp, normalize_=False)
     np.testing.assert_array_almost_equal(sorted(testspec), refspec, decimal=2)
 
 
@@ -296,7 +296,7 @@ def test_ABX():
                       (80.69806479936946, 0.009709662154539944),
                       (119.30193520063054, 0.009709662154539944)])
 
-    testspec = sorted(ABX(**ABXdict))
+    testspec = sorted(ABX(**ABXdict, normalize_=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
@@ -356,7 +356,7 @@ def test_ABX3():
          (175.7195444572929, 0.04365107831800394)]
     )
 
-    testspec = sorted(ABX3(**ABX3dict))
+    testspec = sorted(ABX3(**ABX3dict, normalize_=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
@@ -373,7 +373,7 @@ def test_AAXX():
          (116.39905215399081, 0.20380477476124093)]
     )
 
-    testspec = sorted(AAXX(**AAXXdict))
+    testspec = sorted(AAXX(**AAXXdict, normalize_=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
@@ -406,7 +406,7 @@ def test_AABB():
          (207.77859771619566, 0.10166662880050205)]
     )
 
-    testspec = sorted(AABB(**AABBdict))
+    testspec = sorted(AABB(**AABBdict, normalize_=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 #############################################################################

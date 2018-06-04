@@ -170,7 +170,9 @@ def simsignals(H, nspins):
     return spectrum
 
 
-def nspinspec(freqs, couplings):
+# TODO: think about normalize and normalize_ name spacing; will need kwargs
+# to agree across apps.
+def nspinspec(freqs, couplings, normalize=True):
     """
     Function that calculates a spectrum for n spin-half nuclei.
     Inputs:
@@ -179,13 +181,18 @@ def nspinspec(freqs, couplings):
         of nuclei in the list corresponds to the column and row order in the
         matrix, e.g. couplings[0][1] and [1]0] are the J coupling between
         the nuclei of freqs[0] and freqs [1].
+        :param normalize: (bool) True if the intensities should be normalized
+        so that total intensity equals the total number of nuclei.
     Returns:
     -spectrum: a list of (frequency, intensity) tuples.
     Dependencies: hamiltonian, simsignals
     """
     nspins = len(freqs)
     H = hamiltonian(freqs, couplings)
-    return simsignals(H, nspins)
+    spectrum = simsignals(H, nspins)
+    if normalize:
+        spectrum = normalize_spectrum(spectrum, nspins)
+    return spectrum
 
 
 ##############################################################################
@@ -274,6 +281,17 @@ def reduce_peaks(plist, tolerance=0):
     return res
 
 
+def normalize(intensities, n=1):
+    """Scale a list of intensities so that they sum to the total number of
+    nuclei.
+
+    :param intensities: [float] A list of intensities.
+    :param n: (int) Number of nuclei."""
+    factor = n / sum(intensities)
+    for index, intensity in enumerate(intensities):
+        intensities[index] = intensity * factor
+
+
 def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
     """Uses the above functions to split a signal into a first-order
     multiplet.
@@ -292,7 +310,19 @@ def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
     return reduce_peaks(sorted(multiplet(signallist, couplings)))
 
 
-def AB(Jab, Vab, Vcentr, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
+def normalize_spectrum(spectrum, n=1):
+    """Normalize the intensities in a spectrum so that total intensity equals
+    value n (nominally the number of nuclei giving rise to the signal).
+
+    :param spectrum: [(float, float)...] a list of (frequency, intensity)
+    tuples.
+    :param n: total intensity to normalize to."""
+    freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
+    normalize(int_, n)
+    return list(zip(freq, int_))
+
+
+def AB(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
     """
     Reich-style inputs for AB quartet.
     Jab is the A-B coupling constant (Hz)
@@ -318,10 +348,13 @@ def AB(Jab, Vab, Vcentr, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
     I4 = I1
     vList = [v1, v2, v3, v4]
     IList = [I1, I2, I3, I4]
+    if normalize_:
+        normalize(IList, 2)
     return list(zip(vList, IList))
 
 
-def AB2(Jab, Vab, Vcentr, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
+def AB2(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz
+    # not implemented yet
     """
     Reich-style inputs for AB2 spin system.
     J is the A-B coupling constant (Hz)
@@ -355,10 +388,6 @@ def AB2(Jab, Vab, Vcentr, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
     # code hews closer to Pople definitions
     C_plus = sqrt(dV ** 2 + dV * J + (9 / 4) * (J ** 2)) / 2
     C_minus = sqrt(dV ** 2 - dV * J + (9 / 4) * (J ** 2)) / 2
-
-    # Next 2 lines not needed?
-    sin2theta_plus = J / (sqrt(2) * C_plus)  # Reich: sin2x
-    sin2theta_minus = J / (sqrt(2) * C_minus)  # Reich: sin2y
 
     cos2theta_plus = (dV / 2 + J / 4) / C_plus  # Reich: cos2x
     cos2theta_minus = (dV / 2 - J / 4) / C_minus  # Reich: cos2y
@@ -403,10 +432,14 @@ def AB2(Jab, Vab, Vcentr, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
     I9 = (sqrt(2) * sin_dtheta + sintheta_plus * sintheta_minus) ** 2
     vList = [V1, V2, V3, V4, V5, V6, V7, V8, V9]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9]
+
+    if normalize_:
+        normalize(IList, 3)
+
     return list(zip(vList, IList))
 
 
-def ABX(Jab, Jbx, Jax, Vab, Vcentr, **kwargs):
+def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize_=True, **kwargs):
     # Wa, RightHz, WdthHz not implemented yet
     """
     Reich-style inputs for AB2 spin system.
@@ -499,25 +532,12 @@ def ABX(Jab, Jbx, Jax, Vab, Vcentr, **kwargs):
     I14 = I13
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14]
+    if normalize_:
+        normalize(IList, 3)
     return list(zip(VList, IList))
 
 
-# Not being used, so should remove from codebase
-# def AMX3(Jab, Jax, Jbx, Vab, Vcentr):  # Wa, RightHz, WdthHz not implemented yet
-#     """
-#     Uses the AMX approximate solution described on Reich's website.
-#     However, WINDNMR uses a true ABX3 solution. AMX3 included here
-#     for future consideration.
-#     """
-#     # This was the function taken from the Jupyter ABX3 notebook, but
-#     # I think this needs to be fixed to make use of Jbx.
-#     abq = AB(Jab, Vab, Vcentr, Wa, RightHz, WdthHz)
-#     # return abq
-#     res = reduce_peaks(sorted(multiplet(abq, [(Jax, 3)])))
-#     return res
-
-
-def ABX3(Jab, Jax, Jbx, Vab, Vcentr, **kwargs):
+def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize_=True, **kwargs):
     # Wa, RightHz, WdthHz not implemented yet
     """
     Refactoring of Reich's code for simulating the ABX3 system.
@@ -530,14 +550,18 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr, **kwargs):
     for i in range(4):
         dv = b_quartet[i][0] - a_quartet[i][0]
         abcenter = (b_quartet[i][0] + a_quartet[i][0]) / 2
-        sub_abq = AB(Jab, dv, abcenter)  # Wa, RightHz, WdthHz not implemented
+        sub_abq = AB(Jab, dv, abcenter, normalize_)  # Wa, RightHz, WdthHz not
+        # implemented
         scale_factor = a_quartet[i][1]
         scaled_sub_abq = [(v, i * scale_factor) for v, i in sub_abq]
         res.extend(scaled_sub_abq)
+
+    if normalize_:
+        normalize(res, 5)  #TODO: check this factor
     return res
 
 
-def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, **kwargs):
+def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize_=True, **kwargs):
     # Wa, RightHz, WdthHz not implemented yet
     """
     Simulates an AA'XX' spin system. Frequencies and Js in Hz.
@@ -595,11 +619,15 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, **kwargs):
 
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10]
+
+    if normalize_:
+        normalize(IList, 4)
+
     return list(zip(VList, IList))
 
 
-def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, **kwargs):
-    #Wa, RightHz, WdthHz not implemented yet
+def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize_=True, **kwargs):
+    # Wa, RightHz, WdthHz not implemented yet
     """
     A wrapper for a second-order AA'BB' calculation, but using the
     values taken from the WINDNMR-style AA'BB' bar selected by the Multiplet
@@ -616,7 +644,11 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, **kwargs):
     J[1, 3] = Jab
     J[2, 3] = Jbb
     J = J + J.T
-    return nspinspec(freqlist, J)
+
+    spectrum = nspinspec(freqlist, J, normalize=normalize_)
+    y = [i for _, i in spectrum]
+
+    return spectrum
 
 
 def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):

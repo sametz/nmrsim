@@ -24,7 +24,11 @@ def lorentz(v, v0, I, w):
 
     :returns: Distribution evaluated at points in x.
     """
-    return I * ((0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
+    # Adding a height scaling factor so that peak intensities are lowered as
+    # they are more broad. If I is the intensity with a default w of 0.5 Hz:
+    scaling_factor = 0.5 / w  # i.e. a 1 Hz wide peak will be half as high
+    return scaling_factor * I * (
+            (0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
 
 
 def add_signals(linspace, peaklist, w):
@@ -42,21 +46,6 @@ def add_signals(linspace, peaklist, w):
     for v, i in peaklist[1:]:
         result += lorentz(linspace, v, i, w)
     return result
-
-
-# add_signals should supercede the adder function below--
-# schedule for deletion
-def adder(x, plist, Q=2):
-    """
-    :param x: the x coordinate (relative frequency in Hz)
-    :param plist: a list of tuples of peak data (frequency, intensity)
-    :param Q: the line width "fudge factor" used by lorentz2
-    returns: the sum of the peak Lorentzian functions at x
-    """
-    total = 0
-    for v, i in plist:
-        total += lorentz2(x, v, i, Q)
-    return total
 
 
 def nmrplot(spectrum, y=1):
@@ -85,12 +74,36 @@ def tkplot(spectrum, w=0.5):
     matplotlib tkinter canvas.
     :param spectrum: A list of (frequency, intensity) tuples
     :param w: peak width at half height
-    :return: a tuple of x and y coordinate linspaces
+    :param spectrometer_frequency: the frequency of the spectrometer (i.e
+    frequency in MHz that 1H nuclei resonate at)
+    :return: a tuple of x and y numpy.ndarrays
     """
     spectrum.sort()
     r_limit = spectrum[-1][0] + 50
     l_limit = spectrum[0][0] - 50
     x = np.linspace(l_limit, r_limit, 2400)
+    y = add_signals(x, spectrum, w)
+    return x, y
+
+
+def tkplot_nmrmint(spectrum, w=0.5, spectrometer_frequency=300):
+    """Generate linspaces of x and y coordinates suitable for plotting on a
+    matplotlib tkinter canvas.
+
+    Hard-coding a -1 to 15 ppm linspace, with resolution such that a 1 GHz
+    spectrometer has 10 points per Hz.
+    :param spectrum: A list of (frequency, intensity) tuples
+    :param w: peak width at half height
+    :param spectrometer_frequency: the frequency of the spectrometer (i.e
+    frequency in MHz that 1H nuclei resonate at)
+    :return: a tuple of x and y numpy.ndarrays
+    """
+    """This is a port of nmrmint's version of tkplot.
+    TODO: think about what nmrmint should offer to all users.
+    """
+    x = np.linspace(-1 * spectrometer_frequency,
+                    15 * spectrometer_frequency,
+                    160000)  # 0.01 Hz resolution on 1 GHz spectrometer
     y = add_signals(x, spectrum, w)
     return x, y
 

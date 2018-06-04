@@ -12,9 +12,11 @@ def test_lorentz_width():
     v0 = 100
     I = 1
     w = 2
-
-    assert lorentz(v0 - w/2, v0, I, w) == approx(0.5)
-    assert lorentz(v0 + w/2, v0, I, w) == approx(0.5)
+    max_height = lorentz(v0, v0, I, w)
+    low_width_height = lorentz(v0 - w/2, v0, I, w)
+    high_width_height = lorentz(v0 + w/2, v0, I, w)
+    assert low_width_height / max_height == approx(0.5)
+    assert high_width_height / max_height == approx(0.5)
 
 
 def test_add_signals():
@@ -22,11 +24,13 @@ def test_add_signals():
     Tests that current nmrplot.add_signals output agrees with an accepted
     dataset.
     """
+    # test was written before normalization of height vs width was built into
+    #  lorentz(). Fudge-factor added to scale old accepted data.
     x = np.linspace(390, 410, 200)
     doublet = [(399, 1), (401, 1)]
     y = add_signals(x, doublet, 1)
     X = np.array([x for x, _ in ADD_SIGNALS_DATASET])
-    Y = np.array([y for _, y in ADD_SIGNALS_DATASET])
+    Y = np.array([y * 0.5 for _, y in ADD_SIGNALS_DATASET])
 
     assert np.array_equal(x, X)
     assert np.array_equal(y, Y)
