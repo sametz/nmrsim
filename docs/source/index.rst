@@ -10,7 +10,10 @@ Welcome to nmrtools's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   introduction
+   installation
+   feedback
+   acknowledgements
 
 Indices and tables
 ==================
