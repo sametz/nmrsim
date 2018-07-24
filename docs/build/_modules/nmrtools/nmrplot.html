@@ -1,42 +1,148 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nmrtools.nmrplot &#8212; nmrtools 0.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nmrtools.nmrplot &mdash; nmrtools 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> nmrtools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.0.1 (pre-alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../feedback.html">Feedback</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nmrtools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nmrtools.nmrplot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for nmrtools.nmrplot</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -69,8 +175,8 @@
     <span class="c1"># they are more broad. If I is the intensity with a default w of 0.5 Hz:</span>
     <span class="n">scaling_factor</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">w</span>  <span class="c1"># i.e. a 1 Hz wide peak will be half as high</span>
     <span class="k">return</span> <span class="n">scaling_factor</span> <span class="o">*</span> <span class="n">I</span> <span class="o">*</span> <span class="p">(</span>
-            <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
-
+            <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+</div>
 
 <div class="viewcode-block" id="add_signals"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.add_signals">[docs]</a><span class="k">def</span> <span class="nf">add_signals</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">peaklist</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -86,8 +192,8 @@
     <span class="n">result</span> <span class="o">=</span> <span class="n">lorentz</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">peaklist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">peaklist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">w</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">peaklist</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="n">lorentz</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span></div>
-
+    <span class="k">return</span> <span class="n">result</span>
+</div>
 
 <div class="viewcode-block" id="nmrplot"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.nmrplot">[docs]</a><span class="k">def</span> <span class="nf">nmrplot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -107,8 +213,8 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">add_signals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="k">return</span></div>
-
+    <span class="k">return</span>
+</div>
 
 <div class="viewcode-block" id="tkplot"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.tkplot">[docs]</a><span class="k">def</span> <span class="nf">tkplot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate linspaces of x and y coordinates suitable for plotting on a</span>
@@ -124,8 +230,8 @@
     <span class="n">l_limit</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">50</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">l_limit</span><span class="p">,</span> <span class="n">r_limit</span><span class="p">,</span> <span class="mi">2400</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">add_signals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
-
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</div>
 
 <div class="viewcode-block" id="tkplot_nmrmint"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.tkplot_nmrmint">[docs]</a><span class="k">def</span> <span class="nf">tkplot_nmrmint</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">spectrometer_frequency</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate linspaces of x and y coordinates suitable for plotting on a</span>
@@ -146,8 +252,8 @@
                     <span class="mi">15</span> <span class="o">*</span> <span class="n">spectrometer_frequency</span><span class="p">,</span>
                     <span class="mi">160000</span><span class="p">)</span>  <span class="c1"># 0.01 Hz resolution on 1 GHz spectrometer</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">add_signals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
-
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</div>
 
 <div class="viewcode-block" id="dnmrplot_2spin"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.dnmrplot_2spin">[docs]</a><span class="k">def</span> <span class="nf">dnmrplot_2spin</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">Wa</span><span class="p">,</span> <span class="n">Wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a lineshape for the DNMR spectrum of two uncoupled nuclei</span>
@@ -184,8 +290,8 @@
     <span class="c1"># OR:</span>
     <span class="c1"># y = reich(x, va, vb, ka, Wa, Wb, pa)</span>
 
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
-
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</div>
 
 <div class="viewcode-block" id="dnmrplot_AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.dnmrplot_AB">[docs]</a><span class="k">def</span> <span class="nf">dnmrplot_AB</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -208,8 +314,8 @@
     <span class="n">r_limit</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">+</span> <span class="mi">50</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">l_limit</span><span class="p">,</span> <span class="n">r_limit</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">dnmr_AB</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
-
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</div>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
@@ -231,44 +337,59 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
+           </div>
+           
           </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Geoffrey M. Sametz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2018, Geoffrey M. Sametz.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

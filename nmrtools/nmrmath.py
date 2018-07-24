@@ -1,15 +1,20 @@
-"""Functions for the calculation of NMR spectra.
+"""Provides functions for the calculation of NMR spectra.
 
 This version of nmrmath features speed-optimized hamiltonian, simsignals,
 and transition_matrix functions. Up to at least 8 spins, the new non-sparse
 Hamilton code is about 10x faster. The overall performance is dramatically
 better than the original code.
 
+TODO: elaborate; list functions; provide examples.
+
+References
+----------
+
 Formulas for simulating two uncoupled spin-1/2 nuclei are derived from:
-Sandstrom, J. "Dynamic NMR Spectroscopy". Academic Press, 1982, p. 15.
+Sandstrom, J. *Dynamic NMR Spectroscopy*; Academic Press, 1982, p. 15.
 
 Formulas for simulating two coupled spin-1/2 nuclei are derived from:
-Brown, K.C.; Tyson, R. L.; Weil, J. A. _J. Chem. Educ._ 1998, 75, 1632.
+Brown, K.C.; Tyson, R. L.; Weil, J. A. *J. Chem. Educ.* **1998**, *75*, 1632.
 (NOTE: Hans Reich pointed out that the paper has a sign typo in Equation (2b)!
 the last term is minus-over-plus, not plus-over-minus.)
 """
@@ -27,11 +32,17 @@ from scipy.sparse import kron, csc_matrix, csr_matrix, lil_matrix, bmat
 
 def popcount(n=0):
     """
-    Computes the popcount (binary Hamming weight) of integer n
-    input:
-        :param n: an integer
-    returns:
-        popcount of integer (binary Hamming weight)
+    Computes the popcount (binary Hamming weight) of integer `n`.
+
+    Arguments
+    ---------
+    n : a base-10 integer
+
+
+    Returns
+    -------
+    int
+        Popcount (binary Hamming weight) of `n`
 
     """
     return bin(n).count('1')
@@ -39,12 +50,32 @@ def popcount(n=0):
 
 def is_allowed(m=0, n=0):
     """
-    determines if a transition between two spin states is allowed or forbidden.
-    The transition is allowed if one and only one spin (i.e. bit) changes
-    input: integers whose binary codes for a spin state
-        :param n:
-        :param m:
-    output: 1 = allowed, 0 = forbidden
+    Determines if a transition between two spin states is allowed or forbidden.
+
+    It turns out that for a system of n spin-half nuclei, the numbers from 0
+    to (2^n - 1) code for each spin state. For example:
+
+        0 = 000 = alpha-alpha-alpha
+        1 = 001 = alpha-alpha-beta
+        .
+        .
+        .
+        7 = 111 = beta-beta-beta
+
+    For a transition to be allowed, the total spin of the system cannot
+    change by more than one. This corresponds to only one bit being flipped
+    in the binary number representation. The Hamming weight is the number of
+    bits flipped.
+
+    Arguments
+    ---------
+    m : int
+    n : int
+
+    Returns
+    -------
+    bool
+        `true` = allowed, `false` = forbidden
 
     """
     return popcount(m ^ n) == 1
@@ -53,15 +84,20 @@ def is_allowed(m=0, n=0):
 def transition_matrix(n):
     """
     Creates a matrix of allowed transitions.
-    The integers 0-n, in their binary form, code for a spin state (alpha/beta).
-    The (i,j) cells in the matrix indicate whether a transition from spin state
-    i to spin state j is allowed or forbidden.
-    See the is_allowed function for more information.
 
-    input:
-        :param n: size of the n,n matrix (i.e. number of possible spin states)
+    The integers 0-`n`, in their binary form, code for a spin state
+    (alpha/beta). The (i,j) cells in the matrix indicate whether a transition
+    from spin state i to spin state j is allowed or forbidden.
+    See the ``is_allowed`` function for more information.
 
-    :returns: a transition matrix that can be used to compute the intensity of
+    Arguments
+    ---------
+    n : dimension of the n,n matrix (i.e. number of possible spin states).
+
+    Returns
+    -------
+    lil_matrix
+        a transition matrix that can be used to compute the intensity of
     allowed transitions.
     """
     # function was optimized by only calculating upper triangle and then adding
@@ -77,11 +113,19 @@ def transition_matrix(n):
 
 def hamiltonian(freqlist, couplings):
     """
-    Computes the spin Hamiltonian for spin-1/2 nuclei.
-    inputs for n nuclei:
-        :param freqlist: a list of frequencies in Hz of length n
-        :param couplings: an n x n array of coupling constants in Hz
-    Returns: a Hamiltonian array
+    Computes the spin Hamiltonian for `n` spin-1/2 nuclei.
+
+    Arguments
+    ---------
+    freqlist : array-like
+        a list of frequencies in Hz of length `n`
+    couplings : array-like
+        an `n` x `n` array of coupling constants in Hz
+
+    Returns
+    -------
+    ndarray
+        a 2-D array for the spin Hamiltonian
     """
     nspins = len(freqlist)
 
@@ -138,12 +182,21 @@ def hamiltonian(freqlist, couplings):
 
 def simsignals(H, nspins):
     """
-    Solves the spin Hamiltonian H and returns a list of (frequency, intensity)
-    tuples. Nuclei must be spin-1/2.
-    Inputs:
-        :param H: a Hamiltonian array
-        :param nspins: number of nuclei
-    :return spectrum: a list of (frequency, intensity) tuples.
+    Calculates the eigensolution of the spin Hamiltonian H and, using it,
+    returns the allowed transitions as list of (frequency, intensity) tuples.
+
+    Arguments
+    ---------
+
+    H : ndarray
+        the spin Hamiltonian.
+    nspins : int
+        the number of nuclei in the spin system.
+
+    Returns
+    -------
+    spectrum : [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     # This routine was optimized for speed by vectorizing the intensity
     # calculations, replacing a nested-for signal-by-signal calculation.
@@ -183,18 +236,26 @@ def simsignals(H, nspins):
 # to agree across apps.
 def nspinspec(freqs, couplings, normalize=True):
     """
-    Function that calculates a spectrum for n spin-half nuclei.
-    Inputs:
-        :param freqs: a list of n nuclei frequencies in Hz
-        :param couplings: an n x n array of couplings in Hz. The order
+    Calculates second-order spectral data (freqency and intensity of signals)
+    for *n* spin-half nuclei.
+
+    Arguments
+    ---------
+    freqs : [float...]
+        a list of *n* nuclei frequencies in Hz
+    couplings : array-like
+        an *n, n* array of couplings in Hz. The order
         of nuclei in the list corresponds to the column and row order in the
         matrix, e.g. couplings[0][1] and [1]0] are the J coupling between
-        the nuclei of freqs[0] and freqs [1].
-        :param normalize: (bool) True if the intensities should be normalized
-        so that total intensity equals the total number of nuclei.
-    Returns:
-    -spectrum: a list of (frequency, intensity) tuples.
-    Dependencies: hamiltonian, simsignals
+        the nuclei of freqs[0] and freqs[1].
+    normalize: bool
+        True if the intensities should be normalized so that total intensity
+        equals the total number of nuclei.
+
+    Returns
+    -------
+    spectrum : [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     nspins = len(freqs)
     H = hamiltonian(freqs, couplings)
@@ -226,14 +287,24 @@ def doublet(plist, J):
 
 def multiplet(plist, couplings):
     """
-    plist: a list of (frequency{Hz}, intensity) tuples;
-    couplings: one or more (J, # of nuclei) tuples.
-    e.g. to split a signal into a dt, J = 8, 5 Hz, use:
-        couplings = [(8, 2), (5, 3)]
-    Dependency: doublet function
-    returns: a plist of the multiplet that results from splitting the plist
-    signal(s) by each J.
-    The order of the tuples in couplings does not matter
+    Splits a set of signals into first-order multiplets.
+
+    Arguments
+    ---------
+    plist : [(float, float)...]
+        a list of (frequency{Hz}, intensity) tuples;
+    couplings : [(float, int)...]
+        A list of (*J*, # of nuclei) tuples. The order of the tuples in
+        couplings does not matter.
+        e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:
+            couplings = [(8, 2), (5, 3)]
+
+    Returns
+    -------
+    [(float, float)...]
+        a plist of the multiplet that results from splitting the plist
+        signal(s) by each J.
+
     """
     res = plist
     for coupling in couplings:
@@ -336,7 +407,7 @@ def normalize_spectrum(spectrum, n=1):
 ##############################################################################
 
 
-def AB(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
+def AB(Jab, Vab, Vcentr, normalize_=True, **kwargs):
     """
     Reich-style inputs for AB quartet.
     Jab is the A-B coupling constant (Hz)
@@ -454,7 +525,6 @@ def AB2(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz
 
 
 def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize_=True, **kwargs):
-    # Wa, RightHz, WdthHz not implemented yet
     """
     Reich-style inputs for AB2 spin system.
     Jab is the A-B coupling constant (Hz)
@@ -660,7 +730,7 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize_=True, **kwargs):
     J = J + J.T
 
     spectrum = nspinspec(freqlist, J, normalize=normalize_)
-    y = [i for _, i in spectrum]
+    y = [i for _, i in spectrum]  # TODO check that this should be deleted
 
     return spectrum
 

@@ -1,56 +1,167 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nmrtools.nmrmath &#8212; nmrtools 0.1 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nmrtools.nmrmath &mdash; nmrtools 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body>
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> nmrtools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.0.1 (pre-alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../feedback.html">Feedback</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nmrtools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nmrtools.nmrmath</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for nmrtools.nmrmath</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Functions for the calculation of NMR spectra.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Provides functions for the calculation of NMR spectra.</span>
 
 <span class="sd">This version of nmrmath features speed-optimized hamiltonian, simsignals,</span>
 <span class="sd">and transition_matrix functions. Up to at least 8 spins, the new non-sparse</span>
 <span class="sd">Hamilton code is about 10x faster. The overall performance is dramatically</span>
 <span class="sd">better than the original code.</span>
 
+<span class="sd">TODO: elaborate; list functions; provide examples.</span>
+
+<span class="sd">References</span>
+<span class="sd">----------</span>
+
 <span class="sd">Formulas for simulating two uncoupled spin-1/2 nuclei are derived from:</span>
-<span class="sd">Sandstrom, J. &quot;Dynamic NMR Spectroscopy&quot;. Academic Press, 1982, p. 15.</span>
+<span class="sd">Sandstrom, J. *Dynamic NMR Spectroscopy*; Academic Press, 1982, p. 15.</span>
 
 <span class="sd">Formulas for simulating two coupled spin-1/2 nuclei are derived from:</span>
-<span class="sd">Brown, K.C.; Tyson, R. L.; Weil, J. A. _J. Chem. Educ._ 1998, 75, 1632.</span>
+<span class="sd">Brown, K.C.; Tyson, R. L.; Weil, J. A. *J. Chem. Educ.* **1998**, *75*, 1632.</span>
 <span class="sd">(NOTE: Hans Reich pointed out that the paper has a sign typo in Equation (2b)!</span>
 <span class="sd">the last term is minus-over-plus, not plus-over-minus.)</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -68,11 +179,17 @@
 
 <div class="viewcode-block" id="popcount"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.popcount">[docs]</a><span class="k">def</span> <span class="nf">popcount</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the popcount (binary Hamming weight) of integer n</span>
-<span class="sd">    input:</span>
-<span class="sd">        :param n: an integer</span>
-<span class="sd">    returns:</span>
-<span class="sd">        popcount of integer (binary Hamming weight)</span>
+<span class="sd">    Computes the popcount (binary Hamming weight) of integer `n`.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    n : a base-10 integer</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        Popcount (binary Hamming weight) of `n`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bin</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span></div>
@@ -80,12 +197,32 @@
 
 <div class="viewcode-block" id="is_allowed"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.is_allowed">[docs]</a><span class="k">def</span> <span class="nf">is_allowed</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    determines if a transition between two spin states is allowed or forbidden.</span>
-<span class="sd">    The transition is allowed if one and only one spin (i.e. bit) changes</span>
-<span class="sd">    input: integers whose binary codes for a spin state</span>
-<span class="sd">        :param n:</span>
-<span class="sd">        :param m:</span>
-<span class="sd">    output: 1 = allowed, 0 = forbidden</span>
+<span class="sd">    Determines if a transition between two spin states is allowed or forbidden.</span>
+
+<span class="sd">    It turns out that for a system of n spin-half nuclei, the numbers from 0</span>
+<span class="sd">    to (2^n - 1) code for each spin state. For example:</span>
+
+<span class="sd">        0 = 000 = alpha-alpha-alpha</span>
+<span class="sd">        1 = 001 = alpha-alpha-beta</span>
+<span class="sd">        .</span>
+<span class="sd">        .</span>
+<span class="sd">        .</span>
+<span class="sd">        7 = 111 = beta-beta-beta</span>
+
+<span class="sd">    For a transition to be allowed, the total spin of the system cannot</span>
+<span class="sd">    change by more than one. This corresponds to only one bit being flipped</span>
+<span class="sd">    in the binary number representation. The Hamming weight is the number of</span>
+<span class="sd">    bits flipped.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    m : int</span>
+<span class="sd">    n : int</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        `true` = allowed, `false` = forbidden</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">popcount</span><span class="p">(</span><span class="n">m</span> <span class="o">^</span> <span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></div>
@@ -94,15 +231,20 @@
 <div class="viewcode-block" id="transition_matrix"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.transition_matrix">[docs]</a><span class="k">def</span> <span class="nf">transition_matrix</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a matrix of allowed transitions.</span>
-<span class="sd">    The integers 0-n, in their binary form, code for a spin state (alpha/beta).</span>
-<span class="sd">    The (i,j) cells in the matrix indicate whether a transition from spin state</span>
-<span class="sd">    i to spin state j is allowed or forbidden.</span>
-<span class="sd">    See the is_allowed function for more information.</span>
 
-<span class="sd">    input:</span>
-<span class="sd">        :param n: size of the n,n matrix (i.e. number of possible spin states)</span>
+<span class="sd">    The integers 0-`n`, in their binary form, code for a spin state</span>
+<span class="sd">    (alpha/beta). The (i,j) cells in the matrix indicate whether a transition</span>
+<span class="sd">    from spin state i to spin state j is allowed or forbidden.</span>
+<span class="sd">    See the ``is_allowed`` function for more information.</span>
 
-<span class="sd">    :returns: a transition matrix that can be used to compute the intensity of</span>
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    n : dimension of the n,n matrix (i.e. number of possible spin states).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lil_matrix</span>
+<span class="sd">        a transition matrix that can be used to compute the intensity of</span>
 <span class="sd">    allowed transitions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># function was optimized by only calculating upper triangle and then adding</span>
@@ -118,11 +260,19 @@
 
 <div class="viewcode-block" id="hamiltonian"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.hamiltonian">[docs]</a><span class="k">def</span> <span class="nf">hamiltonian</span><span class="p">(</span><span class="n">freqlist</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the spin Hamiltonian for spin-1/2 nuclei.</span>
-<span class="sd">    inputs for n nuclei:</span>
-<span class="sd">        :param freqlist: a list of frequencies in Hz of length n</span>
-<span class="sd">        :param couplings: an n x n array of coupling constants in Hz</span>
-<span class="sd">    Returns: a Hamiltonian array</span>
+<span class="sd">    Computes the spin Hamiltonian for `n` spin-1/2 nuclei.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    freqlist : array-like</span>
+<span class="sd">        a list of frequencies in Hz of length `n`</span>
+<span class="sd">    couplings : array-like</span>
+<span class="sd">        an `n` x `n` array of coupling constants in Hz</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        a 2-D array for the spin Hamiltonian</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">nspins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqlist</span><span class="p">)</span>
 
@@ -179,12 +329,21 @@
 
 <div class="viewcode-block" id="simsignals"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.simsignals">[docs]</a><span class="k">def</span> <span class="nf">simsignals</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">nspins</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Solves the spin Hamiltonian H and returns a list of (frequency, intensity)</span>
-<span class="sd">    tuples. Nuclei must be spin-1/2.</span>
-<span class="sd">    Inputs:</span>
-<span class="sd">        :param H: a Hamiltonian array</span>
-<span class="sd">        :param nspins: number of nuclei</span>
-<span class="sd">    :return spectrum: a list of (frequency, intensity) tuples.</span>
+<span class="sd">    Calculates the eigensolution of the spin Hamiltonian H and, using it,</span>
+<span class="sd">    returns the allowed transitions as list of (frequency, intensity) tuples.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    H : ndarray</span>
+<span class="sd">        the spin Hamiltonian.</span>
+<span class="sd">    nspins : int</span>
+<span class="sd">        the number of nuclei in the spin system.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spectrum : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># This routine was optimized for speed by vectorizing the intensity</span>
     <span class="c1"># calculations, replacing a nested-for signal-by-signal calculation.</span>
@@ -224,18 +383,26 @@
 <span class="c1"># to agree across apps.</span>
 <div class="viewcode-block" id="nspinspec"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.nspinspec">[docs]</a><span class="k">def</span> <span class="nf">nspinspec</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">couplings</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function that calculates a spectrum for n spin-half nuclei.</span>
-<span class="sd">    Inputs:</span>
-<span class="sd">        :param freqs: a list of n nuclei frequencies in Hz</span>
-<span class="sd">        :param couplings: an n x n array of couplings in Hz. The order</span>
+<span class="sd">    Calculates second-order spectral data (freqency and intensity of signals)</span>
+<span class="sd">    for *n* spin-half nuclei.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    freqs : [float...]</span>
+<span class="sd">        a list of *n* nuclei frequencies in Hz</span>
+<span class="sd">    couplings : array-like</span>
+<span class="sd">        an *n, n* array of couplings in Hz. The order</span>
 <span class="sd">        of nuclei in the list corresponds to the column and row order in the</span>
 <span class="sd">        matrix, e.g. couplings[0][1] and [1]0] are the J coupling between</span>
-<span class="sd">        the nuclei of freqs[0] and freqs [1].</span>
-<span class="sd">        :param normalize: (bool) True if the intensities should be normalized</span>
-<span class="sd">        so that total intensity equals the total number of nuclei.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">    -spectrum: a list of (frequency, intensity) tuples.</span>
-<span class="sd">    Dependencies: hamiltonian, simsignals</span>
+<span class="sd">        the nuclei of freqs[0] and freqs[1].</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        True if the intensities should be normalized so that total intensity</span>
+<span class="sd">        equals the total number of nuclei.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    spectrum : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">nspins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">freqs</span><span class="p">)</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">hamiltonian</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">couplings</span><span class="p">)</span>
@@ -267,14 +434,24 @@
 
 <div class="viewcode-block" id="multiplet"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.multiplet">[docs]</a><span class="k">def</span> <span class="nf">multiplet</span><span class="p">(</span><span class="n">plist</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    plist: a list of (frequency{Hz}, intensity) tuples;</span>
-<span class="sd">    couplings: one or more (J, # of nuclei) tuples.</span>
-<span class="sd">    e.g. to split a signal into a dt, J = 8, 5 Hz, use:</span>
-<span class="sd">        couplings = [(8, 2), (5, 3)]</span>
-<span class="sd">    Dependency: doublet function</span>
-<span class="sd">    returns: a plist of the multiplet that results from splitting the plist</span>
-<span class="sd">    signal(s) by each J.</span>
-<span class="sd">    The order of the tuples in couplings does not matter</span>
+<span class="sd">    Splits a set of signals into first-order multiplets.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    plist : [(float, float)...]</span>
+<span class="sd">        a list of (frequency{Hz}, intensity) tuples;</span>
+<span class="sd">    couplings : [(float, int)...]</span>
+<span class="sd">        A list of (*J*, # of nuclei) tuples. The order of the tuples in</span>
+<span class="sd">        couplings does not matter.</span>
+<span class="sd">        e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:</span>
+<span class="sd">            couplings = [(8, 2), (5, 3)]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a plist of the multiplet that results from splitting the plist</span>
+<span class="sd">        signal(s) by each J.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">plist</span>
     <span class="k">for</span> <span class="n">coupling</span> <span class="ow">in</span> <span class="n">couplings</span><span class="p">:</span>
@@ -377,7 +554,7 @@
 <span class="c1">##############################################################################</span>
 
 
-<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
+<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reich-style inputs for AB quartet.</span>
 <span class="sd">    Jab is the A-B coupling constant (Hz)</span>
@@ -495,7 +672,6 @@
 
 
 <div class="viewcode-block" id="ABX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.ABX">[docs]</a><span class="k">def</span> <span class="nf">ABX</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reich-style inputs for AB2 spin system.</span>
 <span class="sd">    Jab is the A-B coupling constant (Hz)</span>
@@ -701,7 +877,7 @@
     <span class="n">J</span> <span class="o">=</span> <span class="n">J</span> <span class="o">+</span> <span class="n">J</span><span class="o">.</span><span class="n">T</span>
 
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">nspinspec</span><span class="p">(</span><span class="n">freqlist</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize_</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">]</span>  <span class="c1"># TODO check that this should be deleted</span>
 
     <span class="k">return</span> <span class="n">spectrum</span></div>
 
@@ -973,44 +1149,59 @@
     <span class="k">return</span> <span class="n">I</span></div>
 </pre></div>
 
+           </div>
+           
           </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Geoffrey M. Sametz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2018, Geoffrey M. Sametz.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
