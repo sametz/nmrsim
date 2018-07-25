@@ -271,9 +271,22 @@ frequencies, y = numpy array of intensities along those frequencies)pwd</p>
 <dl class="function">
 <dt id="nmrtools.nmrmath.add_peaks">
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">add_peaks</code><span class="sig-paren">(</span><em>plist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#add_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.add_peaks" title="Permalink to this definition">¶</a></dt>
-<dd><p>condenses a list of (frequency, intensity) tuples
-input: a list of (v, i) tuples
-output: a tuple of (average v, total i)</p>
+<dd><p>Reduces a list of (frequency, intensity) tuples to an
+(average frequency, total intensity) tuple.</p>
+<dl class="docutils">
+<dt>plist: [(float, float)…]</dt>
+<dd>a list of (frequency, intensity) tuples</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a tuple of (average frequency, total intensity)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(float, float)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -344,24 +357,50 @@ returns: amplitude at frequency v</p>
 <dl class="function">
 <dt id="nmrtools.nmrmath.doublet">
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">doublet</code><span class="sig-paren">(</span><em>plist</em>, <em>J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#doublet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.doublet" title="Permalink to this definition">¶</a></dt>
-<dd><p>plist: a list of (frequency{Hz}, intensity) tuples;
-J: a coupling constant {Hz}
-returns: a plist of the result of splitting every peak in plist by J</p>
+<dd><p>Applies a <em>J</em> coupling to each signal in a list of (frequency, intensity)
+signals, creating two half-intensity signals at +/- <em>J</em>/2.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>plist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency{Hz}, intensity) tuples.</li>
+<li><strong>J</strong> (<em>float</em>) – The coupling constant in Hz.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.first_order">
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">first_order</code><span class="sig-paren">(</span><em>signal</em>, <em>couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#first_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.first_order" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses the above functions to split a signal into a first-order
-multiplet.
-Input:
--signal: a (frequency, intensity) tuple
--Couplings: a list of (J, # of nuclei) tuples. See multiplet
-docstring for more info.
--intensity (optional): the intensity of the signal
-Output:
-a plist-style spectrum (list of (frequency, intensity) tuples)
-Dependencies: doublet, multiplet, reduce_peaks, add_peaks</p>
+<dd><p>Splits a signal into a first-order multiplet.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>signal</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – a (frequency, intensity) tuple.</li>
+<li><strong>couplings</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>int</em><em>)</em><em>..</em><em>]</em>) – a list of (J, # of nuclei) tuples.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a plist-style spectrum (list of (frequency, intensity) tuples)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..}</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -409,17 +448,11 @@ bits flipped.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>m</strong> (<em>int</em>) – </li>
-<li><strong>n</strong> (<em>int</em>) – </li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<em>m</em><em>,</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><cite>true</cite> = allowed, <cite>false</cite> = forbidden</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>true</cite> = allowed, <cite>false</cite> = forbidden</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -427,20 +460,18 @@ bits flipped.</p>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.multiplet">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">multiplet</code><span class="sig-paren">(</span><em>plist</em>, <em>couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.multiplet" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">multiplet</code><span class="sig-paren">(</span><em>signal</em>, <em>couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.multiplet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits a set of signals into first-order multiplets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>plist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency{Hz}, intensity) tuples;</li>
-<li><strong>couplings</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>int</em><em>)</em><em>..</em><em>]</em>) – <p>A list of (<em>J</em>, # of nuclei) tuples. The order of the tuples in
+<li><strong>plist</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – a (frequency{Hz}, intensity) tuple;</li>
+<li><strong>couplings</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>int</em><em>)</em><em>..</em><em>]</em>) – A list of (<em>J</em>, # of nuclei) tuples. The order of the tuples in
 couplings does not matter.
-e.g. to split a signal into a <em>dt, J</em> = 8, 5 Hz, use:</p>
-<blockquote>
-<div>couplings = [(8, 2), (5, 3)]</div></blockquote>
-</li>
+e.g. to split a signal into a <em>dt, J</em> = 8, 5 Hz, use:
+<code class="docutils literal notranslate"><span class="pre">couplings</span> <span class="pre">=</span> <span class="pre">[(8,</span> <span class="pre">2),</span> <span class="pre">(5,</span> <span class="pre">3)]</span></code></li>
 </ul>
 </td>
 </tr>
@@ -465,8 +496,8 @@ nuclei.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>intensities</strong> – [float] A list of intensities.</li>
-<li><strong>n</strong> – (int) Number of nuclei.</li>
+<li><strong>intensities</strong> (<em>[</em><em>float...</em><em>]</em>) – A list of intensities.</li>
+<li><strong>n</strong> (<em>int</em>) – Number of nuclei.</li>
 </ul>
 </td>
 </tr>
@@ -483,12 +514,14 @@ value n (nominally the number of nuclei giving rise to the signal).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spectrum</strong> – [(float, float)…] a list of (frequency, intensity)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>spectrum</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency, intensity) tuples.</li>
+<li><strong>n</strong> (<em>int</em><em> or </em><em>float</em>) – total intensity to normalize to.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-<p>tuples.
-:param n: total intensity to normalize to.</p>
 </dd></dl>
 
 <dl class="function">
@@ -543,17 +576,25 @@ equals the total number of nuclei.</li>
 <dt id="nmrtools.nmrmath.reduce_peaks">
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">reduce_peaks</code><span class="sig-paren">(</span><em>plist</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#reduce_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.reduce_peaks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes an ordered list of (x, y) tuples and adds together tuples whose first
-values are within a certain tolerance limit.
-Dependency: add_peaks
-Input:</p>
-<blockquote>
-<div>plist: a <em>sorted</em> list of (x, y) tuples (sorted by x)
-tolerance: tuples that differ in x by &lt;= tolerance are combined
-using add_peaks</div></blockquote>
-<dl class="docutils">
-<dt>Output:</dt>
-<dd>a list of (x, y) tuples where all x values differ by &gt; tolerance</dd>
-</dl>
+values are within a certain tolerance limit.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>plist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – A <em>sorted</em> list of (x, y) tuples (sorted by x)</li>
+<li><strong>tolerance</strong> (<em>float</em>) – tuples that differ in x by &lt;= tolerance are combined using <code class="docutils literal notranslate"><span class="pre">add_peaks</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (x, y) tuples where all x values differ by &gt; <cite>tolerance</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">

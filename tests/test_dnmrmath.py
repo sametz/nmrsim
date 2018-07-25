@@ -4,8 +4,8 @@
 from tests.plottools import popplot
 # from .dnmrplot import dnmrplot_2spin
 from tests.testdata import TWOSPIN_SLOW, AB_WINDNMR  # , TWOSPIN_COALESCE, TWOSPIN_FAST
-from pydnmr.dnmrmath import *
-
+# from pydnmr.dnmrmath import *
+from nmrtools.nmrmath import TwoSinglets
 
 def get_intensity(spectrum, x):
     """

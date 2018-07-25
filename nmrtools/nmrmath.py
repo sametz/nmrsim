@@ -38,7 +38,6 @@ def popcount(n=0):
     ---------
     n : a base-10 integer
 
-
     Returns
     -------
     int
@@ -69,8 +68,7 @@ def is_allowed(m=0, n=0):
 
     Arguments
     ---------
-    m : int
-    n : int
+    m, n : int
 
     Returns
     -------
@@ -274,9 +272,20 @@ def nspinspec(freqs, couplings, normalize=True):
 
 def doublet(plist, J):
     """
-    plist: a list of (frequency{Hz}, intensity) tuples;
-    J: a coupling constant {Hz}
-    returns: a plist of the result of splitting every peak in plist by J
+    Applies a *J* coupling to each signal in a list of (frequency, intensity)
+    signals, creating two half-intensity signals at +/- *J*/2.
+
+    Arguments
+    ---------
+    plist : [(float, float)...]
+        a list of (frequency{Hz}, intensity) tuples.
+    J : float
+        The coupling constant in Hz.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     res = []
     for v, i in plist:
@@ -285,19 +294,19 @@ def doublet(plist, J):
     return res
 
 
-def multiplet(plist, couplings):
+def multiplet(signal, couplings):
     """
     Splits a set of signals into first-order multiplets.
 
     Arguments
     ---------
-    plist : [(float, float)...]
-        a list of (frequency{Hz}, intensity) tuples;
+    signal : (float, float)
+        a (frequency{Hz}, intensity) tuple;
     couplings : [(float, int)...]
         A list of (*J*, # of nuclei) tuples. The order of the tuples in
         couplings does not matter.
         e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:
-            couplings = [(8, 2), (5, 3)]
+        ``couplings = [(8, 2), (5, 3)]``
 
     Returns
     -------
@@ -306,7 +315,7 @@ def multiplet(plist, couplings):
         signal(s) by each J.
 
     """
-    res = plist
+    res = [signal]
     for coupling in couplings:
         for i in range(coupling[1]):
             res = doublet(res, coupling[0])
@@ -315,10 +324,20 @@ def multiplet(plist, couplings):
 
 def add_peaks(plist):
     """
-    condenses a list of (frequency, intensity) tuples
-    input: a list of (v, i) tuples
-    output: a tuple of (average v, total i)
+    Reduces a list of (frequency, intensity) tuples to an
+    (average frequency, total intensity) tuple.
+
+    Argument
+    --------
+    plist: [(float, float)...]
+        a list of (frequency, intensity) tuples
+
+    Returns
+    -------
+    (float, float)
+        a tuple of (average frequency, total intensity)
     """
+    # TODO: Is this if statement necessary?
     if len(plist) == 1:
         return plist[0]  # nothing to add
     v_total = 0
@@ -333,15 +352,18 @@ def reduce_peaks(plist, tolerance=0):
     """
     Takes an ordered list of (x, y) tuples and adds together tuples whose first
     values are within a certain tolerance limit.
-    Dependency: add_peaks
-    Input:
-        plist: a *sorted* list of (x, y) tuples (sorted by x)
-        tolerance: tuples that differ in x by <= tolerance are combined
-        using add_peaks
 
-    Output:
-        a list of (x, y) tuples where all x values differ by > tolerance
+    Arguments
+    ---------
+    plist : [(float, float)...]
+        A *sorted* list of (x, y) tuples (sorted by x)
+    tolerance : float
+        tuples that differ in x by <= tolerance are combined using ``add_peaks``
 
+    Returns
+    -------
+    [(float, float)...]
+        a list of (x, y) tuples where all x values differ by > `tolerance`
     """
     res = []
     work = [plist[0]]  # an accumulator of peaks to be processed
@@ -362,41 +384,53 @@ def reduce_peaks(plist, tolerance=0):
 
 
 def normalize(intensities, n=1):
-    """Scale a list of intensities so that they sum to the total number of
+    """
+    Scale a list of intensities so that they sum to the total number of
     nuclei.
 
-    :param intensities: [float] A list of intensities.
-    :param n: (int) Number of nuclei."""
+    Arguments
+    ---------
+    intensities : [float...]
+        A list of intensities.
+    n : int
+        Number of nuclei.
+    """
     factor = n / sum(intensities)
     for index, intensity in enumerate(intensities):
         intensities[index] = intensity * factor
 
 
 def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
-    """Uses the above functions to split a signal into a first-order
-    multiplet.
-    Input:
-    -signal: a (frequency, intensity) tuple
-    -Couplings: a list of (J, # of nuclei) tuples. See multiplet
-    docstring for more info.
-    -intensity (optional): the intensity of the signal
-    Output:
-    a plist-style spectrum (list of (frequency, intensity) tuples)
-    Dependencies: doublet, multiplet, reduce_peaks, add_peaks
     """
-    # Possible future refactor: if function used a list of signals,
-    # may be useful in other situations?
-    signallist = [signal]
-    return reduce_peaks(sorted(multiplet(signallist, couplings)))
+    Splits a signal into a first-order multiplet.
+
+    Arguments
+    ---------
+    signal : (float, float)
+        a (frequency, intensity) tuple.
+    couplings : [(float, int)...]
+        a list of (J, # of nuclei) tuples.
+
+    Returns
+    -------
+    [(float, float)...}
+        a plist-style spectrum (list of (frequency, intensity) tuples)
+    """
+    return reduce_peaks(sorted(multiplet(signal, couplings)))
 
 
 def normalize_spectrum(spectrum, n=1):
-    """Normalize the intensities in a spectrum so that total intensity equals
+    """
+    Normalize the intensities in a spectrum so that total intensity equals
     value n (nominally the number of nuclei giving rise to the signal).
 
-    :param spectrum: [(float, float)...] a list of (frequency, intensity)
-    tuples.
-    :param n: total intensity to normalize to."""
+    Arguments
+    ---------
+    spectrum : [(float, float)...]
+        a list of (frequency, intensity) tuples.
+    n : int or float
+        total intensity to normalize to.
+    """
     freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
     normalize(int_, n)
     return list(zip(freq, int_))

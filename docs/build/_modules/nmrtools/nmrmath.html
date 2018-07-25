@@ -185,7 +185,6 @@
 <span class="sd">    ---------</span>
 <span class="sd">    n : a base-10 integer</span>
 
-
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    int</span>
@@ -216,8 +215,7 @@
 
 <span class="sd">    Arguments</span>
 <span class="sd">    ---------</span>
-<span class="sd">    m : int</span>
-<span class="sd">    n : int</span>
+<span class="sd">    m, n : int</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -421,9 +419,20 @@
 
 <div class="viewcode-block" id="doublet"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.doublet">[docs]</a><span class="k">def</span> <span class="nf">doublet</span><span class="p">(</span><span class="n">plist</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    plist: a list of (frequency{Hz}, intensity) tuples;</span>
-<span class="sd">    J: a coupling constant {Hz}</span>
-<span class="sd">    returns: a plist of the result of splitting every peak in plist by J</span>
+<span class="sd">    Applies a *J* coupling to each signal in a list of (frequency, intensity)</span>
+<span class="sd">    signals, creating two half-intensity signals at +/- *J*/2.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    plist : [(float, float)...]</span>
+<span class="sd">        a list of (frequency{Hz}, intensity) tuples.</span>
+<span class="sd">    J : float</span>
+<span class="sd">        The coupling constant in Hz.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">plist</span><span class="p">:</span>
@@ -432,19 +441,19 @@
     <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="multiplet"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.multiplet">[docs]</a><span class="k">def</span> <span class="nf">multiplet</span><span class="p">(</span><span class="n">plist</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
+<div class="viewcode-block" id="multiplet"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.multiplet">[docs]</a><span class="k">def</span> <span class="nf">multiplet</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits a set of signals into first-order multiplets.</span>
 
 <span class="sd">    Arguments</span>
 <span class="sd">    ---------</span>
-<span class="sd">    plist : [(float, float)...]</span>
-<span class="sd">        a list of (frequency{Hz}, intensity) tuples;</span>
+<span class="sd">    plist : (float, float)</span>
+<span class="sd">        a (frequency{Hz}, intensity) tuple;</span>
 <span class="sd">    couplings : [(float, int)...]</span>
 <span class="sd">        A list of (*J*, # of nuclei) tuples. The order of the tuples in</span>
 <span class="sd">        couplings does not matter.</span>
 <span class="sd">        e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:</span>
-<span class="sd">            couplings = [(8, 2), (5, 3)]</span>
+<span class="sd">        ``couplings = [(8, 2), (5, 3)]``</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -453,7 +462,7 @@
 <span class="sd">        signal(s) by each J.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">plist</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">coupling</span> <span class="ow">in</span> <span class="n">couplings</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coupling</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">doublet</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">coupling</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -462,10 +471,20 @@
 
 <div class="viewcode-block" id="add_peaks"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.add_peaks">[docs]</a><span class="k">def</span> <span class="nf">add_peaks</span><span class="p">(</span><span class="n">plist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    condenses a list of (frequency, intensity) tuples</span>
-<span class="sd">    input: a list of (v, i) tuples</span>
-<span class="sd">    output: a tuple of (average v, total i)</span>
+<span class="sd">    Reduces a list of (frequency, intensity) tuples to an</span>
+<span class="sd">    (average frequency, total intensity) tuple.</span>
+
+<span class="sd">    Argument</span>
+<span class="sd">    --------</span>
+<span class="sd">    plist: [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float, float)</span>
+<span class="sd">        a tuple of (average frequency, total intensity)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: Is this if statement necessary?</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">plist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">plist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># nothing to add</span>
     <span class="n">v_total</span> <span class="o">=</span> <span class="mi">0</span>
@@ -480,15 +499,18 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes an ordered list of (x, y) tuples and adds together tuples whose first</span>
 <span class="sd">    values are within a certain tolerance limit.</span>
-<span class="sd">    Dependency: add_peaks</span>
-<span class="sd">    Input:</span>
-<span class="sd">        plist: a *sorted* list of (x, y) tuples (sorted by x)</span>
-<span class="sd">        tolerance: tuples that differ in x by &lt;= tolerance are combined</span>
-<span class="sd">        using add_peaks</span>
 
-<span class="sd">    Output:</span>
-<span class="sd">        a list of (x, y) tuples where all x values differ by &gt; tolerance</span>
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    plist : [(float, float)...]</span>
+<span class="sd">        A *sorted* list of (x, y) tuples (sorted by x)</span>
+<span class="sd">    tolerance : float</span>
+<span class="sd">        tuples that differ in x by &lt;= tolerance are combined using ``add_peaks``</span>
 
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (x, y) tuples where all x values differ by &gt; `tolerance`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">work</span> <span class="o">=</span> <span class="p">[</span><span class="n">plist</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>  <span class="c1"># an accumulator of peaks to be processed</span>
@@ -509,41 +531,53 @@
 
 
 <div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">intensities</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Scale a list of intensities so that they sum to the total number of</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scale a list of intensities so that they sum to the total number of</span>
 <span class="sd">    nuclei.</span>
 
-<span class="sd">    :param intensities: [float] A list of intensities.</span>
-<span class="sd">    :param n: (int) Number of nuclei.&quot;&quot;&quot;</span>
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    intensities : [float...]</span>
+<span class="sd">        A list of intensities.</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Number of nuclei.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">factor</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">intensities</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">intensity</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">intensities</span><span class="p">):</span>
         <span class="n">intensities</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">intensity</span> <span class="o">*</span> <span class="n">factor</span></div>
 
 
 <div class="viewcode-block" id="first_order"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.first_order">[docs]</a><span class="k">def</span> <span class="nf">first_order</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>  <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
-    <span class="sd">&quot;&quot;&quot;Uses the above functions to split a signal into a first-order</span>
-<span class="sd">    multiplet.</span>
-<span class="sd">    Input:</span>
-<span class="sd">    -signal: a (frequency, intensity) tuple</span>
-<span class="sd">    -Couplings: a list of (J, # of nuclei) tuples. See multiplet</span>
-<span class="sd">    docstring for more info.</span>
-<span class="sd">    -intensity (optional): the intensity of the signal</span>
-<span class="sd">    Output:</span>
-<span class="sd">    a plist-style spectrum (list of (frequency, intensity) tuples)</span>
-<span class="sd">    Dependencies: doublet, multiplet, reduce_peaks, add_peaks</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Splits a signal into a first-order multiplet.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    signal : (float, float)</span>
+<span class="sd">        a (frequency, intensity) tuple.</span>
+<span class="sd">    couplings : [(float, int)...]</span>
+<span class="sd">        a list of (J, # of nuclei) tuples.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...}</span>
+<span class="sd">        a plist-style spectrum (list of (frequency, intensity) tuples)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Possible future refactor: if function used a list of signals,</span>
-    <span class="c1"># may be useful in other situations?</span>
-    <span class="n">signallist</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">reduce_peaks</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">multiplet</span><span class="p">(</span><span class="n">signallist</span><span class="p">,</span> <span class="n">couplings</span><span class="p">)))</span></div>
+    <span class="k">return</span> <span class="n">reduce_peaks</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">multiplet</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="normalize_spectrum"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.normalize_spectrum">[docs]</a><span class="k">def</span> <span class="nf">normalize_spectrum</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Normalize the intensities in a spectrum so that total intensity equals</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalize the intensities in a spectrum so that total intensity equals</span>
 <span class="sd">    value n (nominally the number of nuclei giving rise to the signal).</span>
 
-<span class="sd">    :param spectrum: [(float, float)...] a list of (frequency, intensity)</span>
-<span class="sd">    tuples.</span>
-<span class="sd">    :param n: total intensity to normalize to.&quot;&quot;&quot;</span>
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    spectrum : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
+<span class="sd">    n : int or float</span>
+<span class="sd">        total intensity to normalize to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">freq</span><span class="p">,</span> <span class="n">int_</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">]</span>
     <span class="n">normalize</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">int_</span><span class="p">))</span></div>

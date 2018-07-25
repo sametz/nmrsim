@@ -2,7 +2,7 @@ from nmrtools.nmrmath import *
 import numpy as np
 from scipy.sparse import lil_matrix
 from scipy.linalg import eigh
-from .testdata import TWOSPIN_SLOW, AB_WINDNMR
+from tests.testdata import TWOSPIN_SLOW, AB_WINDNMR
 # , TWOSPIN_COALESCE, TWOSPIN_FAST omitted for now
 
 # The attempt to put pytest code in a class failed. For whatever reason,
@@ -193,9 +193,9 @@ def test_multiplet():
         (460.5, 0.0625), (453.5, 0.0625), (460.5, 0.0625),
         (460.5, 0.0625), (467.5, 0.0625),
         (293.0, 0.75), (300.0, 0.75), (300.0, 0.75), (307.0, 0.75)])
-    v1 = [(1200, 2)]
-    v2 = [(450, 2)]
-    v3 = [(300, 3)]
+    v1 = (1200, 2)
+    v2 = (450, 2)
+    v3 = (300, 3)
     J12 = 7
     J23 = 7
     m1 = multiplet(v1, [(J12, 2)])
