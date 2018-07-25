@@ -285,7 +285,7 @@ coupling.</li>
 <dl class="function">
 <dt id="nmrtools.nmrmath.ABX">
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jbx</em>, <em>Jax</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for an ABX spin system.
+<dd><p>Reich-style inputs for an ABX spin system. TODO: complete rewrite
 Jab is the A-B coupling constant (Hz)
 dV is the difference in nuclei frequencies in the absence of coupling (Hz)
 Vab is the frequency for the center of the AB2 signal
@@ -446,13 +446,34 @@ and returns intensity (y).</p>
 <dt id="nmrtools.nmrmath.dnmr_2spin">
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">dnmr_2spin</code><span class="sig-paren">(</span><em>v</em>, <em>va</em>, <em>vb</em>, <em>ka</em>, <em>Wa</em>, <em>Wb</em>, <em>pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#dnmr_2spin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.dnmr_2spin" title="Permalink to this definition">¶</a></dt>
 <dd><p>A translation of the equation from Sandström’s Dynamic NMR Spectroscopy,
-p. 14, for the uncoupled 2-site exchange simulation.
-v: frequency whose amplitude is to be calculated
-va, vb: frequencies of a and b singlets (slow exchange limit) (va &gt; vb)
-ka: rate constant for state A–&gt; state B
-pa: fraction of population in state Adv: frequency difference (va - vb)
-between a and b singlets (slow exchange)
-Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s</p>
+p. 14, for the uncoupled 2-site exchange simulation.</p>
+<p>This function is to be applied along a numpy linspace (evenly spaced x
+coordinates corresponding to frequency in Hz), to create a list of
+intensities (y coordinate).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> (<em>float</em>) – a frequency (x coordinate) at which an amplitude (y coordinate) is to be
+calculated.</li>
+<li><strong>va</strong><strong>, </strong><strong>vb</strong> (<em>float</em>) – frequencies of a and b singlets (slow exchange limit) (<cite>va</cite> &gt; <cite>vb</cite>)</li>
+<li><strong>ka</strong> (<em>float</em>) – rate constant for state A–&gt; state B</li>
+<li><strong>Wa</strong><strong>, </strong><strong>Wb</strong> (<em>float</em>) – peak widths at half height (slow exchange limit)</li>
+<li><strong>pa</strong> (<em>float</em>) – fraction of population in state A</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the intensity (y coordinate of the lineshape) at frequency <cite>v</cite>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<p>TODO: add reference</p>
 </dd></dl>
 
 <dl class="function">
@@ -460,15 +481,32 @@ Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s</p>
 <code class="descclassname">nmrtools.nmrmath.</code><code class="descname">dnmr_AB</code><span class="sig-paren">(</span><em>v</em>, <em>v1</em>, <em>v2</em>, <em>J</em>, <em>k</em>, <em>W</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#dnmr_AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.dnmr_AB" title="Permalink to this definition">¶</a></dt>
 <dd><p>A translation of the equation from Weil’s JCE paper (NOTE: Reich pointed
 out that it has a sign typo!).
-p. 14, for the uncoupled 2-site exchange simulation.
-v: frequency whose amplitude is to be calculated
-va, vb: frequencies of a and b nuclei (slow exchange limit, no coupling;
-va &gt; vb)
-ka: rate constant for state A–&gt; state B
-pa: fraction of population in state Adv: frequency difference (va - vb)
-between a and b singlets (slow exchange)
-T2a, T2b: T2 (transverse relaxation time) for each nuclei
-returns: amplitude at frequency v</p>
+p. 14, for the uncoupled 2-site exchange simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> (<em>float</em>) – a frequency (x coordinate) at which an amplitude (y coordinate) is to be
+calculated.</li>
+<li><strong>v1</strong><strong>, </strong><strong>v2</strong> (<em>float</em>) – frequencies of a and b nuclei (at the slow exchange limit,
+in the absence of coupling; <cite>va</cite> &gt; <cite>vb</cite>)</li>
+<li><strong>J</strong> (<em>float</em>) – the coupling constant between the two nuclei.</li>
+<li><strong>k</strong> (<em>float</em>) – rate constant for state A–&gt; state B</li>
+<li><strong>W</strong> (<em>float</em>) – peak widths at half height (slow exchange limit).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">amplitude at frequency <cite>v</cite>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p class="rubric">References</p>
 </dd></dl>
 
 <dl class="function">
@@ -551,12 +589,15 @@ signals, creating two half-intensity signals at +/- <em>J</em>/2.</p>
 <p>It turns out that for a system of n spin-half nuclei, the numbers from 0
 to (2^n - 1) code for each spin state. For example:</p>
 <blockquote>
-<div>0 = 000 = alpha-alpha-alpha
-1 = 001 = alpha-alpha-beta
-.
-.
-.
-7 = 111 = beta-beta-beta</div></blockquote>
+<div><div class="line-block">
+<div class="line">0 = 000 = alpha-alpha-alpha</div>
+<div class="line">1 = 001 = alpha-alpha-beta</div>
+<div class="line">.</div>
+<div class="line">.</div>
+<div class="line">.</div>
+<div class="line">7 = 111 = beta-beta-beta</div>
+</div>
+</div></blockquote>
 <p>For a transition to be allowed, the total spin of the system cannot
 change by more than one. This corresponds to only one bit being flipped
 in the binary number representation. The Hamming weight is the number of

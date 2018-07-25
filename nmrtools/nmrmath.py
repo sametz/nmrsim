@@ -54,12 +54,12 @@ def is_allowed(m=0, n=0):
     It turns out that for a system of n spin-half nuclei, the numbers from 0
     to (2^n - 1) code for each spin state. For example:
 
-        0 = 000 = alpha-alpha-alpha
-        1 = 001 = alpha-alpha-beta
-        .
-        .
-        .
-        7 = 111 = beta-beta-beta
+        | 0 = 000 = alpha-alpha-alpha
+        | 1 = 001 = alpha-alpha-beta
+        | .
+        | .
+        | .
+        | 7 = 111 = beta-beta-beta
 
     For a transition to be allowed, the total spin of the system cannot
     change by more than one. This corresponds to only one bit being flipped
@@ -906,13 +906,35 @@ def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):
     """
     A translation of the equation from Sandström's Dynamic NMR Spectroscopy,
     p. 14, for the uncoupled 2-site exchange simulation.
-    v: frequency whose amplitude is to be calculated
-    va, vb: frequencies of a and b singlets (slow exchange limit) (va > vb)
-    ka: rate constant for state A--> state B
-    pa: fraction of population in state Adv: frequency difference (va - vb)
-    between a and b singlets (slow exchange)
-    Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s
+
+    This function is to be applied along a numpy linspace (evenly spaced x
+    coordinates corresponding to frequency in Hz), to create a list of
+    intensities (y coordinate).
+
+    Arguments
+    ---------
+
+    v : float
+        a frequency (x coordinate) at which an amplitude (y coordinate) is to be
+        calculated.
+    float va, vb :
+        frequencies of a and b singlets (slow exchange limit) (`va` > `vb`)
+    ka : float
+        rate constant for state A--> state B
+    float Wa, Wb :
+        peak widths at half height (slow exchange limit)
+    pa : float
+        fraction of population in state A
+    Returns
+    -------
+    float
+        the intensity (y coordinate of the lineshape) at frequency `v`.
+
+    References
+    ----------
+    TODO: add reference
     """
+
     pi = np.pi
     pb = 1 - pa
     tau = pb / ka
@@ -938,6 +960,7 @@ def two_spin(v, va, vb, ka, wa, wb, pa):
     """pyDNMR renamed dnmr_2spin and some arguments. This is temporary glue
     to make sure that pyDNMR will work with the nmrtools library.
     """
+    # TODO: make sure this is no longer needed, then delete
     return dnmr_2spin(v, va, vb, ka, wa, wb, pa)
 
 
@@ -969,7 +992,8 @@ def d2s_func(va, vb, ka, wa, wb, pa):
     returns: a function that takes v (x coord or numpy linspace) as an argument
     and returns intensity (y).
     """
-
+    # TODO: this seems like the hard way to create a partial function. Try a
+    # functools.partial version of this.
     # TODO: factor pis out; redo comments to explain excision of v-independent
     # terms
 
@@ -1014,6 +1038,7 @@ def reich(v, va, vb, ka, Wa, Wb, pa):
     A traslation of the actual VB code used in WINDNMR. Was used for error
     checking. Scheduled for deletion.
     """
+    # TODO: delete when no longer needed
     # print('Reich was entered')
     PI = np.pi
     R21 = PI * Wa
@@ -1047,6 +1072,7 @@ class TwoSinglets:
     Attempt at using a class instead of separate functions to represent two
     uncoupled spin-1/2 nuclei undergoing exchange.
     """
+    # TODO: currently not seeing any advantage to this approach
 
     pi = np.pi
     pi_squared = pi ** 2
@@ -1120,14 +1146,33 @@ def dnmr_AB(v, v1, v2, J, k, W):
     A translation of the equation from Weil's JCE paper (NOTE: Reich pointed
     out that it has a sign typo!).
     p. 14, for the uncoupled 2-site exchange simulation.
-    v: frequency whose amplitude is to be calculated
-    va, vb: frequencies of a and b nuclei (slow exchange limit, no coupling;
-    va > vb)
-    ka: rate constant for state A--> state B
-    pa: fraction of population in state Adv: frequency difference (va - vb)
-    between a and b singlets (slow exchange)
-    T2a, T2b: T2 (transverse relaxation time) for each nuclei
-    returns: amplitude at frequency v
+
+    Arguments
+    ---------
+
+    v : float
+        a frequency (x coordinate) at which an amplitude (y coordinate) is to be
+        calculated.
+    float v1, v2 :
+        frequencies of a and b nuclei (at the slow exchange limit,
+        in the absence of coupling; `va` > `vb`)
+    J : float
+        the coupling constant between the two nuclei.
+    k : float
+        rate constant for state A--> state B
+    W : float
+        peak widths at half height (slow exchange limit).
+
+    Returns
+    -------
+    float
+        amplitude at frequency `v`.
+
+    Notes
+    -----
+
+    References
+    ----------
     """
     pi = np.pi
     vo = (v1 + v2) / 2

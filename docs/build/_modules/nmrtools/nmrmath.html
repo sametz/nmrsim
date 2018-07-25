@@ -201,12 +201,12 @@
 <span class="sd">    It turns out that for a system of n spin-half nuclei, the numbers from 0</span>
 <span class="sd">    to (2^n - 1) code for each spin state. For example:</span>
 
-<span class="sd">        0 = 000 = alpha-alpha-alpha</span>
-<span class="sd">        1 = 001 = alpha-alpha-beta</span>
-<span class="sd">        .</span>
-<span class="sd">        .</span>
-<span class="sd">        .</span>
-<span class="sd">        7 = 111 = beta-beta-beta</span>
+<span class="sd">        | 0 = 000 = alpha-alpha-alpha</span>
+<span class="sd">        | 1 = 001 = alpha-alpha-beta</span>
+<span class="sd">        | .</span>
+<span class="sd">        | .</span>
+<span class="sd">        | .</span>
+<span class="sd">        | 7 = 111 = beta-beta-beta</span>
 
 <span class="sd">    For a transition to be allowed, the total spin of the system cannot</span>
 <span class="sd">    change by more than one. This corresponds to only one bit being flipped</span>
@@ -734,7 +734,7 @@
 
 <div class="viewcode-block" id="ABX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.ABX">[docs]</a><span class="k">def</span> <span class="nf">ABX</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reich-style inputs for an ABX spin system.</span>
+<span class="sd">    Reich-style inputs for an ABX spin system. TODO: complete rewrite</span>
 <span class="sd">    Jab is the A-B coupling constant (Hz)</span>
 <span class="sd">    dV is the difference in nuclei frequencies in the absence of coupling (Hz)</span>
 <span class="sd">    Vab is the frequency for the center of the AB2 signal</span>
@@ -1053,13 +1053,35 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A translation of the equation from Sandström&#39;s Dynamic NMR Spectroscopy,</span>
 <span class="sd">    p. 14, for the uncoupled 2-site exchange simulation.</span>
-<span class="sd">    v: frequency whose amplitude is to be calculated</span>
-<span class="sd">    va, vb: frequencies of a and b singlets (slow exchange limit) (va &gt; vb)</span>
-<span class="sd">    ka: rate constant for state A--&gt; state B</span>
-<span class="sd">    pa: fraction of population in state Adv: frequency difference (va - vb)</span>
-<span class="sd">    between a and b singlets (slow exchange)</span>
-<span class="sd">    Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s</span>
+
+<span class="sd">    This function is to be applied along a numpy linspace (evenly spaced x</span>
+<span class="sd">    coordinates corresponding to frequency in Hz), to create a list of</span>
+<span class="sd">    intensities (y coordinate).</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    v : float</span>
+<span class="sd">        a frequency (x coordinate) at which an amplitude (y coordinate) is to be</span>
+<span class="sd">        calculated.</span>
+<span class="sd">    float va, vb :</span>
+<span class="sd">        frequencies of a and b singlets (slow exchange limit) (`va` &gt; `vb`)</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        rate constant for state A--&gt; state B</span>
+<span class="sd">    float Wa, Wb :</span>
+<span class="sd">        peak widths at half height (slow exchange limit)</span>
+<span class="sd">    pa : float</span>
+<span class="sd">        fraction of population in state A</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        the intensity (y coordinate of the lineshape) at frequency `v`.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    TODO: add reference</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">pb</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pa</span>
     <span class="n">tau</span> <span class="o">=</span> <span class="n">pb</span> <span class="o">/</span> <span class="n">ka</span>
@@ -1085,6 +1107,7 @@
     <span class="sd">&quot;&quot;&quot;pyDNMR renamed dnmr_2spin and some arguments. This is temporary glue</span>
 <span class="sd">    to make sure that pyDNMR will work with the nmrtools library.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: make sure this is no longer needed, then delete</span>
     <span class="k">return</span> <span class="n">dnmr_2spin</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">wa</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">)</span></div>
 
 
@@ -1116,7 +1139,8 @@
 <span class="sd">    returns: a function that takes v (x coord or numpy linspace) as an argument</span>
 <span class="sd">    and returns intensity (y).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="c1"># TODO: this seems like the hard way to create a partial function. Try a</span>
+    <span class="c1"># functools.partial version of this.</span>
     <span class="c1"># TODO: factor pis out; redo comments to explain excision of v-independent</span>
     <span class="c1"># terms</span>
 
@@ -1161,6 +1185,7 @@
 <span class="sd">    A traslation of the actual VB code used in WINDNMR. Was used for error</span>
 <span class="sd">    checking. Scheduled for deletion.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: delete when no longer needed</span>
     <span class="c1"># print(&#39;Reich was entered&#39;)</span>
     <span class="n">PI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">R21</span> <span class="o">=</span> <span class="n">PI</span> <span class="o">*</span> <span class="n">Wa</span>
@@ -1194,6 +1219,7 @@
 <span class="sd">    Attempt at using a class instead of separate functions to represent two</span>
 <span class="sd">    uncoupled spin-1/2 nuclei undergoing exchange.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO: currently not seeing any advantage to this approach</span>
 
     <span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">pi_squared</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">**</span> <span class="mi">2</span>
@@ -1267,14 +1293,33 @@
 <span class="sd">    A translation of the equation from Weil&#39;s JCE paper (NOTE: Reich pointed</span>
 <span class="sd">    out that it has a sign typo!).</span>
 <span class="sd">    p. 14, for the uncoupled 2-site exchange simulation.</span>
-<span class="sd">    v: frequency whose amplitude is to be calculated</span>
-<span class="sd">    va, vb: frequencies of a and b nuclei (slow exchange limit, no coupling;</span>
-<span class="sd">    va &gt; vb)</span>
-<span class="sd">    ka: rate constant for state A--&gt; state B</span>
-<span class="sd">    pa: fraction of population in state Adv: frequency difference (va - vb)</span>
-<span class="sd">    between a and b singlets (slow exchange)</span>
-<span class="sd">    T2a, T2b: T2 (transverse relaxation time) for each nuclei</span>
-<span class="sd">    returns: amplitude at frequency v</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    v : float</span>
+<span class="sd">        a frequency (x coordinate) at which an amplitude (y coordinate) is to be</span>
+<span class="sd">        calculated.</span>
+<span class="sd">    float v1, v2 :</span>
+<span class="sd">        frequencies of a and b nuclei (at the slow exchange limit,</span>
+<span class="sd">        in the absence of coupling; `va` &gt; `vb`)</span>
+<span class="sd">    J : float</span>
+<span class="sd">        the coupling constant between the two nuclei.</span>
+<span class="sd">    k : float</span>
+<span class="sd">        rate constant for state A--&gt; state B</span>
+<span class="sd">    W : float</span>
+<span class="sd">        peak widths at half height (slow exchange limit).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        amplitude at frequency `v`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">vo</span> <span class="o">=</span> <span class="p">(</span><span class="n">v1</span> <span class="o">+</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
