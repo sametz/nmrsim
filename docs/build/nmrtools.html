@@ -168,68 +168,185 @@ Brown, K.C.; Tyson, R. L.; Weil, J. A. <em>J. Chem. Educ.</em> <strong>1998</str
 the last term is minus-over-plus, not plus-over-minus.)</p>
 <dl class="function">
 <dt id="nmrtools.nmrmath.AABB">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AABB</code><span class="sig-paren">(</span><em>Vab</em>, <em>Jaa</em>, <em>Jbb</em>, <em>Jab</em>, <em>Jab_prime</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AABB" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AABB</code><span class="sig-paren">(</span><em>Vab</em>, <em>Jaa</em>, <em>Jbb</em>, <em>Jab</em>, <em>Jab_prime</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AABB" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper for a second-order AA’BB’ calculation, but using the
 values taken from the WINDNMR-style AA’BB’ bar selected by the Multiplet
 menu.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Vab</strong> (<em>float</em>) – the difference in frequency (Hz) between Ha and Hb in the absence of
+coupling.</li>
+<li><strong>Jaa</strong><strong>, </strong><strong>Jbb</strong><strong>, </strong><strong>Jab</strong><strong>, </strong><strong>Jab_prime</strong> (<em>float</em>) – Jaa is the JAA’ coupling constant;
+Jxx the JXX’;
+Jax the JAX; and
+JAX_prime the JAX’.</li>
+<li><strong>Vcentr</strong> (<em>float</em>) – the frequency for the center of the signal.</li>
+<li><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.AAXX">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AAXX</code><span class="sig-paren">(</span><em>Jaa</em>, <em>Jxx</em>, <em>Jax</em>, <em>Jax_prime</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AAXX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AAXX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simulates an AA’XX’ spin system. Frequencies and Js in Hz.
-Jaa is the JAA’ coupling constant, Jxx the JXX’, Jax the JAX,
-and JAX2 the JAX’.
-Vcentr is the frequency for the center of the signal.
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window
-WdthHz is the width of the window in Hz
-return: peaklist of (frequency, intensity) tuples</p>
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AAXX</code><span class="sig-paren">(</span><em>Jaa</em>, <em>Jxx</em>, <em>Jax</em>, <em>Jax_prime</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AAXX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AAXX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates one half (‘A’ part) of an AA’XX’ spin system.</p>
+<p>All frequencies are in Hz.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Jaa</strong><strong>, </strong><strong>Jax</strong><strong>, </strong><strong>Jax</strong><strong>, </strong><strong>Jax_prime</strong> (<em>float</em>) – Jaa is the JAA’ coupling constant;
+Jxx the JXX’;
+Jax the JAX; and
+JAX_prime the JAX’.</li>
+<li><strong>Vcentr</strong> (<em>float</em>) – the frequency for the center of the signal.</li>
+<li><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.AB">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AB</code><span class="sig-paren">(</span><em>Jab</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for AB quartet.
-Jab is the A-B coupling constant (Hz)
-Vab is the difference in nuclei frequencies in the absence of coupling (Hz)
-Vcentr is the frequency for the center of the AB quartet
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window
-WdthHz is the width of the window in Hz
-return: peaklist of (frequency, intensity) tuples</p>
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AB</code><span class="sig-paren">(</span><em>Jab</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the signal frequencies and intensities for two strongly
+coupled protons (Ha and Hb).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Jab</strong> (<em>float</em>) – the coupling constant (Hz) between Ha and Hb</li>
+<li><strong>Vab</strong> (<em>float</em>) – the chemical shift difference (Hz) between Ha and Hb in the absence
+of coupling.</li>
+<li><strong>Vcentr</strong> (<em>float</em>) – the frequency (Hz) for the center of the AB quartet.</li>
+<li><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of four (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.AB2">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AB2</code><span class="sig-paren">(</span><em>Jab</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AB2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AB2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for AB2 spin system.
-J is the A-B coupling constant (Hz)
-dV is the difference in nuclei frequencies in the absence of coupling (Hz)
-Vab is the frequency for the center of the AB2 signal
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window (not implemented yet)
-WdthHz is the width of the window in Hz (not implemented yet)
-return: peaklist of (frequency, intensity) tuples</p>
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AB2</code><span class="sig-paren">(</span><em>Jab</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AB2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AB2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates signal frequencies and intensities for an AB2 spin system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Jab</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Vab</strong> (<em>float</em>) – the difference in the frequencies (Hz) of Ha and Hb in the absence of
+coupling.</li>
+<li><strong>Vcentr</strong> (<em>float</em>) – the frequency (Hz) for the center of the AB2 signal.</li>
+<li><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.ABX">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jbx</em>, <em>Jax</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for AB2 spin system.
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jbx</em>, <em>Jax</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reich-style inputs for an ABX spin system.
 Jab is the A-B coupling constant (Hz)
 dV is the difference in nuclei frequencies in the absence of coupling (Hz)
 Vab is the frequency for the center of the AB2 signal
 Wa is width of peak at half-height (not implemented yet)
 RightHz is the lower frequency limit for the window (not implemented yet)
 WdthHz is the width of the window in Hz (not implemented yet)
-return: peaklist of (frequency, intensity) tuples</p>
+return: peaklist of (frequency, intensity) tuples
+Calculates signal frequencies and intensities for an ABX spin system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Jab</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Jbx</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Jax</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Vab</strong> (<em>float</em>) – the difference in the frequencies (Hz) of Ha and Hb in the absence of
+coupling.</li>
+<li><strong>Vcentr</strong> (<em>float</em>) – the frequency (Hz) for the center of the AB2 signal.</li>
+<li><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrmath.ABX3">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX3</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jax</em>, <em>Jbx</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Refactoring of Reich’s code for simulating the ABX3 system.</p>
+<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX3</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jax</em>, <em>Jbx</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation of the AB part of an ABX3 spin system.</p>
+<p>TODO: explain simplification</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Jab</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Jax</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Jbx</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</li>
+<li><strong>Vab</strong> (<em>float</em>) – the difference in the frequencies (Hz) of Ha and Hb in the absence of
+coupling.</li>
+<li><strong>Vcentr</strong> (<em>float</em>) – the frequency (Hz) for the center of the AB2 signal.</li>
+<li><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of (frequency, intensity) tuples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -467,7 +584,7 @@ bits flipped.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>plist</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – a (frequency{Hz}, intensity) tuple;</li>
+<li><strong>signal</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – a (frequency{Hz}, intensity) tuple;</li>
 <li><strong>couplings</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>int</em><em>)</em><em>..</em><em>]</em>) – A list of (<em>J</em>, # of nuclei) tuples. The order of the tuples in
 couplings does not matter.
 e.g. to split a signal into a <em>dt, J</em> = 8, 5 Hz, use:
@@ -480,25 +597,6 @@ signal(s) by each J.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[(float, float)..]</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.normalize">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>intensities</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.normalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scale a list of intensities so that they sum to the total number of
-nuclei.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>intensities</strong> (<em>[</em><em>float...</em><em>]</em>) – A list of intensities.</li>
-<li><strong>n</strong> (<em>int</em>) – Number of nuclei.</li>
-</ul>
 </td>
 </tr>
 </tbody>

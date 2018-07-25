@@ -447,7 +447,7 @@
 
 <span class="sd">    Arguments</span>
 <span class="sd">    ---------</span>
-<span class="sd">    plist : (float, float)</span>
+<span class="sd">    signal : (float, float)</span>
 <span class="sd">        a (frequency{Hz}, intensity) tuple;</span>
 <span class="sd">    couplings : [(float, int)...]</span>
 <span class="sd">        A list of (*J*, # of nuclei) tuples. The order of the tuples in</span>
@@ -530,7 +530,7 @@
     <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">intensities</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">intensities</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Scale a list of intensities so that they sum to the total number of</span>
 <span class="sd">    nuclei.</span>
@@ -544,7 +544,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">factor</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">intensities</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">intensity</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">intensities</span><span class="p">):</span>
-        <span class="n">intensities</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">intensity</span> <span class="o">*</span> <span class="n">factor</span></div>
+        <span class="n">intensities</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">intensity</span> <span class="o">*</span> <span class="n">factor</span>
 
 
 <div class="viewcode-block" id="first_order"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.first_order">[docs]</a><span class="k">def</span> <span class="nf">first_order</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>  <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
@@ -579,7 +579,7 @@
 <span class="sd">        total intensity to normalize to.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">freq</span><span class="p">,</span> <span class="n">int_</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">]</span>
-    <span class="n">normalize</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">_normalize</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">int_</span><span class="p">))</span></div>
 
 
@@ -587,17 +587,35 @@
 <span class="c1"># Non-QM solutions for specific second-order patterns</span>
 <span class="c1">##############################################################################</span>
 
+<span class="c1"># TODO: consistent names/API between arguments and internal variables.</span>
+<span class="c1"># Cobbling these together from various sources resulted in inconsistencies</span>
+<span class="c1"># between variable names in Reich&#39;s VB6 code and other sources. Need to find</span>
+<span class="c1"># specific references for all formulas and refactor to consistent variable</span>
+<span class="c1"># names.</span>
+<span class="c1"># TODO: appropriate use of normalize-- for which of these functions, if any,</span>
+<span class="c1"># is normalization possibly of interest?</span>
 
-<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reich-style inputs for AB quartet.</span>
-<span class="sd">    Jab is the A-B coupling constant (Hz)</span>
-<span class="sd">    Vab is the difference in nuclei frequencies in the absence of coupling (Hz)</span>
-<span class="sd">    Vcentr is the frequency for the center of the AB quartet</span>
-<span class="sd">    Wa is width of peak at half-height (not implemented yet)</span>
-<span class="sd">    RightHz is the lower frequency limit for the window</span>
-<span class="sd">    WdthHz is the width of the window in Hz</span>
-<span class="sd">    return: peaklist of (frequency, intensity) tuples</span>
+<span class="sd">    Calculates the signal frequencies and intensities for two strongly</span>
+<span class="sd">    coupled protons (Ha and Hb).</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Jab : float</span>
+<span class="sd">        the coupling constant (Hz) between Ha and Hb</span>
+<span class="sd">    Vab : float</span>
+<span class="sd">        the chemical shift difference (Hz) between Ha and Hb in the absence</span>
+<span class="sd">        of coupling.</span>
+<span class="sd">    Vcentr : float</span>
+<span class="sd">        the frequency (Hz) for the center of the AB quartet.</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        whether the signal intensity should be normalized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of four (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">J</span> <span class="o">=</span> <span class="n">Jab</span>
     <span class="n">dv</span> <span class="o">=</span> <span class="n">Vab</span>
@@ -614,22 +632,31 @@
     <span class="n">I4</span> <span class="o">=</span> <span class="n">I1</span>
     <span class="n">vList</span> <span class="o">=</span> <span class="p">[</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">v3</span><span class="p">,</span> <span class="n">v4</span><span class="p">]</span>
     <span class="n">IList</span> <span class="o">=</span> <span class="p">[</span><span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">I3</span><span class="p">,</span> <span class="n">I4</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">normalize_</span><span class="p">:</span>
-        <span class="n">normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">_normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">vList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="AB2"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AB2">[docs]</a><span class="k">def</span> <span class="nf">AB2</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># Wa, RightHz, WdthHz</span>
-    <span class="c1"># not implemented yet</span>
+<div class="viewcode-block" id="AB2"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AB2">[docs]</a><span class="k">def</span> <span class="nf">AB2</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reich-style inputs for AB2 spin system.</span>
-<span class="sd">    J is the A-B coupling constant (Hz)</span>
-<span class="sd">    dV is the difference in nuclei frequencies in the absence of coupling (Hz)</span>
-<span class="sd">    Vab is the frequency for the center of the AB2 signal</span>
-<span class="sd">    Wa is width of peak at half-height (not implemented yet)</span>
-<span class="sd">    RightHz is the lower frequency limit for the window (not implemented yet)</span>
-<span class="sd">    WdthHz is the width of the window in Hz (not implemented yet)</span>
-<span class="sd">    return: peaklist of (frequency, intensity) tuples</span>
+<span class="sd">    Calculates signal frequencies and intensities for an AB2 spin system.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Jab : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Vab : float</span>
+<span class="sd">        the difference in the frequencies (Hz) of Ha and Hb in the absence of</span>
+<span class="sd">        coupling.</span>
+<span class="sd">    Vcentr : float</span>
+<span class="sd">        the frequency (Hz) for the center of the AB2 signal.</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        whether the signal intensity should be normalized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Currently, there is a disconnect between the variable names in the GUI</span>
     <span class="c1"># and the variable names in this function. The following code provides a</span>
@@ -699,15 +726,15 @@
     <span class="n">vList</span> <span class="o">=</span> <span class="p">[</span><span class="n">V1</span><span class="p">,</span> <span class="n">V2</span><span class="p">,</span> <span class="n">V3</span><span class="p">,</span> <span class="n">V4</span><span class="p">,</span> <span class="n">V5</span><span class="p">,</span> <span class="n">V6</span><span class="p">,</span> <span class="n">V7</span><span class="p">,</span> <span class="n">V8</span><span class="p">,</span> <span class="n">V9</span><span class="p">]</span>
     <span class="n">IList</span> <span class="o">=</span> <span class="p">[</span><span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">I3</span><span class="p">,</span> <span class="n">I4</span><span class="p">,</span> <span class="n">I5</span><span class="p">,</span> <span class="n">I6</span><span class="p">,</span> <span class="n">I7</span><span class="p">,</span> <span class="n">I8</span><span class="p">,</span> <span class="n">I9</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">normalize_</span><span class="p">:</span>
-        <span class="n">normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">_normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">vList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="ABX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.ABX">[docs]</a><span class="k">def</span> <span class="nf">ABX</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ABX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.ABX">[docs]</a><span class="k">def</span> <span class="nf">ABX</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Reich-style inputs for AB2 spin system.</span>
+<span class="sd">    Reich-style inputs for an ABX spin system.</span>
 <span class="sd">    Jab is the A-B coupling constant (Hz)</span>
 <span class="sd">    dV is the difference in nuclei frequencies in the absence of coupling (Hz)</span>
 <span class="sd">    Vab is the frequency for the center of the AB2 signal</span>
@@ -715,6 +742,49 @@
 <span class="sd">    RightHz is the lower frequency limit for the window (not implemented yet)</span>
 <span class="sd">    WdthHz is the width of the window in Hz (not implemented yet)</span>
 <span class="sd">    return: peaklist of (frequency, intensity) tuples</span>
+<span class="sd">    Calculates signal frequencies and intensities for an ABX spin system.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Jab : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Jbx : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Jax : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Vab : float</span>
+<span class="sd">        the difference in the frequencies (Hz) of Ha and Hb in the absence of</span>
+<span class="sd">        coupling.</span>
+<span class="sd">    Vcentr : float</span>
+<span class="sd">        the frequency (Hz) for the center of the AB2 signal.</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        whether the signal intensity should be normalized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    In the WINDNMR main toolbar, only the parameters in the function args </span>
+<span class="sd">    can be changed (Jab, Jax, Jbx, Vab, Vcentr, ignoring the </span>
+<span class="sd">    Wa/Right-Hz/WdthHz parameters that nmrtools isn&#39;t adopting). However, </span>
+<span class="sd">    in WINDNMR parameters popup, each individual chemical shift for Ha, Hb, </span>
+<span class="sd">    and Hx can be entered.</span>
+<span class="sd">    </span>
+<span class="sd">    In the original WINDNMR interface, Vab is the difference in Ha/Hb </span>
+<span class="sd">    frequencies in the absence of coupling, and Vcentr is the average of </span>
+<span class="sd">    those frequencies.</span>
+<span class="sd">    </span>
+<span class="sd">    There&#39;s two ways I can see a user wanting to use the ABX function:</span>
+<span class="sd">    1. as in WINDNMR: to see the effect of moving signals closer to each </span>
+<span class="sd">    other by adjusting Vab/Vcentr</span>
+<span class="sd">    2. as in 2nd-order: supplying frequencies for all signals and Js. </span>
+<span class="sd">    </span>
+<span class="sd">    The ABX formula here is a simplification that assumes X is far away in </span>
+<span class="sd">    chemical shift. Moving the frequency of x (vx) closer to those of a and b</span>
+<span class="sd">    (va, vb) has no effect. Whatever the final decision is on API </span>
+<span class="sd">    implementation, this difference must be clear to the user.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Another function where Reich vs. non-Reich variable names gets confusing</span>
     <span class="c1"># See comments in AB2 function</span>
@@ -797,16 +867,39 @@
     <span class="n">I14</span> <span class="o">=</span> <span class="n">I13</span>
     <span class="n">VList</span> <span class="o">=</span> <span class="p">[</span><span class="n">V1</span><span class="p">,</span> <span class="n">V2</span><span class="p">,</span> <span class="n">V3</span><span class="p">,</span> <span class="n">V4</span><span class="p">,</span> <span class="n">V5</span><span class="p">,</span> <span class="n">V6</span><span class="p">,</span> <span class="n">V7</span><span class="p">,</span> <span class="n">V8</span><span class="p">,</span> <span class="n">V9</span><span class="p">,</span> <span class="n">V10</span><span class="p">,</span> <span class="n">V11</span><span class="p">,</span> <span class="n">V12</span><span class="p">,</span> <span class="n">V13</span><span class="p">,</span> <span class="n">V14</span><span class="p">]</span>
     <span class="n">IList</span> <span class="o">=</span> <span class="p">[</span><span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">I3</span><span class="p">,</span> <span class="n">I4</span><span class="p">,</span> <span class="n">I5</span><span class="p">,</span> <span class="n">I6</span><span class="p">,</span> <span class="n">I7</span><span class="p">,</span> <span class="n">I8</span><span class="p">,</span> <span class="n">I9</span><span class="p">,</span> <span class="n">I10</span><span class="p">,</span> <span class="n">I11</span><span class="p">,</span> <span class="n">I12</span><span class="p">,</span> <span class="n">I13</span><span class="p">,</span> <span class="n">I14</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">normalize_</span><span class="p">:</span>
-        <span class="n">normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">_normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">VList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="ABX3"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.ABX3">[docs]</a><span class="k">def</span> <span class="nf">ABX3</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
+<div class="viewcode-block" id="ABX3"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.ABX3">[docs]</a><span class="k">def</span> <span class="nf">ABX3</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Refactoring of Reich&#39;s code for simulating the ABX3 system.</span>
+<span class="sd">    Simulation of the AB part of an ABX3 spin system.</span>
+
+<span class="sd">    TODO: explain simplification</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    Jab : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Jax : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Jbx : float</span>
+<span class="sd">        the Ha-Hb coupling constant (Hz).</span>
+<span class="sd">    Vab : float</span>
+<span class="sd">        the difference in the frequencies (Hz) of Ha and Hb in the absence of</span>
+<span class="sd">        coupling.</span>
+<span class="sd">    Vcentr : float</span>
+<span class="sd">        the frequency (Hz) for the center of the AB2 signal.</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        whether the signal intensity should be normalized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Refactoring of Reich&#39;s code for simulating the ABX3 system.</span>
     <span class="n">va</span> <span class="o">=</span> <span class="n">Vcentr</span> <span class="o">-</span> <span class="n">Vab</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">vb</span> <span class="o">=</span> <span class="n">Vcentr</span> <span class="o">+</span> <span class="n">Vab</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">a_quartet</span> <span class="o">=</span> <span class="n">first_order</span><span class="p">((</span><span class="n">va</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[(</span><span class="n">Jax</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
@@ -815,28 +908,39 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
         <span class="n">dv</span> <span class="o">=</span> <span class="n">b_quartet</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a_quartet</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">abcenter</span> <span class="o">=</span> <span class="p">(</span><span class="n">b_quartet</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a_quartet</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
-        <span class="n">sub_abq</span> <span class="o">=</span> <span class="n">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">abcenter</span><span class="p">,</span> <span class="n">normalize_</span><span class="p">)</span>  <span class="c1"># Wa, RightHz, WdthHz not</span>
+        <span class="n">sub_abq</span> <span class="o">=</span> <span class="n">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">abcenter</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)</span>  <span class="c1"># Wa, RightHz, WdthHz not</span>
         <span class="c1"># implemented</span>
         <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">a_quartet</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">scaled_sub_abq</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sub_abq</span><span class="p">]</span>
         <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">scaled_sub_abq</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">normalize_</span><span class="p">:</span>
-        <span class="n">normalize</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#TODO: check this factor</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">_normalize</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#TODO: check this factor</span>
     <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="AAXX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AAXX">[docs]</a><span class="k">def</span> <span class="nf">AAXX</span><span class="p">(</span><span class="n">Jaa</span><span class="p">,</span> <span class="n">Jxx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jax_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
+<div class="viewcode-block" id="AAXX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AAXX">[docs]</a><span class="k">def</span> <span class="nf">AAXX</span><span class="p">(</span><span class="n">Jaa</span><span class="p">,</span> <span class="n">Jxx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jax_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Simulates an AA&#39;XX&#39; spin system. Frequencies and Js in Hz.</span>
-<span class="sd">    Jaa is the JAA&#39; coupling constant, Jxx the JXX&#39;, Jax the JAX,</span>
-<span class="sd">    and JAX2 the JAX&#39;.</span>
-<span class="sd">    Vcentr is the frequency for the center of the signal.</span>
-<span class="sd">    Wa is width of peak at half-height (not implemented yet)</span>
-<span class="sd">    RightHz is the lower frequency limit for the window</span>
-<span class="sd">    WdthHz is the width of the window in Hz</span>
-<span class="sd">    return: peaklist of (frequency, intensity) tuples</span>
+<span class="sd">    Simulates one half (&#39;A&#39; part) of an AA&#39;XX&#39; spin system.</span>
+
+<span class="sd">    All frequencies are in Hz.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    float Jaa, Jax, Jax, Jax_prime :</span>
+<span class="sd">        Jaa is the JAA&#39; coupling constant;</span>
+<span class="sd">        Jxx the JXX&#39;;</span>
+<span class="sd">        Jax the JAX; and</span>
+<span class="sd">        JAX_prime the JAX&#39;.</span>
+<span class="sd">    Vcentr : float</span>
+<span class="sd">        the frequency for the center of the signal.</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        whether the signal intensity should be normalized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Define the constants required to calculate frequencies and intensities</span>
 
@@ -885,18 +989,38 @@
     <span class="n">VList</span> <span class="o">=</span> <span class="p">[</span><span class="n">V1</span><span class="p">,</span> <span class="n">V2</span><span class="p">,</span> <span class="n">V3</span><span class="p">,</span> <span class="n">V4</span><span class="p">,</span> <span class="n">V5</span><span class="p">,</span> <span class="n">V6</span><span class="p">,</span> <span class="n">V7</span><span class="p">,</span> <span class="n">V8</span><span class="p">,</span> <span class="n">V9</span><span class="p">,</span> <span class="n">V10</span><span class="p">]</span>
     <span class="n">IList</span> <span class="o">=</span> <span class="p">[</span><span class="n">I1</span><span class="p">,</span> <span class="n">I2</span><span class="p">,</span> <span class="n">I3</span><span class="p">,</span> <span class="n">I4</span><span class="p">,</span> <span class="n">I5</span><span class="p">,</span> <span class="n">I6</span><span class="p">,</span> <span class="n">I7</span><span class="p">,</span> <span class="n">I8</span><span class="p">,</span> <span class="n">I9</span><span class="p">,</span> <span class="n">I10</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">normalize_</span><span class="p">:</span>
-        <span class="n">normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">_normalize</span><span class="p">(</span><span class="n">IList</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">VList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="AABB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AABB">[docs]</a><span class="k">def</span> <span class="nf">AABB</span><span class="p">(</span><span class="n">Vab</span><span class="p">,</span> <span class="n">Jaa</span><span class="p">,</span> <span class="n">Jbb</span><span class="p">,</span> <span class="n">Jab</span><span class="p">,</span> <span class="n">Jab_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize_</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1"># Wa, RightHz, WdthHz not implemented yet</span>
+<div class="viewcode-block" id="AABB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrmath.AABB">[docs]</a><span class="k">def</span> <span class="nf">AABB</span><span class="p">(</span><span class="n">Vab</span><span class="p">,</span> <span class="n">Jaa</span><span class="p">,</span> <span class="n">Jbb</span><span class="p">,</span> <span class="n">Jab</span><span class="p">,</span> <span class="n">Jab_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A wrapper for a second-order AA&#39;BB&#39; calculation, but using the</span>
 <span class="sd">    values taken from the WINDNMR-style AA&#39;BB&#39; bar selected by the Multiplet</span>
 <span class="sd">    menu.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    Vab : float</span>
+<span class="sd">        the difference in frequency (Hz) between Ha and Hb in the absence of</span>
+<span class="sd">        coupling.</span>
+<span class="sd">    float Jaa, Jbb, Jab, Jab_prime :</span>
+<span class="sd">        Jaa is the JAA&#39; coupling constant;</span>
+<span class="sd">        Jxx the JXX&#39;;</span>
+<span class="sd">        Jax the JAX; and</span>
+<span class="sd">        JAX_prime the JAX&#39;.</span>
+<span class="sd">    Vcentr : float</span>
+<span class="sd">        the frequency for the center of the signal.</span>
+<span class="sd">    normalize: bool</span>
+<span class="sd">        whether the signal intensity should be normalized.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">va</span> <span class="o">=</span> <span class="n">Vcentr</span> <span class="o">-</span> <span class="n">Vab</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">vb</span> <span class="o">=</span> <span class="n">Vcentr</span> <span class="o">+</span> <span class="n">Vab</span> <span class="o">/</span> <span class="mi">2</span>
@@ -910,7 +1034,7 @@
     <span class="n">J</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Jbb</span>
     <span class="n">J</span> <span class="o">=</span> <span class="n">J</span> <span class="o">+</span> <span class="n">J</span><span class="o">.</span><span class="n">T</span>
 
-    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">nspinspec</span><span class="p">(</span><span class="n">freqlist</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize_</span><span class="p">)</span>
+    <span class="n">spectrum</span> <span class="o">=</span> <span class="n">nspinspec</span><span class="p">(</span><span class="n">freqlist</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">spectrum</span><span class="p">]</span>  <span class="c1"># TODO check that this should be deleted</span>
 
     <span class="k">return</span> <span class="n">spectrum</span></div>
