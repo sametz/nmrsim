@@ -1150,9 +1150,9 @@ def dnmr_AB(v, v1, v2, J, k, W):
     Arguments
     ---------
 
-    v : float
-        a frequency (x coordinate) at which an amplitude (y coordinate) is to be
-        calculated.
+    v : float or array-like
+        a frequency (x coordinate) or array of frequencies at which an
+        amplitude (y coordinate) is to be calculated.
     float v1, v2 :
         frequencies of a and b nuclei (at the slow exchange limit,
         in the absence of coupling; `va` > `vb`)

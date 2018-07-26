@@ -487,8 +487,8 @@ p. 14, for the uncoupled 2-site exchange simulation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v</strong> (<em>float</em>) – a frequency (x coordinate) at which an amplitude (y coordinate) is to be
-calculated.</li>
+<li><strong>v</strong> (<em>float</em><em> or </em><em>array-like</em>) – a frequency (x coordinate) or array of frequencies at which an
+amplitude (y coordinate) is to be calculated.</li>
 <li><strong>v1</strong><strong>, </strong><strong>v2</strong> (<em>float</em>) – frequencies of a and b nuclei (at the slow exchange limit,
 in the absence of coupling; <cite>va</cite> &gt; <cite>vb</cite>)</li>
 <li><strong>J</strong> (<em>float</em>) – the coupling constant between the two nuclei.</li>
@@ -813,19 +813,23 @@ spins are used.</p>
 <code class="descclassname">nmrtools.nmrplot.</code><code class="descname">add_signals</code><span class="sig-paren">(</span><em>linspace</em>, <em>peaklist</em>, <em>w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#add_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.add_signals" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a numpy linspace, a spectrum as a list of (frequency, intensity)
 tuples, and a linewidth, returns an array of y coordinates for the
-lineshape.</p>
+total line shape.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>linspace</strong> – a numpy linspace of x coordinates for the lineshape.</li>
-<li><strong>peaklist</strong> – a list of (frequency, intensity) tuples</li>
-<li><strong>w</strong> – peak width at half maximum intensity</li>
+<li><strong>linspace</strong> (<em>array-like</em>) – normally a numpy.linspace of x coordinates corresponding to frequency
+in Hz.</li>
+<li><strong>peaklist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency, intensity) tuples.</li>
+<li><strong>w</strong> (<em>float</em>) – peak width at half maximum intensity.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of y coordinates for the lineshape</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">an array of y coordinates corresponding to intensity.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">[float…]</p>
 </td>
 </tr>
 </tbody>
@@ -841,30 +845,31 @@ undergoing exchange.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>va</strong> – The frequency of nucleus ‘a’ at the slow exchange limit</li>
-<li><strong>vb</strong> – The frequency of nucleus ‘b’ at the slow exchange limit</li>
-<li><strong>ka</strong> – The rate of nuclear exchange</li>
-<li><strong>Wa</strong> – The width at half heigh of the signal for nucleus a (at the slow</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>va</strong> (<em>float</em>) – the frequency of nucleus ‘a’ at the slow exchange limit</li>
+<li><strong>vb</strong> (<em>float</em>) – the frequency of nucleus ‘b’ at the slow exchange limit</li>
+<li><strong>ka</strong> (<em>float</em>) – the rate of nuclear exchange</li>
+<li><strong>Wa</strong> (<em>float</em>) – the width at half heigh of the signal for nucleus a (at the slow
+exchange limit).</li>
+<li><strong>Wb</strong> (<em>float</em>) – the width at half height of the signal for nucleus b (at the slow
+exchange limit).</li>
+<li><strong>pa</strong> (<em>float</em>) – the fraction of the population in state a (vs. state b)</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>([float…], [float…])</em> – a tuple of numpy arrays for frequencies (x coordinate) and
+corresponding intensities (y coordinate). Hard-coded for 800 data
+points and a frequency range from vb-50 to va+50.</li>
+<li><strong>TODO</strong> (<em>throughout nmrtools there is hard-coding of defaults, based on</em>)</li>
+<li><em>needs of applications. Consider the needs of other users and make more</em></li>
+<li><em>universal.</em></li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>exchange limit).
-:param Wb: The width at half height of the signal for nucleus b (at the slow
-exchange limit).
-:param pa: The fraction of the population in state a (vs. state b)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a tuple of numpy arrays for frequencies (x coordinate) and</td>
-</tr>
-</tbody>
-</table>
-<p>corresponding intensities (y coordinate). Hard-coded for 800 data points
-and a frequency range from vb-50 to va+50.</p>
 </dd></dl>
 
 <dl class="function">
@@ -877,37 +882,52 @@ undergoing exchange.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v1</strong> – The frequency of nucleus ‘a’ at the slow exchange limit</li>
-<li><strong>v2</strong> – The frequency of nucleus ‘b’ at the slow exchange limit</li>
-<li><strong>J</strong> – The coupling constant between nuclei a and b</li>
-<li><strong>k</strong> – The rate of two-site exchange of nuclei a and b</li>
-<li><strong>W</strong> – The line width at the slow exchange limit</li>
+<li><strong>v1</strong> (<em>float</em>) – the frequency of nucleus ‘a’ at the slow exchange limit.</li>
+<li><strong>v2</strong> (<em>float</em>) – the frequency of nucleus ‘b’ at the slow exchange limit.</li>
+<li><strong>J</strong> (<em>float</em>) – the coupling constant between nuclei a and b.</li>
+<li><strong>k</strong> (<em>float</em>) – the rate of two-site exchange of nuclei a and b.</li>
+<li><strong>W</strong> (<em>float</em>) – the line width at the slow exchange limit.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple of numpy arrays for frequencies (x coordinate) and</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a tuple of numpy arrays for frequencies (x coordinate) and
+corresponding intensities (y coordinate).
+Hard-coded for 800 data points and a frequency range
+from <cite>vb</cite> - 50 to <cite>va</cite> + 50.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(np.array, np.array)</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>corresponding intensities (y coordinate). Hard-coded for 800 data points
-and a frequency range from vb-50 to va+50.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrplot.lorentz">
 <code class="descclassname">nmrtools.nmrplot.</code><code class="descname">lorentz</code><span class="sig-paren">(</span><em>v</em>, <em>v0</em>, <em>I</em>, <em>w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#lorentz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.lorentz" title="Permalink to this definition">¶</a></dt>
 <dd><p>A lorentz function that takes linewidth at half intensity (w) as a
-parameter.
-:param v: Array of values at which to evaluate distribution.
-:param v0: Center of the distribution.
-:param I: relative intensity of the signal
-:param w: Peak width at half max intensity</p>
+parameter.</p>
+<p>When <cite>v</cite> = <cite>v0</cite>, and <cite>w</cite> = 0.5 (Hz), the function returns intensity I.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Distribution evaluated at points in x.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>v</strong> (<em>float</em>) – The frequency (x coordinate) at which to evaluate intensity (y
+coordinate).</li>
+<li><strong>v0</strong> (<em>float</em>) – The center of the distribution.</li>
+<li><strong>I</strong> (<em>float</em>) – the relative intensity of the signal</li>
+<li><strong>w</strong> (<em>float</em>) – the peak width at half maximum intensity</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the intensity (y coordinate) for the Lorentzian distribution
+evaluated at frequency <cite>v</cite>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -916,21 +936,45 @@ parameter.
 <dl class="function">
 <dt id="nmrtools.nmrplot.nmrplot">
 <code class="descclassname">nmrtools.nmrplot.</code><code class="descname">nmrplot</code><span class="sig-paren">(</span><em>spectrum</em>, <em>y=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#nmrplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.nmrplot" title="Permalink to this definition">¶</a></dt>
-<dd><p>A no-frills routine that plots spectral simulation data.
-:param spectrum: A list of (frequency, intensity) tuples
-:param y: max intensity</p>
+<dd><p>A no-frills routine that plots spectral simulation data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>spectrum</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency, intensity) tuples.</li>
+<li><strong>y</strong> (<em>float</em>) – maximum intensity for the plot.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="nmrtools.nmrplot.tkplot">
 <code class="descclassname">nmrtools.nmrplot.</code><code class="descname">tkplot</code><span class="sig-paren">(</span><em>spectrum</em>, <em>w=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#tkplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.tkplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate linspaces of x and y coordinates suitable for plotting on a
-matplotlib tkinter canvas.
-:param spectrum: A list of (frequency, intensity) tuples
-:param w: peak width at half height
-:param spectrometer_frequency: the frequency of the spectrometer (i.e
-frequency in MHz that 1H nuclei resonate at)
-:return: a tuple of x and y numpy.ndarrays</p>
+matplotlib tkinter canvas.</p>
+<p>TODO: this is not tk specific. rename?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency, intensity) tuples.</li>
+<li><strong>w</strong> (<em>float</em>) – peak width at half height</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a tuple of numpy.ndarrays for x and y coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(ndarray, ndarray)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
