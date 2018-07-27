@@ -1,11 +1,10 @@
 # TODO: Write more tests!
-# import numpy as np
+import numpy as np
 
 from tests.plottools import popplot
-# from .dnmrplot import dnmrplot_2spin
+from nmrtools.nmrplot import dnmrplot_2spin
 from tests.testdata import TWOSPIN_SLOW, AB_WINDNMR  # , TWOSPIN_COALESCE, TWOSPIN_FAST
-# from pydnmr.dnmrmath import *
-from nmrtools.nmrmath import TwoSinglets
+from nmrtools.nmrmath import two_spin, d2s_func, TwoSinglets, dnmr_AB
 
 def get_intensity(spectrum, x):
     """

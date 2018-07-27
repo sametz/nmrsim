@@ -223,7 +223,7 @@ def dnmrplot_AB(v1, v2, J, k, W):
 
     Returns
     -------
-    (np.array, np.array)
+    (numpyp.array, numpy.array)
         a tuple of numpy arrays for frequencies (x coordinate) and
         corresponding intensities (y coordinate).
         Hard-coded for 800 data points and a frequency range
