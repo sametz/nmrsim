@@ -1,0 +1,11 @@
+Thoughts on API, namespaces etc. for final nmrtools library:
+
+some natural divisions:
+nmrtools.qm for QM calculations. Currently this is second-order normal spectra.
+Looking ahead: if QM DNMR is implemented, where does it belong?
+
+nmrtools.firstorder for first-order calculations
+nmrtools.partial for partial solutions? Thinking eg. of the ABX that assumes X
+is far away in chemical shift, AAXX that only shows A, etc.
+nmrtools.dnmr for dynamic nmr simulations
+nmrtools.plt for plotting utilities

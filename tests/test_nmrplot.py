@@ -2,9 +2,9 @@ import numpy as np
 from pytest import approx
 from nmrtools.nmrplot import (lorentz, add_signals,
                                      dnmrplot_2spin, dnmrplot_AB)
-from . import testdata
-from .accepted_data import ADD_SIGNALS_DATASET
-from .plottools import popplot
+from tests import testdata
+from tests.accepted_data import ADD_SIGNALS_DATASET
+from tests.plottools import popplot
 
 
 def test_lorentz_width():
