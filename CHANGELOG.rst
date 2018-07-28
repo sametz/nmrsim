@@ -19,7 +19,7 @@ Working towards a Version 1.0.0 release, the author interprets the terms below a
 * **Version 1.0.0 release**: API is stable. The package is available on PyPI (and perhaps conda).
 
 
-0.1.0 - 2018-07-22 (pre-alpha release)
+0.1.0 - 2018-07-28 (pre-alpha release)
 ----------------------------------
 
 Initial Commit

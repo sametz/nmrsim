@@ -1,7 +1,7 @@
 Thoughts on API, namespaces etc. for final nmrtools library:
 
 some natural divisions:
-nmrmath.qm for QM calculations. Currently this is second-order normal spectra.
+nmrtools.qm for QM calculations. Currently this is second-order normal spectra.
 Looking ahead: if QM DNMR is implemented, where does it belong?
 
 nmrtools.firstorder for first-order calculations
