@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nmrtools.nmrplot &mdash; nmrtools 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> nmrtools
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.0.1 (pre-alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../feedback.html">Feedback</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nmrtools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nmrtools.nmrplot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nmrtools.nmrplot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Provide functions for creating lineshapes suitable for plotting.</span>
+
+<span class="sd">For non-DNMR calculations, inputs are lists of (frequency, intensity) tuples,</span>
+<span class="sd">which then have Lorentzian distributions applied to them.</span>
+
+<span class="sd">For DNMR calculations, the lineshapes are directly computed. Currently,</span>
+<span class="sd">non-quantum mechanical formulas for two uncoupled spins and for two coupled</span>
+<span class="sd">spins are used.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.nmrmath</span> <span class="k">import</span> <span class="n">dnmr_AB</span><span class="p">,</span> <span class="n">d2s_func</span>
+
+
+<div class="viewcode-block" id="lorentz"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.lorentz">[docs]</a><span class="k">def</span> <span class="nf">lorentz</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A lorentz function that takes linewidth at half intensity (w) as a</span>
+<span class="sd">    parameter.</span>
+
+<span class="sd">    When `v` = `v0`, and `w` = 0.5 (Hz), the function returns intensity I.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    v : float</span>
+<span class="sd">        The frequency (x coordinate) at which to evaluate intensity (y</span>
+<span class="sd">        coordinate).</span>
+<span class="sd">    v0 : float</span>
+<span class="sd">        The center of the distribution.</span>
+<span class="sd">    I : float</span>
+<span class="sd">        the relative intensity of the signal</span>
+<span class="sd">    w : float</span>
+<span class="sd">        the peak width at half maximum intensity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        the intensity (y coordinate) for the Lorentzian distribution</span>
+<span class="sd">        evaluated at frequency `v`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Adding a height scaling factor so that peak intensities are lowered as</span>
+    <span class="c1"># they are more broad. If I is the intensity with a default w of 0.5 Hz:</span>
+    <span class="n">scaling_factor</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">w</span>  <span class="c1"># i.e. a 1 Hz wide peak will be half as high</span>
+    <span class="k">return</span> <span class="n">scaling_factor</span> <span class="o">*</span> <span class="n">I</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="add_signals"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.add_signals">[docs]</a><span class="k">def</span> <span class="nf">add_signals</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">peaklist</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a numpy linspace, a spectrum as a list of (frequency, intensity)</span>
+<span class="sd">    tuples, and a linewidth, returns an array of y coordinates for the</span>
+<span class="sd">    total line shape.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    linspace : array-like</span>
+<span class="sd">        normally a numpy.linspace of x coordinates corresponding to frequency</span>
+<span class="sd">        in Hz.</span>
+<span class="sd">    peaklist : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
+<span class="sd">    w : float</span>
+<span class="sd">        peak width at half maximum intensity.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [float...]</span>
+<span class="sd">        an array of y coordinates corresponding to intensity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">lorentz</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">peaklist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">peaklist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">peaklist</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">lorentz</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="nmrplot"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.nmrplot">[docs]</a><span class="k">def</span> <span class="nf">nmrplot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A no-frills routine that plots spectral simulation data.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    spectrum : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
+<span class="sd">    y : float</span>
+<span class="sd">        maximum intensity for the plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Oddball function. This is really a function for an application, </span>
+<span class="sd">    not a library. TODO: revise or eliminate.&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+    <span class="n">spectrum</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>  <span class="c1"># Could become costly with larger spectra</span>
+    <span class="n">l_limit</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">50</span>
+    <span class="n">r_limit</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">l_limit</span><span class="p">,</span> <span class="n">r_limit</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">invert_xaxis</span><span class="p">()</span>  <span class="c1"># reverses the x axis</span>
+    <span class="c1"># noinspection PyTypeChecker</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">add_signals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="tkplot"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.tkplot">[docs]</a><span class="k">def</span> <span class="nf">tkplot</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate linspaces of x and y coordinates suitable for plotting on a</span>
+<span class="sd">    matplotlib tkinter canvas.</span>
+
+<span class="sd">    TODO: this is not tk specific. rename?</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    spectrum : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
+<span class="sd">    w : float</span>
+<span class="sd">        peak width at half height</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (ndarray, ndarray)</span>
+<span class="sd">        a tuple of numpy.ndarrays for x and y coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spectrum</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="n">r_limit</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="n">l_limit</span> <span class="o">=</span> <span class="n">spectrum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">50</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">l_limit</span><span class="p">,</span> <span class="n">r_limit</span><span class="p">,</span> <span class="mi">2400</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">add_signals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="tkplot_nmrmint"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.tkplot_nmrmint">[docs]</a><span class="k">def</span> <span class="nf">tkplot_nmrmint</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">spectrometer_frequency</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate linspaces of x and y coordinates suitable for plotting on a</span>
+<span class="sd">    matplotlib tkinter canvas.</span>
+
+<span class="sd">    Hard-coding a -1 to 15 ppm linspace, with resolution such that a 1 GHz</span>
+<span class="sd">    spectrometer has 10 points per Hz.</span>
+<span class="sd">    :param spectrum: A list of (frequency, intensity) tuples</span>
+<span class="sd">    :param w: peak width at half height</span>
+<span class="sd">    :param spectrometer_frequency: the frequency of the spectrometer (i.e</span>
+<span class="sd">    frequency in MHz that 1H nuclei resonate at)</span>
+<span class="sd">    :return: a tuple of x and y numpy.ndarrays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;This is a port of nmrmint&#39;s version of tkplot.</span>
+<span class="sd">    TODO: think about what nmrmint should offer to all users.</span>
+<span class="sd">    Should eliminate this from library.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">spectrometer_frequency</span><span class="p">,</span>
+                    <span class="mi">15</span> <span class="o">*</span> <span class="n">spectrometer_frequency</span><span class="p">,</span>
+                    <span class="mi">160000</span><span class="p">)</span>  <span class="c1"># 0.01 Hz resolution on 1 GHz spectrometer</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">add_signals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">spectrum</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="dnmrplot_2spin"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.dnmrplot_2spin">[docs]</a><span class="k">def</span> <span class="nf">dnmrplot_2spin</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">Wa</span><span class="p">,</span> <span class="n">Wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a lineshape for the DNMR spectrum of two uncoupled nuclei</span>
+<span class="sd">    undergoing exchange.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    va : float</span>
+<span class="sd">        the frequency of nucleus &#39;a&#39; at the slow exchange limit</span>
+<span class="sd">    vb : float</span>
+<span class="sd">        the frequency of nucleus &#39;b&#39; at the slow exchange limit</span>
+<span class="sd">    ka : float</span>
+<span class="sd">        the rate of nuclear exchange</span>
+<span class="sd">    Wa : float</span>
+<span class="sd">        the width at half heigh of the signal for nucleus a (at the slow</span>
+<span class="sd">        exchange limit).</span>
+<span class="sd">    Wb : float</span>
+<span class="sd">        the width at half height of the signal for nucleus b (at the slow</span>
+<span class="sd">        exchange limit).</span>
+<span class="sd">    pa : float</span>
+<span class="sd">        the fraction of the population in state a (vs. state b)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ([float...], [float...])</span>
+<span class="sd">        a tuple of numpy arrays for frequencies (x coordinate) and</span>
+<span class="sd">        corresponding intensities (y coordinate). Hard-coded for 800 data</span>
+<span class="sd">        points and a frequency range from vb-50 to va+50.</span>
+
+<span class="sd">    TODO: throughout nmrtools there is hard-coding of defaults, based on</span>
+<span class="sd">    needs of applications. Consider the needs of other users and make more</span>
+<span class="sd">    universal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A decision needs to be made on the final function to apply along the </span>
+<span class="sd">    linspace.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">vb</span> <span class="o">&gt;</span> <span class="n">va</span><span class="p">:</span>
+        <span class="n">va</span><span class="p">,</span> <span class="n">vb</span> <span class="o">=</span> <span class="n">vb</span><span class="p">,</span> <span class="n">va</span>
+        <span class="n">Wa</span><span class="p">,</span> <span class="n">Wb</span> <span class="o">=</span> <span class="n">Wb</span><span class="p">,</span> <span class="n">Wa</span>
+        <span class="n">pa</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">pa</span>
+    <span class="n">l_limit</span> <span class="o">=</span> <span class="n">vb</span> <span class="o">-</span> <span class="mi">50</span>
+    <span class="n">r_limit</span> <span class="o">=</span> <span class="n">va</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">l_limit</span><span class="p">,</span> <span class="n">r_limit</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+    <span class="c1"># y = dnmr_2spin(x, va, vb, ka, Wa, Wb, pa)</span>
+
+    <span class="c1"># OR:</span>
+
+    <span class="n">dfunc</span> <span class="o">=</span> <span class="n">d2s_func</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">Wa</span><span class="p">,</span> <span class="n">Wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">dfunc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># OR:</span>
+    <span class="c1"># y = reich(x, va, vb, ka, Wa, Wb, pa)</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="dnmrplot_AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.nmrplot.dnmrplot_AB">[docs]</a><span class="k">def</span> <span class="nf">dnmrplot_AB</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a lineshape for the DNMR spectrum of two uncoupled nuclei</span>
+<span class="sd">    undergoing exchange.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    v1 : float</span>
+<span class="sd">        the frequency of nucleus &#39;a&#39; at the slow exchange limit.</span>
+<span class="sd">    v2 : float</span>
+<span class="sd">        the frequency of nucleus &#39;b&#39; at the slow exchange limit.</span>
+<span class="sd">    J : float</span>
+<span class="sd">        the coupling constant between nuclei a and b.</span>
+<span class="sd">    k : float</span>
+<span class="sd">        the rate of two-site exchange of nuclei a and b.</span>
+<span class="sd">    W : float</span>
+<span class="sd">        the line width at the slow exchange limit.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (np.array, np.array)</span>
+<span class="sd">        a tuple of numpy arrays for frequencies (x coordinate) and</span>
+<span class="sd">        corresponding intensities (y coordinate).</span>
+<span class="sd">        Hard-coded for 800 data points and a frequency range</span>
+<span class="sd">        from `vb` - 50 to `va` + 50.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v2</span> <span class="o">&gt;</span> <span class="n">v1</span><span class="p">:</span>
+        <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">v2</span><span class="p">,</span> <span class="n">v1</span>
+    <span class="n">l_limit</span> <span class="o">=</span> <span class="n">v2</span> <span class="o">-</span> <span class="mi">50</span>
+    <span class="n">r_limit</span> <span class="o">=</span> <span class="n">v1</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">l_limit</span><span class="p">,</span> <span class="n">r_limit</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">dnmr_AB</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Geoffrey M. Sametz.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

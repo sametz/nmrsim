@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+/.idea/
+nmrtools/.cache/
+.cache
+/coverage/
+__pycache__/
+*.pyc
+.pytest_cache/
