@@ -16,7 +16,7 @@ dependencies:
   - alabaster=0.7.11=py36_0
   - anaconda-client=1.6.14=py36_0
   - appdirs=1.4.3=py36h28b3542_0
-  - appnope=0.1.0 #=py36hf537a9a_0
+#  - appnope=0.1.0=py36hf537a9a_0
   - asn1crypto=0.24.0=py36_0
   - astroid=1.6.5=py36_0
   - atomicwrites=1.1.5=py36_0
@@ -27,7 +27,7 @@ dependencies:
   - blas=1.0=mkl
   - bleach=2.1.3=py36_0
   - bokeh=0.13.0=py36_0
-  - cffi=1.11.5 #=py36h342bebf_0
+#  - cffi=1.11.5=py36h342bebf_0
   - chardet=3.0.4=py36_1
   - cloudpickle=0.5.3=py36_0
   - clyent=1.2.2=py36_1
