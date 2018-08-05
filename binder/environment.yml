@@ -16,7 +16,7 @@ dependencies:
   - alabaster=0.7.11=py36_0
   - anaconda-client=1.6.14=py36_0
   - appdirs=1.4.3=py36h28b3542_0
-  - appnope=0.1.0=py36hf537a9a_0
+#  - appnope=0.1.0=py36hf537a9a_0
   - asn1crypto=0.24.0=py36_0
   - astroid=1.6.5=py36_0
   - atomicwrites=1.1.5=py36_0
