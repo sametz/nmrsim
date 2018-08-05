@@ -139,7 +139,7 @@ dependencies:
   - qt=5.9.6 #=h74ce4d9_0
   - qtawesome=0.4.4 #=py36h468c6fb_0
   - qtconsole=4.3.1 #=py36hd96c0ff_0
-  - qtpy=1.4.2= #py36_1
+  - qtpy=1.4.2 #=py36_1
   - readline=7.0 #=hc1231fa_4
   - requests=2.19.1 #=py36_0
   - retrying=1.3.3 #=py36_2
