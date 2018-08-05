@@ -73,7 +73,7 @@ dependencies:
 #  - libcxxabi=4.0.1 #=hebd6815_0
   - libedit=3.1.20170329 #=hb402a30_2
   - libffi=3.2.1 #=h475c297_4
-  - libgfortran=3.0.1 #=h93005f0_2
+#  - libgfortran=3.0.1 #=h93005f0_2
   - libiconv=1.15 #=hdd342a3_7
   - libopenblas=0.2.20 #=hdc02c5d_7
   - libpng=1.6.34 #=he12f830_0
