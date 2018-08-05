@@ -131,7 +131,7 @@ dependencies:
   - pytest=3.6.3 #=py36_0
   - python=3.6.6 #=hc167b69_0
   - python-dateutil=2.7.3 #=py36_0
-  - python.app=2 #=py36_8
+#  - python.app=2 #=py36_8
   - pytz=2018.5 #=py36_0
   - pyviz_comms=0.1.1 #=py36_0
   - pyyaml=3.13 #=py36h1de35cc_0
