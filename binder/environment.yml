@@ -34,7 +34,7 @@ dependencies:
   - constantly=15.1.0=py36h28b3542_0
 #  - cryptography=2.2.2=py36h1de35cc_0
 #  - cycler=0.10.0=py36hfc81398_0
-  - cython=0.28.4=py36h0a44026_0
+  - cython=0.28.4 #=py36h0a44026_0
   - dbus=1.13.2=h760590f_1
   - decorator=4.3.0=py36_0
   - docutils=0.14=py36hbfde631_0
