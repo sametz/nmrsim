@@ -3,4 +3,10 @@ This is a list of infrequent tasks, so that I remember how to perform them.
 Currently 'make html' isn't working for some reason, so instead use from the
 'docs' directory:
     sphinx-apidoc -f -o source/ ../nmrtools/
-    sphinx-build -b html source build
+
+
+When using pipenv, matplotlib on OSX gives an error. The solution is to edit the
+ matplotlib configuration so as not to use the Mac backend, but TkAgg:
+
+ https://stackoverflow.com/questions/49367013/pipenv-install-matplotlib#
+
