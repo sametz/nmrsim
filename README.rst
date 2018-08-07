@@ -1,5 +1,8 @@
-nmrtools (working title)
-========================
+.. image:: https://mybinder.org/badge.svg
+   :target: https://mybinder.org/v2/gh/sametz/nmrtools/jupytertest?filepath=jupyter
+
+nmrtools (version 0.1 pre-alpha)
+================================
 
 The goal of the nmrtools project is to create and distribute a Python library for the simulation of solution-state nuclear magnetic resonance (NMR) spectra.
 
