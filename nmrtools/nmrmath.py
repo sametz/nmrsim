@@ -1,15 +1,20 @@
-"""Functions for the calculation of NMR spectra.
+"""Provides functions for the calculation of NMR spectra.
 
 This version of nmrmath features speed-optimized hamiltonian, simsignals,
 and transition_matrix functions. Up to at least 8 spins, the new non-sparse
 Hamilton code is about 10x faster. The overall performance is dramatically
 better than the original code.
 
+TODO: elaborate; list functions; provide examples.
+
+References
+----------
+
 Formulas for simulating two uncoupled spin-1/2 nuclei are derived from:
-Sandstrom, J. "Dynamic NMR Spectroscopy". Academic Press, 1982, p. 15.
+Sandstrom, J. *Dynamic NMR Spectroscopy*; Academic Press, 1982, p. 15.
 
 Formulas for simulating two coupled spin-1/2 nuclei are derived from:
-Brown, K.C.; Tyson, R. L.; Weil, J. A. _J. Chem. Educ._ 1998, 75, 1632.
+Brown, K.C.; Tyson, R. L.; Weil, J. A. *J. Chem. Educ.* **1998**, *75*, 1632.
 (NOTE: Hans Reich pointed out that the paper has a sign typo in Equation (2b)!
 the last term is minus-over-plus, not plus-over-minus.)
 """
@@ -27,11 +32,16 @@ from scipy.sparse import kron, csc_matrix, csr_matrix, lil_matrix, bmat
 
 def popcount(n=0):
     """
-    Computes the popcount (binary Hamming weight) of integer n
-    input:
-        :param n: an integer
-    returns:
-        popcount of integer (binary Hamming weight)
+    Computes the popcount (binary Hamming weight) of integer `n`.
+
+    Arguments
+    ---------
+    n : a base-10 integer
+
+    Returns
+    -------
+    int
+        Popcount (binary Hamming weight) of `n`
 
     """
     return bin(n).count('1')
@@ -39,12 +49,31 @@ def popcount(n=0):
 
 def is_allowed(m=0, n=0):
     """
-    determines if a transition between two spin states is allowed or forbidden.
-    The transition is allowed if one and only one spin (i.e. bit) changes
-    input: integers whose binary codes for a spin state
-        :param n:
-        :param m:
-    output: 1 = allowed, 0 = forbidden
+    Determines if a transition between two spin states is allowed or forbidden.
+
+    It turns out that for a system of n spin-half nuclei, the numbers from 0
+    to (2^n - 1) code for each spin state. For example:
+
+        | 0 = 000 = alpha-alpha-alpha
+        | 1 = 001 = alpha-alpha-beta
+        | .
+        | .
+        | .
+        | 7 = 111 = beta-beta-beta
+
+    For a transition to be allowed, the total spin of the system cannot
+    change by more than one. This corresponds to only one bit being flipped
+    in the binary number representation. The Hamming weight is the number of
+    bits flipped.
+
+    Arguments
+    ---------
+    m, n : int
+
+    Returns
+    -------
+    bool
+        `true` = allowed, `false` = forbidden
 
     """
     return popcount(m ^ n) == 1
@@ -53,15 +82,20 @@ def is_allowed(m=0, n=0):
 def transition_matrix(n):
     """
     Creates a matrix of allowed transitions.
-    The integers 0-n, in their binary form, code for a spin state (alpha/beta).
-    The (i,j) cells in the matrix indicate whether a transition from spin state
-    i to spin state j is allowed or forbidden.
-    See the is_allowed function for more information.
 
-    input:
-        :param n: size of the n,n matrix (i.e. number of possible spin states)
+    The integers 0-`n`, in their binary form, code for a spin state
+    (alpha/beta). The (i,j) cells in the matrix indicate whether a transition
+    from spin state i to spin state j is allowed or forbidden.
+    See the ``is_allowed`` function for more information.
 
-    :returns: a transition matrix that can be used to compute the intensity of
+    Arguments
+    ---------
+    n : dimension of the n,n matrix (i.e. number of possible spin states).
+
+    Returns
+    -------
+    lil_matrix
+        a transition matrix that can be used to compute the intensity of
     allowed transitions.
     """
     # function was optimized by only calculating upper triangle and then adding
@@ -77,11 +111,19 @@ def transition_matrix(n):
 
 def hamiltonian(freqlist, couplings):
     """
-    Computes the spin Hamiltonian for spin-1/2 nuclei.
-    inputs for n nuclei:
-        :param freqlist: a list of frequencies in Hz of length n
-        :param couplings: an n x n array of coupling constants in Hz
-    Returns: a Hamiltonian array
+    Computes the spin Hamiltonian for `n` spin-1/2 nuclei.
+
+    Arguments
+    ---------
+    freqlist : array-like
+        a list of frequencies in Hz of length `n`
+    couplings : array-like
+        an `n` x `n` array of coupling constants in Hz
+
+    Returns
+    -------
+    ndarray
+        a 2-D array for the spin Hamiltonian
     """
     nspins = len(freqlist)
 
@@ -138,12 +180,21 @@ def hamiltonian(freqlist, couplings):
 
 def simsignals(H, nspins):
     """
-    Solves the spin Hamiltonian H and returns a list of (frequency, intensity)
-    tuples. Nuclei must be spin-1/2.
-    Inputs:
-        :param H: a Hamiltonian array
-        :param nspins: number of nuclei
-    :return spectrum: a list of (frequency, intensity) tuples.
+    Calculates the eigensolution of the spin Hamiltonian H and, using it,
+    returns the allowed transitions as list of (frequency, intensity) tuples.
+
+    Arguments
+    ---------
+
+    H : ndarray
+        the spin Hamiltonian.
+    nspins : int
+        the number of nuclei in the spin system.
+
+    Returns
+    -------
+    spectrum : [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     # This routine was optimized for speed by vectorizing the intensity
     # calculations, replacing a nested-for signal-by-signal calculation.
@@ -183,18 +234,26 @@ def simsignals(H, nspins):
 # to agree across apps.
 def nspinspec(freqs, couplings, normalize=True):
     """
-    Function that calculates a spectrum for n spin-half nuclei.
-    Inputs:
-        :param freqs: a list of n nuclei frequencies in Hz
-        :param couplings: an n x n array of couplings in Hz. The order
+    Calculates second-order spectral data (freqency and intensity of signals)
+    for *n* spin-half nuclei.
+
+    Arguments
+    ---------
+    freqs : [float...]
+        a list of *n* nuclei frequencies in Hz
+    couplings : array-like
+        an *n, n* array of couplings in Hz. The order
         of nuclei in the list corresponds to the column and row order in the
         matrix, e.g. couplings[0][1] and [1]0] are the J coupling between
-        the nuclei of freqs[0] and freqs [1].
-        :param normalize: (bool) True if the intensities should be normalized
-        so that total intensity equals the total number of nuclei.
-    Returns:
-    -spectrum: a list of (frequency, intensity) tuples.
-    Dependencies: hamiltonian, simsignals
+        the nuclei of freqs[0] and freqs[1].
+    normalize: bool
+        True if the intensities should be normalized so that total intensity
+        equals the total number of nuclei.
+
+    Returns
+    -------
+    spectrum : [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     nspins = len(freqs)
     H = hamiltonian(freqs, couplings)
@@ -213,9 +272,20 @@ def nspinspec(freqs, couplings, normalize=True):
 
 def doublet(plist, J):
     """
-    plist: a list of (frequency{Hz}, intensity) tuples;
-    J: a coupling constant {Hz}
-    returns: a plist of the result of splitting every peak in plist by J
+    Applies a *J* coupling to each signal in a list of (frequency, intensity)
+    signals, creating two half-intensity signals at +/- *J*/2.
+
+    Arguments
+    ---------
+    plist : [(float, float)...]
+        a list of (frequency{Hz}, intensity) tuples.
+    J : float
+        The coupling constant in Hz.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     res = []
     for v, i in plist:
@@ -224,18 +294,28 @@ def doublet(plist, J):
     return res
 
 
-def multiplet(plist, couplings):
+def multiplet(signal, couplings):
     """
-    plist: a list of (frequency{Hz}, intensity) tuples;
-    couplings: one or more (J, # of nuclei) tuples.
-    e.g. to split a signal into a dt, J = 8, 5 Hz, use:
-        couplings = [(8, 2), (5, 3)]
-    Dependency: doublet function
-    returns: a plist of the multiplet that results from splitting the plist
-    signal(s) by each J.
-    The order of the tuples in couplings does not matter
+    Splits a set of signals into first-order multiplets.
+
+    Arguments
+    ---------
+    signal : (float, float)
+        a (frequency{Hz}, intensity) tuple;
+    couplings : [(float, int)...]
+        A list of (*J*, # of nuclei) tuples. The order of the tuples in
+        couplings does not matter.
+        e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:
+        ``couplings = [(8, 2), (5, 3)]``
+
+    Returns
+    -------
+    [(float, float)...]
+        a plist of the multiplet that results from splitting the plist
+        signal(s) by each J.
+
     """
-    res = plist
+    res = [signal]
     for coupling in couplings:
         for i in range(coupling[1]):
             res = doublet(res, coupling[0])
@@ -244,10 +324,20 @@ def multiplet(plist, couplings):
 
 def add_peaks(plist):
     """
-    condenses a list of (frequency, intensity) tuples
-    input: a list of (v, i) tuples
-    output: a tuple of (average v, total i)
+    Reduces a list of (frequency, intensity) tuples to an
+    (average frequency, total intensity) tuple.
+
+    Argument
+    --------
+    plist: [(float, float)...]
+        a list of (frequency, intensity) tuples
+
+    Returns
+    -------
+    (float, float)
+        a tuple of (average frequency, total intensity)
     """
+    # TODO: Is this if statement necessary?
     if len(plist) == 1:
         return plist[0]  # nothing to add
     v_total = 0
@@ -262,15 +352,18 @@ def reduce_peaks(plist, tolerance=0):
     """
     Takes an ordered list of (x, y) tuples and adds together tuples whose first
     values are within a certain tolerance limit.
-    Dependency: add_peaks
-    Input:
-        plist: a *sorted* list of (x, y) tuples (sorted by x)
-        tolerance: tuples that differ in x by <= tolerance are combined
-        using add_peaks
 
-    Output:
-        a list of (x, y) tuples where all x values differ by > tolerance
+    Arguments
+    ---------
+    plist : [(float, float)...]
+        A *sorted* list of (x, y) tuples (sorted by x)
+    tolerance : float
+        tuples that differ in x by <= tolerance are combined using ``add_peaks``
 
+    Returns
+    -------
+    [(float, float)...]
+        a list of (x, y) tuples where all x values differ by > `tolerance`
     """
     res = []
     work = [plist[0]]  # an accumulator of peaks to be processed
@@ -290,44 +383,56 @@ def reduce_peaks(plist, tolerance=0):
     return res
 
 
-def normalize(intensities, n=1):
-    """Scale a list of intensities so that they sum to the total number of
+def _normalize(intensities, n=1):
+    """
+    Scale a list of intensities so that they sum to the total number of
     nuclei.
 
-    :param intensities: [float] A list of intensities.
-    :param n: (int) Number of nuclei."""
+    Arguments
+    ---------
+    intensities : [float...]
+        A list of intensities.
+    n : int
+        Number of nuclei.
+    """
     factor = n / sum(intensities)
     for index, intensity in enumerate(intensities):
         intensities[index] = intensity * factor
 
 
 def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
-    """Uses the above functions to split a signal into a first-order
-    multiplet.
-    Input:
-    -signal: a (frequency, intensity) tuple
-    -Couplings: a list of (J, # of nuclei) tuples. See multiplet
-    docstring for more info.
-    -intensity (optional): the intensity of the signal
-    Output:
-    a plist-style spectrum (list of (frequency, intensity) tuples)
-    Dependencies: doublet, multiplet, reduce_peaks, add_peaks
     """
-    # Possible future refactor: if function used a list of signals,
-    # may be useful in other situations?
-    signallist = [signal]
-    return reduce_peaks(sorted(multiplet(signallist, couplings)))
+    Splits a signal into a first-order multiplet.
+
+    Arguments
+    ---------
+    signal : (float, float)
+        a (frequency, intensity) tuple.
+    couplings : [(float, int)...]
+        a list of (J, # of nuclei) tuples.
+
+    Returns
+    -------
+    [(float, float)...}
+        a plist-style spectrum (list of (frequency, intensity) tuples)
+    """
+    return reduce_peaks(sorted(multiplet(signal, couplings)))
 
 
 def normalize_spectrum(spectrum, n=1):
-    """Normalize the intensities in a spectrum so that total intensity equals
+    """
+    Normalize the intensities in a spectrum so that total intensity equals
     value n (nominally the number of nuclei giving rise to the signal).
 
-    :param spectrum: [(float, float)...] a list of (frequency, intensity)
-    tuples.
-    :param n: total intensity to normalize to."""
+    Arguments
+    ---------
+    spectrum : [(float, float)...]
+        a list of (frequency, intensity) tuples.
+    n : int or float
+        total intensity to normalize to.
+    """
     freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
-    normalize(int_, n)
+    _normalize(int_, n)
     return list(zip(freq, int_))
 
 
@@ -335,17 +440,35 @@ def normalize_spectrum(spectrum, n=1):
 # Non-QM solutions for specific second-order patterns
 ##############################################################################
 
+# TODO: consistent names/API between arguments and internal variables.
+# Cobbling these together from various sources resulted in inconsistencies
+# between variable names in Reich's VB6 code and other sources. Need to find
+# specific references for all formulas and refactor to consistent variable
+# names.
+# TODO: appropriate use of normalize-- for which of these functions, if any,
+# is normalization possibly of interest?
 
-def AB(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz not implemented yet
+def AB(Jab, Vab, Vcentr, normalize=True):
     """
-    Reich-style inputs for AB quartet.
-    Jab is the A-B coupling constant (Hz)
-    Vab is the difference in nuclei frequencies in the absence of coupling (Hz)
-    Vcentr is the frequency for the center of the AB quartet
-    Wa is width of peak at half-height (not implemented yet)
-    RightHz is the lower frequency limit for the window
-    WdthHz is the width of the window in Hz
-    return: peaklist of (frequency, intensity) tuples
+    Calculates the signal frequencies and intensities for two strongly
+    coupled protons (Ha and Hb).
+
+    Arguments
+    ---------
+    Jab : float
+        the coupling constant (Hz) between Ha and Hb
+    Vab : float
+        the chemical shift difference (Hz) between Ha and Hb in the absence
+        of coupling.
+    Vcentr : float
+        the frequency (Hz) for the center of the AB quartet.
+    normalize: bool
+        whether the signal intensity should be normalized.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of four (frequency, intensity) tuples.
     """
     J = Jab
     dv = Vab
@@ -362,22 +485,31 @@ def AB(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz not 
     I4 = I1
     vList = [v1, v2, v3, v4]
     IList = [I1, I2, I3, I4]
-    if normalize_:
-        normalize(IList, 2)
+    if normalize:
+        _normalize(IList, 2)
     return list(zip(vList, IList))
 
 
-def AB2(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz
-    # not implemented yet
+def AB2(Jab, Vab, Vcentr, normalize=True):
     """
-    Reich-style inputs for AB2 spin system.
-    J is the A-B coupling constant (Hz)
-    dV is the difference in nuclei frequencies in the absence of coupling (Hz)
-    Vab is the frequency for the center of the AB2 signal
-    Wa is width of peak at half-height (not implemented yet)
-    RightHz is the lower frequency limit for the window (not implemented yet)
-    WdthHz is the width of the window in Hz (not implemented yet)
-    return: peaklist of (frequency, intensity) tuples
+    Calculates signal frequencies and intensities for an AB2 spin system.
+
+    Arguments
+    ---------
+    Jab : float
+        the Ha-Hb coupling constant (Hz).
+    Vab : float
+        the difference in the frequencies (Hz) of Ha and Hb in the absence of
+        coupling.
+    Vcentr : float
+        the frequency (Hz) for the center of the AB2 signal.
+    normalize: bool
+        whether the signal intensity should be normalized.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     # Currently, there is a disconnect between the variable names in the GUI
     # and the variable names in this function. The following code provides a
@@ -447,16 +579,15 @@ def AB2(Jab, Vab, Vcentr, normalize_=True, **kwargs):  # Wa, RightHz, WdthHz
     vList = [V1, V2, V3, V4, V5, V6, V7, V8, V9]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9]
 
-    if normalize_:
-        normalize(IList, 3)
+    if normalize:
+        _normalize(IList, 3)
 
     return list(zip(vList, IList))
 
 
-def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize_=True, **kwargs):
-    # Wa, RightHz, WdthHz not implemented yet
+def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize=True):
     """
-    Reich-style inputs for AB2 spin system.
+    Reich-style inputs for an ABX spin system. TODO: complete rewrite
     Jab is the A-B coupling constant (Hz)
     dV is the difference in nuclei frequencies in the absence of coupling (Hz)
     Vab is the frequency for the center of the AB2 signal
@@ -464,6 +595,49 @@ def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize_=True, **kwargs):
     RightHz is the lower frequency limit for the window (not implemented yet)
     WdthHz is the width of the window in Hz (not implemented yet)
     return: peaklist of (frequency, intensity) tuples
+    Calculates signal frequencies and intensities for an ABX spin system.
+
+    Arguments
+    ---------
+    Jab : float
+        the Ha-Hb coupling constant (Hz).
+    Jbx : float
+        the Ha-Hb coupling constant (Hz).
+    Jax : float
+        the Ha-Hb coupling constant (Hz).
+    Vab : float
+        the difference in the frequencies (Hz) of Ha and Hb in the absence of
+        coupling.
+    Vcentr : float
+        the frequency (Hz) for the center of the AB2 signal.
+    normalize: bool
+        whether the signal intensity should be normalized.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
+    """
+    """
+    In the WINDNMR main toolbar, only the parameters in the function args 
+    can be changed (Jab, Jax, Jbx, Vab, Vcentr, ignoring the 
+    Wa/Right-Hz/WdthHz parameters that nmrtools isn't adopting). However, 
+    in WINDNMR parameters popup, each individual chemical shift for Ha, Hb, 
+    and Hx can be entered.
+    
+    In the original WINDNMR interface, Vab is the difference in Ha/Hb 
+    frequencies in the absence of coupling, and Vcentr is the average of 
+    those frequencies.
+    
+    There's two ways I can see a user wanting to use the ABX function:
+    1. as in WINDNMR: to see the effect of moving signals closer to each 
+    other by adjusting Vab/Vcentr
+    2. as in 2nd-order: supplying frequencies for all signals and Js. 
+    
+    The ABX formula here is a simplification that assumes X is far away in 
+    chemical shift. Moving the frequency of x (vx) closer to those of a and b
+    (va, vb) has no effect. Whatever the final decision is on API 
+    implementation, this difference must be clear to the user.
     """
     # Another function where Reich vs. non-Reich variable names gets confusing
     # See comments in AB2 function
@@ -546,16 +720,39 @@ def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize_=True, **kwargs):
     I14 = I13
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14]
-    if normalize_:
-        normalize(IList, 3)
+    if normalize:
+        _normalize(IList, 3)
     return list(zip(VList, IList))
 
 
-def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize_=True, **kwargs):
-    # Wa, RightHz, WdthHz not implemented yet
+def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize=True):
     """
-    Refactoring of Reich's code for simulating the ABX3 system.
+    Simulation of the AB part of an ABX3 spin system.
+
+    TODO: explain simplification
+
+    Arguments
+    ---------
+    Jab : float
+        the Ha-Hb coupling constant (Hz).
+    Jax : float
+        the Ha-Hb coupling constant (Hz).
+    Jbx : float
+        the Ha-Hb coupling constant (Hz).
+    Vab : float
+        the difference in the frequencies (Hz) of Ha and Hb in the absence of
+        coupling.
+    Vcentr : float
+        the frequency (Hz) for the center of the AB2 signal.
+    normalize: bool
+        whether the signal intensity should be normalized.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
+    #Refactoring of Reich's code for simulating the ABX3 system.
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
     a_quartet = first_order((va, 1), [(Jax, 3)])
@@ -564,28 +761,39 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize_=True, **kwargs):
     for i in range(4):
         dv = b_quartet[i][0] - a_quartet[i][0]
         abcenter = (b_quartet[i][0] + a_quartet[i][0]) / 2
-        sub_abq = AB(Jab, dv, abcenter, normalize_)  # Wa, RightHz, WdthHz not
+        sub_abq = AB(Jab, dv, abcenter, normalize)  # Wa, RightHz, WdthHz not
         # implemented
         scale_factor = a_quartet[i][1]
         scaled_sub_abq = [(v, i * scale_factor) for v, i in sub_abq]
         res.extend(scaled_sub_abq)
 
-    if normalize_:
-        normalize(res, 5)  #TODO: check this factor
+    if normalize:
+        _normalize(res, 5)  #TODO: check this factor
     return res
 
 
-def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize_=True, **kwargs):
-    # Wa, RightHz, WdthHz not implemented yet
+def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
     """
-    Simulates an AA'XX' spin system. Frequencies and Js in Hz.
-    Jaa is the JAA' coupling constant, Jxx the JXX', Jax the JAX,
-    and JAX2 the JAX'.
-    Vcentr is the frequency for the center of the signal.
-    Wa is width of peak at half-height (not implemented yet)
-    RightHz is the lower frequency limit for the window
-    WdthHz is the width of the window in Hz
-    return: peaklist of (frequency, intensity) tuples
+    Simulates one half ('A' part) of an AA'XX' spin system.
+
+    All frequencies are in Hz.
+
+    Arguments
+    ---------
+    float Jaa, Jax, Jax, Jax_prime :
+        Jaa is the JAA' coupling constant;
+        Jxx the JXX';
+        Jax the JAX; and
+        JAX_prime the JAX'.
+    Vcentr : float
+        the frequency for the center of the signal.
+    normalize: bool
+        whether the signal intensity should be normalized.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     # Define the constants required to calculate frequencies and intensities
 
@@ -634,18 +842,38 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize_=True, **kwargs):
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10]
 
-    if normalize_:
-        normalize(IList, 4)
+    if normalize:
+        _normalize(IList, 4)
 
     return list(zip(VList, IList))
 
 
-def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize_=True, **kwargs):
-    # Wa, RightHz, WdthHz not implemented yet
+def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True):
     """
     A wrapper for a second-order AA'BB' calculation, but using the
     values taken from the WINDNMR-style AA'BB' bar selected by the Multiplet
     menu.
+
+    Arguments
+    ---------
+
+    Vab : float
+        the difference in frequency (Hz) between Ha and Hb in the absence of
+        coupling.
+    float Jaa, Jbb, Jab, Jab_prime :
+        Jaa is the JAA' coupling constant;
+        Jxx the JXX';
+        Jax the JAX; and
+        JAX_prime the JAX'.
+    Vcentr : float
+        the frequency for the center of the signal.
+    normalize: bool
+        whether the signal intensity should be normalized.
+
+    Returns
+    -------
+    [(float, float)...]
+        a list of (frequency, intensity) tuples.
     """
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
@@ -659,8 +887,8 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize_=True, **kwargs):
     J[2, 3] = Jbb
     J = J + J.T
 
-    spectrum = nspinspec(freqlist, J, normalize=normalize_)
-    y = [i for _, i in spectrum]
+    spectrum = nspinspec(freqlist, J, normalize=normalize)
+    y = [i for _, i in spectrum]  # TODO check that this should be deleted
 
     return spectrum
 
@@ -678,13 +906,35 @@ def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):
     """
     A translation of the equation from Sandström's Dynamic NMR Spectroscopy,
     p. 14, for the uncoupled 2-site exchange simulation.
-    v: frequency whose amplitude is to be calculated
-    va, vb: frequencies of a and b singlets (slow exchange limit) (va > vb)
-    ka: rate constant for state A--> state B
-    pa: fraction of population in state Adv: frequency difference (va - vb)
-    between a and b singlets (slow exchange)
-    Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s
+
+    This function is to be applied along a numpy linspace (evenly spaced x
+    coordinates corresponding to frequency in Hz), to create a list of
+    intensities (y coordinate).
+
+    Arguments
+    ---------
+
+    v : float
+        a frequency (x coordinate) at which an amplitude (y coordinate) is to be
+        calculated.
+    float va, vb :
+        frequencies of a and b singlets (slow exchange limit) (`va` > `vb`)
+    ka : float
+        rate constant for state A--> state B
+    float Wa, Wb :
+        peak widths at half height (slow exchange limit)
+    pa : float
+        fraction of population in state A
+    Returns
+    -------
+    float
+        the intensity (y coordinate of the lineshape) at frequency `v`.
+
+    References
+    ----------
+    TODO: add reference
     """
+
     pi = np.pi
     pb = 1 - pa
     tau = pb / ka
@@ -710,6 +960,7 @@ def two_spin(v, va, vb, ka, wa, wb, pa):
     """pyDNMR renamed dnmr_2spin and some arguments. This is temporary glue
     to make sure that pyDNMR will work with the nmrtools library.
     """
+    # TODO: make sure this is no longer needed, then delete
     return dnmr_2spin(v, va, vb, ka, wa, wb, pa)
 
 
@@ -741,7 +992,8 @@ def d2s_func(va, vb, ka, wa, wb, pa):
     returns: a function that takes v (x coord or numpy linspace) as an argument
     and returns intensity (y).
     """
-
+    # TODO: this seems like the hard way to create a partial function. Try a
+    # functools.partial version of this.
     # TODO: factor pis out; redo comments to explain excision of v-independent
     # terms
 
@@ -786,6 +1038,7 @@ def reich(v, va, vb, ka, Wa, Wb, pa):
     A traslation of the actual VB code used in WINDNMR. Was used for error
     checking. Scheduled for deletion.
     """
+    # TODO: delete when no longer needed
     # print('Reich was entered')
     PI = np.pi
     R21 = PI * Wa
@@ -819,6 +1072,7 @@ class TwoSinglets:
     Attempt at using a class instead of separate functions to represent two
     uncoupled spin-1/2 nuclei undergoing exchange.
     """
+    # TODO: currently not seeing any advantage to this approach
 
     pi = np.pi
     pi_squared = pi ** 2
@@ -892,14 +1146,33 @@ def dnmr_AB(v, v1, v2, J, k, W):
     A translation of the equation from Weil's JCE paper (NOTE: Reich pointed
     out that it has a sign typo!).
     p. 14, for the uncoupled 2-site exchange simulation.
-    v: frequency whose amplitude is to be calculated
-    va, vb: frequencies of a and b nuclei (slow exchange limit, no coupling;
-    va > vb)
-    ka: rate constant for state A--> state B
-    pa: fraction of population in state Adv: frequency difference (va - vb)
-    between a and b singlets (slow exchange)
-    T2a, T2b: T2 (transverse relaxation time) for each nuclei
-    returns: amplitude at frequency v
+
+    Arguments
+    ---------
+
+    v : float or array-like
+        a frequency (x coordinate) or array of frequencies at which an
+        amplitude (y coordinate) is to be calculated.
+    float v1, v2 :
+        frequencies of a and b nuclei (at the slow exchange limit,
+        in the absence of coupling; `va` > `vb`)
+    J : float
+        the coupling constant between the two nuclei.
+    k : float
+        rate constant for state A--> state B
+    W : float
+        peak widths at half height (slow exchange limit).
+
+    Returns
+    -------
+    float
+        amplitude at frequency `v`.
+
+    Notes
+    -----
+
+    References
+    ----------
     """
     pi = np.pi
     vo = (v1 + v2) / 2

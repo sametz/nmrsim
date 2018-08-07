@@ -1,8 +1,9 @@
 from nmrtools.nmrmath import *
+from nmrtools.nmrmath import _normalize  # temporary
 import numpy as np
 from scipy.sparse import lil_matrix
 from scipy.linalg import eigh
-from .testdata import TWOSPIN_SLOW, AB_WINDNMR
+from tests.testdata import TWOSPIN_SLOW, AB_WINDNMR
 # , TWOSPIN_COALESCE, TWOSPIN_FAST omitted for now
 
 # The attempt to put pytest code in a class failed. For whatever reason,
@@ -193,9 +194,9 @@ def test_multiplet():
         (460.5, 0.0625), (453.5, 0.0625), (460.5, 0.0625),
         (460.5, 0.0625), (467.5, 0.0625),
         (293.0, 0.75), (300.0, 0.75), (300.0, 0.75), (307.0, 0.75)])
-    v1 = [(1200, 2)]
-    v2 = [(450, 2)]
-    v3 = [(300, 3)]
+    v1 = (1200, 2)
+    v2 = (450, 2)
+    v3 = (300, 3)
     J12 = 7
     J23 = 7
     m1 = multiplet(v1, [(J12, 2)])
@@ -232,10 +233,10 @@ def test_reduce_peaks():
 
 def test_normalize():
     intensities = [1, 3, 4]
-    normalize(intensities)
+    _normalize(intensities)
     assert intensities == [0.125, 0.375, 0.5]
     double_intensities = [1, 3, 3, 1]
-    normalize(double_intensities, 2)
+    _normalize(double_intensities, 2)
     assert double_intensities == [0.25, 0.75, 0.75, 0.25]
 
 
@@ -268,7 +269,7 @@ def test_convert_refspec():
 
 
 def test_AB():
-    from uw_dnmr.windnmr_defaults import ABdict
+    from .windnmr_defaults import ABdict
     refspec = [(134.39531364385073, 0.3753049524455757),
                (146.39531364385073, 1.6246950475544244),
                (153.60468635614927, 1.6246950475544244),
@@ -289,7 +290,7 @@ def test_AB():
 
 
 def test_AB2():
-    from uw_dnmr.windnmr_defaults import dcp
+    from .windnmr_defaults import dcp
     refspec = [(-8.892448165479056, 0.5434685012269458),
                (-2.300397938882746, 0.7780710767178313),
                (0.0, 1),
@@ -312,7 +313,7 @@ def test_AB2():
 
 
 def test_ABX():
-    from uw_dnmr.windnmr_defaults import ABXdict
+    from .windnmr_defaults import ABXdict
     refspec = sorted([(-9.48528137423857, 0.2928932188134524),
                       (-6.816653826391969, 0.44529980377477096),
                       (2.5147186257614305, 1.7071067811865475),
@@ -340,7 +341,7 @@ def test_ABX():
 
 # AMX3 should be removed from codebase in future refactor
 # def test_AMX3():
-#     from uw_dnmr.windnmr_defaults import AMX3dict
+#     from .windnmr_defaults import AMX3dict
 #     refspec = sorted(
 #         [(136.2804555427071, 0.20634892168199606),
 #          (143.2804555427071, 0.6190467650459882),
@@ -374,7 +375,7 @@ def test_ABX():
 
 
 def test_ABX3():
-    from uw_dnmr.windnmr_defaults import ABX3dict
+    from .windnmr_defaults import ABX3dict
     refspec = (
         [(124.2804555427071, 0.04365107831800394),
          (131.2804555427071, 0.13095323495401182),
@@ -394,12 +395,12 @@ def test_ABX3():
          (175.7195444572929, 0.04365107831800394)]
     )
 
-    testspec = sorted(ABX3(**ABX3dict, normalize_=False))
+    testspec = sorted(ABX3(**ABX3dict, normalize=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
 def test_AAXX():
-    from uw_dnmr.windnmr_defaults import AAXXdict
+    from .windnmr_defaults import AAXXdict
     refspec = sorted(
         [(173.0, 2), (127.0, 2), (169.6828402774396, 0.4272530047525843),
          (164.6828402774396, 0.5727469952474157),
@@ -411,12 +412,12 @@ def test_AAXX():
          (116.39905215399081, 0.20380477476124093)]
     )
 
-    testspec = sorted(AAXX(**AAXXdict, normalize_=False))
+    testspec = sorted(AAXX(**AAXXdict, normalize=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
 def test_AABB():
-    from uw_dnmr.windnmr_defaults import AABBdict
+    from .windnmr_defaults import AABBdict
     refspec = (
         [(92.22140228380421, 0.10166662880050205),
          (96.52049869174374, 0.49078895567299158),
@@ -444,7 +445,7 @@ def test_AABB():
          (207.77859771619566, 0.10166662880050205)]
     )
 
-    testspec = sorted(AABB(**AABBdict, normalize_=False))
+    testspec = sorted(AABB(**AABBdict, normalize=False))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 #############################################################################

@@ -4,4 +4,5 @@ nmrtools/.cache/
 .cache
 /coverage/
 __pycache__/
-/.pytest_cache/
+*.pyc
+.pytest_cache/
