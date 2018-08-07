@@ -13,3 +13,5 @@ The overall API has not been settled on. Currently, there are two modules:
 
 TODO: Elaborate.
 """
+from . import nmrmath
+from . import nmrplot
