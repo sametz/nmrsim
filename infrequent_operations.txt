@@ -10,3 +10,6 @@ When using pipenv, matplotlib on OSX gives an error. The solution is to edit the
 
  https://stackoverflow.com/questions/49367013/pipenv-install-matplotlib#
 
+Exporting conda env to a .yml:
+
+    conda env export --no-builds > environment.yml
