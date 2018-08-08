@@ -80,7 +80,7 @@ def test_h_save_and_load():
     np.testing.assert_array_equal(test_h, result_h)
 
 
-def test_new_h():
+def test_new_hamiltonian():
     freqlist = [430, 265, 300]
     freqarray = np.array(freqlist)
     J = np.zeros((3, 3))
@@ -92,7 +92,7 @@ def test_new_h():
     # print(J.todense())
     v = [-491.625, -230.963, -200.306, -72.106, 61.883, 195.524, 234.217,
          503.375]
-    H = new_h(freqarray, J)
+    H = new_hamiltonian(freqarray, J)
     # print(H).real
     eigvals = np.linalg.eigvals(H)
     eigvals.sort()
@@ -103,11 +103,11 @@ def test_new_h():
 def test_8spin():
     v, J = spin8()
     start1 = time.time()
-    H1 = new_h(v, J)
+    H1 = new_hamiltonian(v, J)
     end1 = time.time()
 
     start2 = time.time()
-    H2 = new_h(v, J)
+    H2 = new_hamiltonian(v, J)
     end2 = time.time()
 
     print('first run t: ', end1 - start1)

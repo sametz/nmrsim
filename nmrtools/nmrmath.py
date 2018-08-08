@@ -179,22 +179,111 @@ def hamiltonian(freqlist, couplings):
 
 
 def h_load(n):
-    filename = f'h{n}.npy'
+    filename = f'h{n}.npz'
     # with open(filename, 'rb') as f:
         # The protocol version used is detected automatically, so we do not
         # have to specify it.
         # h = pickle.load(f)
-    h = np.load(filename)
-    return h
+    # h = np.load(filename)
+    operators = np.load(filename)
+    Lz = operators['Lz']
+    Lproduct = operators['Lproduct']
+    return Lz, Lproduct
 
 
-def h_save(n, h):
-    filename = f'h{n}.npy'
+def h_save(n, Lz, Lproduct):
+    filename = f'h{n}.npz'
     print(f'saving {filename}')
     with open(filename, 'wb') as f:
         # Pickle the 'data' dictionary using the highest protocol available.
         # pickle.dump(h, f, pickle.HIGHEST_PROTOCOL)
-        np.save(f, h)
+        np.savez(f, Lz=Lz, Lproduct=Lproduct)
+
+
+def so_pickle(n, Lz, Lproduct):
+    filename_Lz = f'Lz{n}.pkl'
+    filename_Lproduct = f'Lproduct{n}.pkl'
+    with open(filename_Lz, 'wb') as f:
+        pickle.dump(Lz, f, pickle.HIGHEST_PROTOCOL)
+    with open(filename_Lproduct, 'wb') as f:
+        pickle.dump(Lproduct, f, pickle.HIGHEST_PROTOCOL)
+
+
+def so_unpickle(n):
+    filename_Lz = f'Lz{n}.pkl'
+    filename_Lproduct = f'Lproduct{n}.pkl'
+    Lz = np.load(filename_Lz)
+    Lproduct = np.load(filename_Lproduct)
+    return Lz, Lproduct
+
+
+def spin_operators(nspins):
+    # Define Pauli matrices
+    try:
+        Lz, Lproduct = so_unpickle(nspins)
+        print(f'h{nspins} loaded')
+        return Lz, Lproduct
+    except FileNotFoundError:
+        print(f'Creating h{nspins}')
+
+    sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+    sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+    sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+    unit = np.matrix([[1, 0], [0, 1]])
+
+    # The following empty arrays will be used to store the
+    # Cartesian spin operators.
+    Lx = np.empty((1, nspins), dtype='object')
+    Ly = np.empty((1, nspins), dtype='object')
+    Lz = np.empty((1, nspins), dtype='object')
+
+    for n in range(nspins):
+        Lx[0, n] = 1
+        Ly[0, n] = 1
+        Lz[0, n] = 1
+        for k in range(nspins):
+            if k == n:                                  # Diagonal element
+                Lx[0, n] = np.kron(Lx[0, n], sigma_x)
+                Ly[0, n] = np.kron(Ly[0, n], sigma_y)
+                Lz[0, n] = np.kron(Lz[0, n], sigma_z)
+            else:                                       # Off-diagonal element
+                Lx[0, n] = np.kron(Lx[0, n], unit)
+                Ly[0, n] = np.kron(Ly[0, n], unit)
+                Lz[0, n] = np.kron(Lz[0, n], unit)
+
+    Lcol = np.vstack((Lx, Ly, Lz)).real
+    Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+    Lproduct = np.dot(Lrow, Lcol)
+
+    so_pickle(nspins, Lz, Lproduct)
+
+    return Lz, Lproduct
+
+
+def new_hamiltonian(freqlist, couplings):
+    nspins = len(freqlist)
+    # Hamiltonian operator
+    Lz, Lproduct = spin_operators(nspins)
+    H = np.zeros((2**nspins, 2**nspins))
+
+    # Add Zeeman interactions:
+    for n in range(nspins):
+        H = H + freqlist[n] * Lz[0, n]
+
+    # Scalar couplings
+
+    # Testing with MATLAB discovered J must be /2.
+    # Believe it is related to the fact that in the SpinDynamics.org simulation
+    # freqs are *2pi, but Js by pi only.
+    scalars = 0.5 * couplings
+    scalars = np.multiply(scalars, Lproduct)
+    for n in range(nspins):
+        for k in range(nspins):
+            H += scalars[n, k].real
+    # h_save(nspins, H)
+
+    return H
+
 
 def new_h(freqlist, couplings):
     """
