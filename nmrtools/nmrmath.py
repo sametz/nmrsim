@@ -19,9 +19,10 @@ Brown, K.C.; Tyson, R. L.; Weil, J. A. *J. Chem. Educ.* **1998**, *75*, 1632.
 the last term is minus-over-plus, not plus-over-minus.)
 """
 import pickle
-import numpy as np
 from math import sqrt
 
+import h5py
+import numpy as np
 from scipy.linalg import eigh
 from scipy.sparse import kron, csc_matrix, csr_matrix, lil_matrix, bmat
 
@@ -217,15 +218,114 @@ def so_unpickle(n):
     return Lz, Lproduct
 
 
+def so_save(n, Lz, Lproduct):
+    filename_Lz = f'Lz{n}.npy'
+    filename_Lproduct = f'Lproduct{n}.npy'
+    with open(filename_Lz, 'wb') as f:
+        np.save(f, Lz)
+    with open(filename_Lproduct, 'wb') as f:
+        np.save(f, Lproduct)
+
+
+def so_load(n):
+    filename_Lz = f'Lz{n}.npy'
+    filename_Lproduct = f'Lproduct{n}.npy'
+    Lz = np.load(filename_Lz)
+    Lproduct = np.load(filename_Lproduct)
+    return Lz, Lproduct
+
+
+def hdf5_save(n, Lz, Lproduct):
+    filename = f'spin{n}.hdf5'
+    print(Lz[0])
+    Lz_array = [np.array(x, float) for x in Lz]
+    with h5py.File(filename, 'w') as hf:
+        hf.create_dataset("Lz", data=Lz_array)
+        hf.create_dataset("Lproduct", data=Lproduct)
+
+
+def hdf5_load(n):
+    filename = f'spin{n}.hdf5'
+    with h5py.File(filename, 'r') as hf:
+        Lz = hf['Lz']
+        Lproduct = hf['Lproduct']
+    return Lz, Lproduct
+
+
+# def sparse_operators(nspins):
+#     """"""
+#     # Define Pauli matrices
+#     try:
+#         Lz, Lproduct = so_load(nspins)
+#         print(f'h{nspins} loaded')
+#         return Lz, Lproduct
+#     except FileNotFoundError:
+#         print('File not found')
+#     except OSError:
+#         print('OSError encountered')
+#     except KeyError:
+#         print('KeyError: could not find record')
+#
+#     print(f'Creating h{nspins}')
+#     # Define Pauli matrices
+#     sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+#     sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+#     sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+#     unit = np.matrix([[1, 0], [0, 1]])
+#
+#     # The following empty arrays will be used to store the
+#     # Cartesian spin operators.
+#     Lx = np.empty((1, nspins), dtype='object')
+#     Ly = np.empty((1, nspins), dtype='object')
+#     Lz = np.empty((1, nspins), dtype='object')
+#
+#     for n in range(nspins):
+#         Lx[0, n] = 1
+#         Ly[0, n] = 1
+#         Lz[0, n] = 1
+#         for k in range(nspins):
+#             if k == n:  # Diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], sigma_x)
+#                 Ly[0, n] = np.kron(Ly[0, n], sigma_y)
+#                 Lz[0, n] = np.kron(Lz[0, n], sigma_z)
+#             else:  # Off-diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], unit)
+#                 Ly[0, n] = np.kron(Ly[0, n], unit)
+#                 Lz[0, n] = np.kron(Lz[0, n], unit)
+#
+#     Lcol = np.vstack((Lx, Ly, Lz)).real
+#     Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+#     Lproduct = np.dot(Lrow, Lcol)
+#
+#     Lz_sparse = []
+#     for i in range(nspins):
+#         print('Lz', i, ': ', Lz[0, i])
+#         print(Lz[0, 1].shape)
+#         Lz_sparse.append(csr_matrix(Lz[0, i], shape=(2**nspins, 2**nspins)))
+#
+#     # Lz_sparse = np.array([csr_matrix(x) for x in Lz])
+#     Lproduct_sparse = csr_matrix(Lproduct)
+#
+#     so_save(nspins, Lz_sparse, Lproduct_sparse)
+#
+#     return Lz, Lproduct
+
+
 def spin_operators(nspins):
-    # Define Pauli matrices
+    """"""
     try:
-        Lz, Lproduct = so_unpickle(nspins)
+        Lz, Lproduct = hdf5_load(nspins)
         print(f'h{nspins} loaded')
         return Lz, Lproduct
     except FileNotFoundError:
-        print(f'Creating h{nspins}')
+        print('File not found')
+    except OSError:
+        print('OSError encountered')
+    except KeyError:
+        print('KeyError: could not find record')
 
+    print(f'Creating h{nspins}')
+    # Define Pauli matrices
     sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
     sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
     sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
@@ -255,7 +355,7 @@ def spin_operators(nspins):
     Lrow = Lcol.T  # As opposed to sparse version of code, this works!
     Lproduct = np.dot(Lrow, Lcol)
 
-    so_pickle(nspins, Lz, Lproduct)
+    hdf5_save(nspins, Lz, Lproduct)
 
     return Lz, Lproduct
 
@@ -263,7 +363,7 @@ def spin_operators(nspins):
 def new_hamiltonian(freqlist, couplings):
     nspins = len(freqlist)
     # Hamiltonian operator
-    Lz, Lproduct = spin_operators(nspins)
+    Lz, Lproduct = sparse_operators(nspins)
     H = np.zeros((2**nspins, 2**nspins))
 
     # Add Zeeman interactions:
@@ -360,6 +460,97 @@ def new_h(freqlist, couplings):
 
     return H
 
+
+def sparse_operators(nspins):
+    """"""
+    try:
+        Lz, Lproduct = so_load(nspins)
+        print(f'h{nspins} loaded')
+        return Lz, Lproduct
+    except FileNotFoundError:
+        print('File not found')
+    except OSError:
+        print('OSError encountered')
+    except KeyError:
+        print('KeyError: could not find record')
+
+    print(f'Creating h{nspins}')
+    # Define Pauli matrices
+    sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+    sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+    sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+    unit = np.matrix([[1, 0], [0, 1]])
+
+    # The following empty arrays will be used to store the
+    # Cartesian spin operators.
+    Lx = np.empty((nspins), dtype='object')
+    Ly = np.empty((nspins), dtype='object')
+    Lz = np.empty((nspins), dtype='object')
+
+    for n in range(nspins):
+        Lx[n] = 1
+        Ly[n] = 1
+        Lz[n] = 1
+        for k in range(nspins):
+            if k == n:  # Diagonal element
+                Lx[n] = np.kron(Lx[n], sigma_x)
+                Ly[n] = np.kron(Ly[n], sigma_y)
+                Lz[n] = np.kron(Lz[n], sigma_z)
+            else:  # Off-diagonal element
+                Lx[n] = np.kron(Lx[n], unit)
+                Ly[n] = np.kron(Ly[n], unit)
+                Lz[n] = np.kron(Lz[n], unit)
+
+    #     print('Lx: ', Lx)
+    #     print('Ly: ', Ly)
+    #     print('Lz: ', Lz)
+    Lcol = np.vstack((Lx, Ly, Lz)).real
+    Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+    #     print('Lcol: ', Lcol.shape)
+    #     print(Lcol)
+    #     print('Lrow: ', Lrow.shape)
+    #     print(Lrow)
+    Lproduct = np.dot(Lrow, Lcol)
+    #     print('Lproduct: ', Lproduct)
+    # print(type(Lproduct), Lproduct.shape)
+    # print(type(Lproduct[0, 0]), Lproduct[0, 0].shape)
+    Lz_sparse = [csr_matrix(z) for z in Lz]
+
+    for i in range(nspins):
+        for j in range(nspins):
+            Lproduct[i, j] = csr_matrix(Lproduct[i, j])
+
+    #     Lproduct_sparse = csr_matrix(Lproduct)
+    #     print(Lz_sparse)
+    # print(Lproduct)
+    so_save(nspins, Lz_sparse, Lproduct)
+
+    return Lz_sparse, Lproduct
+
+
+def sparse_hamiltonian(freqlist, couplings):
+    nspins = len(freqlist)
+    # Hamiltonian operator
+    Lz, Lproduct = sparse_operators(nspins)
+    H = np.zeros((2**nspins, 2**nspins))
+
+    # Add Zeeman interactions:
+    for n in range(nspins):
+        H = H + freqlist[n] * Lz[n]
+
+    # Scalar couplings
+
+    # Testing with MATLAB discovered J must be /2.
+    # Believe it is related to the fact that in the SpinDynamics.org simulation
+    # freqs are *2pi, but Js by pi only.
+    scalars = 0.5 * couplings
+    scalars = np.multiply(scalars, Lproduct)
+    for n in range(nspins):
+        for k in range(nspins):
+            H += scalars[n, k].real
+    # h_save(nspins, H)
+
+    return H
 
 
 def simsignals(H, nspins):

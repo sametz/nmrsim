@@ -13,3 +13,4 @@ matplotlib = "*"
 [packages]
 numpy = "*"
 scipy = "*"
+"h5py" = "*"

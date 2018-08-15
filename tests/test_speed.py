@@ -91,6 +91,51 @@ def spin10():
     return v, J
 
 
+def spin11():
+    # Based on 2Z-octa-2, 7-dienoate. See Taber's "Organic Spectroscopic
+    # Structure Determination, pp. 119-120.
+    d = np.array([1.7, 1.7, 2.2, 2.2, 2.5, 2.5, 4.89, 5.01, 5.77, 5.68, 6.14])
+    v = d * 300  # MHz
+    J = np.zeros((11, 11))
+    J[0, 1] = -12
+    J[0, 2] = 7
+    J[0, 3] = 7
+    J[0, 4] = 7
+    J[0, 5] = 7
+    # J[0, 6] = 0
+    # J[0, 7] = 0
+    J[1, 2] = 7
+    J[1, 3] = 7
+    J[1, 4] = 7
+    J[1, 5] = 7
+    # J[1, 6] = 0
+    # J[1, 7] = 3
+    J[2, 3] = -12
+    # J[2, 4] = 0
+    J[2, 5] = 3
+    # J[2, 6] = 0
+    # J[2, 7] = 0
+    J[2, 8] = 7.5
+    # J[3, 4] = 0
+    # J[3, 5] = 5
+    # J[3, 6] = 0
+    # J[3, 7] = 0
+    J[3, 8] = 7.5
+    J[4, 5] = -12
+    # J[4, 6] = 0
+    # J[4, 7] = 0
+    J[4, 10] = 7.5
+    # J[5, 6] = 0
+    # J[5, 7] = 0
+    J[5, 10] = 7.5
+    J[6, 7] = 1
+    J[6, 8] = 15.8
+    J[7, 8] = 10.5
+    J[9, 10] = 11.5
+    J = J + J.T
+    return v, J
+
+
 def test_8spin():
     v, J = spin8()
     start1 = time.time()
@@ -108,7 +153,7 @@ def test_8spin():
 
 
 def test_new_hamiltonian_speed():
-    v, J = spin10()
+    v, J = spin8()
     start1 = time.time()
     H = new_hamiltonian(v, J)
     end1 = time.time()
@@ -117,9 +162,18 @@ def test_new_hamiltonian_speed():
 
 
 def test_hamiltonian_speed():
-    v, J = spin10()
+    v, J = spin11()
     start1 = time.time()
     H = hamiltonian(v, J)
+    end1 = time.time()
+    print('time: ', end1 - start1)
+    assert H is not None
+
+
+def test_sparse_hamiltonian_speed():
+    v, J = spin11()
+    start1 = time.time()
+    H = sparse_hamiltonian(v, J)
     end1 = time.time()
     print('time: ', end1 - start1)
     assert H is not None

@@ -194,14 +194,54 @@ def test_new_hamiltonian():
     np.testing.assert_array_almost_equal(eigvals, v, decimal=3)
 
 
+def test_sparse_hamiltonian():
+    freqlist = [430, 265, 300]
+    freqarray = np.array(freqlist)
+    J = np.zeros((3, 3))
+    J[0, 1] = 7
+    J[0, 2] = 15
+    J[1, 2] = 1.5
+    J = J + J.T
+    # print(freqlist)
+    # print(J.todense())
+    v = [-491.625, -230.963, -200.306, -72.106, 61.883, 195.524, 234.217,
+         503.375]
+    H = sparse_hamiltonian(freqarray, J)
+    print(H.real)
+    eigvals = np.linalg.eigvals(H)
+    eigvals.sort()
+    np.testing.assert_array_equal(eigvals, sorted(eigvals))
+    np.testing.assert_array_almost_equal(eigvals, v, decimal=3)
+
+
+def test_2spin():
+    # currently broken: check AB result
+    from nmrtools.nmrmath import AB
+    freqlist = [142.5, 157.5]
+    freqarray = np.array(freqlist)
+    J = np.zeros((2, 2))
+    J[0, 1] = 12
+    J = J + J.T
+    expected = AB(12, 15, 150)
+    # v = [-491.625, -230.963, -200.306, -72.106, 61.883, 195.524, 234.217,
+    #      503.375]
+    v = [freq for freq, int in expected]
+    H = new_hamiltonian(freqarray, J)
+    # print(H).real
+    eigvals = np.linalg.eigvals(H)
+    eigvals.sort()
+    np.testing.assert_array_equal(eigvals, sorted(eigvals))
+    np.testing.assert_array_almost_equal(eigvals, v, decimal=3)
+
+
 def test_8spin():
     v, J = spin8()
     start1 = time.time()
-    H1 = new_hamiltonian(v, J)
+    H1 = sparse_hamiltonian(v, J)
     end1 = time.time()
 
     start2 = time.time()
-    H2 = new_hamiltonian(v, J)
+    H2 = sparse_hamiltonian(v, J)
     end2 = time.time()
 
     print('first run t: ', end1 - start1)
@@ -216,11 +256,11 @@ def test_10spin():
     # print(J)
     # assert 1 == 1
     start1 = time.time()
-    H1 = new_hamiltonian(v, J)
+    H1 = sparse_hamiltonian(v, J)
     end1 = time.time()
 
     start2 = time.time()
-    H2 = new_hamiltonian(v, J)
+    H2 = sparse_hamiltonian(v, J)
     end2 = time.time()
 
     print('first run t: ', end1 - start1)
@@ -246,3 +286,4 @@ def test_11spin():
     print('second run t: ', end2 - start2)
     print((end1 - start1) / (end2 - start2), ' speedup')
     np.testing.assert_array_almost_equal(H1, H2, decimal=3)
+
