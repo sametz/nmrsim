@@ -10,4 +10,10 @@ is far away in chemical shift, AAXX that only shows A, etc.
 nmrtools.dnmr for dynamic nmr simulations
 nmrtools.plt for plotting utilities
 
+Some OOP to make user-friendly classes? e.g.:
+    SpinSystem: holds v/J data inputs and spectrum/lineshape results
+    Spectrum: holds multiple spin system results (note: spectrometer frequency would have to be identical across the
+    spin systems).
 
+Consider an easy toggle for first- vs. second-order spinsystem calculations. The same v, J inputs could be used either
+for a qm calculation, or a first-order interpretation.

@@ -12,3 +12,11 @@ When using pipenv, matplotlib on OSX gives an error. The solution is to edit the
 Exporting conda env to a .yml:
 
     conda env export --no-builds > environment.yml
+
+interactive ipywidgets not appearing in Jupyter:
+
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+    this may require:
+        conda install nodejs
+    and may also require an npm install.
