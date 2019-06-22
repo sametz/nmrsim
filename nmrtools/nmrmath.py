@@ -21,7 +21,7 @@ the last term is minus-over-plus, not plus-over-minus.)
 import pickle
 from math import sqrt
 
-import h5py
+# import h5py  # deprecated?
 import numpy as np
 from scipy.linalg import eigh
 from scipy.sparse import kron, csc_matrix, csr_matrix, lil_matrix, bmat
