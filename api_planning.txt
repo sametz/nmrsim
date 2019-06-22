@@ -9,3 +9,5 @@ nmrtools.partial for partial solutions? Thinking eg. of the ABX that assumes X
 is far away in chemical shift, AAXX that only shows A, etc.
 nmrtools.dnmr for dynamic nmr simulations
 nmrtools.plt for plotting utilities
+
+

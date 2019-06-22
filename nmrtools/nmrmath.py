@@ -18,10 +18,11 @@ Brown, K.C.; Tyson, R. L.; Weil, J. A. *J. Chem. Educ.* **1998**, *75*, 1632.
 (NOTE: Hans Reich pointed out that the paper has a sign typo in Equation (2b)!
 the last term is minus-over-plus, not plus-over-minus.)
 """
-
-import numpy as np
+import pickle
 from math import sqrt
 
+# import h5py  # deprecated?
+import numpy as np
 from scipy.linalg import eigh
 from scipy.sparse import kron, csc_matrix, csr_matrix, lil_matrix, bmat
 
@@ -34,7 +35,7 @@ def popcount(n=0):
     """
     Computes the popcount (binary Hamming weight) of integer `n`.
 
-    Arguments
+    Parameters
     ---------
     n : a base-10 integer
 
@@ -66,7 +67,7 @@ def is_allowed(m=0, n=0):
     in the binary number representation. The Hamming weight is the number of
     bits flipped.
 
-    Arguments
+    Parameters
     ---------
     m, n : int
 
@@ -88,7 +89,7 @@ def transition_matrix(n):
     from spin state i to spin state j is allowed or forbidden.
     See the ``is_allowed`` function for more information.
 
-    Arguments
+    Parameters
     ---------
     n : dimension of the n,n matrix (i.e. number of possible spin states).
 
@@ -109,11 +110,11 @@ def transition_matrix(n):
     return T
 
 
-def hamiltonian(freqlist, couplings):
+def hamiltonian_slow(freqlist, couplings):
     """
     Computes the spin Hamiltonian for `n` spin-1/2 nuclei.
 
-    Arguments
+    Parameters
     ---------
     freqlist : array-like
         a list of frequencies in Hz of length `n`
@@ -178,12 +179,406 @@ def hamiltonian(freqlist, couplings):
     return H
 
 
+# def h_load(n):
+#     filename = f'h{n}.npz'
+#     # with open(filename, 'rb') as f:
+#         # The protocol version used is detected automatically, so we do not
+#         # have to specify it.
+#         # h = pickle.load(f)
+#     # h = np.load(filename)
+#     operators = np.load(filename)
+#     Lz = operators['Lz']
+#     Lproduct = operators['Lproduct']
+#     return Lz, Lproduct
+#
+#
+# def h_save(n, Lz, Lproduct):
+#     filename = f'h{n}.npz'
+#     print(f'saving {filename}')
+#     with open(filename, 'wb') as f:
+#         # Pickle the 'data' dictionary using the highest protocol available.
+#         # pickle.dump(h, f, pickle.HIGHEST_PROTOCOL)
+#         np.savez(f, Lz=Lz, Lproduct=Lproduct)
+#
+#
+# def so_pickle(n, Lz, Lproduct):
+#     filename_Lz = f'Lz{n}.pkl'
+#     filename_Lproduct = f'Lproduct{n}.pkl'
+#     with open(filename_Lz, 'wb') as f:
+#         pickle.dump(Lz, f, pickle.HIGHEST_PROTOCOL)
+#     with open(filename_Lproduct, 'wb') as f:
+#         pickle.dump(Lproduct, f, pickle.HIGHEST_PROTOCOL)
+#
+#
+# def so_unpickle(n):
+#     filename_Lz = f'Lz{n}.pkl'
+#     filename_Lproduct = f'Lproduct{n}.pkl'
+#     Lz = np.load(filename_Lz)
+#     Lproduct = np.load(filename_Lproduct)
+#     return Lz, Lproduct
+
+
+def so_save(n, Lz, Lproduct):
+    filename_Lz = f'Lz{n}.npy'
+    filename_Lproduct = f'Lproduct{n}.npy'
+    with open(filename_Lz, 'wb') as f:
+        np.save(f, Lz)
+    with open(filename_Lproduct, 'wb') as f:
+        np.save(f, Lproduct)
+
+
+def so_load(n):
+    filename_Lz = f'Lz{n}.npy'
+    filename_Lproduct = f'Lproduct{n}.npy'
+    Lz = np.load(filename_Lz)
+    Lproduct = np.load(filename_Lproduct)
+    return Lz, Lproduct
+
+
+# def hdf5_save(n, Lz, Lproduct):
+#     filename = f'spin{n}.hdf5'
+#     print(Lz[0])
+#     Lz_array = [np.array(x, float) for x in Lz]
+#     with h5py.File(filename, 'w') as hf:
+#         hf.create_dataset("Lz", data=Lz_array)
+#         hf.create_dataset("Lproduct", data=Lproduct)
+#
+#
+# def hdf5_load(n):
+#     filename = f'spin{n}.hdf5'
+#     with h5py.File(filename, 'r') as hf:
+#         Lz = hf['Lz']
+#         Lproduct = hf['Lproduct']
+#     return Lz, Lproduct
+
+
+# def sparse_operators(nspins):
+#     """"""
+#     # Define Pauli matrices
+#     try:
+#         Lz, Lproduct = so_load(nspins)
+#         print(f'h{nspins} loaded')
+#         return Lz, Lproduct
+#     except FileNotFoundError:
+#         print('File not found')
+#     except OSError:
+#         print('OSError encountered')
+#     except KeyError:
+#         print('KeyError: could not find record')
+#
+#     print(f'Creating h{nspins}')
+#     # Define Pauli matrices
+#     sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+#     sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+#     sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+#     unit = np.matrix([[1, 0], [0, 1]])
+#
+#     # The following empty arrays will be used to store the
+#     # Cartesian spin operators.
+#     Lx = np.empty((1, nspins), dtype='object')
+#     Ly = np.empty((1, nspins), dtype='object')
+#     Lz = np.empty((1, nspins), dtype='object')
+#
+#     for n in range(nspins):
+#         Lx[0, n] = 1
+#         Ly[0, n] = 1
+#         Lz[0, n] = 1
+#         for k in range(nspins):
+#             if k == n:  # Diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], sigma_x)
+#                 Ly[0, n] = np.kron(Ly[0, n], sigma_y)
+#                 Lz[0, n] = np.kron(Lz[0, n], sigma_z)
+#             else:  # Off-diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], unit)
+#                 Ly[0, n] = np.kron(Ly[0, n], unit)
+#                 Lz[0, n] = np.kron(Lz[0, n], unit)
+#
+#     Lcol = np.vstack((Lx, Ly, Lz)).real
+#     Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+#     Lproduct = np.dot(Lrow, Lcol)
+#
+#     Lz_sparse = []
+#     for i in range(nspins):
+#         print('Lz', i, ': ', Lz[0, i])
+#         print(Lz[0, 1].shape)
+#         Lz_sparse.append(csr_matrix(Lz[0, i], shape=(2**nspins, 2**nspins)))
+#
+#     # Lz_sparse = np.array([csr_matrix(x) for x in Lz])
+#     Lproduct_sparse = csr_matrix(Lproduct)
+#
+#     so_save(nspins, Lz_sparse, Lproduct_sparse)
+#
+#     return Lz, Lproduct
+
+
+# def spin_operators(nspins):
+#     """"""
+#     try:
+#         Lz, Lproduct = hdf5_load(nspins)
+#         print(f'h{nspins} loaded')
+#         return Lz, Lproduct
+#     except FileNotFoundError:
+#         print('File not found')
+#     except OSError:
+#         print('OSError encountered')
+#     except KeyError:
+#         print('KeyError: could not find record')
+#
+#     print(f'Creating h{nspins}')
+#     # Define Pauli matrices
+#     sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+#     sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+#     sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+#     unit = np.matrix([[1, 0], [0, 1]])
+#
+#     # The following empty arrays will be used to store the
+#     # Cartesian spin operators.
+#     Lx = np.empty((1, nspins), dtype='object')
+#     Ly = np.empty((1, nspins), dtype='object')
+#     Lz = np.empty((1, nspins), dtype='object')
+#
+#     for n in range(nspins):
+#         Lx[0, n] = 1
+#         Ly[0, n] = 1
+#         Lz[0, n] = 1
+#         for k in range(nspins):
+#             if k == n:                                  # Diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], sigma_x)
+#                 Ly[0, n] = np.kron(Ly[0, n], sigma_y)
+#                 Lz[0, n] = np.kron(Lz[0, n], sigma_z)
+#             else:                                       # Off-diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], unit)
+#                 Ly[0, n] = np.kron(Ly[0, n], unit)
+#                 Lz[0, n] = np.kron(Lz[0, n], unit)
+#
+#     Lcol = np.vstack((Lx, Ly, Lz)).real
+#     Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+#     Lproduct = np.dot(Lrow, Lcol)
+#
+#     hdf5_save(nspins, Lz, Lproduct)
+#
+#     return Lz, Lproduct
+
+
+# def new_hamiltonian(freqlist, couplings):
+#     nspins = len(freqlist)
+#     # Hamiltonian operator
+#     Lz, Lproduct = sparse_operators(nspins)
+#     H = np.zeros((2**nspins, 2**nspins))
+#
+#     # Add Zeeman interactions:
+#     for n in range(nspins):
+#         H = H + freqlist[n] * Lz[0, n]
+#
+#     # Scalar couplings
+#
+#     # Testing with MATLAB discovered J must be /2.
+#     # Believe it is related to the fact that in the SpinDynamics.org simulation
+#     # freqs are *2pi, but Js by pi only.
+#     scalars = 0.5 * couplings
+#     scalars = np.multiply(scalars, Lproduct)
+#     for n in range(nspins):
+#         for k in range(nspins):
+#             H += scalars[n, k].real
+#     # h_save(nspins, H)
+#
+#     return H
+#
+#
+# def new_h(freqlist, couplings):
+#     """
+#     Computes the spin Hamiltonian for `n` spin-1/2 nuclei.
+#
+#     Parameters
+#     ---------
+#     freqlist : array-like
+#         a list of frequencies in Hz of length `n`
+#     couplings : array-like
+#         an `n` x `n` array of coupling constants in Hz
+#
+#     Returns
+#     -------
+#     ndarray
+#         a 2-D array for the spin Hamiltonian
+#     """
+#     nspins = len(freqlist)
+#     try:
+#         H = h_load(nspins)
+#         print(f'h{nspins} loaded')
+#         return H
+#     except FileNotFoundError:
+#         print(f'Creating h{nspins}')
+#
+#     # Define Pauli matrices
+#     sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+#     sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+#     sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+#     unit = np.matrix([[1, 0], [0, 1]])
+#
+#     # The following empty arrays will be used to store the
+#     # Cartesian spin operators.
+#     Lx = np.empty((1, nspins), dtype='object')
+#     Ly = np.empty((1, nspins), dtype='object')
+#     Lz = np.empty((1, nspins), dtype='object')
+#
+#     for n in range(nspins):
+#         Lx[0, n] = 1
+#         Ly[0, n] = 1
+#         Lz[0, n] = 1
+#         for k in range(nspins):
+#             if k == n:                                  # Diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], sigma_x)
+#                 Ly[0, n] = np.kron(Ly[0, n], sigma_y)
+#                 Lz[0, n] = np.kron(Lz[0, n], sigma_z)
+#             else:                                       # Off-diagonal element
+#                 Lx[0, n] = np.kron(Lx[0, n], unit)
+#                 Ly[0, n] = np.kron(Ly[0, n], unit)
+#                 Lz[0, n] = np.kron(Lz[0, n], unit)
+#
+#     Lcol = np.vstack((Lx, Ly, Lz)).real
+#     Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+#     Lproduct = np.dot(Lrow, Lcol)
+#
+#     # Hamiltonian operator
+#     H = np.zeros((2**nspins, 2**nspins))
+#
+#     # Add Zeeman interactions:
+#     for n in range(nspins):
+#         H = H + freqlist[n] * Lz[0, n]
+#
+#     # Scalar couplings
+#
+#     # Testing with MATLAB discovered J must be /2.
+#     # Believe it is related to the fact that in the SpinDynamics.org simulation
+#     # freqs are *2pi, but Js by pi only.
+#     scalars = 0.5 * couplings
+#     scalars = np.multiply(scalars, Lproduct)
+#     for n in range(nspins):
+#         for k in range(nspins):
+#             H += scalars[n, k].real
+#     h_save(nspins, H)
+#
+#     return H
+
+
+def sparse_operators(nspins):
+    """
+
+    Parameters
+    ----------
+    nspins
+
+    Returns
+    -------
+
+    """
+    try:
+        Lz, Lproduct = so_load(nspins)
+        print(f'h{nspins} loaded')
+        return Lz, Lproduct
+    except FileNotFoundError:
+        print('File not found')
+    except OSError:
+        print('OSError encountered')
+    except KeyError:
+        print('KeyError: could not find record')
+
+    print(f'Creating h{nspins}')
+    # Define Pauli matrices
+    sigma_x = np.matrix([[0, 1 / 2], [1 / 2, 0]])
+    sigma_y = np.matrix([[0, -1j / 2], [1j / 2, 0]])
+    sigma_z = np.matrix([[1 / 2, 0], [0, -1 / 2]])
+    unit = np.matrix([[1, 0], [0, 1]])
+
+    # The following empty arrays will be used to store the
+    # Cartesian spin operators.
+    Lx = np.empty((nspins), dtype='object')
+    Ly = np.empty((nspins), dtype='object')
+    Lz = np.empty((nspins), dtype='object')
+
+    for n in range(nspins):
+        Lx[n] = 1
+        Ly[n] = 1
+        Lz[n] = 1
+        for k in range(nspins):
+            if k == n:  # Diagonal element
+                Lx[n] = np.kron(Lx[n], sigma_x)
+                Ly[n] = np.kron(Ly[n], sigma_y)
+                Lz[n] = np.kron(Lz[n], sigma_z)
+            else:  # Off-diagonal element
+                Lx[n] = np.kron(Lx[n], unit)
+                Ly[n] = np.kron(Ly[n], unit)
+                Lz[n] = np.kron(Lz[n], unit)
+
+    #     print('Lx: ', Lx)
+    #     print('Ly: ', Ly)
+    #     print('Lz: ', Lz)
+    Lcol = np.vstack((Lx, Ly, Lz)).real
+    Lrow = Lcol.T  # As opposed to sparse version of code, this works!
+    #     print('Lcol: ', Lcol.shape)
+    #     print(Lcol)
+    #     print('Lrow: ', Lrow.shape)
+    #     print(Lrow)
+    Lproduct = np.dot(Lrow, Lcol)
+    #     print('Lproduct: ', Lproduct)
+    # print(type(Lproduct), Lproduct.shape)
+    # print(type(Lproduct[0, 0]), Lproduct[0, 0].shape)
+    Lz_sparse = [csr_matrix(z) for z in Lz]
+
+    for i in range(nspins):
+        for j in range(nspins):
+            Lproduct[i, j] = csr_matrix(Lproduct[i, j])
+
+    #     Lproduct_sparse = csr_matrix(Lproduct)
+    #     print(Lz_sparse)
+    # print(Lproduct)
+    so_save(nspins, Lz_sparse, Lproduct)
+
+    return Lz_sparse, Lproduct
+
+
+def hamiltonian(freqlist, couplings):
+    """
+
+    Parameters
+    ----------
+    freqlist
+    couplings
+
+    Returns
+    -------
+
+    """
+    nspins = len(freqlist)
+    # Hamiltonian operator
+    Lz, Lproduct = sparse_operators(nspins)
+    H = np.zeros((2**nspins, 2**nspins))
+
+    # Add Zeeman interactions:
+    for n in range(nspins):
+        H = H + freqlist[n] * Lz[n]
+
+    # Scalar couplings
+
+    # Testing with MATLAB discovered J must be /2.
+    # Believe it is related to the fact that in the SpinDynamics.org simulation
+    # freqs are *2pi, but Js by pi only.
+    scalars = 0.5 * couplings
+    scalars = np.multiply(scalars, Lproduct)
+    for n in range(nspins):
+        for k in range(nspins):
+            H += scalars[n, k].real
+    # h_save(nspins, H)
+
+    return H
+
+
 def simsignals(H, nspins):
     """
     Calculates the eigensolution of the spin Hamiltonian H and, using it,
     returns the allowed transitions as list of (frequency, intensity) tuples.
 
-    Arguments
+    Parameters
     ---------
 
     H : ndarray
@@ -237,7 +632,7 @@ def nspinspec(freqs, couplings, normalize=True):
     Calculates second-order spectral data (freqency and intensity of signals)
     for *n* spin-half nuclei.
 
-    Arguments
+    Parameters
     ---------
     freqs : [float...]
         a list of *n* nuclei frequencies in Hz
@@ -275,7 +670,7 @@ def doublet(plist, J):
     Applies a *J* coupling to each signal in a list of (frequency, intensity)
     signals, creating two half-intensity signals at +/- *J*/2.
 
-    Arguments
+    Parameters
     ---------
     plist : [(float, float)...]
         a list of (frequency{Hz}, intensity) tuples.
@@ -298,7 +693,7 @@ def multiplet(signal, couplings):
     """
     Splits a set of signals into first-order multiplets.
 
-    Arguments
+    Parameters
     ---------
     signal : (float, float)
         a (frequency{Hz}, intensity) tuple;
@@ -327,7 +722,7 @@ def add_peaks(plist):
     Reduces a list of (frequency, intensity) tuples to an
     (average frequency, total intensity) tuple.
 
-    Argument
+    Parameter
     --------
     plist: [(float, float)...]
         a list of (frequency, intensity) tuples
@@ -353,7 +748,7 @@ def reduce_peaks(plist, tolerance=0):
     Takes an ordered list of (x, y) tuples and adds together tuples whose first
     values are within a certain tolerance limit.
 
-    Arguments
+    Parameters
     ---------
     plist : [(float, float)...]
         A *sorted* list of (x, y) tuples (sorted by x)
@@ -388,7 +783,7 @@ def _normalize(intensities, n=1):
     Scale a list of intensities so that they sum to the total number of
     nuclei.
 
-    Arguments
+    Parameters
     ---------
     intensities : [float...]
         A list of intensities.
@@ -404,7 +799,7 @@ def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
     """
     Splits a signal into a first-order multiplet.
 
-    Arguments
+    Parameters
     ---------
     signal : (float, float)
         a (frequency, intensity) tuple.
@@ -424,7 +819,7 @@ def normalize_spectrum(spectrum, n=1):
     Normalize the intensities in a spectrum so that total intensity equals
     value n (nominally the number of nuclei giving rise to the signal).
 
-    Arguments
+    Parameters
     ---------
     spectrum : [(float, float)...]
         a list of (frequency, intensity) tuples.
@@ -453,7 +848,7 @@ def AB(Jab, Vab, Vcentr, normalize=True):
     Calculates the signal frequencies and intensities for two strongly
     coupled protons (Ha and Hb).
 
-    Arguments
+    Parameters
     ---------
     Jab : float
         the coupling constant (Hz) between Ha and Hb
@@ -494,7 +889,7 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
     """
     Calculates signal frequencies and intensities for an AB2 spin system.
 
-    Arguments
+    Parameters
     ---------
     Jab : float
         the Ha-Hb coupling constant (Hz).
@@ -597,7 +992,7 @@ def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize=True):
     return: peaklist of (frequency, intensity) tuples
     Calculates signal frequencies and intensities for an ABX spin system.
 
-    Arguments
+    Parameters
     ---------
     Jab : float
         the Ha-Hb coupling constant (Hz).
@@ -731,7 +1126,7 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize=True):
 
     TODO: explain simplification
 
-    Arguments
+    Parameters
     ---------
     Jab : float
         the Ha-Hb coupling constant (Hz).
@@ -778,7 +1173,7 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
 
     All frequencies are in Hz.
 
-    Arguments
+    Parameters
     ---------
     float Jaa, Jax, Jax, Jax_prime :
         Jaa is the JAA' coupling constant;
@@ -854,7 +1249,7 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True):
     values taken from the WINDNMR-style AA'BB' bar selected by the Multiplet
     menu.
 
-    Arguments
+    Parameters
     ---------
 
     Vab : float
@@ -911,7 +1306,7 @@ def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):
     coordinates corresponding to frequency in Hz), to create a list of
     intensities (y coordinate).
 
-    Arguments
+    Parameters
     ---------
 
     v : float
@@ -1147,7 +1542,7 @@ def dnmr_AB(v, v1, v2, J, k, W):
     out that it has a sign typo!).
     p. 14, for the uncoupled 2-site exchange simulation.
 
-    Arguments
+    Parameters
     ---------
 
     v : float or array-like
