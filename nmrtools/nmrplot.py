@@ -72,7 +72,7 @@ def add_signals(linspace, peaklist, w):
     return result
 
 
-def nmrplot(spectrum, y=1):
+def mplplot(spectrum, y=1):
     """
     A no-frills routine that plots spectral simulation data.
 

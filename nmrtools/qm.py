@@ -24,7 +24,8 @@ from scipy.sparse import csc_matrix, csr_matrix, lil_matrix
 import sparse
 from .nmrmath import normalize_spectrum, transition_matrix
 
-# SO_DIR = os.path.join(os.path.abspath('..'), 'nmrtools', 'bin')
+CACHE = True  # saving of partial solutions is allowed
+SPARSE = True  # the sparse library is available
 
 
 def so_dense(nspins):
@@ -318,3 +319,13 @@ def nspinspec_sparse(freqs, couplings, normalize=True):
     if normalize:
         spectrum = normalize_spectrum(spectrum, nspins)
     return spectrum
+
+
+def spectrum(*args, cache=CACHE, sparse=SPARSE, **kwargs):
+    print(cache)
+    print(sparse)
+    for key, val in kwargs.items():
+        print(key, val)
+    if not (cache and sparse):
+        return nspinspec_dense(*args, **kwargs)
+    return nspinspec_sparse(*args, **kwargs)
