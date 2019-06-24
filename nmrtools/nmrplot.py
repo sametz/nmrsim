@@ -100,6 +100,32 @@ def mplplot(spectrum, y=1):
     return
 
 
+def mplplot_stick(x, y, max_y=1):
+    """
+    matplotlib plot a spectrum in "stick" (stem) style.
+
+    Arguments
+    ---------
+    x : [float...]
+        a list of frequencies
+    y : [float...]
+        a list of intensities corresponding with x
+    max_y : float
+        maximum intensity for the plot.
+    """
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots()
+    l_limit = x.min() - 50
+    r_limit = x.max() + 50
+    x = np.append(x, [l_limit, r_limit])
+    y = np.append(y, [0.001, 0.001])
+    ax.stem(x, y, markerfmt=' ', basefmt='C0-')
+    ax.invert_xaxis()
+    plt.show()
+    return
+
+
 def tkplot(spectrum, w=0.5):
     """Generate linspaces of x and y coordinates suitable for plotting on a
     matplotlib tkinter canvas.

@@ -20,9 +20,8 @@ and the other using neither.
 import os
 
 import numpy as np
-from scipy.sparse import csc_matrix, csr_matrix, lil_matrix
 import sparse
-from .nmrmath import normalize_spectrum, transition_matrix
+from .nmrmath import normalize_spectrum
 
 CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
@@ -265,7 +264,7 @@ def intensity_and_energy(H, nspins):
     Returns
     -------
     (I, E): (numpy.ndarray, numpy.ndarray) tuple of:
-        I: (relative) intensity matrix
+        I: (relative) intensity 2D array
         V: 1-D array of relative energies.
     """
     E, V = np.linalg.eigh(H)
@@ -276,6 +275,20 @@ def intensity_and_energy(H, nspins):
 
 
 def new_compile_spectrum(I, E):
+    """
+
+    Parameters
+    ----------
+    I: numpy.ndarray (2D)
+        matrix of relative intensities
+    E: numpy.ndarray (1D)
+        array of energies
+
+    Returns
+    -------
+    numpy.ndarray (2D)
+        [[frequency, intensity]...]
+    """
     I_upper = np.triu(I)
     E_matrix = np.abs(E[:, np.newaxis] - E)
     E_upper = np.triu(E_matrix)
@@ -322,10 +335,7 @@ def nspinspec_sparse(freqs, couplings, normalize=True):
 
 
 def spectrum(*args, cache=CACHE, sparse=SPARSE, **kwargs):
-    print(cache)
-    print(sparse)
     for key, val in kwargs.items():
-        print(key, val)
-    if not (cache and sparse):
-        return nspinspec_dense(*args, **kwargs)
+        if not (cache and sparse):
+            return nspinspec_dense(*args, **kwargs)
     return nspinspec_sparse(*args, **kwargs)

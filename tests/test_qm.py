@@ -1,12 +1,44 @@
+import pathlib
 import numpy as np
 
 from nmrtools.nmrmath import hamiltonian, nspinspec
-from nmrtools.qm import (hamiltonian_dense, hamiltonian_sparse,
-                         nspinspec_dense, nspinspec_sparse, spectrum)
+from nmrtools.qm import (cache_tm, hamiltonian_dense, hamiltonian_sparse,
+                         nspinspec_dense, nspinspec_sparse, so_sparse,
+                         spectrum)
 from tests.simulation_data import rioux
 
 H_RIOUX = hamiltonian(*rioux())
 SPECTRUM_RIOUX = nspinspec(*rioux())
+
+
+def test_so_sparse_creates_files(fs):
+    test_bin = (pathlib.Path(__file__)
+                .resolve()
+                .parent.parent
+                .joinpath('nmrtools', 'bin'))
+    fs.create_dir(test_bin)
+    expected_Lz = test_bin.joinpath('Lz3.npz')
+    expected_Lproduct = test_bin.joinpath('Lproduct3.npz')
+    assert not expected_Lz.exists()
+    assert not expected_Lproduct.exists()
+    Lz, Lproduct = so_sparse(3)
+    assert Lz and Lproduct
+    assert expected_Lz.exists()
+    assert expected_Lproduct.exists()
+
+
+def test_cache_tm_creates_file(fs):
+    test_bin = (pathlib.Path(__file__)
+                .resolve()
+                .parent.parent
+                .joinpath('nmrtools', 'bin'))
+    fs.create_dir(test_bin)
+    expected_T = test_bin.joinpath('T3.npz')
+    assert not expected_T.exists()
+    T = cache_tm(3)
+    assert T
+    assert expected_T.exists()
+
 
 def test_hamiltonian_dense():
     # GIVEN v and J inputs for the Rioux 3-spin system
