@@ -1,4 +1,5 @@
 """"Functions for calculating first-order spectra will appear here."""
+from dataclasses import dataclass
 
 
 def doublet(plist, J):
@@ -77,6 +78,15 @@ def add_peaks(plist):
         v_total += v
         i_total += i
     return v_total / len(plist), i_total
+
+
+# def new_add_peaks(plist):
+#     """Refactoring of add_peaks: more elegant, but also slower by ca 15x."""
+#     from statistics import mean
+#     v, i = zip(*plist)
+#     average_v = mean(v)
+#     total_i = sum(i)
+#     return average_v, total_i
 
 
 def reduce_peaks(plist, tolerance=0):
@@ -165,3 +175,51 @@ def normalize_spectrum(spectrum, n=1):
     freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
     _normalize(int_, n)
     return list(zip(freq, int_))
+
+
+def first_order_spin_system(v, J):
+    result = []
+    for i, v_ in enumerate(v):
+        couplings = ((j, 1) for j in J[i] if j != 0)
+        signal = multiplet((v_, 1), couplings)
+        result += signal
+    return reduce_peaks(sorted(result))
+
+
+# work in progress
+# def spectrum_from_signals(signals):
+#     spectrum = []
+#     for signal in signals:
+#         spectrum += multiplet(signals)
+#     return reduce_peaks(spectrum)
+
+
+# https://realpython.com/python-type-checking/
+# https://blog.florimond.dev/reconciling-dataclasses-and-properties-in-python
+@dataclass
+class Multiplet:
+    """This is a stub for now. Considering either a class or a dataclass for
+    multiplets, spin systems, and spectra. Also consider naming:
+    there is both function 'multiplet' and class 'Multiplet' right now!
+    """
+    v: float
+    I: float
+    couplings: list
+
+
+""" API ideas:
+    firstorder.multiplet for one signal
+    firstorder.spectrum for multiple signals
+    firstorder.spinsystem takes qm-style v and J arguments, and returns a 
+        firstorder.spectrum?
+    thinking bigger picture: an nmrtools.spectrum class that holds all data 
+    needed for a complete spectrum, including spectrometer frequency and 
+    whether to calculate it as first-order or second-order.
+    
+    Convenience functions for how users will supply arguments? In particular,
+    J couplings.
+    J = [(7.1, 3), (1.0, 2)]
+    J = {'J12': 7.1,
+         'J13': 7.1,
+         'J14': 1.0} and parse into a matrix?
+"""

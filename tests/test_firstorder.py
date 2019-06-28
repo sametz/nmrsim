@@ -2,6 +2,8 @@ import numpy as np
 
 from nmrtools.firstorder import *
 from nmrtools.firstorder import _normalize  # temporary
+from nmrtools.nmrplot import mplplot_stick
+from tests.simulation_data import rioux
 
 
 def test_doublet():
@@ -72,6 +74,10 @@ def test_normalize():
     assert double_intensities == [0.25, 0.75, 0.75, 0.25]
 
 
+def test_normalize_spectrum():
+    pass
+
+
 def test_first_order():
     refspec = [(293.0, 0.75), (300.0, 1.5), (307.0, 0.75),
                (432.5, 0.0625), (439.5, 0.3125), (446.5, 0.625),
@@ -87,3 +93,19 @@ def test_first_order():
     m3 = first_order(v3, [(J23, 2)])
     testspec = reduce_peaks(sorted(m1 + m2 + m3))
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
+
+
+def test_first_order_spin_system():
+    v, J = rioux()
+    spectrum = first_order_spin_system(v, J)
+    print(spectrum)
+    x = np.array([i[0] for i in spectrum])
+    y = np.array([i[1] for i in spectrum])
+    mplplot_stick(x, y)
+    assert 1 == 1
+
+
+# work in progress
+# def test_spectrum_from_signals():
+#     signals = [((1200, 2), [(7, 2)])]
+#     pass
