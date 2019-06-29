@@ -70,7 +70,8 @@ def so_dense(nspins):
         L[1][n] = Ly_current
         L[2][n] = Lz_current
 
-    # ref: https://stackoverflow.com/questions/47752324/matrix-multiplication-on-4d-numpy-arrays
+    # ref:
+    # https://stackoverflow.com/questions/47752324/matrix-multiplication-on-4d-numpy-arrays
     L_T = L.transpose(1, 0, 2, 3)
     Lproduct = np.tensordot(L_T, L, axes=((1, 3), (0, 2))).swapaxes(1, 2)
 
@@ -124,7 +125,7 @@ def so_sparse(nspins):
 
 def hamiltonian_dense(v, J):
     nspins = len(v)
-    Lz, Lproduct = so_dense(nspins)
+    Lz, Lproduct = so_dense(nspins)  # noqa
     H = np.tensordot(v, Lz, axes=1)
     scalars = 0.5 * J
     H += np.tensordot(scalars, Lproduct, axes=2)
@@ -147,7 +148,7 @@ def hamiltonian_sparse(v, J):
             a sparse spin Hamiltonian
         """
     nspins = len(v)
-    Lz, Lproduct = so_sparse(nspins)
+    Lz, Lproduct = so_sparse(nspins)  # noqa
     # On large spin systems, converting v and J to sparse improved speed, so:
     H = sparse.tensordot(sparse.COO(v), Lz, axes=1)
     scalars = 0.5 * sparse.COO(J)
@@ -335,7 +336,7 @@ def nspinspec_sparse(freqs, couplings, normalize=True):
 
 
 def spectrum(*args, cache=CACHE, sparse=SPARSE, **kwargs):
-    for key, val in kwargs.items():
-        if not (cache and sparse):
-            return nspinspec_dense(*args, **kwargs)
+    # for key, val in kwargs.items():
+    if not (cache and sparse):
+        return nspinspec_dense(*args, **kwargs)
     return nspinspec_sparse(*args, **kwargs)

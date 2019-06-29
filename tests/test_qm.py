@@ -1,14 +1,11 @@
 import pathlib
 import numpy as np
 
-from nmrtools.nmrmath import hamiltonian, nspinspec
 from nmrtools.qm import (cache_tm, hamiltonian_dense, hamiltonian_sparse,
                          nspinspec_dense, nspinspec_sparse, so_sparse,
                          spectrum)
+from tests.accepted_data import HAMILTONIAN_RIOUX, SPECTRUM_RIOUX
 from tests.simulation_data import rioux
-
-H_RIOUX = hamiltonian(*rioux())
-SPECTRUM_RIOUX = nspinspec(*rioux())
 
 
 def test_so_sparse_creates_files(fs):
@@ -21,8 +18,7 @@ def test_so_sparse_creates_files(fs):
     expected_Lproduct = test_bin.joinpath('Lproduct3.npz')
     assert not expected_Lz.exists()
     assert not expected_Lproduct.exists()
-    Lz, Lproduct = so_sparse(3)
-    assert Lz and Lproduct
+    Lz, Lproduct = so_sparse(3)  # noqa
     assert expected_Lz.exists()
     assert expected_Lproduct.exists()
 
@@ -46,7 +42,7 @@ def test_hamiltonian_dense():
     # WHEN hamiltonian_dense is used to calculate the Hamiltonian
     H_dense = hamiltonian_dense(v, J)
     # THEN it matches the Hamiltonian result using the old accepted algorithm
-    assert np.array_equal(H_dense, H_RIOUX)
+    assert np.array_equal(H_dense, HAMILTONIAN_RIOUX)
 
 
 def test_hamiltonian_sparse():
@@ -55,25 +51,25 @@ def test_hamiltonian_sparse():
     # WHEN hamiltonian_dense is used to calculate the Hamiltonian
     H_sparse = hamiltonian_sparse(v, J)
     # THEN it matches the Hamiltonian result using the old accepted algorithm
-    assert np.array_equal(H_sparse.todense(), H_RIOUX)
+    assert np.array_equal(H_sparse.todense(), HAMILTONIAN_RIOUX)  # noqa
 
 
 def test_nspinspec_dense():
     # GIVEN v and J inputs for the Rioux 3-spin system
     v, J = rioux()
     # WHEN nspinspec_dense is called with those inputs
-    spectrum = nspinspec_dense(v, J)
+    result = nspinspec_dense(v, J)
     # THEN the resulting spectrum matches that using the old algorithm
-    assert np.allclose(spectrum, SPECTRUM_RIOUX)
+    assert np.allclose(result, SPECTRUM_RIOUX)
 
 
 def test_nspinspec_sparse():
     # GIVEN v and J inputs for the Rioux 3-spin system
     v, J = rioux()
     # WHEN nspinspec_sparse is called with those inputs
-    spectrum = nspinspec_sparse(v, J)
+    result = nspinspec_sparse(v, J)
     # THEN the resulting spectrum matches that using the old algorithm
-    assert np.allclose(spectrum, SPECTRUM_RIOUX)
+    assert np.allclose(result, SPECTRUM_RIOUX)
 
 
 def test_nspinspec_spectrum():
