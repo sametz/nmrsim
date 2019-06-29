@@ -1,5 +1,5 @@
 """"Functions for calculating first-order spectra will appear here."""
-from dataclasses import dataclass
+from nmrtools.math import reduce_peaks
 
 
 def doublet(plist, J):
@@ -54,93 +54,6 @@ def multiplet(signal, couplings):
     return res
 
 
-def add_peaks(plist):
-    """
-    Reduces a list of (frequency, intensity) tuples to an
-    (average frequency, total intensity) tuple.
-
-    Parameter
-    --------
-    plist: [(float, float)...]
-        a list of (frequency, intensity) tuples
-
-    Returns
-    -------
-    (float, float)
-        a tuple of (average frequency, total intensity)
-    """
-    # TODO: Is this if statement necessary?
-    if len(plist) == 1:
-        return plist[0]  # nothing to add
-    v_total = 0
-    i_total = 0
-    for v, i in plist:
-        v_total += v
-        i_total += i
-    return v_total / len(plist), i_total
-
-
-# def new_add_peaks(plist):
-#     """Refactoring of add_peaks: more elegant, but also slower by ca 15x."""
-#     from statistics import mean
-#     v, i = zip(*plist)
-#     average_v = mean(v)
-#     total_i = sum(i)
-#     return average_v, total_i
-
-
-def reduce_peaks(plist, tolerance=0):
-    """
-    Takes an ordered list of (x, y) tuples and adds together tuples whose first
-    values are within a certain tolerance limit.
-
-    Parameters
-    ---------
-    plist : [(float, float)...]
-        A *sorted* list of (x, y) tuples (sorted by x)
-    tolerance : float
-        tuples that differ in x by <= tolerance are combined using ``add_peaks``
-
-    Returns
-    -------
-    [(float, float)...]
-        a list of (x, y) tuples where all x values differ by > `tolerance`
-    """
-    res = []
-    work = [plist[0]]  # an accumulator of peaks to be processed
-    for i in range(1, len(plist)):
-        if not work:
-            work.append(plist)
-            continue
-        if plist[i][0] - work[-1][0] <= tolerance:
-            work.append(plist[i])  # accumulate close peaks
-            continue
-        else:
-            res.append(add_peaks(work))
-            work = [plist[i]]
-    if work:
-        res.append(add_peaks(work))
-
-    return res
-
-
-def _normalize(intensities, n=1):
-    """
-    Scale a list of intensities so that they sum to the total number of
-    nuclei.
-
-    Parameters
-    ---------
-    intensities : [float...]
-        A list of intensities.
-    n : int
-        Number of nuclei.
-    """
-    factor = n / sum(intensities)
-    for index, intensity in enumerate(intensities):
-        intensities[index] = intensity * factor
-
-
 def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
     """
     Splits a signal into a first-order multiplet.
@@ -158,23 +71,6 @@ def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
         a plist-style spectrum (list of (frequency, intensity) tuples)
     """
     return reduce_peaks(sorted(multiplet(signal, couplings)))
-
-
-def normalize_spectrum(spectrum, n=1):
-    """
-    Normalize the intensities in a spectrum so that total intensity equals
-    value n (nominally the number of nuclei giving rise to the signal).
-
-    Parameters
-    ---------
-    spectrum : [(float, float)...]
-        a list of (frequency, intensity) tuples.
-    n : int or float
-        total intensity to normalize to.
-    """
-    freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
-    _normalize(int_, n)
-    return list(zip(freq, int_))
 
 
 def first_order_spin_system(v, J):
@@ -196,15 +92,16 @@ def first_order_spin_system(v, J):
 
 # https://realpython.com/python-type-checking/
 # https://blog.florimond.dev/reconciling-dataclasses-and-properties-in-python
-@dataclass
 class Multiplet:
     """This is a stub for now. Considering either a class or a dataclass for
     multiplets, spin systems, and spectra. Also consider naming:
     there is both function 'multiplet' and class 'Multiplet' right now!
     """
-    v: float
-    I: float
-    couplings: list
+    def __init__(self, v, I, J):
+        self.v = v
+        self.I = I
+        self.J = J
+        self.peaklist = first_order((v, I), J)
 
 
 """ API ideas:
@@ -222,4 +119,6 @@ class Multiplet:
     J = {'J12': 7.1,
          'J13': 7.1,
          'J14': 1.0} and parse into a matrix?
+         
+    standardize nomenclature: signals vs peaks vs spectrum vs...
 """
