@@ -1,6 +1,7 @@
 import numpy as np
 
 from nmrtools.dnmr import DnmrTwoSinglets
+from tests.plottools import popplot
 from tests.testdata import TWOSPIN_COALESCE, TWOSPIN_SLOW
 
 
@@ -36,6 +37,27 @@ def get_maxima(spectrum):
     return res
 
 
+def test_DnmrTwoSinglets_instantiation():
+    args = (165, 135, 1.5, 0.5, 0.5, 0.5, (200, 0))
+    sim = DnmrTwoSinglets(*args)
+    expected_args = (165, 135, 1.5, 0.5, 0.5, (0, 200))
+    actual_args = (sim.va, sim.vb, sim.k, sim.wa, sim.wb, sim.limits)
+    assert expected_args == actual_args
+
+
 def test_DnmrTwoSinglets_slow_exchange():
     sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
     assert np.allclose(sim.spectrum(), TWOSPIN_SLOW)
+    popplot(*sim.spectrum())
+
+
+def test_DnmrTwoSinglets_coalesce():
+    sim = DnmrTwoSinglets(165, 135, 65.9, 0.5, 0.5, 0.5)
+    assert np.allclose(sim.spectrum(), TWOSPIN_COALESCE)
+    popplot(*sim.spectrum())
+
+
+def test_Dnmr_TwoSinglets_limits():
+    sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
+    sim.limits = (500, 0)
+    assert sim.limits == (0, 500)

@@ -9,7 +9,8 @@ class DnmrTwoSinglets:
     _pi = np.pi
     _pi_squared = _pi ** 2
 
-    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5):
+    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5,
+                 limits=None):
         """
         Initialize the system with the required parameters:
         :param va: Frequency of nucleus a
@@ -27,8 +28,11 @@ class DnmrTwoSinglets:
         self._wa = wa
         self._wb = wb
         self._pa = pa
-        self.l_limit = vb - 50
-        self.r_limit = va + 50
+        if limits:
+            self.limits = limits
+        else:
+            self._vmin = vb - 50
+            self._vmax = va + 50
 
         self._set_T2a()
         self._set_T2b()
@@ -157,6 +161,25 @@ class DnmrTwoSinglets:
         self._set_R()
         self._set_r()
 
+    @property
+    def limits(self):
+        return self._vmin, self._vmax
+
+    @limits.setter
+    def limits(self, limits):
+        try:
+            vmin, vmax = limits
+            vmin = float(vmin)
+            vmax = float(vmax)
+        except Exception as e:
+            print(e)
+            print('limits must be a tuple of two numbers')
+
+        if vmax < vmin:
+            vmin, vmax = vmax, vmin
+        self._vmin = vmin
+        self._vmax = vmax
+
     def intensity(self, v):
         """
         Yield a function for the lineshape for TwoSinglets
@@ -185,7 +208,7 @@ class DnmrTwoSinglets:
         :return: a tuple of numpy arrays (x = numpy linspace representing
         frequencies, y = numpy array of intensities along those frequencies)pwd
         """
-        x = np.linspace(self.l_limit, self.r_limit, 800)
+        x = np.linspace(self._vmin, self._vmax, 800)
         y = self.intensity(x)
 
         return x, y
