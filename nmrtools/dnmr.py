@@ -1,6 +1,75 @@
 import numpy as np
 
 
+def d2s_func(va, vb, ka, wa, wb, pa):
+    """
+    Create a function that requires only frequency as an argurment, and used to
+    calculate intensities across array of frequencies in the DNMR
+    spectrum for two uncoupled spin-half nuclei.
+
+    The idea is to calculate expressions
+    that are independant of frequency only once, and then use them in a new
+    function that depends only on v. This would avoid unneccessarily
+    repeating some of the same operations.
+
+    This function-within-a-function should be refactored to
+    function-within-class!
+
+    :param va: The frequency of nucleus 'a' at the slow exchange limit. va > vb
+    :param vb: The frequency of nucleus 'b' at the slow exchange limit. vb < va
+    :param ka: The rate constant for state a--> state b
+    :param wa: The width at half heigh of the signal for nucleus a (at the slow
+    exchange limit).
+    :param wb: The width at half heigh of the signal for nucleus b (at the slow
+    exchange limit).
+    :param pa: The fraction of the population in state a.
+    :param pa: fraction of population in state a
+    wa, wb: peak widths at half height (slow exchange), used to calculate T2s
+
+    returns: a function that takes v (x coord or numpy linspace) as an argument
+    and returns intensity (y).
+    """
+    # TODO: this seems like the hard way to create a partial function. Try a
+    # functools.partial version of this.
+    # TODO: factor pis out; redo comments to explain excision of v-independent
+    # terms
+
+    pi = np.pi
+    pi_squared = pi ** 2
+    T2a = 1 / (pi * wa)
+    T2b = 1 / (pi * wb)
+    pb = 1 - pa
+    tau = pb / ka
+    dv = va - vb
+    Dv = (va + vb) / 2
+    P = tau * (1 / (T2a * T2b) + pi_squared * (dv ** 2)) + (pa / T2a + pb / T2b)
+    p = 1 + tau * ((pb / T2a) + (pa / T2b))
+    Q = tau * (- pi * dv * (pa - pb))
+    R = pi * dv * tau * ((1 / T2b) - (1 / T2a)) + pi * dv * (pa - pb)
+    r = 2 * pi * (1 + tau * ((1 / T2a) + (1 / T2b)))
+
+    def maker(v):
+        """
+        Scheduled for refactoring.
+        :param v: frequency
+        :return: function that calculates the intensity at v
+        """
+        # TODO: fix docstring, explain _P _Q etc correlate to P, Q etc in lit.
+        # FIXED: previous version of this function used
+        # nonlocal Dv, P, Q, R
+        # but apparently when function called repeatedly these values would
+        # become corrupted (turning into arrays?!)
+        # Solution: add underscores to create copies of any variables in
+        # outer scope whose values are changed in the inner scope.
+
+        _Dv = Dv - v
+        _P = P - tau * 4 * pi_squared * (_Dv ** 2)
+        _Q = Q + tau * 2 * pi * _Dv
+        _R = R + _Dv * r
+        return(_P * p + _Q * _R) / (_P ** 2 + _R ** 2)
+    return maker
+
+
 class DnmrTwoSinglets:
     """
     A DNMR simulation for two uncoupled nuclei undergoing exchange.
@@ -31,8 +100,8 @@ class DnmrTwoSinglets:
         if limits:
             self.limits = limits
         else:
-            self._vmin = vb - 50
-            self._vmax = va + 50
+            self._vmin = min([va, vb]) - 50
+            self._vmax = max([va, vb]) + 50
 
         self._set_T2a()
         self._set_T2b()
@@ -276,3 +345,95 @@ def dnmr_AB(v, v1, v2, J, k, W):
 
     I = (n1 / d1) + (n2 / d2)
     return I
+
+
+class DnmrAB:
+
+    _pi = np.pi
+    _pi_squared = _pi ** 2
+    
+    def __init__(self, v1=165.0, v2=135.0, J=12.0, k=12.0, W=0.5,
+                 limits=None):
+        self._v1 = v1
+        self._v2 = v2
+        self._J = J
+        self._k = k
+        self._W = W
+        if limits:
+            self.limits = limits
+        else:
+            self._vmin = min([v1, v2]) - 50
+            self._vmax = max([v1, v2]) + 50
+
+        self._set_vo()
+        self._set_tau()
+        self._set_tau2()
+        self._set_a2()
+        self._set_a3()
+        self._set_a4()
+        self._set_s()
+
+    def _set_vo(self):
+        self._vo = (self._v1 + self._v2) / 2
+
+    def _set_tau(self):
+        self._tau = 1 / self._k
+
+    def _set_tau2(self):
+        self._tau2 = 1 / (self._pi * self._W)
+
+    def _set_a2(self):
+        self._a2 = - ((1 / self._tau) + (1 / self._tau2)) ** 2
+
+    def _set_a3(self):
+        self._a3 = - self._pi_squared * (self._v1 - self._v2) ** 2
+
+    def _set_a4(self):
+        self._a4 = - self._pi_squared * self._J ** 2 + (1 / self._tau ** 2)
+
+    def _set_s(self):
+        self._s = (2 / self._tau) + (1 / self._tau2)
+
+    @property
+    def limits(self):
+        return self._vmin, self._vmax
+
+    @limits.setter
+    def limits(self, limits):
+        try:
+            vmin, vmax = limits
+            vmin = float(vmin)
+            vmax = float(vmax)
+        except Exception as e:
+            print(e)
+            print('limits must be a tuple of two numbers')
+
+        if vmax < vmin:
+            vmin, vmax = vmax, vmin
+        self._vmin = vmin
+        self._vmax = vmax
+
+    def intensity(self, v):
+        self._a1_plus = 4 * self._pi_squared * (self._vo - v + self._J / 2) ** 2
+        self._a1_minus = 4 * self._pi_squared * (self._vo - v - self._J / 2) ** 2
+        self._a_plus = self._a1_plus + self._a2 + self._a3 + self._a4
+        self._a_minus = self._a1_minus + self._a2 + self._a3 + self._a4
+
+        self._b_plus = 4 * self._pi * (self._vo - v + self._J / 2) * (
+                (1 / self._tau) + (1 / self._tau2)) - 2 * self._pi * self._J / self._tau
+        self._b_minus = 4 * self._pi * (self._vo - v - self._J / 2) * (
+                (1 / self._tau) + (1 / self._tau2)) + 2 * self._pi * self._J / self._tau
+
+        self._r_plus = 2 * self._pi * (self._vo - v + self._J)
+        self._r_minus = 2 * self._pi * (self._vo - v - self._J)
+        self._n1 = self._r_plus * self._b_plus - self._s * self._a_plus
+        self._d1 = self._a_plus ** 2 + self._b_plus ** 2
+        self._n2 = self._r_minus * self._b_minus - self._s * self._a_minus
+        self._d2 = self._a_minus ** 2 + self._b_minus ** 2
+        I = (self._n1 / self._d1) + (self._n2 / self._d2)
+        return I
+
+    def spectrum(self):
+        x = np.linspace(self._vmin, self._vmax, 800)
+        y = self.intensity(x)
+        return x, y

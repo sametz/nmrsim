@@ -1,8 +1,8 @@
 import numpy as np
 
-from nmrtools.dnmr import DnmrTwoSinglets
+from nmrtools.dnmr import d2s_func, dnmr_AB, DnmrTwoSinglets, DnmrAB
 from tests.plottools import popplot
-from tests.testdata import TWOSPIN_COALESCE, TWOSPIN_SLOW
+from tests.testdata import AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_SLOW
 
 
 def get_intensity(spectrum, x):
@@ -37,6 +37,32 @@ def get_maxima(spectrum):
     return res
 
 
+def test_d2s_func_slow_exchange():
+    spectrum = TWOSPIN_SLOW
+    peaks = get_maxima(spectrum)
+    print("Maxima: ", peaks)
+
+    intensity_calculator = d2s_func(165, 135, 1.5, 0.5, 0.5, 0.5)
+
+    x = np.linspace(85, 215, 800)
+    y = intensity_calculator(x)
+    # popplot(x, y)  # replace with non-PyQtGraph popup graph if desired
+
+    print('Testing intensity calculator on 135: ', intensity_calculator(135))
+    print('Testing intensity calculator on 165: ', intensity_calculator(165))
+
+    for peak in peaks:
+        print('Testing vs. accepted peak at: ', peak)
+        calculated_intensity = intensity_calculator(peak[0])
+
+        print('i.e. input of frequency ', peak[0], ' should give output of '
+              'intensity ', peak[1])
+        print('Calculated intensity is actually: ', calculated_intensity)
+
+        np.testing.assert_almost_equal(calculated_intensity,
+                                       peak[1])
+
+
 def test_DnmrTwoSinglets_instantiation():
     args = (165, 135, 1.5, 0.5, 0.5, 0.5, (200, 0))
     sim = DnmrTwoSinglets(*args)
@@ -61,3 +87,31 @@ def test_Dnmr_TwoSinglets_limits():
     sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
     sim.limits = (500, 0)
     assert sim.limits == (0, 500)
+
+
+def test_ab_WINDNMR_defaults():
+    spectrum = AB_WINDNMR
+    peaks = get_maxima(spectrum)
+    print("Maxima: ", peaks)
+
+    ab_args = (165, 135, 12, 12, 0.5)
+
+    for peak in peaks:
+        print('Testing vs. accepted peak at: ', peak)
+        calculated_intensity = dnmr_AB(peak[0], *ab_args)
+
+        print('i.e. input of frequency ', peak[0], ' should give output of '
+                                                   'intensity ', peak[1])
+        print('Calculated intensity is actually: ', calculated_intensity)
+
+        assert np.allclose(calculated_intensity, peak[1])
+
+
+def test_DnmrAB_WINDNMR_defaults():
+    expected = np.array(AB_WINDNMR)
+    sim = DnmrAB(165, 135, 12, 12, 0.5)
+    result = np.array(sim.spectrum())
+    print(expected.shape, result.shape)
+    print(expected[:, -10:])
+    print(result[:, -10:])
+    assert np.allclose(result, expected)
