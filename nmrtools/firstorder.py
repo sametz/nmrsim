@@ -107,18 +107,18 @@ class Multiplet:
 """ API ideas:
     firstorder.multiplet for one signal
     firstorder.spectrum for multiple signals
-    firstorder.spinsystem takes qm-style v and J arguments, and returns a 
+    firstorder.spinsystem takes qm-style v and J arguments, and returns a
         firstorder.spectrum?
-    thinking bigger picture: an nmrtools.spectrum class that holds all data 
-    needed for a complete spectrum, including spectrometer frequency and 
+    thinking bigger picture: an nmrtools.spectrum class that holds all data
+    needed for a complete spectrum, including spectrometer frequency and
     whether to calculate it as first-order or second-order.
-    
+
     Convenience functions for how users will supply arguments? In particular,
     J couplings.
     J = [(7.1, 3), (1.0, 2)]
     J = {'J12': 7.1,
          'J13': 7.1,
          'J14': 1.0} and parse into a matrix?
-         
+
     standardize nomenclature: signals vs peaks vs spectrum vs...
 """

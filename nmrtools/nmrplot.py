@@ -83,7 +83,7 @@ def mplplot(spectrum, y=1):
     y : float
         maximum intensity for the plot.
     """
-    """Oddball function. This is really a function for an application, 
+    """Oddball function. This is really a function for an application,
     not a library. TODO: revise or eliminate."""
     import matplotlib.pyplot as plt
 
@@ -101,6 +101,9 @@ def mplplot(spectrum, y=1):
 
 
 def mplplot_stick(x, y, max_y=1):
+    """TODO: description below incorrect. x, y must be numpy.ndarray.
+    Decide on a consistent interface (e.g. vs. mplplot)
+    """
     """
     matplotlib plot a spectrum in "stick" (stem) style.
 
@@ -207,7 +210,7 @@ def dnmrplot_2spin(va, vb, ka, Wa, Wb, pa):
     needs of applications. Consider the needs of other users and make more
     universal.
     """
-    """A decision needs to be made on the final function to apply along the 
+    """A decision needs to be made on the final function to apply along the
     linspace."""
     if vb > va:
         va, vb = vb, va

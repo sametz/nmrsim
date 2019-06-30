@@ -1,187 +1,15 @@
 import numpy as np
 
-# There are multiple, redundant routines for calculating DNMR lineshapes. All
-#  previous approaches are preserved here for now.
-# TODO: review, refactor, and select the best-performing functions based on
-# speed test results.
 
-
-def dnmr_2spin(v, va, vb, ka, Wa, Wb, pa):
+class DnmrTwoSinglets:
     """
-    A translation of the equation from Sandström's Dynamic NMR Spectroscopy,
-    p. 14, for the uncoupled 2-site exchange simulation.
-
-    This function is to be applied along a numpy linspace (evenly spaced x
-    coordinates corresponding to frequency in Hz), to create a list of
-    intensities (y coordinate).
-
-    Parameters
-    ---------
-
-    v : float
-        a frequency (x coordinate) at which an amplitude (y coordinate) is to be
-        calculated.
-    float va, vb :
-        frequencies of a and b singlets (slow exchange limit) (`va` > `vb`)
-    ka : float
-        rate constant for state A--> state B
-    float Wa, Wb :
-        peak widths at half height (slow exchange limit)
-    pa : float
-        fraction of population in state A
-    Returns
-    -------
-    float
-        the intensity (y coordinate of the lineshape) at frequency `v`.
-
-    References
-    ----------
-    TODO: add reference
+    A DNMR simulation for two uncoupled nuclei undergoing exchange.
     """
 
-    pi = np.pi
-    pb = 1 - pa
-    tau = pb / ka
-    dv = va - vb
-    Dv = (va + vb) / 2 - v
-    T2a = 1 / (pi * Wa)
-    T2b = 1 / (pi * Wb)
+    _pi = np.pi
+    _pi_squared = _pi ** 2
 
-    P = tau * ((1 / (T2a * T2b)) - 4 * (pi ** 2) * (Dv ** 2) +
-               (pi ** 2) * (dv ** 2))
-    P += ((pa / T2a) + (pb / T2b))
-
-    Q = tau * (2 * pi * Dv - pi * dv * (pa - pb))
-
-    R = 2 * pi * Dv * (1 + tau * ((1 / T2a) + (1 / T2b)))
-    R += pi * dv * tau * ((1 / T2b) - (1 / T2a)) + pi * dv * (pa - pb)
-
-    I = (P * (1 + tau * ((pb / T2a) + (pa / T2b))) + Q * R) / (P ** 2 + R ** 2)
-    return I
-
-
-def two_spin(v, va, vb, ka, wa, wb, pa):
-    """pyDNMR renamed dnmr_2spin and some arguments. This is temporary glue
-    to make sure that pyDNMR will work with the nmrtools library.
-    """
-    # TODO: make sure this is no longer needed, then delete
-    return dnmr_2spin(v, va, vb, ka, wa, wb, pa)
-
-
-def d2s_func(va, vb, ka, wa, wb, pa):
-    """
-    Create a function that requires only frequency as an argument, and used to
-    calculate intensities across array of frequencies in the DNMR
-    spectrum for two uncoupled spin-half nuclei.
-
-    The idea is to calculate expressions
-    that are independent of frequency only once, and then use them in a new
-    function that depends only on v. This would avoid unnecessarily
-    repeating some of the same operations.
-
-    This function-within-a-function should be refactored to
-    function-within-class!
-
-    :param va: The frequency of nucleus 'a' at the slow exchange limit. va > vb
-    :param vb: The frequency of nucleus 'b' at the slow exchange limit. vb < va
-    :param ka: The rate constant for state a--> state b
-    :param wa: The width at half heigh of the signal for nucleus a (at the slow
-    exchange limit).
-    :param wb: The width at half heigh of the signal for nucleus b (at the slow
-    exchange limit).
-    :param pa: The fraction of the population in state a.
-    :param pa: fraction of population in state a
-    wa, wb: peak widths at half height (slow exchange), used to calculate T2s
-
-    returns: a function that takes v (x coord or numpy linspace) as an argument
-    and returns intensity (y).
-    """
-    # TODO: this seems like the hard way to create a partial function. Try a
-    # functools.partial version of this.
-    # TODO: factor pis out; redo comments to explain excision of v-independent
-    # terms
-
-    pi = np.pi
-    pi_squared = pi ** 2
-    T2a = 1 / (pi * wa)
-    T2b = 1 / (pi * wb)
-    pb = 1 - pa
-    tau = pb / ka
-    dv = va - vb
-    Dv = (va + vb) / 2
-    P = tau * (1 / (T2a * T2b) + pi_squared * (dv ** 2)) + (pa / T2a + pb / T2b)
-    p = 1 + tau * ((pb / T2a) + (pa / T2b))
-    Q = tau * (- pi * dv * (pa - pb))
-    R = pi * dv * tau * ((1 / T2b) - (1 / T2a)) + pi * dv * (pa - pb)
-    r = 2 * pi * (1 + tau * ((1 / T2a) + (1 / T2b)))
-
-    def maker(v):
-        """
-        Scheduled for refactoring.
-        :param v: frequency
-        :return: function that calculates the intensity at v
-        """
-        # TODO: fix docstring, explain _P _Q etc correlate to P, Q etc in lit.
-        # FIXED: previous version of this function used
-        # nonlocal Dv, P, Q, R
-        # but apparently when function called repeatedly these values would
-        # become corrupted (turning into arrays?!)
-        # Solution: add underscores to create copies of any variables in
-        # outer scope whose values are changed in the inner scope.
-
-        _Dv = Dv - v
-        _P = P - tau * 4 * pi_squared * (_Dv ** 2)
-        _Q = Q + tau * 2 * pi * _Dv
-        _R = R + _Dv * r
-        return(_P * p + _Q * _R) / (_P ** 2 + _R ** 2)
-    return maker
-
-
-def reich(v, va, vb, ka, Wa, Wb, pa):
-    """
-    A traslation of the actual VB code used in WINDNMR. Was used for error
-    checking. Scheduled for deletion.
-    """
-    # TODO: delete when no longer needed
-    # print('Reich was entered')
-    PI = np.pi
-    R21 = PI * Wa
-    R22 = PI * Wb
-    mshifts1 = va
-    mshifts2 = vb
-    pop1 = pa
-    pop2 = 1 - pop1  # i.e. pb
-    tau = pop2 / ka
-    deltanu = va - vb
-    r1 = 1 + tau * (R21 + R22)
-    Rr2 = PI * deltanu * tau * (R22 - R21)
-    R3 = PI * deltanu * (pop1 - pop2)
-    p1 = tau * R21 * R22
-    p3 = tau * PI * PI * deltanu * deltanu
-    PI2 = tau * 4 * PI * PI
-    pitau = tau * 2 * PI
-    popratio1 = p1 + p3 + (pop1 * R21) + (pop2 * R22)
-    popratio2 = 1 + tau * ((pop2 * R21) + (pop1 * R22))
-    CentFreq = 0.5 * (mshifts1 + mshifts2)
-    Delfreq = CentFreq - v
-    p2 = PI2 * Delfreq * Delfreq
-    P = -p2 + popratio1
-    Q = pitau * Delfreq - tau * R3
-    R = 2 * PI * Delfreq * r1 + Rr2 + R3
-    return (P * popratio2 + Q * R) / ((P * P) + (R * R))
-
-
-class TwoSinglets:
-    """
-    Attempt at using a class instead of separate functions to represent two
-    uncoupled spin-1/2 nuclei undergoing exchange.
-    """
-    # TODO: currently not seeing any advantage to this approach
-
-    pi = np.pi
-    pi_squared = pi ** 2
-
-    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, percent_a=50):
+    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5):
         """
         Initialize the system with the required parameters:
         :param va: Frequency of nucleus a
@@ -189,27 +17,145 @@ class TwoSinglets:
         :param k: Rate of nuclear exchange
         :param wa: With at half height for va signal at the slow exchange limit
         :param wb: With at half height for vb signal at the slow exchange limit
-        :param percent_a: Fractional population of state 'a'
+        :param pa: Fractional population of state 'a'
         """
         # Idea is to complete the frequency-independent calculations when the
         #  class is instantiated, and thus calculations may be faster.
+        self._va = va
+        self._vb = vb
+        self._k = k
+        self._wa = wa
+        self._wb = wb
+        self._pa = pa
         self.l_limit = vb - 50
         self.r_limit = va + 50
 
-        T2a = 1 / (self.pi * wa)
-        T2b = 1 / (self.pi * wb)
-        pa = percent_a / 100
-        pb = 1 - pa
-        self.tau = pb / k
-        dv = va - vb
-        self.Dv = (va + vb) / 2
-        self.P = self.tau * (1 / (T2a * T2b) + self.pi_squared * (dv ** 2)) \
-            + (pa / T2a + pb / T2b)
-        self.p = 1 + self.tau * ((pb / T2a) + (pa / T2b))
-        self.Q = self.tau * (- self.pi * dv * (pa - pb))
-        self.R = self.pi * dv * self.tau * ((1 / T2b) - (1 / T2a)) \
-            + self.pi * dv * (pa - pb)
-        self.r = 2 * self.pi * (1 + self.tau * ((1 / T2a) + (1 / T2b)))
+        self._set_T2a()
+        self._set_T2b()
+        self._set_pb()
+        self._set_tau()
+        self._set_dv()
+        self._set_Dv()
+        self._set_P()
+        self._set_p()
+        self._set_Q()
+        self._set_R()
+        self._set_r()
+
+    def _set_T2a(self):
+        self._T2a = 1 / (self._pi * self._wa)
+
+    def _set_T2b(self):
+        self._T2b = 1 / (self._pi * self._wb)
+
+    def _set_pb(self):
+        self._pb = 1 - self._pa
+
+    def _set_tau(self):
+        self._tau = self._pb / self._k
+
+    def _set_dv(self):
+        self._dv = self._va - self._vb
+
+    def _set_Dv(self):
+        self._Dv = (self._va + self._vb) / 2
+
+    def _set_P(self):
+        self._P = self._tau * (1 / (self._T2a * self._T2b) + self._pi_squared * (self._dv ** 2)) \
+                  + (self._pa / self._T2a + self._pb / self._T2b)
+
+    def _set_p(self):
+        self._p = 1 + self._tau * ((self._pb / self._T2a) + (self._pa / self._T2b))
+
+    def _set_Q(self):
+        self._Q = self._tau * (- self._pi * self._dv * (self._pa - self._pb))
+
+    def _set_R(self):
+        self._R = self._pi * self._dv * self._tau * ((1 / self._T2b) - (1 / self._T2a)) \
+                  + self._pi * self._dv * (self._pa - self._pb)
+
+    def _set_r(self):
+        self._r = 2 * self._pi * (1 + self._tau * ((1 / self._T2a) + (1 / self._T2b)))
+
+    @property
+    def va(self):
+        return self._va
+
+    @va.setter
+    def va(self, value):
+        self._va = value
+        self._set_vab_dependencies()
+
+    def _set_vab_dependencies(self):
+        self._set_dv()
+        self._set_Dv()
+        self._set_P()
+        self._set_Q()
+        self._set_R()
+
+    @property
+    def vb(self):
+        return self._vb
+
+    @vb.setter
+    def vb(self, value):
+        self._vb = value
+        self._set_vab_dependencies()
+
+    @property
+    def k(self):
+        return self._k
+
+    @k.setter
+    def k(self, value):
+        self._k = value
+        self._set_tau()
+        self._set_p()
+        self._set_P()
+        self._set_Q()
+        self._set_R()
+        self._set_r()
+
+    @property
+    def wa(self):
+        return self._wa
+
+    @wa.setter
+    def wa(self, value):
+        self._wa = value
+        self._set_T2a()
+        self._set_wab_dependencies()
+
+    def _set_wab_dependencies(self):
+        self._set_p()
+        self._set_P()
+        self._set_R()
+        self._set_r()
+
+    @property
+    def wb(self):
+        return self._wb
+
+    @wb.setter
+    def wb(self, value):
+        self._wb = value
+        self._set_T2b()
+        self._set_wab_dependencies()
+
+    @property
+    def pa(self):
+        return self._pa
+
+    @pa.setter
+    def pa(self, value):
+        self._pa = value
+        self._set_pb()
+        self._set_tau()
+        self._set_p()
+        self._set_P()
+        self._set_Q()
+        self._set_R()
+        self._set_r()
 
     def intensity(self, v):
         """
@@ -219,16 +165,16 @@ class TwoSinglets:
         the spectrum at frequency v
         """
         # TODO: add to docstring
-        p = self.p
-        Dv = self.Dv
-        P = self.P
-        Q = self.Q
-        R = self.R
-        r = self.r
-        tau = self.tau
+        p = self._p
+        Dv = self._Dv
+        P = self._P
+        Q = self._Q
+        R = self._R
+        r = self._r
+        tau = self._tau
         Dv -= v
-        P -= tau * 4 * self.pi_squared * (Dv ** 2)
-        Q += tau * 2 * self.pi * Dv
+        P -= tau * 4 * self._pi_squared * (Dv ** 2)
+        Q += tau * 2 * self._pi * Dv
         R += Dv * r
         return (P * p + Q * R) / (P ** 2 + R ** 2)
 
