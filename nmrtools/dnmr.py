@@ -395,6 +395,58 @@ class DnmrAB:
         self._s = (2 / self._tau) + (1 / self._tau2)
 
     @property
+    def v1(self):
+        return self._v1
+
+    @v1.setter
+    def v1(self, value):
+        self._v1 = value
+        self._set_vo()
+        self._set_a3()
+
+    @property
+    def v2(self):
+        return self._v2
+
+    @v2.setter
+    def v2(self, value):
+        self._v2 = value
+        self._set_vo()
+        self._set_a3()
+
+    @property
+    def J(self):
+        return self._J
+
+    @J.setter
+    def J(self, value):
+        self._J = value
+        self._set_a4()
+
+    @property
+    def k(self):
+        return self._k
+
+    @k.setter
+    def k(self, value):
+        self._k = value
+        self._set_tau()
+        self._set_a2()
+        self._set_a4()
+        self._set_s()
+
+    @property
+    def W(self):
+        return self._W
+
+    @W.setter
+    def W(self, value):
+        self._W = value
+        self._set_tau2()
+        self._set_a2()
+        self._set_s()
+
+    @property
     def limits(self):
         return self._vmin, self._vmax
 
