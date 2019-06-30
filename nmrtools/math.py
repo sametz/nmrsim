@@ -96,3 +96,36 @@ def normalize_spectrum(spectrum, n=1):
     freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
     _normalize(int_, n)
     return list(zip(freq, int_))
+
+
+def lorentz(v, v0, I, w):
+    """
+    A lorentz function that takes linewidth at half intensity (w) as a
+    parameter.
+
+    When `v` = `v0`, and `w` = 0.5 (Hz), the function returns intensity I.
+
+    Arguments
+    ---------
+    v : float
+        The frequency (x coordinate) at which to evaluate intensity (y
+        coordinate).
+    v0 : float
+        The center of the distribution.
+    I : float
+        the relative intensity of the signal
+    w : float
+        the peak width at half maximum intensity
+
+    Returns
+    -------
+    float
+        the intensity (y coordinate) for the Lorentzian distribution
+        evaluated at frequency `v`.
+    """
+    # Adding a height scaling factor so that peak intensities are lowered as
+    # they are more broad. If I is the intensity with a default w of 0.5 Hz:
+    scaling_factor = 0.5 / w  # i.e. a 1 Hz wide peak will be half as high
+    return scaling_factor * I * (
+            (0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
+

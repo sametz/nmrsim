@@ -17,3 +17,13 @@ Some OOP to make user-friendly classes? e.g.:
 
 Consider an easy toggle for first- vs. second-order spinsystem calculations. The same v, J inputs could be used either
 for a qm calculation, or a first-order interpretation.
+
+Consistent names for various data types?
+
+peak = (v, I) -- signal?
+peaklist = [peak...]
+spectrum = x, y for lineshape
+
+Spectrum composed from Multiplets and SpinSystems
+SpinSystems has a toggle for first or second order
+

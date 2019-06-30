@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from pytest import approx
 from nmrtools.nmrplot import (lorentz, add_signals,
                                      dnmrplot_2spin, dnmrplot_AB)
@@ -7,6 +8,7 @@ from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.plottools import popplot
 
 
+@pytest.mark.skip(reason='moved to .math')
 def test_lorentz_width():
     """Tests that w corresponds to width at half height"""
     v0 = 100
@@ -19,6 +21,7 @@ def test_lorentz_width():
     assert high_width_height / max_height == approx(0.5)
 
 
+@pytest.mark.skip(reason='moved to .plt')
 def test_add_signals():
     """
     Tests that current nmrplot.add_signals output agrees with an accepted

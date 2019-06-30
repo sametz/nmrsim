@@ -1,5 +1,7 @@
 import numpy as np
-from nmrtools.math import (add_peaks, reduce_peaks,
+from pytest import approx
+
+from nmrtools.math import (add_peaks, lorentz, reduce_peaks,
                            _normalize, normalize_spectrum)
 
 
@@ -48,3 +50,15 @@ def test_normalize_spectrum():
     expected = [(1200.0, 2.0), (500.0, 4.0)]
     result = normalize_spectrum(unnormalized, n=6)
     assert np.allclose(result, expected)
+
+
+def test_lorentz_width():
+    """Tests that w corresponds to width at half height"""
+    v0 = 100
+    I = 1
+    w = 2
+    max_height = lorentz(v0, v0, I, w)
+    low_width_height = lorentz(v0 - w/2, v0, I, w)
+    high_width_height = lorentz(v0 + w/2, v0, I, w)
+    assert low_width_height / max_height == approx(0.5)
+    assert high_width_height / max_height == approx(0.5)

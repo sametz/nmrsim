@@ -1,6 +1,7 @@
 import numpy as np
+import pytest
 
-from nmrtools.dnmr import d2s_func, dnmr_AB, DnmrTwoSinglets, DnmrAB
+from nmrtools.dnmr import dnmr_two_singlets, dnmr_AB, DnmrTwoSinglets, DnmrAB
 from tests.plottools import popplot
 from tests.testdata import AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_SLOW
 
@@ -42,7 +43,7 @@ def test_d2s_func_slow_exchange():
     peaks = get_maxima(spectrum)
     print("Maxima: ", peaks)
 
-    intensity_calculator = d2s_func(165, 135, 1.5, 0.5, 0.5, 0.5)
+    intensity_calculator = dnmr_two_singlets(165, 135, 1.5, 0.5, 0.5, 0.5)
 
     x = np.linspace(85, 215, 800)
     y = intensity_calculator(x)
@@ -83,6 +84,12 @@ def test_DnmrTwoSinglets_properties():
     sim_args = (sim.va, sim.vb, sim.k, sim.wa, sim.wb, sim.pa, sim.limits)
     print('result: ', sim_args)
     assert sim_args == (165.0, 135.0, 1.5, 0.5, 0.5, 0.5, (85.0, 215.0))
+
+
+@pytest.mark.parametrize('limits', ['foo', (1), (1, 'foo'), (1, 2, 3)])
+def test_DnmrTwoSinglets_limit_error(limits):
+    with pytest.raises((AttributeError, TypeError, ValueError)):
+        sim = DnmrTwoSinglets(limits=limits)
 
 
 def test_DnmrTwoSinglets_slow_exchange():
@@ -141,6 +148,12 @@ def test_DnmrAB_properties():
     print('result: ', sim_args)
     assert sim_args == (165.0, 135.0, 12.0, 12.0, 0.5, (85.0, 215.0))
     assert np.allclose(sim.spectrum(), AB_WINDNMR)
+
+
+@pytest.mark.parametrize('limits', ['foo', (1), (1, 'foo'), (1, 2, 3)])
+def test_DnmrAB_limit_error(limits):
+    with pytest.raises((AttributeError, TypeError, ValueError)):
+        sim = DnmrAB(limits=limits)
 
 
 def test_DnmrAB_WINDNMR_defaults():

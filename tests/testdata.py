@@ -1,5 +1,5 @@
 """Stores data of approved simulation results, for unit tests"""
-
+# TODO: this is specifically DNMR. Rename or move
 # TODO: separate into raw data file (e.g. csv) and import routine
 
 

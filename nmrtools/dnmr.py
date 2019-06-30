@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def d2s_func(va, vb, ka, wa, wb, pa):
+def dnmr_two_singlets(va, vb, ka, wa, wb, pa):
     """
     Create a function that requires only frequency as an argurment, and used to
     calculate intensities across array of frequencies in the DNMR
@@ -243,6 +243,7 @@ class DnmrTwoSinglets:
         except Exception as e:
             print(e)
             print('limits must be a tuple of two numbers')
+            raise
 
         if vmax < vmin:
             vmin, vmax = vmax, vmin
@@ -459,6 +460,7 @@ class DnmrAB:
         except Exception as e:
             print(e)
             print('limits must be a tuple of two numbers')
+            raise
 
         if vmax < vmin:
             vmin, vmax = vmax, vmin
