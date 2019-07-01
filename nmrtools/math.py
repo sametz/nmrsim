@@ -76,8 +76,7 @@ def _normalize(intensities, n=1):
         Number of nuclei.
     """
     factor = n / sum(intensities)
-    for index, intensity in enumerate(intensities):
-        intensities[index] = intensity * factor
+    intensities[:] = [factor * i for i in intensities]
 
 
 def normalize_spectrum(spectrum, n=1):

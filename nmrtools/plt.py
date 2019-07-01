@@ -2,6 +2,18 @@ import numpy as np
 
 from nmrtools.math import lorentz
 
+"""TODO: rethink plot routines. There are two main flavors:
+    * plot peaklists, either as stick plots or with Lorentzians
+    * plot lineshapes
+    
+Different routes:
+    peaklist -> stick plot
+    peaklist -> Lorentzian lineshape
+    DNMR simulation -> lineshape
+    
+Consider function factories that will crank out the desired plot object.
+"""
+
 
 def add_signals(linspace, peaklist, w):
     """

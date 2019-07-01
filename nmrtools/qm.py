@@ -21,7 +21,7 @@ import os
 
 import numpy as np
 import sparse
-from .nmrmath import normalize_spectrum
+from nmrtools.math import normalize_spectrum
 
 CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
@@ -208,8 +208,8 @@ def nspinspec_dense(freqs, couplings, normalize=True):
 
     Returns
     -------
-    spectrum : [(float, float)...]
-        a list of (frequency, intensity) tuples.
+    spectrum : [[float, float]...] numpy 2D array
+         of [frequency, intensity] pairs.
     """
     nspins = len(freqs)
     H = hamiltonian_dense(freqs, couplings)
@@ -300,6 +300,23 @@ def new_compile_spectrum(I, E):
 
 
 def vectorized_simsignals(H, nspins):
+    """
+    Calculates frequencies and intensities of signals from a spin Hamiltonian
+    and number of spins.
+
+    TODO: with a spin Hamiltonian, nspins could be inferred?
+
+    Parameters
+    ----------
+    H: numpy.ndarray (2D)
+        The spin Hamiltonian
+    nspins : int
+        The number of spins in the system
+
+    Returns
+    -------
+    [[float, float]...] numpy 2D array of frequency, intensity pairs.
+    """
     I, E = intensity_and_energy(H, nspins)
     return new_compile_spectrum(I, E)
 
@@ -324,8 +341,8 @@ def nspinspec_sparse(freqs, couplings, normalize=True):
 
     Returns
     -------
-    spectrum : [(float, float)...]
-        a list of (frequency, intensity) tuples.
+    spectrum : [[float, float]...] numpy 2D array
+        of [frequency, intensity] pairs.
     """
     nspins = len(freqs)
     H = hamiltonian_sparse(freqs, couplings)
