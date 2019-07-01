@@ -2,43 +2,45 @@ import numpy as np
 import pytest
 
 from nmrtools.dnmr import dnmr_two_singlets, dnmr_AB, DnmrTwoSinglets, DnmrAB
+from nmrtools.math import get_maxima
 from tests.plottools import popplot
-from tests.testdata import AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_SLOW
+from tests.testdata import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
+                            TWOSPIN_SLOW)
 
 
-def get_intensity(spectrum, x):
-    """
-    A quick and dirty method to get intensity of data point closest to
-    frequency x. Better: interpolate between two data points if match isn't
-    exact (TODO?)
-    :param spectrum: tuple of (x, y) arrays for frequency, intensity data
-    :param x: frequency lookup
-    :return: the intensity at that frequency
-    """
-    nearest_x_index = np.abs(spectrum[0] - x).argmin()
-    return spectrum[1][nearest_x_index]
+# def get_intensity(spectrum, x):
+#     """
+#     A quick and dirty method to get intensity of data point closest to
+#     frequency x. Better: interpolate between two data points if match isn't
+#     exact (TODO?)
+#     :param spectrum: tuple of (x, y) arrays for frequency, intensity data
+#     :param x: frequency lookup
+#     :return: the intensity at that frequency
+#     """
+#     nearest_x_index = np.abs(spectrum[0] - x).argmin()
+#     return spectrum[1][nearest_x_index]
+#
+#
+# def get_maxima(spectrum):
+#     """
+#     Crude function that returns maxima in the spectrum.
+#     :param spectrum: tuple of frequency, intensity arrays
+#     :return: a list of (frequency, intensity) tuples for individual maxima.
+#     """
+#     res = []
+#     for n, val in enumerate(spectrum[1][1:-2]):
+#         index = n+1  # start at spectrum[1][1]
+#         lastvalue = spectrum[1][index-1]
+#         nextvalue = spectrum[1][index+1]
+#
+#         if lastvalue < val and nextvalue < val:
+#             print('MAXIMUM FOUND AT: ')
+#             print((spectrum[0][index], val))
+#             res.append((spectrum[0][index], val))
+#     return res
 
 
-def get_maxima(spectrum):
-    """
-    Crude function that returns maxima in the spectrum.
-    :param spectrum: tuple of frequency, intensity arrays
-    :return: a list of (frequency, intensity) tuples for individual maxima.
-    """
-    res = []
-    for n, val in enumerate(spectrum[1][1:-2]):
-        index = n+1  # start at spectrum[1][1]
-        lastvalue = spectrum[1][index-1]
-        nextvalue = spectrum[1][index+1]
-
-        if lastvalue < val and nextvalue < val:
-            print('MAXIMUM FOUND AT: ')
-            print((spectrum[0][index], val))
-            res.append((spectrum[0][index], val))
-    return res
-
-
-def test_d2s_func_slow_exchange():
+def test_dnmr_two_singlets_slow_exchange():
     spectrum = TWOSPIN_SLOW
     peaks = get_maxima(spectrum)
     print("Maxima: ", peaks)
@@ -47,7 +49,6 @@ def test_d2s_func_slow_exchange():
 
     x = np.linspace(85, 215, 800)
     y = intensity_calculator(x)
-    # popplot(x, y)  # replace with non-PyQtGraph popup graph if desired
 
     print('Testing intensity calculator on 135: ', intensity_calculator(135))
     print('Testing intensity calculator on 165: ', intensity_calculator(165))
@@ -101,6 +102,12 @@ def test_DnmrTwoSinglets_slow_exchange():
 def test_DnmrTwoSinglets_coalesce():
     sim = DnmrTwoSinglets(165, 135, 65.9, 0.5, 0.5, 0.5)
     assert np.allclose(sim.spectrum(), TWOSPIN_COALESCE)
+    popplot(*sim.spectrum())
+
+
+def test_DnmrTwoSinglets_fastexchange():
+    sim = DnmrTwoSinglets(165, 135, 1000, 0.5, 0.5, 0.5)
+    assert np.allclose(sim.spectrum(), TWOSPIN_FAST)
     popplot(*sim.spectrum())
 
 

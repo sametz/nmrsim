@@ -1,4 +1,5 @@
 """In-progress: math routines used across modules found here."""
+import numpy as np
 
 
 def add_peaks(plist):
@@ -128,3 +129,34 @@ def lorentz(v, v0, I, w):
     return scaling_factor * I * (
             (0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
 
+
+def get_intensity(spectrum, x):
+    """
+    A quick and dirty method to get intensity of data point closest to
+    frequency x. Better: interpolate between two data points if match isn't
+    exact (TODO?)
+    :param spectrum: tuple of (x, y) arrays for frequency, intensity data
+    :param x: frequency lookup
+    :return: the intensity at that frequency
+    """
+    nearest_x_index = np.abs(spectrum[0] - x).argmin()
+    return spectrum[1][nearest_x_index]
+
+
+def get_maxima(spectrum):
+    """
+    Crude function that returns maxima in the spectrum.
+    :param spectrum: tuple of frequency, intensity arrays
+    :return: a list of (frequency, intensity) tuples for individual maxima.
+    """
+    res = []
+    for n, val in enumerate(spectrum[1][1:-2]):
+        index = n+1  # start at spectrum[1][1]
+        lastvalue = spectrum[1][index-1]
+        nextvalue = spectrum[1][index+1]
+
+        if lastvalue < val and nextvalue < val:
+            print('MAXIMUM FOUND AT: ')
+            print((spectrum[0][index], val))
+            res.append((spectrum[0][index], val))
+    return res

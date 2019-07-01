@@ -1,8 +1,9 @@
 import numpy as np
 from pytest import approx
 
-from nmrtools.math import (add_peaks, lorentz, reduce_peaks,
+from nmrtools.math import (add_peaks, get_intensity, lorentz, reduce_peaks,
                            _normalize, normalize_spectrum)
+from tests.testdata import TWOSPIN_SLOW
 
 
 def test_add_peaks():
@@ -62,3 +63,10 @@ def test_lorentz_width():
     high_width_height = lorentz(v0 + w/2, v0, I, w)
     assert low_width_height / max_height == approx(0.5)
     assert high_width_height / max_height == approx(0.5)
+
+
+def test_get_intensity():
+    # 199.70588235,  199.86858573
+    # 2.46553790e-05, 2.44294680e-05,
+    assert get_intensity(TWOSPIN_SLOW, 199.75) == 2.46553790e-05
+    assert get_intensity(TWOSPIN_SLOW, 199.80) == 2.44294680e-05

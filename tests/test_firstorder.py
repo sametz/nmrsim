@@ -2,8 +2,7 @@ import numpy as np
 import pytest
 
 from nmrtools.firstorder import *
-# from nmrtools.firstorder import _normalize  # temporary
-from nmrtools.nmrplot import mplplot_stick
+from nmrtools.plt import mplplot_stick
 from tests.simulation_data import rioux
 
 
@@ -42,39 +41,6 @@ def test_multiplet():
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
-# def test_reduce_peaks():
-#     refspec = [(293.0, 0.75), (300.0, 1.5), (307.0, 0.75),
-#                (432.5, 0.0625), (439.5, 0.3125), (446.5, 0.625),
-#                (453.5, 0.625), (460.5, 0.3125), (467.5, 0.0625),
-#                (1193.0, 0.5), (1200.0, 1.0), (1207.0, 0.5)]
-#     tobereduced = [
-#         (1193.0, 0.5), (1200.0, 0.5), (1200.0, 0.5), (1207.0, 0.5),
-#         (432.5, 0.0625), (439.5, 0.0625), (439.5, 0.0625),
-#         (446.5, 0.0625), (439.5, 0.0625), (446.5, 0.0625),
-#         (446.5, 0.0625), (453.5, 0.0625), (439.5, 0.0625),
-#         (446.5, 0.0625), (446.5, 0.0625), (453.5, 0.0625),
-#         (446.5, 0.0625), (453.5, 0.0625), (453.5, 0.0625),
-#         (460.5, 0.0625), (439.5, 0.0625), (446.5, 0.0625),
-#         (446.5, 0.0625), (453.5, 0.0625), (446.5, 0.0625),
-#         (453.5, 0.0625), (453.5, 0.0625), (460.5, 0.0625),
-#         (446.5, 0.0625), (453.5, 0.0625), (453.5, 0.0625),
-#         (460.5, 0.0625), (453.5, 0.0625), (460.5, 0.0625),
-#         (460.5, 0.0625), (467.5, 0.0625),
-#         (293.0, 0.75), (300.0, 0.75), (300.0, 0.75), (307.0, 0.75)
-#     ]
-#     testspec = reduce_peaks(tobereduced)
-#     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
-
-
-# def test_normalize():
-#     intensities = [1, 3, 4]
-#     _normalize(intensities)
-#     assert intensities == [0.125, 0.375, 0.5]
-#     double_intensities = [1, 3, 3, 1]
-#     _normalize(double_intensities, 2)
-#     assert double_intensities == [0.25, 0.75, 0.75, 0.25]
-
-
 def test_first_order():
     refspec = [(293.0, 0.75), (300.0, 1.5), (307.0, 0.75),
                (432.5, 0.0625), (439.5, 0.3125), (446.5, 0.625),
@@ -92,17 +58,12 @@ def test_first_order():
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
-# def test_normalize_spectrum():
-#     pass
-
-
 def test_first_order_spin_system():
     v, J = rioux()
     spectrum = first_order_spin_system(v, J)
-    print(spectrum)
     x = np.array([i[0] for i in spectrum])
     y = np.array([i[1] for i in spectrum])
-    mplplot_stick(x, y)
+    mplplot_stick(spectrum)
     assert 1 == 1
 
 
@@ -129,8 +90,3 @@ class TestMultiplet:
             (1199.45, 0.5), (1200.55, 0.5),
             (1206.55, 0.25), (1207.65, 0.25)]
         assert np.allclose(td_multiplet.peaklist, expected_peaklist)
-
-# work in progress
-# def test_spectrum_from_signals():
-#     signals = [((1200, 2), [(7, 2)])]
-#     pass

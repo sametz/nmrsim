@@ -74,6 +74,21 @@ def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
 
 
 def first_order_spin_system(v, J):
+    """
+    Can create a first-order peaklist from the same v/J arguments used for
+    qm calculations.
+
+    Parameters
+    ----------
+    v : array-like [float...]
+        an array of frequencies
+    J : 2D array-like (square)
+        a matrix of J coupling constants
+
+    Returns
+    -------
+
+    """
     result = []
     for i, v_ in enumerate(v):
         couplings = ((j, 1) for j in J[i] if j != 0)
