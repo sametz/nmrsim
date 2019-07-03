@@ -1,68 +1,47 @@
 import numpy as np
 import pytest
 
-from nmrtools.dnmr import dnmr_two_singlets, dnmr_AB, DnmrTwoSinglets, DnmrAB
+from nmrtools.dnmr import (dnmr_two_singlets, dnmr_AB_func, dnmr_AB,
+                           DnmrTwoSinglets, DnmrAB)
 from nmrtools.math import get_maxima
 from tests.plottools import popplot
 from tests.testdata import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
                             TWOSPIN_SLOW)
 
 
-# def get_intensity(spectrum, x):
-#     """
-#     A quick and dirty method to get intensity of data point closest to
-#     frequency x. Better: interpolate between two data points if match isn't
-#     exact (TODO?)
-#     :param spectrum: tuple of (x, y) arrays for frequency, intensity data
-#     :param x: frequency lookup
-#     :return: the intensity at that frequency
-#     """
-#     nearest_x_index = np.abs(spectrum[0] - x).argmin()
-#     return spectrum[1][nearest_x_index]
-#
-#
-# def get_maxima(spectrum):
-#     """
-#     Crude function that returns maxima in the spectrum.
-#     :param spectrum: tuple of frequency, intensity arrays
-#     :return: a list of (frequency, intensity) tuples for individual maxima.
-#     """
-#     res = []
-#     for n, val in enumerate(spectrum[1][1:-2]):
-#         index = n+1  # start at spectrum[1][1]
-#         lastvalue = spectrum[1][index-1]
-#         nextvalue = spectrum[1][index+1]
-#
-#         if lastvalue < val and nextvalue < val:
-#             print('MAXIMUM FOUND AT: ')
-#             print((spectrum[0][index], val))
-#             res.append((spectrum[0][index], val))
-#     return res
-
-
 def test_dnmr_two_singlets_slow_exchange():
-    spectrum = TWOSPIN_SLOW
-    peaks = get_maxima(spectrum)
-    print("Maxima: ", peaks)
+    WINDNMR_DEFAULT = (165.00, 135.00, 1.50, 0.50, 0.50, 0.50)
+    x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
+    accepted_x, accepted_y = TWOSPIN_SLOW
+    np.testing.assert_array_almost_equal(x, accepted_x)
+    np.testing.assert_array_almost_equal(y, accepted_y)
 
-    intensity_calculator = dnmr_two_singlets(165, 135, 1.5, 0.5, 0.5, 0.5)
 
-    x = np.linspace(85, 215, 800)
-    y = intensity_calculator(x)
+def test_dnmr_two_singlets_coalesce():
 
-    print('Testing intensity calculator on 135: ', intensity_calculator(135))
-    print('Testing intensity calculator on 165: ', intensity_calculator(165))
+    WINDNMR_DEFAULT = (165.00, 135.00, 65.9, 0.50, 0.50, 0.50)
+    x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
+    accepted_x, accepted_y = TWOSPIN_COALESCE
+    np.testing.assert_array_almost_equal(x, accepted_x)
+    np.testing.assert_array_almost_equal(y, accepted_y)
 
-    for peak in peaks:
-        print('Testing vs. accepted peak at: ', peak)
-        calculated_intensity = intensity_calculator(peak[0])
 
-        print('i.e. input of frequency ', peak[0], ' should give output of '
-              'intensity ', peak[1])
-        print('Calculated intensity is actually: ', calculated_intensity)
+def test_dnmr_two_singlets_fastexchange():
 
-        np.testing.assert_almost_equal(calculated_intensity,
-                                       peak[1])
+    WINDNMR_DEFAULT = (165.00, 135.00, 1000.00, 0.50, 0.50, 0.50)
+    x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
+    accepted_x, accepted_y = TWOSPIN_FAST
+    np.testing.assert_array_almost_equal(x, accepted_x)
+    np.testing.assert_array_almost_equal(y, accepted_y)
+
+
+def test_dnmr_two_singlets_commute():
+
+    freqorder_ab = dnmr_two_singlets(165.00, 135.00, 1.50, 2.50, 0.50, 0.75)
+    freqorder_ba = dnmr_two_singlets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
+    popplot(*freqorder_ab)
+    popplot(*freqorder_ba)
+    np.testing.assert_array_almost_equal(freqorder_ab, freqorder_ba)
 
 
 def test_DnmrTwoSinglets_instantiates():
@@ -87,10 +66,11 @@ def test_DnmrTwoSinglets_properties():
     assert sim_args == (165.0, 135.0, 1.5, 0.5, 0.5, 0.5, (85.0, 215.0))
 
 
-@pytest.mark.parametrize('limits', ['foo', (1), (1, 'foo'), (1, 2, 3)])
+@pytest.mark.parametrize('limits', ['foo', (1,), (1, 'foo'), (1, 2, 3)])
 def test_DnmrTwoSinglets_limit_error(limits):
     with pytest.raises((AttributeError, TypeError, ValueError)):
         sim = DnmrTwoSinglets(limits=limits)
+        assert sim
 
 
 def test_DnmrTwoSinglets_slow_exchange():
@@ -111,13 +91,23 @@ def test_DnmrTwoSinglets_fastexchange():
     popplot(*sim.spectrum())
 
 
-def test_Dnmr_TwoSinglets_limits():
+def test_DnmrTwoSinglets_limits():
     sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
     sim.limits = (500, 0)
     assert sim.limits == (0, 500)
 
 
-def test_ab_WINDNMR_defaults():
+def test_DnmrTwoSinglets_frequencies_commute():
+    ab = DnmrTwoSinglets(165.00, 135.00, 1.50, 2.50, 0.50, 0.75)
+    ba = DnmrTwoSinglets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
+    ab_spec = ab.spectrum()  # doing this saves a function call (faster test)
+    ba_spec = ba.spectrum()
+    popplot(*ab_spec)
+    popplot(*ba_spec)
+    np.testing.assert_array_almost_equal(ab_spec, ba_spec)
+
+
+def test_dnmr_ab_func_WINDNMR_defaults():
     spectrum = AB_WINDNMR
     peaks = get_maxima(spectrum)
     print("Maxima: ", peaks)
@@ -126,13 +116,21 @@ def test_ab_WINDNMR_defaults():
 
     for peak in peaks:
         print('Testing vs. accepted peak at: ', peak)
-        calculated_intensity = dnmr_AB(peak[0], *ab_args)
+        calculated_intensity = dnmr_AB_func(peak[0], *ab_args)
 
         print('i.e. input of frequency ', peak[0], ' should give output of '
                                                    'intensity ', peak[1])
         print('Calculated intensity is actually: ', calculated_intensity)
 
         assert np.allclose(calculated_intensity, peak[1])
+
+
+def test_dnmr_AB_frequencies_commute():
+    freqorder_ab = dnmr_AB(165.00, 135.00, 12.00, 12.00, 0.50)
+    freqorder_ba = dnmr_AB(135.00, 165.00, 12.00, 12.00, 0.50)
+    popplot(*freqorder_ab)
+    popplot(*freqorder_ba)
+    np.testing.assert_array_almost_equal(freqorder_ab, freqorder_ba)
 
 
 def test_DnmrAB_instantiates():
@@ -157,10 +155,11 @@ def test_DnmrAB_properties():
     assert np.allclose(sim.spectrum(), AB_WINDNMR)
 
 
-@pytest.mark.parametrize('limits', ['foo', (1), (1, 'foo'), (1, 2, 3)])
+@pytest.mark.parametrize('limits', ['foo', (1,), (1, 'foo'), (1, 2, 3)])
 def test_DnmrAB_limit_error(limits):
     with pytest.raises((AttributeError, TypeError, ValueError)):
         sim = DnmrAB(limits=limits)
+        assert sim
 
 
 def test_DnmrAB_WINDNMR_defaults():

@@ -37,6 +37,7 @@ def add_signals(linspace, peaklist, w):
         an array of y coordinates corresponding to intensity.
     """
     # TODO: consider naming, and confusion with .math.add_peaks
+    # TODO: function looks clunky. Refactor?
     result = lorentz(linspace, peaklist[0][0], peaklist[0][1], w)
     for v, i in peaklist[1:]:
         result += lorentz(linspace, v, i, w)

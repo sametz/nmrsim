@@ -1,26 +1,30 @@
+"""The dnmr module provides functions for calculating DNMR line shapes, and
+classes to describe DNMR systems.
+
+
+TODO: complete documentation.
+"""
 import numpy as np
+# TODO: think about naming the intensity-returning functions better. Private?
 
 
-def dnmr_two_singlets(va, vb, ka, wa, wb, pa):
+def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     """
     Create a function that requires only frequency as an argurment, and used to
     calculate intensities across array of frequencies in the DNMR
     spectrum for two uncoupled spin-half nuclei.
 
     The idea is to calculate expressions
-    that are independant of frequency only once, and then use them in a new
-    function that depends only on v. This would avoid unneccessarily
+    that are independent of frequency only once, and then use them in a new
+    function that depends only on v. This would avoid unnecessarily
     repeating some of the same operations.
-
-    This function-within-a-function should be refactored to
-    function-within-class!
 
     :param va: The frequency of nucleus 'a' at the slow exchange limit. va > vb
     :param vb: The frequency of nucleus 'b' at the slow exchange limit. vb < va
     :param ka: The rate constant for state a--> state b
-    :param wa: The width at half heigh of the signal for nucleus a (at the slow
+    :param wa: The width at half height of the signal for nucleus a (at the slow
     exchange limit).
-    :param wb: The width at half heigh of the signal for nucleus b (at the slow
+    :param wb: The width at half height of the signal for nucleus b (at the slow
     exchange limit).
     :param pa: The fraction of the population in state a.
     :param pa: fraction of population in state a
@@ -31,8 +35,6 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa):
     """
     # TODO: this seems like the hard way to create a partial function. Try a
     # functools.partial version of this.
-    # TODO: factor pis out; redo comments to explain excision of v-independent
-    # terms
 
     pi = np.pi
     pi_squared = pi ** 2
@@ -70,9 +72,39 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa):
     return maker
 
 
-class DnmrTwoSinglets:
+def dnmr_two_singlets(va, vb, ka, wa, wb, pa):
+    """ TODO: finish the docs.
+
+    Parameters
+    ----------
+    va
+    vb
+    ka
+    wa
+    wb
+    pa
+
+    Returns
+    -------
+
     """
-    A DNMR simulation for two uncoupled nuclei undergoing exchange.
+    if vb > va:
+        va, vb = vb, va
+        wa, wb = wb, wa
+        pa = 1 - pa
+    l_limit = vb - 50
+    r_limit = va + 50
+    x = np.linspace(l_limit, r_limit, 800)
+    func = _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa)
+    y = func(x)
+    return x, y
+
+
+class DnmrTwoSinglets:
+    """ A DNMR simulation for two uncoupled nuclei undergoing exchange.
+
+    TODO: finish the docs.
+
     """
 
     _pi = np.pi
@@ -91,6 +123,10 @@ class DnmrTwoSinglets:
         """
         # Idea is to complete the frequency-independent calculations when the
         #  class is instantiated, and thus calculations may be faster.
+        if vb > va:
+            va, vb = vb, va
+            wa, wb = wb, wa
+            pa = 1 - pa
         self._va = va
         self._vb = vb
         self._k = k
@@ -284,7 +320,7 @@ class DnmrTwoSinglets:
         return x, y
 
 
-def dnmr_AB(v, v1, v2, J, k, W):
+def dnmr_AB_func(v, v1, v2, J, k, w):
     """
     A translation of the equation from Weil's JCE paper (NOTE: Reich pointed
     out that it has a sign typo!).
@@ -296,14 +332,14 @@ def dnmr_AB(v, v1, v2, J, k, W):
     v : float or array-like
         a frequency (x coordinate) or array of frequencies at which an
         amplitude (y coordinate) is to be calculated.
-    float v1, v2 :
+    v1, v2 : float
         frequencies of a and b nuclei (at the slow exchange limit,
         in the absence of coupling; `va` > `vb`)
     J : float
         the coupling constant between the two nuclei.
     k : float
         rate constant for state A--> state B
-    W : float
+    w : float
         peak widths at half height (slow exchange limit).
 
     Returns
@@ -320,7 +356,7 @@ def dnmr_AB(v, v1, v2, J, k, W):
     pi = np.pi
     vo = (v1 + v2) / 2
     tau = 1 / k
-    tau2 = 1 / (pi * W)
+    tau2 = 1 / (pi * w)
     a1_plus = 4 * pi ** 2 * (vo - v + J / 2) ** 2
     a1_minus = 4 * pi ** 2 * (vo - v - J / 2) ** 2
     a2 = - ((1 / tau) + (1 / tau2)) ** 2
@@ -348,7 +384,34 @@ def dnmr_AB(v, v1, v2, J, k, W):
     return I
 
 
+def dnmr_AB(v1, v2, J, k, w):
+    """
+    TODO: finish the docs.
+    Parameters
+    ----------
+    v1
+    v2
+    J
+    k
+    w
+
+    Returns
+    -------
+
+    """
+    if v2 > v1:
+        v1, v2 = v2, v1
+    l_limit = v2 - 50
+    r_limit = v1 + 50
+    x = np.linspace(l_limit, r_limit, 800)
+    y = dnmr_AB_func(x, v1, v2, J, k, w)
+    return x, y
+
+
 class DnmrAB:
+    """
+    TODO: finish the docs.
+    """
 
     _pi = np.pi
     _pi_squared = _pi ** 2
@@ -468,23 +531,23 @@ class DnmrAB:
         self._vmax = vmax
 
     def intensity(self, v):
-        self._a1_plus = 4 * self._pi_squared * (self._vo - v + self._J / 2) ** 2
-        self._a1_minus = 4 * self._pi_squared * (self._vo - v - self._J / 2) ** 2
-        self._a_plus = self._a1_plus + self._a2 + self._a3 + self._a4
-        self._a_minus = self._a1_minus + self._a2 + self._a3 + self._a4
+        a1_plus = 4 * self._pi_squared * (self._vo - v + self._J / 2) ** 2
+        a1_minus = 4 * self._pi_squared * (self._vo - v - self._J / 2) ** 2
+        a_plus = a1_plus + self._a2 + self._a3 + self._a4
+        a_minus = a1_minus + self._a2 + self._a3 + self._a4
 
-        self._b_plus = 4 * self._pi * (self._vo - v + self._J / 2) * (
+        b_plus = 4 * self._pi * (self._vo - v + self._J / 2) * (
                 (1 / self._tau) + (1 / self._tau2)) - 2 * self._pi * self._J / self._tau
-        self._b_minus = 4 * self._pi * (self._vo - v - self._J / 2) * (
+        b_minus = 4 * self._pi * (self._vo - v - self._J / 2) * (
                 (1 / self._tau) + (1 / self._tau2)) + 2 * self._pi * self._J / self._tau
 
-        self._r_plus = 2 * self._pi * (self._vo - v + self._J)
-        self._r_minus = 2 * self._pi * (self._vo - v - self._J)
-        self._n1 = self._r_plus * self._b_plus - self._s * self._a_plus
-        self._d1 = self._a_plus ** 2 + self._b_plus ** 2
-        self._n2 = self._r_minus * self._b_minus - self._s * self._a_minus
-        self._d2 = self._a_minus ** 2 + self._b_minus ** 2
-        I = (self._n1 / self._d1) + (self._n2 / self._d2)
+        r_plus = 2 * self._pi * (self._vo - v + self._J)
+        r_minus = 2 * self._pi * (self._vo - v - self._J)
+        n1 = r_plus * b_plus - self._s * a_plus
+        d1 = a_plus ** 2 + b_plus ** 2
+        n2 = r_minus * b_minus - self._s * a_minus
+        d2 = a_minus ** 2 + b_minus ** 2
+        I = (n1 / d1) + (n2 / d2)
         return I
 
     def spectrum(self):
