@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 from pytest import approx
-from nmrtools.nmrplot import (lorentz, add_signals,
-                                     dnmrplot_2spin, dnmrplot_AB)
+from old_modules.nmrplot import (lorentz, add_signals,
+                                 dnmrplot_2spin, dnmrplot_AB)
 from tests import testdata
 from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.plottools import popplot
