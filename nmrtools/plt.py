@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 
 from nmrtools.math import lorentz
@@ -54,12 +55,14 @@ def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
         a list of (frequency, intensity) tuples.
     w : float
         peak width at half height
-    y : float
+    y_max : float or int
         maximum intensity for the plot.
+    points : int
+        number of data points
     limits : (float, float)
         frequency limits for the plot
     """
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
     peaklist.sort()  # Could become costly with larger spectra
     if limits:
@@ -70,7 +73,8 @@ def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
         except Exception as e:
             print(e)
             print('limits must be a tuple of two numbers')
-            return None
+            # return None
+            raise
         if l_limit > r_limit:
             l_limit, r_limit = r_limit, l_limit
     else:
@@ -84,6 +88,7 @@ def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
     plt.plot(x, y)
     plt.show()
     return x, y
+    # TODO: or return plt? Decide behavior
 
 
 def mplplot_stick(peaklist, y_max=1, limits=None):
@@ -102,7 +107,7 @@ def mplplot_stick(peaklist, y_max=1, limits=None):
     max_y : float
         maximum intensity for the plot.
     """
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
     fig, ax = plt.subplots()
     if limits:
@@ -113,7 +118,7 @@ def mplplot_stick(peaklist, y_max=1, limits=None):
         except Exception as e:
             print(e)
             print('limits must be a tuple of two numbers')
-            return None
+            raise
         if l_limit > r_limit:
             l_limit, r_limit = r_limit, l_limit
     else:
@@ -125,5 +130,36 @@ def mplplot_stick(peaklist, y_max=1, limits=None):
     plt.ylim(-0.1, y_max)
     ax.stem(x, y, markerfmt=' ', basefmt='C0-')
     ax.invert_xaxis()
+    plt.show()
+    return x, y
+
+
+def mpl_lineshape(x, y, y_min=None, y_max=None, limits=None):
+    # fig, ax = plt.subplots()
+
+    if limits:
+        try:
+            l_limit, r_limit = limits
+            l_limit = float(l_limit)
+            r_limit = float(r_limit)
+        except Exception as e:
+            print(e)
+            print('limits must be a tuple of two numbers')
+            raise
+        if l_limit > r_limit:
+            l_limit, r_limit = r_limit, l_limit
+    else:
+        l_limit = x[0]  # assumes x already sorted low->high
+        r_limit = x[-1]
+
+    if y_min is None or y_max is None:  # must test vs None so that 0 = True
+        margin = max(y) * 0.1
+        if y_min is None:
+            y_min = min(y) - margin
+        if y_max is None:
+            y_max = max(y) + margin
+    plt.xlim(r_limit, l_limit)  # should invert x axis
+    plt.ylim(y_min, y_max)
+    plt.plot(x, y)
     plt.show()
     return x, y

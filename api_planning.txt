@@ -22,8 +22,16 @@ Consistent names for various data types?
 
 peak = (v, I) -- signal?
 peaklist = [peak...]
-spectrum = x, y for lineshape
+lineshape = [[x...], [y...]]
+and not spectrum = ""?
 
 Spectrum composed from Multiplets and SpinSystems
 SpinSystems has a toggle for first or second order
+
+
+There is a mixture of 2D array-like forms for peaklists. Should there be one consistent form?
+[(v, I)...] allows use of zip, e.g. x, y = zip(*peaklist). Pro: non-numpy users can construct these from scratch if
+they wish.
+np.array [[v, I]...] allows x, y = peaklist.T.
+
 

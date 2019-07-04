@@ -92,6 +92,7 @@ def normalize_spectrum(spectrum, n=1):
     n : int or float
         total intensity to normalize to.
     """
+    # TODO As it stands, spectrum can be 2D array-like.
     # TODO: refactor to freq, in_ = zip(*spectrum)?
     freq, int_ = [x for x, y in spectrum], [y for x, y in spectrum]
     _normalize(int_, n)
