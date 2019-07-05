@@ -108,15 +108,18 @@ def first_order_spin_system(v, J):
 # https://realpython.com/python-type-checking/
 # https://blog.florimond.dev/reconciling-dataclasses-and-properties-in-python
 class Multiplet:
-    """This is a stub for now. Considering either a class or a dataclass for
-    multiplets, spin systems, and spectra. Also consider naming:
+    """This is a stub for now. Add getters/setters, dunder methods etc. later.
+    Also consider naming:
     there is both function 'multiplet' and class 'Multiplet' right now!
     """
     def __init__(self, v, I, J):
         self.v = v
         self.I = I
         self.J = J
-        self.peaklist = first_order((v, I), J)
+        self._peaklist = first_order((v, I), J)
+
+    def peaklist(self):
+        return self._peaklist
 
 
 """ API ideas:

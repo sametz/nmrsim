@@ -89,4 +89,4 @@ class TestMultiplet:
             (1192.35, 0.25), (1193.45, 0.25),
             (1199.45, 0.5), (1200.55, 0.5),
             (1206.55, 0.25), (1207.65, 0.25)]
-        assert np.allclose(td_multiplet.peaklist, expected_peaklist)
+        assert np.allclose(td_multiplet.peaklist(), expected_peaklist)
