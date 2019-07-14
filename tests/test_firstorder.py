@@ -41,6 +41,12 @@ def test_multiplet():
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
+def test_first_order_allows_singlet():
+    refspec = [(1200.0, 2.0)]
+    testspec = first_order((1200.0, 2.0), [])
+    assert np.allclose(refspec, testspec)
+
+
 def test_first_order():
     refspec = [(293.0, 0.75), (300.0, 1.5), (307.0, 0.75),
                (432.5, 0.0625), (439.5, 0.3125), (446.5, 0.625),
@@ -67,6 +73,11 @@ def test_first_order_spin_system():
     assert 1 == 1
 
 
+def test_AutoStorage_get_without_instance():
+    # See L. Ramalho, "Fluent Python", p. 637. Testing instance=None
+    assert Multiplet.v is not None
+
+
 @pytest.fixture()
 def td():
     """Return multiplet data for a 1200 Hz, 2H
@@ -76,6 +87,11 @@ def td():
     I = 2
     J = [(7.1, 2), (1.1, 1)]
     return v, I, J
+
+
+@pytest.fixture()
+def dummy_multiplet(td):
+    return Multiplet(*td)
 
 
 class TestMultiplet:
@@ -90,3 +106,51 @@ class TestMultiplet:
             (1199.45, 0.5), (1200.55, 0.5),
             (1206.55, 0.25), (1207.65, 0.25)]
         assert np.allclose(td_multiplet.peaklist(), expected_peaklist)
+
+    def test_dummy_multiplet(self, dummy_multiplet):
+        assert dummy_multiplet.v == 1200.0
+        assert dummy_multiplet.I == 2
+        assert dummy_multiplet.J == [(7.1, 2), (1.1, 1)]
+        expected_peaklist = [
+            (1192.35, 0.25), (1193.45, 0.25),
+            (1199.45, 0.5), (1200.55, 0.5),
+            (1206.55, 0.25), (1207.65, 0.25)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+
+    def test_v_setter(self, dummy_multiplet):
+        dummy_multiplet.v = 200.0
+        assert dummy_multiplet.v == 200.0  # tests Autostorage instance=None
+        expected_peaklist = [
+            (192.35, 0.25), (193.45, 0.25),
+            (199.45, 0.5), (200.55, 0.5),
+            (206.55, 0.25), (207.65, 0.25)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+
+        with pytest.raises(TypeError):
+            dummy_multiplet.v = 'foo'
+            assert dummy_multiplet.v == 'foo'
+
+    def test_I_setter(self, dummy_multiplet):
+        dummy_multiplet.I = 4
+        expected_peaklist = [
+            (1192.35, 0.5), (1193.45, 0.5),
+            (1199.45, 1.0), (1200.55, 1.0),
+            (1206.55, 0.5), (1207.65, 0.5)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+
+        with pytest.raises(TypeError):
+            dummy_multiplet.I = 'foo'
+
+    def test_J_setter(self, dummy_multiplet):
+        dummy_multiplet.J = [(10.0, 1)]
+        expected_peaklist = [(1195.0, 1), (1205.0, 1)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+        dummy_multiplet.J = []
+        expected_singlet = [(1200, 2)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_singlet)
+
+        with pytest.raises(TypeError):
+            dummy_multiplet.J = [((1, 2), (3, 4)), ((5, 6), (7, 8))]
+
+        with pytest.raises(ValueError):
+            dummy_multiplet.J = [(1, 2, 3)]
