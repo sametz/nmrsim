@@ -156,16 +156,42 @@ class SpinSystem:
         else:
             return first_order_spin_system(self._v, self._J)
 
+    def __eq__(self, other):
+        if hasattr(other, 'peaklist') and callable(other.peaklist):
+            return np.allclose(self.peaklist(), other.peaklist())
+
+    def __add__(self, other):
+        if hasattr(other, 'peaklist') and callable(other.peaklist):
+            return Spectrum([self, other])
+        else:
+            return NotImplemented
+
 
 class Spectrum:
     """Stub implementation of Spectrum.
     Flesh out API (e.g. getter/setters; dunder methods) later."""
     def __init__(self, components, mhz=300, limits=None):
-        self.components = components[:]
+        self._components = components[:]
         self.mhz = mhz
-        peaklists = [c.peaklist() for c in self.components]
+        peaklists = [c.peaklist() for c in self._components]
         peaklists_merged = itertools.chain.from_iterable(peaklists)
         self._peaklist = reduce_peaks(peaklists_merged)
+
+    def _add_peaklist(self, other):
+        self._peaklist = reduce_peaks(
+            itertools.chain(self._peaklist, other.peaklist()))
+
+    def __eq__(self, other):
+        if hasattr(other, 'peaklist') and callable(other.peaklist):
+            return np.allclose(self.peaklist(), other.peaklist())
+
+    def __add__(self, other):
+        if hasattr(other, 'peaklist') and callable(other.peaklist):
+            self._add_peaklist(other)
+            self._components.append(other)
+            return self
+        else:
+            return NotImplemented
 
     def peaklist(self):
         return self._peaklist

@@ -216,6 +216,20 @@ class TestSpinSystem:
         ss = SpinSystem(v, J, second_order=False)
         assert np.allclose(expected_result, ss.peaklist())
 
+    def test_eq(self, abx):
+        ss1 = SpinSystem(*abx)
+        ss2 = SpinSystem(*abx)
+        assert ss1 is not ss2
+        assert ss1 == ss2
+
+    def test_add(self, abx, dummy_multiplet):
+        ss = SpinSystem(*abx)
+        spectrum_1 = dummy_multiplet + ss
+        spectrum_2 = ss + dummy_multiplet
+        assert spectrum_1 == spectrum_2
+        with pytest.raises(TypeError):
+            bad_ss = ss + 1
+
 
 class TestSpectrum:
     def test_Spectrum_instantiates_with_multiplet(self):
@@ -225,5 +239,24 @@ class TestSpectrum:
         expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
                                     (70, 0.25)])
         result = s.peaklist()
-        print('result: ', result)
         assert np.array_equal(expected_peaklist, result)
+
+    def test_add_and_eq(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        s = Spectrum([m1, m2])
+        s2 = m1 + m2
+        assert s == s2
+        s3 = m1 + m1 + m2 + m2  # test for more than two objects being added
+        expected_peaklist = sorted([(110, 0.5), (100, 1), (90, 1), (80, 1),
+                                    (70, 0.5)])
+        assert np.allclose(s3.peaklist(), expected_peaklist)
+        with pytest.raises(TypeError):
+            s4 = s + 1
+
+    def test_add_appends_to_components(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        s = Spectrum([m1])
+        s2 = s + m2
+        assert s2._components == [m1, m2]

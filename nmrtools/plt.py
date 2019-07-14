@@ -49,7 +49,7 @@ def add_signals(linspace, peaklist, w):
     return result
 
 
-def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
+def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     """
     A no-frills routine that plots spectral simulation data.
 
@@ -85,7 +85,7 @@ def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
         l_limit = peaklist[0][0] - 50
         r_limit = peaklist[-1][0] + 50
     x = np.linspace(l_limit, r_limit, points)
-    plt.ylim(-0.1, y_max)
+    plt.ylim(y_min, y_max)
     plt.gca().invert_xaxis()  # reverses the x axis
     y = add_signals(x, peaklist, w)
     # noinspection PyTypeChecker
@@ -95,7 +95,7 @@ def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
     # TODO: or return plt? Decide behavior
 
 
-def mplplot_stick(peaklist, y_max=1, limits=None):
+def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
     """TODO: description below incorrect. x, y must be numpy.ndarray.
     Decide on a consistent interface (e.g. vs. mplplot).
     Also: setting limits by adding small peaks is hacky, and also doesn't work
@@ -134,7 +134,7 @@ def mplplot_stick(peaklist, y_max=1, limits=None):
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
-    plt.ylim(-0.1, y_max)
+    plt.ylim(y_min, y_max)
     ax.stem(x, y, markerfmt=' ', basefmt='C0-')
     ax.invert_xaxis()
     plt.show()
