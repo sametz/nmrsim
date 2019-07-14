@@ -4,6 +4,8 @@ and spectra.
 import itertools
 import numbers
 
+import numpy as np
+
 from nmrtools.firstorder import first_order, first_order_spin_system
 from nmrtools.math import reduce_peaks
 from nmrtools.qm import spectrum
@@ -91,17 +93,58 @@ class SpinSystem:
     """Stub implementation of SpinSystem.
     Flesh out API (e.g. getters/setters; dunder methods) later."""
     def __init__(self, v, J, second_order=True):
+        self._nuclei_number = len(v)
         self.v = v
         self.J = J
-        self.second_order = second_order
+        self._second_order = second_order
         self._peaklist = self.peaklist()
-        print(self.v, self.J, self.second_order, self.peaklist)
+        print(self._v, self._J, self._second_order, self.peaklist)
+
+    @property
+    def v(self):
+        return self._v
+
+    @v.setter
+    def v(self, vlist):
+        if len(vlist) != self._nuclei_number:
+            raise ValueError('v length must match J shape.')
+        if not isinstance(vlist[0], numbers.Real):
+            raise TypeError('v must be an array of numbers.')
+        self._v = vlist
+
+    @property
+    def J(self):
+        return self._J
+
+    @J.setter
+    def J(self, J_array):
+        J = np.array(J_array)
+        m, n = J.shape
+        if (m != n) or (m != self._nuclei_number):
+            raise TypeError("J dimensions don't match v length.")
+        if not np.allclose(J, J.T):
+            raise ValueError('J must be diagonal-symmetric.')
+        for i in range(m):
+            if J[i, i] != 0:
+                raise ValueError('Diagonal elements of J must be 0.')
+        self._J = J_array
+
+    @property
+    def second_order(self):
+        return self._second_order
+
+    @second_order.setter
+    def second_order(self, boolean):
+        if isinstance(boolean, bool):
+            self._second_order = boolean
+        else:
+            raise TypeError('second_order must be a boolean')
 
     def peaklist(self):
-        if self.second_order:
-            return spectrum(self.v, self.J)
+        if self._second_order:
+            return spectrum(self._v, self._J)
         else:
-            return first_order_spin_system(self.v, self.J)
+            return first_order_spin_system(self._v, self._J)
 
 
 class Spectrum:

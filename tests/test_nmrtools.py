@@ -28,6 +28,16 @@ def dummy_multiplet(td):
     return Multiplet(*td)
 
 
+@pytest.fixture()
+def abx():
+    return rioux()
+
+
+@pytest.fixture()
+def spinsystem(abx):
+    return SpinSystem(*abx)
+
+
 class TestMultiplet:
     def test_instantiates(self, td):
         v, I, J = td
@@ -124,25 +134,72 @@ class TestMultiplet:
             dummy_multiplet *= 'foo'
 
 
-def test_SpinSystem_ABX():
-    v, J = rioux()
-    ss = SpinSystem(v, J)
-    assert np.allclose(ss.peaklist(), SPECTRUM_RIOUX)
+# @pytest.mark.usefixtures('abx')
+class TestSpinSystem:
+    def test_instantiates(self, abx):
+        v, J = abx
+        ss = SpinSystem(v, J, second_order=False)
+        assert np.allclose(ss.v, v)
+        assert np.allclose(ss.J, J)
+        assert ss.second_order is False
+
+    def test_v_validation(self, spinsystem):
+        new_v = [1, 2, 3]
+        spinsystem.v = new_v
+        assert np.array_equal(spinsystem.v, new_v)
+        with pytest.raises(ValueError):
+            spinsystem.v = [1, 2]
+        with pytest.raises(TypeError):
+            spinsystem.v = ['foo', 'bar', 'baz']
+
+    def test_J_validation(self, spinsystem):
+        new_J = [[0, 1, 2],
+                 [1, 0, 3],
+                 [2, 3, 0]]
+        spinsystem.J = new_J
+        assert np.array_equal(spinsystem.J, new_J)
+
+        wrongsize_J = [[0, 1], [1, 0]]
+        with pytest.raises(TypeError):
+            spinsystem.J = wrongsize_J
+
+        nozeros_J = [[0, 1, 2],
+                     [1, 0, 3],
+                     [2, 3, 1]]
+        with pytest.raises(ValueError):
+            spinsystem.J = nozeros_J
+
+        notdiagonal_J = new_J = [[0, 1, 2],
+                                 [1, 0, 3],
+                                 [2, 4, 0]]
+        with pytest.raises(ValueError):
+            spinsystem.J = notdiagonal_J
+
+    def test_second_order_validation(self, spinsystem):
+        spinsystem.second_order = False
+        assert spinsystem.second_order is False
+        with pytest.raises(TypeError):
+            spinsystem.second_order = "second order"
+
+    def test_SpinSystem_ABX(self, abx):
+        v, J = abx
+        ss = SpinSystem(v, J)
+        assert np.allclose(ss.peaklist(), SPECTRUM_RIOUX)
+
+    def test_SpinSystem_firstorder(self, abx):
+        v, J = abx
+        expected_result = first_order_spin_system(v, J)
+        ss = SpinSystem(v, J, second_order=False)
+        assert np.allclose(expected_result, ss.peaklist())
 
 
-def test_SpinSystem_firstorder():
-    v, J = rioux()
-    expected_result = first_order_spin_system(v, J)
-    ss = SpinSystem(v, J, second_order=False)
-    assert np.allclose(expected_result, ss.peaklist())
-
-
-def test_Spectrum_instantiates_with_multiplet():
-    m1 = Multiplet(100, 1, [(10, 2)])
-    m2 = Multiplet(80, 1, [(10, 2)])
-    s = Spectrum([m1, m2])
-    expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
-                                (70, 0.25)])
-    result = s.peaklist()
-    print('result: ', result)
-    assert np.array_equal(expected_peaklist, result)
+class TestSpectrum:
+    def test_Spectrum_instantiates_with_multiplet(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        s = Spectrum([m1, m2])
+        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
+                                    (70, 0.25)])
+        result = s.peaklist()
+        print('result: ', result)
+        assert np.array_equal(expected_peaklist, result)
