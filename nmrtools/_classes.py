@@ -40,6 +40,10 @@ class Multiplet:
         self.J = J
         self._peaklist = first_order((v, I), J)
 
+    def __eq__(self, other):
+        if hasattr(other, 'peaklist') and callable(other.peaklist):
+            return np.allclose(self.peaklist(), other.peaklist())
+
     def __add__(self, other):
         if hasattr(other, 'peaklist') and callable(other.peaklist):
             return Spectrum([self, other])
@@ -58,6 +62,12 @@ class Multiplet:
             return self
         else:
             return NotImplemented
+
+    def __truediv__(self, scalar):
+        return self.__mul__(1 / scalar)
+
+    def __itruediv__(self, scalar):
+        return self.__imul__(1 / scalar)
 
     def _refresh(self):
         self._peaklist = first_order((self.v, self.I), self.J)

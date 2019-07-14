@@ -13,6 +13,10 @@ Different routes:
     DNMR simulation -> lineshape
     
 Consider function factories that will crank out the desired plot object.
+
+Peaklists may be np.arrays, or lists of tuples, depending on origin. Either
+use a consistent form throughout (e.g. np.array, converting users array-like
+objects as needed) or refactor to allow multiple inputs.
 """
 
 
@@ -93,7 +97,9 @@ def mplplot(peaklist, w=1, y_max=1, points=800, limits=None):
 
 def mplplot_stick(peaklist, y_max=1, limits=None):
     """TODO: description below incorrect. x, y must be numpy.ndarray.
-    Decide on a consistent interface (e.g. vs. mplplot)
+    Decide on a consistent interface (e.g. vs. mplplot).
+    Also: setting limits by adding small peaks is hacky, and also doesn't work
+    if peaklist isn't ordered.
     """
     """
     matplotlib plot a spectrum in "stick" (stem) style.
@@ -127,6 +133,7 @@ def mplplot_stick(peaklist, y_max=1, limits=None):
     x, y = zip(*peaklist)
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
+    plt.xlim(r_limit, l_limit)
     plt.ylim(-0.1, y_max)
     ax.stem(x, y, markerfmt=' ', basefmt='C0-')
     ax.invert_xaxis()

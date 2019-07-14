@@ -99,6 +99,13 @@ class TestMultiplet:
         with pytest.raises(ValueError):
             dummy_multiplet.J = [(1, 2, 3)]
 
+    def test_eq(self, dummy_multiplet):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = m1 * 2
+        m3 = m2 / 2
+        assert m1 is not m3
+        assert m1 == m3
+
     def test_add(self, dummy_multiplet):
         m1 = Multiplet(100, 1, [(10, 2)])
         m2 = Multiplet(80, 1, [(10, 2)])
@@ -133,6 +140,23 @@ class TestMultiplet:
         with pytest.raises(TypeError):
             dummy_multiplet *= 'foo'
 
+    def test_truediv(self, dummy_multiplet):
+        doubled = dummy_multiplet * 2.0
+        divtest = dummy_multiplet / 0.5
+        assert doubled is not divtest
+        assert doubled == divtest
+        with pytest.raises(ZeroDivisionError):
+            dummy_multiplet / 0
+
+    def test_itruediv(self, dummy_multiplet):
+        original = dummy_multiplet
+        doubled = dummy_multiplet * 2.0
+        dummy_multiplet /= 0.5
+        assert original is dummy_multiplet
+        assert doubled is not original
+        assert doubled == original
+        with pytest.raises(ZeroDivisionError):
+            dummy_multiplet /= 0
 
 # @pytest.mark.usefixtures('abx')
 class TestSpinSystem:
