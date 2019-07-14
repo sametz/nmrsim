@@ -154,3 +154,26 @@ class TestMultiplet:
 
         with pytest.raises(ValueError):
             dummy_multiplet.J = [(1, 2, 3)]
+
+    def test_mul(self, dummy_multiplet):
+        doubled = dummy_multiplet * 2.0
+        assert doubled is not dummy_multiplet  # should not modify original
+        expected_peaklist = [
+            (1192.35, 0.5), (1193.45, 0.5),
+            (1199.45, 1.0), (1200.55, 1.0),
+            (1206.55, 0.5), (1207.65, 0.5)]
+        assert np.allclose(doubled.peaklist(), expected_peaklist)
+        with pytest.raises(TypeError):
+            assert dummy_multiplet * 'foo' == NotImplemented
+
+    def test_imul(self, dummy_multiplet):
+        original_m = dummy_multiplet
+        dummy_multiplet *= 2
+        assert dummy_multiplet is original_m
+        expected_peaklist = [
+            (1192.35, 0.5), (1193.45, 0.5),
+            (1199.45, 1.0), (1200.55, 1.0),
+            (1206.55, 0.5), (1207.65, 0.5)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+        with pytest.raises(TypeError):
+            dummy_multiplet *= 'foo'

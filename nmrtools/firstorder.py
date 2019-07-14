@@ -119,6 +119,9 @@ class AutoStorage:
 
     See L. Ramalho, "Fluent Python", Ch. 20.
     """
+    """Downside of this method is non-informative docstrings for attributes.
+    Consider another implementation.
+    """
     __counter = 0
 
     def __init__(self):
@@ -132,7 +135,6 @@ class AutoStorage:
         if instance is None:
             return self
         else:
-            print("I'm an instance of: ", instance)
             return getattr(instance, self.storage_name)
 
     def __set__(self, instance, value):
@@ -196,10 +198,24 @@ class Multiplet:
         self.J = J
         self._peaklist = first_order((v, I), J)
 
+    def __mul__(self, scalar):
+        if isinstance(scalar, numbers.Real):
+            return Multiplet(self.v, self.I * scalar, self.J)
+        else:
+            return NotImplemented
+
+    def __imul__(self, scalar):
+        if isinstance(scalar, numbers.Real):
+            self.I = self.I * scalar
+            return self
+        else:
+            return NotImplemented
+
     def _refresh(self):
         self._peaklist = first_order((self.v, self.I), self.J)
 
     def peaklist(self):
+        """Return a list of (frequency, intensity) signals."""
         self._refresh()
         return self._peaklist
 
