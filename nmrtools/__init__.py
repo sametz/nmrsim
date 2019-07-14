@@ -19,4 +19,4 @@ capped at 11 nuclei)
 Currently, only spin-1/2 nuclei are accommodated.
 """
 
-from ._classes import *
+from ._classes import Multiplet, SpinSystem, Spectrum

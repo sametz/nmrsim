@@ -1,9 +1,127 @@
 import numpy as np
+import pytest
 
-from nmrtools import SpinSystem, Spectrum
-from nmrtools.firstorder import first_order_spin_system, Multiplet
+from nmrtools import Multiplet, SpinSystem, Spectrum
+from nmrtools.firstorder import first_order_spin_system
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.simulation_data import rioux
+
+
+def test_AutoStorage_get_without_instance():
+    # See L. Ramalho, "Fluent Python", p. 637. Testing instance=None
+    assert Multiplet.v is not None
+
+
+@pytest.fixture()
+def td():
+    """Return multiplet data for a 1200 Hz, 2H
+    triplet of doublets, J=7.1, 1.1 Hz.
+    """
+    v = 1200.0
+    I = 2
+    J = [(7.1, 2), (1.1, 1)]
+    return v, I, J
+
+
+@pytest.fixture()
+def dummy_multiplet(td):
+    return Multiplet(*td)
+
+
+class TestMultiplet:
+    def test_instantiates(self, td):
+        v, I, J = td
+        td_multiplet = Multiplet(v, I, J)
+        assert td_multiplet.v == 1200.0
+        assert td_multiplet.I == 2
+        assert td_multiplet.J == [(7.1, 2), (1.1, 1)]
+        expected_peaklist = [
+            (1192.35, 0.25), (1193.45, 0.25),
+            (1199.45, 0.5), (1200.55, 0.5),
+            (1206.55, 0.25), (1207.65, 0.25)]
+        assert np.allclose(td_multiplet.peaklist(), expected_peaklist)
+
+    def test_dummy_multiplet(self, dummy_multiplet):
+        assert dummy_multiplet.v == 1200.0
+        assert dummy_multiplet.I == 2
+        assert dummy_multiplet.J == [(7.1, 2), (1.1, 1)]
+        expected_peaklist = [
+            (1192.35, 0.25), (1193.45, 0.25),
+            (1199.45, 0.5), (1200.55, 0.5),
+            (1206.55, 0.25), (1207.65, 0.25)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+
+    def test_v_setter(self, dummy_multiplet):
+        dummy_multiplet.v = 200.0
+        assert dummy_multiplet.v == 200.0  # tests Autostorage instance=None
+        expected_peaklist = [
+            (192.35, 0.25), (193.45, 0.25),
+            (199.45, 0.5), (200.55, 0.5),
+            (206.55, 0.25), (207.65, 0.25)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+
+        with pytest.raises(TypeError):
+            dummy_multiplet.v = 'foo'
+            assert dummy_multiplet.v == 'foo'
+
+    def test_I_setter(self, dummy_multiplet):
+        dummy_multiplet.I = 4
+        expected_peaklist = [
+            (1192.35, 0.5), (1193.45, 0.5),
+            (1199.45, 1.0), (1200.55, 1.0),
+            (1206.55, 0.5), (1207.65, 0.5)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+
+        with pytest.raises(TypeError):
+            dummy_multiplet.I = 'foo'
+
+    def test_J_setter(self, dummy_multiplet):
+        dummy_multiplet.J = [(10.0, 1)]
+        expected_peaklist = [(1195.0, 1), (1205.0, 1)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+        dummy_multiplet.J = []
+        expected_singlet = [(1200, 2)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_singlet)
+
+        with pytest.raises(TypeError):
+            dummy_multiplet.J = [((1, 2), (3, 4)), ((5, 6), (7, 8))]
+
+        with pytest.raises(ValueError):
+            dummy_multiplet.J = [(1, 2, 3)]
+
+    def test_add(self, dummy_multiplet):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        result = m1 + m2
+        # assert 1 == 1
+        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
+                                    (70, 0.25)])
+        assert np.array_equal(result.peaklist(), expected_peaklist)
+        with pytest.raises(TypeError):
+            bad_result = m1 + 3
+
+    def test_mul(self, dummy_multiplet):
+        doubled = dummy_multiplet * 2.0
+        assert doubled is not dummy_multiplet  # should not modify original
+        expected_peaklist = [
+            (1192.35, 0.5), (1193.45, 0.5),
+            (1199.45, 1.0), (1200.55, 1.0),
+            (1206.55, 0.5), (1207.65, 0.5)]
+        assert np.allclose(doubled.peaklist(), expected_peaklist)
+        with pytest.raises(TypeError):
+            assert dummy_multiplet * 'foo' == NotImplemented
+
+    def test_imul(self, dummy_multiplet):
+        original_m = dummy_multiplet
+        dummy_multiplet *= 2
+        assert dummy_multiplet is original_m
+        expected_peaklist = [
+            (1192.35, 0.5), (1193.45, 0.5),
+            (1199.45, 1.0), (1200.55, 1.0),
+            (1206.55, 0.5), (1207.65, 0.5)]
+        assert np.allclose(dummy_multiplet.peaklist(), expected_peaklist)
+        with pytest.raises(TypeError):
+            dummy_multiplet *= 'foo'
 
 
 def test_SpinSystem_ABX():
