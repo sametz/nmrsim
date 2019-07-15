@@ -78,27 +78,6 @@ class Multiplet:
         return self._peaklist
 
 
-""" API ideas:
-    firstorder.multiplet for one signal
-    firstorder.spectrum for multiple signals
-    firstorder.spinsystem takes qm-style v and J arguments, and returns a
-        firstorder.spectrum?
-    thinking bigger picture: an nmrtools.spectrum class that holds all data
-    needed for a complete spectrum, including spectrometer frequency and
-    whether to calculate it as first-order or second-order.
-
-    Convenience functions for how users will supply arguments? In particular,
-    J couplings.
-    J = [(7.1, 3), (1.0, 2)]
-    J = {'J12': 7.1,
-         'J13': 7.1,
-         'J14': 1.0} and parse into a matrix?
-
-    standardize nomenclature: signals vs peaks vs spectrum vs...
-"""
-
-
-
 class SpinSystem:
     """Stub implementation of SpinSystem.
     Flesh out API (e.g. getters/setters; dunder methods) later."""
@@ -108,7 +87,6 @@ class SpinSystem:
         self.J = J
         self._second_order = second_order
         self._peaklist = self.peaklist()
-        print(self._v, self._J, self._second_order, self.peaklist)
 
     @property
     def v(self):
@@ -170,9 +148,8 @@ class SpinSystem:
 class Spectrum:
     """Stub implementation of Spectrum.
     Flesh out API (e.g. getter/setters; dunder methods) later."""
-    def __init__(self, components, mhz=300, limits=None):
+    def __init__(self, components):
         self._components = components[:]
-        self.mhz = mhz
         peaklists = [c.peaklist() for c in self._components]
         peaklists_merged = itertools.chain.from_iterable(peaklists)
         self._peaklist = reduce_peaks(peaklists_merged)
@@ -195,5 +172,3 @@ class Spectrum:
 
     def peaklist(self):
         return self._peaklist
-    # def __init__(self):
-    #     pass
