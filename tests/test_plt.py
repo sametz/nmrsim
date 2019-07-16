@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from nmrtools.plt import add_signals, mplplot, mplplot_stick, mpl_lineshape
+from nmrtools.plt import add_signals, mplplot, mplplot_stick, mplplot_lineshape
 from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.testdata import TWOSPIN_SLOW
 
@@ -79,9 +79,9 @@ def test_mplplot_stick():
 
 def test_mpl_lineshape_defaults():
     # Currently a human-checked test.
-    # TODO: have plt object returned from mpl_lineshape and introspect
+    # TODO: have plt object returned from mplplot_lineshape and introspect
     x, y = TWOSPIN_SLOW
-    mpl_lineshape(x, y, limits=(100, 200))
+    mplplot_lineshape(x, y, limits=(100, 200))
     # Check that x goes from 200 to 100 (i.e. is also reversed)
     assert 1 == 1
 
@@ -89,7 +89,7 @@ def test_mpl_lineshape_defaults():
 def test_mpl_lineshape_swaps_limits():
     # Currently a human-checked test
     x, y = TWOSPIN_SLOW
-    mpl_lineshape(x, y, limits=(200, 100))
+    mplplot_lineshape(x, y, limits=(200, 100))
     # Check that x goes from 200 to 100 (i.e. is also reversed)
     assert 1 == 1
 
@@ -98,14 +98,14 @@ def test_mpl_lineshape_swaps_limits():
 def test_mpl_lineshape_limit_error(limits):
     x, y = TWOSPIN_SLOW
     with pytest.raises((AttributeError, TypeError, ValueError)):
-        mpl_lineshape(x, y, limits=limits)
+        mplplot_lineshape(x, y, limits=limits)
 
 
 def test_mpl_lineshape():
     # Currently a human-checked test.
-    # TODO: have plt object returned from mpl_lineshape and introspect
+    # TODO: have plt object returned from mplplot_lineshape and introspect
     x, y = TWOSPIN_SLOW
     y_max = max(y) * 1.1
-    mpl_lineshape(x, y, y_min=0, y_max=y_max)
+    mplplot_lineshape(x, y, y_min=0, y_max=y_max)
     # check that y goes from 0 to max+10%
     assert 1 == 1

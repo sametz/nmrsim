@@ -9,39 +9,44 @@ from tests.testdata import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
                             TWOSPIN_SLOW)
 
 
-def test_dnmr_two_singlets_slow_exchange():
-    WINDNMR_DEFAULT = (165.00, 135.00, 1.50, 0.50, 0.50, 0.50)
-    x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
-    accepted_x, accepted_y = TWOSPIN_SLOW
-    np.testing.assert_array_almost_equal(x, accepted_x)
-    np.testing.assert_array_almost_equal(y, accepted_y)
+class TestDnmrTwoSinglets:
+    def test_dnmr_two_singlets_commute(self):
+        freqorder_ab = dnmr_two_singlets(165.00, 135.00, 1.50, 2.50, 0.50, 0.75)
+        freqorder_ba = dnmr_two_singlets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
+        popplot(*freqorder_ab)
+        popplot(*freqorder_ba)
+        np.testing.assert_array_almost_equal(freqorder_ab, freqorder_ba)
 
+    def test_dnmr_two_singlets_limits(self):
+        WINDNMR_DEFAULT = (165.00, 135.00, 1.50, 0.50, 0.50, 0.50)
+        limits = (215, 85)  # also test limits, with inverted (hi, lo) order
+        x, y = dnmr_two_singlets(*WINDNMR_DEFAULT, limits=limits)
+        accepted_x, accepted_y = TWOSPIN_SLOW
+        np.testing.assert_array_almost_equal(x, accepted_x)
+        np.testing.assert_array_almost_equal(y, accepted_y)
 
-def test_dnmr_two_singlets_coalesce():
+    def test_dnmr_two_singlets_slow_exchange(self):
+        WINDNMR_DEFAULT = (165.00, 135.00, 1.50, 0.50, 0.50, 0.50)
+        x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
+        accepted_x, accepted_y = TWOSPIN_SLOW
+        np.testing.assert_array_almost_equal(x, accepted_x)
+        np.testing.assert_array_almost_equal(y, accepted_y)
 
-    WINDNMR_DEFAULT = (165.00, 135.00, 65.9, 0.50, 0.50, 0.50)
-    x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
-    accepted_x, accepted_y = TWOSPIN_COALESCE
-    np.testing.assert_array_almost_equal(x, accepted_x)
-    np.testing.assert_array_almost_equal(y, accepted_y)
+    def test_dnmr_two_singlets_coalesce(self):
 
+        WINDNMR_DEFAULT = (165.00, 135.00, 65.9, 0.50, 0.50, 0.50)
+        x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
+        accepted_x, accepted_y = TWOSPIN_COALESCE
+        np.testing.assert_array_almost_equal(x, accepted_x)
+        np.testing.assert_array_almost_equal(y, accepted_y)
 
-def test_dnmr_two_singlets_fastexchange():
+    def test_dnmr_two_singlets_fastexchange(self):
 
-    WINDNMR_DEFAULT = (165.00, 135.00, 1000.00, 0.50, 0.50, 0.50)
-    x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
-    accepted_x, accepted_y = TWOSPIN_FAST
-    np.testing.assert_array_almost_equal(x, accepted_x)
-    np.testing.assert_array_almost_equal(y, accepted_y)
-
-
-def test_dnmr_two_singlets_commute():
-
-    freqorder_ab = dnmr_two_singlets(165.00, 135.00, 1.50, 2.50, 0.50, 0.75)
-    freqorder_ba = dnmr_two_singlets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
-    popplot(*freqorder_ab)
-    popplot(*freqorder_ba)
-    np.testing.assert_array_almost_equal(freqorder_ab, freqorder_ba)
+        WINDNMR_DEFAULT = (165.00, 135.00, 1000.00, 0.50, 0.50, 0.50)
+        x, y = dnmr_two_singlets(*WINDNMR_DEFAULT)
+        accepted_x, accepted_y = TWOSPIN_FAST
+        np.testing.assert_array_almost_equal(x, accepted_x)
+        np.testing.assert_array_almost_equal(y, accepted_y)
 
 
 def test_DnmrTwoSinglets_instantiates():

@@ -141,7 +141,7 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
     return x, y
 
 
-def mpl_lineshape(x, y, y_min=None, y_max=None, limits=None):
+def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
     # fig, ax = plt.subplots()
 
     if limits:

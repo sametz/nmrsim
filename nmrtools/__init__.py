@@ -5,7 +5,7 @@ nmrtools
 The nmrtools package provides tools for simulating nuclear magnetic resonance
 (NMR) spectra.
 
-The overall API is still in flux. Currently, it includes the following modules:
+The API is still in flux. Currently, it includes the following modules:
 
 * dnmr: for modeling Dynamic NMR systems
 * firstorder: for modeling first-order spectra

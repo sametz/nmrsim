@@ -1,6 +1,28 @@
 """The dnmr module provides functions for calculating DNMR line shapes, and
 classes to describe DNMR systems.
 
+The dnmr module provides the following classes:
+
+* DnmrTwoSinglets: for simulating the lineshape for two uncoupled nuclei
+undergoing exchange.
+
+* DnmrAB: for simulating the lineshape for two coupled nuclei undergoing
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit).
+
+The dnmr module provides the following functions:
+
+
+The function for computing the DNMR lineshape for two uncoupled nuclei is
+taken from:
+    Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982
+
+and similar (non-Pythonic) variable names are used here.
+
+The function for computing the DNMR lineshape for two coupled nuclei is
+taken from:
+    Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632
+and the related, important correction:
+    TODO: add reference to correction
 
 TODO: complete documentation.
 """
@@ -10,31 +32,36 @@ import numpy as np
 
 def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     """
-    Create a function that requires only frequency as an argurment, and used to
-    calculate intensities across array of frequencies in the DNMR
-    spectrum for two uncoupled spin-half nuclei.
+     Create a function that requires only frequency as an argurment, for
+    calculating the lineshape of a DNMR spectrum for two uncoupled spin-half
+    nuclei.
 
-    The idea is to calculate expressions
-    that are independent of frequency only once, and then use them in a new
-    function that depends only on v. This would avoid unnecessarily
-    repeating some of the same operations.
+    This allows the expressions that are independent of frequency to be
+    calculated only once, outside the returned function. The returned function
+    can then be applied to a list of frequency (x) coordinates (e.g. a numpy
+    linspace) to provide a list of the corresponding intensity (y) coordinates.
 
-    :param va: The frequency of nucleus 'a' at the slow exchange limit. va > vb
-    :param vb: The frequency of nucleus 'b' at the slow exchange limit. vb < va
-    :param ka: The rate constant for state a--> state b
-    :param wa: The width at half height of the signal for nucleus a (at the slow
-    exchange limit).
-    :param wb: The width at half height of the signal for nucleus b (at the slow
-    exchange limit).
-    :param pa: The fraction of the population in state a.
-    :param pa: fraction of population in state a
-    wa, wb: peak widths at half height (slow exchange), used to calculate T2s
+    Parameters
+    ----------
+    va : int or float
+        The frequency (Hz) of nucleus 'a' at the slow exchange limit. va > vb
+    vb : int or float
+        The frequency (Hz) of nucleus 'b' at the slow exchange limit. vb < va
+    ka : int or float
+        The rate constant (Hz) for state a--> state b
+    wa : int or float
+        The width at half height of the signal for nucleus a (at the slow
+        exchange limit).
+    wb : int or float
+        The width at half height of the signal for nucleus b (at the slow
+        exchange limit).
+    pa : float (0 <= pa <= 1)
+        The fraction of the population in state a.
 
-    returns: a function that takes v (x coord or numpy linspace) as an argument
-    and returns intensity (y).
+    Returns
+    -------
+    _maker: function
     """
-    # TODO: this seems like the hard way to create a partial function. Try a
-    # functools.partial version of this.
 
     pi = np.pi
     pi_squared = pi ** 2
@@ -50,8 +77,9 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     R = pi * dv * tau * ((1 / T2b) - (1 / T2a)) + pi * dv * (pa - pb)
     r = 2 * pi * (1 + tau * ((1 / T2a) + (1 / T2b)))
 
-    def maker(v):
+    def _maker(v):
         """
+        Calculate the intensity (y coordinate)
         Scheduled for refactoring.
         :param v: frequency
         :return: function that calculates the intensity at v
@@ -69,32 +97,44 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
         _Q = Q + tau * 2 * pi * _Dv
         _R = R + _Dv * r
         return(_P * p + _Q * _R) / (_P ** 2 + _R ** 2)
-    return maker
+    return _maker
 
 
-def dnmr_two_singlets(va, vb, ka, wa, wb, pa):
-    """ TODO: finish the docs.
+def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
+    """
+    Create a the lineshape for a DNMR spectrum of two uncoupled spin-half
+    nuclei.
 
     Parameters
     ----------
-    va
-    vb
-    ka
-    wa
-    wb
-    pa
+    va, vb : int or float
+        The frequencies (Hz) of nuclei 'a' and 'b' at the slow exchange limit.
+    ka : int or float
+        The rate constant (Hz) for state a--> state b
+    wa, wb : int or float
+        The peak widths at half height for the 'a' and 'b' singlets at the
+        slow-exchange limit.
+    pa : float (0 <= pa <= 1)
+        The fraction of the population in state a
+    limits : (int or float, int or float), optional
+        The minimum and maximum frequencies (in any order) for the simulation.
 
     Returns
     -------
-
+    x, y : numpy.array, numpy.array
+        Arrays for the x (frequency) and y (intensity) lineshape data points.
     """
     if vb > va:
         va, vb = vb, va
         wa, wb = wb, wa
         pa = 1 - pa
-    l_limit = vb - 50
-    r_limit = va + 50
-    x = np.linspace(l_limit, r_limit, 800)
+    if limits:
+        l_limit = min(limits)
+        r_limit = max(limits)
+    else:
+        l_limit = vb - 50
+        r_limit = va + 50
+    x = np.linspace(l_limit, r_limit, points)
     func = _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa)
     y = func(x)
     return x, y
