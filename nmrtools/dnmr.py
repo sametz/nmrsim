@@ -127,7 +127,11 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
 
     See Also
     --------
-    DnmrTwoSinglets : A class representation for this simulation
+    DnmrTwoSinglets : A class representation for this simulation.
+
+    References
+    ----------
+    See the documentation for the nmrtools.dnmr module.
     """
     if vb > va:
         va, vb = vb, va
@@ -412,15 +416,17 @@ class DnmrTwoSinglets:
 
     Attributes
     ----------
-    va
-    vb
-    k
-    wa
-    wb
+    va, vb : int or float
+        The frequencies (Hz) of nuclei 'a' and 'b' at the slow exchange limit.
+    k : int or float
+        The rate constant (Hz) for state a--> state b
+    wa, wb : int or float
+        The peak widths at half height for the 'a' and 'b' singlets at the
+        slow-exchange limit.
     pa
     limits
     points : int
-        The number of points in the lineshape.
+        The length of the returned arrays (i.e. the number of points plotted).
 
     Methods
     -------
@@ -439,17 +445,7 @@ class DnmrTwoSinglets:
 
     def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5,
                  limits=None, points=800):
-        # Important, nonintuitive naming convention: What a user declares to be
-        # va or vb may differ from what the lineshape functions require for
-        # _va/_vb. For the latter, _va must be >= _vb. To accommodate this,
-        # _va_private and _vb_private will be the stored values the self.va
-        # and self.vb getters/setters use to store and fetch the user's
-        # parameters. self._va and ._vb will be the maximum and the minimum of
-        # these two values, respectively, for use in the functions.
-        # Similarly, different versions for wa, wb, and pa must be stored
-        # as will.
-
-        # store parameters from viewer's perspective:
+        # rethink default kwargs for v/k/w
 
         self.va = va
         self.vb = vb
@@ -466,6 +462,9 @@ class DnmrTwoSinglets:
 
     @property
     def pa(self):
+        """float (0 <= pa <= 1)
+        The fraction of the population in state a.
+        """
         return self._pa
 
     @pa.setter
@@ -477,6 +476,9 @@ class DnmrTwoSinglets:
 
     @property
     def limits(self):
+        """tuple of (int or float, int or float)
+        The minimum and maximum frequencies for the simulated lineshape.
+        """
         return self._vmin, self._vmax
 
     @limits.setter
@@ -506,17 +508,19 @@ class DnmrTwoSinglets:
             points.
         """
         x = np.linspace(self._vmin, self._vmax, self.points)
-        x, y = dnmr_two_singlets(self.va, self.vb, self.k, self.wa, self.wb,
-                              self.pa, limits=self.limits, points=self.points)
+        x, y = dnmr_two_singlets(self.va, self.vb, self.k, self.wa, self.wb, self.pa,
+                                 limits=self.limits, points=self.points)
         return x, y
 
 
-
+# TODO: It doesn't look like v1 > v2 should be a necessity. Test here and
+# in other AB functions if v1 and v2 can safely commute. If so, remove code
+# that checks/fixes their order.
 def _dnmr_AB_func(v, v1, v2, J, k, w):
     """
-    A translation of the equation from Weil's JCE paper (NOTE: Reich pointed
-    out that it has a sign typo!).
-    p. 14, for the uncoupled 2-site exchange simulation.
+    Implement the equation from Weil et al for simulation of the DNMR lineshape
+    for two coupled nuclei undergoing exchange (AB or AX pattern at the
+    slow-exchange limit).
 
     Parameters
     ---------
@@ -539,11 +543,13 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
     float
         amplitude at frequency `v`.
 
-    Notes
-    -----
+    See Also
+    --------
+    DnmrAB : A class representation for this simulation.
 
     References
     ----------
+    See the documentation for the nmrtools.dnmr module.
     """
     pi = np.pi
     vo = (v1 + v2) / 2
@@ -576,27 +582,54 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
     return I
 
 
-def dnmr_AB(v1, v2, J, k, w):
+def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
     """
-    TODO: finish the docs.
+    Simulate the DNMR lineshape for two coupled nuclei undergoing exchange
+    (AB or AX pattern at the slow-exchange limit).
+
     Parameters
-    ----------
-    v1
-    v2
-    J
-    k
-    w
+    ---------
+
+    v : float or array-like
+        a frequency (x coordinate) or array of frequencies at which an
+        amplitude (y coordinate) is to be calculated.
+    va, vb : float
+        frequencies of a and b nuclei (at the slow exchange limit,
+        in the absence of coupling; `va` > `vb`)
+    J : float
+        the coupling constant between the two nuclei.
+    k : float
+        rate constant for state A--> state B
+    w : float
+        peak widths at half height (slow exchange limit).
+    limits : (int or float, int or float), optional
+        The minimum and maximum frequencies (in any order) for the simulation.
+    points : int
+        The length of the returned arrays (i.e. the number of points plotted).
 
     Returns
     -------
+    float
+        amplitude at frequency `v`.
 
+    See Also
+    --------
+    DnmrAB : A class representation for this simulation.
+
+    References
+    ----------
+    See the documentation for the nmrtools.dnmr module.
     """
-    if v2 > v1:
-        v1, v2 = v2, v1
-    l_limit = v2 - 50
-    r_limit = v1 + 50
-    x = np.linspace(l_limit, r_limit, 800)
-    y = _dnmr_AB_func(x, v1, v2, J, k, w)
+    if vb > va:
+        va, vb = vb, va
+    if limits:
+        l_limit = min(limits)
+        r_limit = max(limits)
+    else:
+        l_limit = vb - 50
+        r_limit = va + 50
+    x = np.linspace(l_limit, r_limit, points)
+    y = _dnmr_AB_func(x, va, vb, J, k, w)
     return x, y
 
 
