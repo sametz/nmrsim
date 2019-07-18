@@ -1,33 +1,28 @@
-"""The dnmr module provides functions for calculating DNMR line shapes, and
+"""The `dnmr` module provides functions for calculating DNMR line shapes, and
 classes to describe DNMR systems.
 
 The dnmr module provides the following classes:
 
-* DnmrTwoSinglets: for simulating the lineshape for two uncoupled nuclei
+* `DnmrTwoSinglets`: a sumulation of the lineshape for two uncoupled nuclei
 undergoing exchange.
-
-* DnmrAB: for simulating the lineshape for two coupled nuclei undergoing
+* `DnmrAB`: a simulation of the lineshape for two coupled nuclei undergoing
 exchange (i.e. an AB (or AX) pattern at the slow exchange limit).
 
-The dnmr module provides the following functions:
+The `dnmr` module provides the following functions:
 
+* `dnmr_two_singlets`: for simulating the lineshape for two uncoupled nuclei
+undergoing exchange [1].
+* `dnmr_AB` : for simulating the lineshape for two coupled nuclei undergoing
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [2].
 
-The function for computing the DNMR lineshape for two uncoupled nuclei is
-taken from:
-    Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982
-
-and similar (non-Pythonic) variable names are used here.
-
-The function for computing the DNMR lineshape for two coupled nuclei is
-taken from:
-    Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632
-and the related, important correction:
+References
+----------
+.. [1] Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.
+.. [2] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632.
+b) an important math correction to the previous reference:
     TODO: add reference to correction
-
-TODO: complete documentation.
 """
 import numpy as np
-# TODO: think about naming the intensity-returning functions better. Private?
 
 
 def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
@@ -61,6 +56,10 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     Returns
     -------
     _maker: function
+
+     Notes
+    -----
+    The nmrtools.dnmr module gives a reference for the algorithm used here.
     """
 
     pi = np.pi
@@ -118,11 +117,17 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
         The fraction of the population in state a
     limits : (int or float, int or float), optional
         The minimum and maximum frequencies (in any order) for the simulation.
+    points : int
+        The length of the returned arrays (i.e. the number of points plotted).
 
     Returns
     -------
     x, y : numpy.array, numpy.array
         Arrays for the x (frequency) and y (intensity) lineshape data points.
+
+    See Also
+    --------
+    DnmrTwoSinglets : A class representation for this simulation
     """
     if vb > va:
         va, vb = vb, va
@@ -140,10 +145,292 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
     return x, y
 
 
+# class DnmrTwoSingletsOld:
+#     """ A DNMR simulation for two uncoupled nuclei undergoing exchange.
+#
+#     Parameters
+#     ----------
+#     va, vb : int or float
+#         The frequencies (Hz) of nuclei 'a' and 'b' at the slow exchange limit.
+#     k : int or float
+#         The rate constant (Hz) for state a--> state b
+#     wa, wb : int or float
+#         The peak widths at half height for the 'a' and 'b' singlets at the
+#         slow-exchange limit.
+#     pa : float (0 <= pa <= 1)
+#         The fraction of the population in state a
+#     limits : (int or float, int or float), optional
+#         The minimum and maximum frequencies (in any order) for the simulation.
+#     points : int
+#         The length of the returned arrays (i.e. the number of points plotted).
+#
+#     Attributes
+#     ----------
+#     va
+#     vb
+#     k
+#     wa
+#     wb
+#     pa
+#     limits
+#     points : int
+#         The number of points in the lineshape.
+#
+#     Methods
+#     -------
+#     lineshape
+#         Return the x, y (frequency, intensity) data for the lineshape
+#         simulation.
+#
+#     See Also
+#     --------
+#     DnmrTwoSinglets : A class representation for this simulation
+#
+#     """
+#
+#     _pi = np.pi
+#     _pi_squared = _pi ** 2
+#
+#     def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5,
+#                  limits=None, points=800):
+#         if vb > va:
+#             va, vb = vb, va
+#             wa, wb = wb, wa
+#             pa = 1 - pa
+#         self._va = va
+#         self._vb = vb
+#         self._k = k
+#         self._wa = wa
+#         self._wb = wb
+#         self._pa = pa
+#         if limits:
+#             self.limits = limits
+#         else:
+#             self._vmin = min([va, vb]) - 50
+#             self._vmax = max([va, vb]) + 50
+#         self.points = points
+#         # Idea is to complete the frequency-independent calculations when the
+#         #  class is instantiated, and thus calculations may be faster.
+#         self._set_T2a()
+#         self._set_T2b()
+#         self._set_pb()
+#         self._set_tau()
+#         self._set_dv()
+#         self._set_Dv()
+#         self._set_P()
+#         self._set_p()
+#         self._set_Q()
+#         self._set_R()
+#         self._set_r()
+#
+#     def _set_T2a(self):
+#         self._T2a = 1 / (self._pi * self._wa)
+#
+#     def _set_T2b(self):
+#         self._T2b = 1 / (self._pi * self._wb)
+#
+#     def _set_pb(self):
+#         self._pb = 1 - self._pa
+#
+#     def _set_tau(self):
+#         self._tau = self._pb / self._k
+#
+#     def _set_dv(self):
+#         self._dv = self._va - self._vb
+#
+#     def _set_Dv(self):
+#         self._Dv = (self._va + self._vb) / 2
+#
+#     def _set_P(self):
+#         self._P = self._tau * (1 / (self._T2a * self._T2b) + self._pi_squared * (self._dv ** 2)) \
+#                   + (self._pa / self._T2a + self._pb / self._T2b)
+#
+#     def _set_p(self):
+#         self._p = 1 + self._tau * ((self._pb / self._T2a) + (self._pa / self._T2b))
+#
+#     def _set_Q(self):
+#         self._Q = self._tau * (- self._pi * self._dv * (self._pa - self._pb))
+#
+#     def _set_R(self):
+#         self._R = self._pi * self._dv * self._tau * ((1 / self._T2b) - (1 / self._T2a)) \
+#                   + self._pi * self._dv * (self._pa - self._pb)
+#
+#     def _set_r(self):
+#         self._r = 2 * self._pi * (1 + self._tau * ((1 / self._T2a) + (1 / self._T2b)))
+#
+#     @property
+#     def va(self):
+#         """int or float: the frequency (Hz) for the higher frequency nucleus
+#         (at the slow-exchange limit)."""
+#         return self._va
+#
+#     @va.setter
+#     def va(self, value):
+#         self._va = value
+#         self._set_vab_dependencies()
+#
+#     def _set_vab_dependencies(self):
+#         self._set_dv()
+#         self._set_Dv()
+#         self._set_P()
+#         self._set_Q()
+#         self._set_R()
+#
+#     @property
+#     def vb(self):
+#         """int or float: the frequency (Hz) for the lower frequency nucleus
+#                 (at the slow-exchange limit)."""
+#         return self._vb
+#
+#     @vb.setter
+#     def vb(self, value):
+#         self._vb = value
+#         self._set_vab_dependencies()
+#
+#     @property
+#     def k(self):
+#         return self._k
+#
+#     @k.setter
+#     def k(self, value):
+#         self._k = value
+#         self._set_tau()
+#         self._set_p()
+#         self._set_P()
+#         self._set_Q()
+#         self._set_R()
+#         self._set_r()
+#
+#     @property
+#     def wa(self):
+#         return self._wa
+#
+#     @wa.setter
+#     def wa(self, value):
+#         self._wa = value
+#         self._set_T2a()
+#         self._set_wab_dependencies()
+#
+#     def _set_wab_dependencies(self):
+#         self._set_p()
+#         self._set_P()
+#         self._set_R()
+#         self._set_r()
+#
+#     @property
+#     def wb(self):
+#         return self._wb
+#
+#     @wb.setter
+#     def wb(self, value):
+#         self._wb = value
+#         self._set_T2b()
+#         self._set_wab_dependencies()
+#
+#     @property
+#     def pa(self):
+#         return self._pa
+#
+#     @pa.setter
+#     def pa(self, value):
+#         self._pa = value
+#         self._set_pb()
+#         self._set_tau()
+#         self._set_p()
+#         self._set_P()
+#         self._set_Q()
+#         self._set_R()
+#         self._set_r()
+#
+#     @property
+#     def limits(self):
+#         return self._vmin, self._vmax
+#
+#     @limits.setter
+#     def limits(self, limits):
+#         try:
+#             vmin, vmax = limits
+#             vmin = float(vmin)
+#             vmax = float(vmax)
+#         except Exception as e:
+#             print(e)
+#             print('limits must be a tuple of two numbers')
+#             raise
+#
+#         if vmax < vmin:
+#             vmin, vmax = vmax, vmin
+#         self._vmin = vmin
+#         self._vmax = vmax
+#
+#     def _intensity(self, v):
+#         p = self._p
+#         Dv = self._Dv
+#         P = self._P
+#         Q = self._Q
+#         R = self._R
+#         r = self._r
+#         tau = self._tau
+#         Dv -= v
+#         P -= tau * 4 * self._pi_squared * (Dv ** 2)
+#         Q += tau * 2 * self._pi * Dv
+#         R += Dv * r
+#         return (P * p + Q * R) / (P ** 2 + R ** 2)
+#
+#     def lineshape(self):
+#         """
+#         Calculate and return the lineshape for the DNMR spectrum.
+#
+#         Returns
+#         -------
+#         x, y : numpy.array, numpy.array
+#             Arrays for the x (frequency) and y (intensity) lineshape data
+#             points.
+#         """
+#         x = np.linspace(self._vmin, self._vmax, self.points)
+#         y = self._intensity(x)
+#         return x, y
+
+
 class DnmrTwoSinglets:
     """ A DNMR simulation for two uncoupled nuclei undergoing exchange.
 
-    TODO: finish the docs.
+    Parameters
+    ----------
+    va, vb : int or float
+        The frequencies (Hz) of nuclei 'a' and 'b' at the slow exchange limit.
+    k : int or float
+        The rate constant (Hz) for state a--> state b
+    wa, wb : int or float
+        The peak widths at half height for the 'a' and 'b' singlets at the
+        slow-exchange limit.
+    pa : float (0 <= pa <= 1)
+        The fraction of the population in state a
+    limits : (int or float, int or float), optional
+        The minimum and maximum frequencies (in any order) for the simulation.
+    points : int
+        The length of the returned arrays (i.e. the number of points plotted).
+
+    Attributes
+    ----------
+    va
+    vb
+    k
+    wa
+    wb
+    pa
+    limits
+    points : int
+        The number of points in the lineshape.
+
+    Methods
+    -------
+    lineshape
+        Return the x, y (frequency, intensity) data for the lineshape
+        simulation.
+
+    See Also
+    --------
+    DnmrTwoSinglets : A class representation for this simulation
 
     """
 
@@ -151,145 +438,31 @@ class DnmrTwoSinglets:
     _pi_squared = _pi ** 2
 
     def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5,
-                 limits=None):
-        """
-        Initialize the system with the required parameters:
-        :param va: Frequency of nucleus a
-        :param vb: Frequency of nucleus b (must be < va)
-        :param k: Rate of nuclear exchange
-        :param wa: With at half height for va signal at the slow exchange limit
-        :param wb: With at half height for vb signal at the slow exchange limit
-        :param pa: Fractional population of state 'a'
-        """
-        # Idea is to complete the frequency-independent calculations when the
-        #  class is instantiated, and thus calculations may be faster.
-        if vb > va:
-            va, vb = vb, va
-            wa, wb = wb, wa
-            pa = 1 - pa
-        self._va = va
-        self._vb = vb
-        self._k = k
-        self._wa = wa
-        self._wb = wb
+                 limits=None, points=800):
+        # Important, nonintuitive naming convention: What a user declares to be
+        # va or vb may differ from what the lineshape functions require for
+        # _va/_vb. For the latter, _va must be >= _vb. To accommodate this,
+        # _va_private and _vb_private will be the stored values the self.va
+        # and self.vb getters/setters use to store and fetch the user's
+        # parameters. self._va and ._vb will be the maximum and the minimum of
+        # these two values, respectively, for use in the functions.
+        # Similarly, different versions for wa, wb, and pa must be stored
+        # as will.
+
+        # store parameters from viewer's perspective:
+
+        self.va = va
+        self.vb = vb
+        self.k = k
+        self.wa = wa
+        self.wb = wb
         self._pa = pa
         if limits:
             self.limits = limits
         else:
             self._vmin = min([va, vb]) - 50
             self._vmax = max([va, vb]) + 50
-
-        self._set_T2a()
-        self._set_T2b()
-        self._set_pb()
-        self._set_tau()
-        self._set_dv()
-        self._set_Dv()
-        self._set_P()
-        self._set_p()
-        self._set_Q()
-        self._set_R()
-        self._set_r()
-
-    def _set_T2a(self):
-        self._T2a = 1 / (self._pi * self._wa)
-
-    def _set_T2b(self):
-        self._T2b = 1 / (self._pi * self._wb)
-
-    def _set_pb(self):
-        self._pb = 1 - self._pa
-
-    def _set_tau(self):
-        self._tau = self._pb / self._k
-
-    def _set_dv(self):
-        self._dv = self._va - self._vb
-
-    def _set_Dv(self):
-        self._Dv = (self._va + self._vb) / 2
-
-    def _set_P(self):
-        self._P = self._tau * (1 / (self._T2a * self._T2b) + self._pi_squared * (self._dv ** 2)) \
-                  + (self._pa / self._T2a + self._pb / self._T2b)
-
-    def _set_p(self):
-        self._p = 1 + self._tau * ((self._pb / self._T2a) + (self._pa / self._T2b))
-
-    def _set_Q(self):
-        self._Q = self._tau * (- self._pi * self._dv * (self._pa - self._pb))
-
-    def _set_R(self):
-        self._R = self._pi * self._dv * self._tau * ((1 / self._T2b) - (1 / self._T2a)) \
-                  + self._pi * self._dv * (self._pa - self._pb)
-
-    def _set_r(self):
-        self._r = 2 * self._pi * (1 + self._tau * ((1 / self._T2a) + (1 / self._T2b)))
-
-    @property
-    def va(self):
-        return self._va
-
-    @va.setter
-    def va(self, value):
-        self._va = value
-        self._set_vab_dependencies()
-
-    def _set_vab_dependencies(self):
-        self._set_dv()
-        self._set_Dv()
-        self._set_P()
-        self._set_Q()
-        self._set_R()
-
-    @property
-    def vb(self):
-        return self._vb
-
-    @vb.setter
-    def vb(self, value):
-        self._vb = value
-        self._set_vab_dependencies()
-
-    @property
-    def k(self):
-        return self._k
-
-    @k.setter
-    def k(self, value):
-        self._k = value
-        self._set_tau()
-        self._set_p()
-        self._set_P()
-        self._set_Q()
-        self._set_R()
-        self._set_r()
-
-    @property
-    def wa(self):
-        return self._wa
-
-    @wa.setter
-    def wa(self, value):
-        self._wa = value
-        self._set_T2a()
-        self._set_wab_dependencies()
-
-    def _set_wab_dependencies(self):
-        self._set_p()
-        self._set_P()
-        self._set_R()
-        self._set_r()
-
-    @property
-    def wb(self):
-        return self._wb
-
-    @wb.setter
-    def wb(self, value):
-        self._wb = value
-        self._set_T2b()
-        self._set_wab_dependencies()
+        self.points = points
 
     @property
     def pa(self):
@@ -297,14 +470,10 @@ class DnmrTwoSinglets:
 
     @pa.setter
     def pa(self, value):
-        self._pa = value
-        self._set_pb()
-        self._set_tau()
-        self._set_p()
-        self._set_P()
-        self._set_Q()
-        self._set_R()
-        self._set_r()
+        if (value >= 0) and (value <= 1):
+            self._pa = value
+        else:
+            raise ValueError('pa must be >= 0 and <= 1')
 
     @property
     def limits(self):
@@ -326,41 +495,24 @@ class DnmrTwoSinglets:
         self._vmin = vmin
         self._vmax = vmax
 
-    def intensity(self, v):
+    def lineshape(self):
         """
-        Yield a function for the lineshape for TwoSinglets
-        :param v: frequency
-        :return: a frequency-dependent function that returns the intensity of
-        the spectrum at frequency v
-        """
-        # TODO: add to docstring
-        p = self._p
-        Dv = self._Dv
-        P = self._P
-        Q = self._Q
-        R = self._R
-        r = self._r
-        tau = self._tau
-        Dv -= v
-        P -= tau * 4 * self._pi_squared * (Dv ** 2)
-        Q += tau * 2 * self._pi * Dv
-        R += Dv * r
-        return (P * p + Q * R) / (P ** 2 + R ** 2)
+        Calculate and return the lineshape for the DNMR spectrum.
 
-    def spectrum(self):
+        Returns
+        -------
+        x, y : numpy.array, numpy.array
+            Arrays for the x (frequency) and y (intensity) lineshape data
+            points.
         """
-        Calculate a DNMR spectrum, using the parameters TwoSinglets was
-        instantiated with.
-        :return: a tuple of numpy arrays (x = numpy linspace representing
-        frequencies, y = numpy array of intensities along those frequencies)pwd
-        """
-        x = np.linspace(self._vmin, self._vmax, 800)
-        y = self.intensity(x)
-
+        x = np.linspace(self._vmin, self._vmax, self.points)
+        x, y = dnmr_two_singlets(self.va, self.vb, self.k, self.wa, self.wb,
+                              self.pa, limits=self.limits, points=self.points)
         return x, y
 
 
-def dnmr_AB_func(v, v1, v2, J, k, w):
+
+def _dnmr_AB_func(v, v1, v2, J, k, w):
     """
     A translation of the equation from Weil's JCE paper (NOTE: Reich pointed
     out that it has a sign typo!).
@@ -444,7 +596,7 @@ def dnmr_AB(v1, v2, J, k, w):
     l_limit = v2 - 50
     r_limit = v1 + 50
     x = np.linspace(l_limit, r_limit, 800)
-    y = dnmr_AB_func(x, v1, v2, J, k, w)
+    y = _dnmr_AB_func(x, v1, v2, J, k, w)
     return x, y
 
 
@@ -594,3 +746,5 @@ class DnmrAB:
         x = np.linspace(self._vmin, self._vmax, 800)
         y = self.intensity(x)
         return x, y
+
+

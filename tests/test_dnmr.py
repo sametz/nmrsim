@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from nmrtools.dnmr import (dnmr_two_singlets, dnmr_AB_func, dnmr_AB,
+from nmrtools.dnmr import (dnmr_two_singlets, _dnmr_AB_func, dnmr_AB,
                            DnmrTwoSinglets, DnmrAB)
 from nmrtools.math import get_maxima
 from tests.plottools import popplot
@@ -20,7 +20,7 @@ class TestDnmrTwoSinglets:
     def test_dnmr_two_singlets_limits(self):
         WINDNMR_DEFAULT = (165.00, 135.00, 1.50, 0.50, 0.50, 0.50)
         limits = (215, 85)  # also test limits, with inverted (hi, lo) order
-        x, y = dnmr_two_singlets(*WINDNMR_DEFAULT, limits=limits)
+        x, y = dnmr_two_singlets(*WINDNMR_DEFAULT, limits=limits, points=800)
         accepted_x, accepted_y = TWOSPIN_SLOW
         np.testing.assert_array_almost_equal(x, accepted_x)
         np.testing.assert_array_almost_equal(y, accepted_y)
@@ -80,20 +80,20 @@ def test_DnmrTwoSinglets_limit_error(limits):
 
 def test_DnmrTwoSinglets_slow_exchange():
     sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
-    assert np.allclose(sim.spectrum(), TWOSPIN_SLOW)
-    popplot(*sim.spectrum())
+    assert np.allclose(sim.lineshape(), TWOSPIN_SLOW)
+    popplot(*sim.lineshape())
 
 
 def test_DnmrTwoSinglets_coalesce():
     sim = DnmrTwoSinglets(165, 135, 65.9, 0.5, 0.5, 0.5)
-    assert np.allclose(sim.spectrum(), TWOSPIN_COALESCE)
-    popplot(*sim.spectrum())
+    assert np.allclose(sim.lineshape(), TWOSPIN_COALESCE)
+    popplot(*sim.lineshape())
 
 
 def test_DnmrTwoSinglets_fastexchange():
     sim = DnmrTwoSinglets(165, 135, 1000, 0.5, 0.5, 0.5)
-    assert np.allclose(sim.spectrum(), TWOSPIN_FAST)
-    popplot(*sim.spectrum())
+    assert np.allclose(sim.lineshape(), TWOSPIN_FAST)
+    popplot(*sim.lineshape())
 
 
 def test_DnmrTwoSinglets_limits():
@@ -102,11 +102,21 @@ def test_DnmrTwoSinglets_limits():
     assert sim.limits == (0, 500)
 
 
+def test_DmrTwoSinglets_pa():
+    sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
+    sim.pa = 0.75
+    assert sim.pa == 0.75
+    with pytest.raises(ValueError):
+        sim.pa = -0.00000000001
+    with pytest.raises(ValueError):
+        sim.pa = 1.00000000001
+
+
 def test_DnmrTwoSinglets_frequencies_commute():
     ab = DnmrTwoSinglets(165.00, 135.00, 1.50, 2.50, 0.50, 0.75)
     ba = DnmrTwoSinglets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
-    ab_spec = ab.spectrum()  # doing this saves a function call (faster test)
-    ba_spec = ba.spectrum()
+    ab_spec = ab.lineshape()  # doing this saves a function call (faster test)
+    ba_spec = ba.lineshape()
     popplot(*ab_spec)
     popplot(*ba_spec)
     np.testing.assert_array_almost_equal(ab_spec, ba_spec)
@@ -121,7 +131,7 @@ def test_dnmr_ab_func_WINDNMR_defaults():
 
     for peak in peaks:
         print('Testing vs. accepted peak at: ', peak)
-        calculated_intensity = dnmr_AB_func(peak[0], *ab_args)
+        calculated_intensity = _dnmr_AB_func(peak[0], *ab_args)
 
         print('i.e. input of frequency ', peak[0], ' should give output of '
                                                    'intensity ', peak[1])
