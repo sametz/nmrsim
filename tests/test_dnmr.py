@@ -58,7 +58,7 @@ def test_DnmrTwoSinglets_instantiates():
 
 
 def test_DnmrTwoSinglets_properties():
-    sim = DnmrTwoSinglets(1, 2, 3, 4, 5, 6, (7, 8))
+    sim = DnmrTwoSinglets(1, 2, 3, 4, 5, 0.6, (7, 8))
     sim.va = 165.0
     sim.vb = 135.0
     sim.k = 1.5
@@ -141,7 +141,8 @@ def test_dnmr_ab_func_WINDNMR_defaults():
 
 
 def test_dnmr_AB_frequencies_commute():
-    freqorder_ab = dnmr_AB(165.00, 135.00, 12.00, 12.00, 0.50)
+    freqorder_ab = dnmr_AB(165.00, 135.00, 12.00, 12.00, 0.50,
+                           limits=(215, 85), points=800)
     freqorder_ba = dnmr_AB(135.00, 165.00, 12.00, 12.00, 0.50)
     popplot(*freqorder_ab)
     popplot(*freqorder_ba)
@@ -149,25 +150,26 @@ def test_dnmr_AB_frequencies_commute():
 
 
 def test_DnmrAB_instantiates():
-    args = (165, 135, 12, 12, 0.5, (215, 85))
+    args = (165, 135, 12, 12, 0.5, (215, 85), 800)
     sim = DnmrAB(*args)
-    expected_args = (165, 135, 12, 12, 0.5, (85, 215))
-    actual_args = (sim.v1, sim.v2, sim.J, sim.k, sim.W, sim.limits)
+    expected_args = (165, 135, 12, 12, 0.5, (85, 215), 800)
+    actual_args = (sim.va, sim.vb, sim.J, sim.k, sim.w, sim.limits, sim.points)
     assert expected_args == actual_args
 
 
 def test_DnmrAB_properties():
-    sim = DnmrAB(1, 2, 3, 4, 5, (6, 7))
-    sim.v1 = 165.0
-    sim.v2 = 135.0
+    sim = DnmrAB(1, 2, 3, 4, 5, (6, 7), 8)
+    sim.va = 165.0
+    sim.vb = 135.0
     sim.J = 12.0
     sim.k = 12.0
-    sim.W = 0.5
+    sim.w = 0.5
     sim.limits = (85.0, 215.0)
-    sim_args = (sim.v1, sim.v2, sim.J, sim.k, sim.W, sim.limits)
+    sim.points = 800
+    sim_args = (sim.va, sim.vb, sim.J, sim.k, sim.w, sim.limits, sim.points)
     print('result: ', sim_args)
-    assert sim_args == (165.0, 135.0, 12.0, 12.0, 0.5, (85.0, 215.0))
-    assert np.allclose(sim.spectrum(), AB_WINDNMR)
+    assert sim_args == (165.0, 135.0, 12.0, 12.0, 0.5, (85.0, 215.0), 800)
+    assert np.allclose(sim.lineshape(), AB_WINDNMR)
 
 
 @pytest.mark.parametrize('limits', ['foo', (1,), (1, 'foo'), (1, 2, 3)])
@@ -180,7 +182,7 @@ def test_DnmrAB_limit_error(limits):
 def test_DnmrAB_WINDNMR_defaults():
     expected = np.array(AB_WINDNMR)
     sim = DnmrAB(165, 135, 12, 12, 0.5)
-    result = np.array(sim.spectrum())
+    result = np.array(sim.lineshape())
     print(expected.shape, result.shape)
     print(expected[:, -10:])
     print(result[:, -10:])

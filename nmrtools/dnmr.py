@@ -24,6 +24,8 @@ b) an important math correction to the previous reference:
 """
 import numpy as np
 
+from nmrtools._utils import is_number, is_decimal_fraction, is_tuple_of_two_numbers, is_positive, is_integer
+
 
 def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     """
@@ -416,17 +418,14 @@ class DnmrTwoSinglets:
 
     Attributes
     ----------
-    va, vb : int or float
-        The frequencies (Hz) of nuclei 'a' and 'b' at the slow exchange limit.
-    k : int or float
-        The rate constant (Hz) for state a--> state b
-    wa, wb : int or float
-        The peak widths at half height for the 'a' and 'b' singlets at the
-        slow-exchange limit.
+    va
+    vb
+    k
+    wa
+    wb
     pa
     limits
-    points : int
-        The length of the returned arrays (i.e. the number of points plotted).
+    points
 
     Methods
     -------
@@ -440,9 +439,6 @@ class DnmrTwoSinglets:
 
     """
 
-    _pi = np.pi
-    _pi_squared = _pi ** 2
-
     def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5,
                  limits=None, points=800):
         # rethink default kwargs for v/k/w
@@ -452,7 +448,7 @@ class DnmrTwoSinglets:
         self.k = k
         self.wa = wa
         self.wb = wb
-        self._pa = pa
+        self.pa = pa
         if limits:
             self.limits = limits
         else:
@@ -461,41 +457,128 @@ class DnmrTwoSinglets:
         self.points = points
 
     @property
+    def va(self):
+        """
+        The frequency of nucleus "a" (Hz) at the slow-exchange limit.
+
+        Returns
+        -------
+        int or float
+        """
+        return self._va
+
+    @va.setter
+    def va(self, value):
+        self._va = is_number(value)
+
+    @property
+    def vb(self):
+        """
+        The frequency of nucleus "b" (Hz) at the slow-exchange limit.
+
+        Returns
+        -------
+        int or float
+        """
+        return self._vb
+
+    @vb.setter
+    def vb(self, value):
+        self._vb = is_number(value)
+
+    @property
+    def k(self):
+        """
+       The rate constant (Hz) for state A--> state B (must be >0).
+
+       Returns
+       -------
+       int or float
+       """
+        return self._k
+
+    @k.setter
+    def k(self, value):
+        self._k = is_positive(value)
+
+    @property
+    def wa(self):
+        """
+        The peak width at half height (Hz) for the 'a' singlet at the
+        slow-exchange limit.
+
+        Returns
+        -------
+        int or float
+        """
+        return self._wa
+
+    @wa.setter
+    def wa(self, value):
+        self._wa = is_number(value)
+
+    @property
+    def wb(self):
+        """
+        The peak width at half height (Hz) for the 'b' singlet at the
+        slow-exchange limit.
+
+        Returns
+        -------
+        int or float
+        """
+        return self._wb
+
+    @wb.setter
+    def wb(self, value):
+        self._wb = is_number(value)
+
+    @property
     def pa(self):
-        """float (0 <= pa <= 1)
-        The fraction of the population in state a.
+        """float
+        The fraction of the population in state a. Must be >=0 and <=1.
+
+        Returns
+        -------
+        float
         """
         return self._pa
 
     @pa.setter
     def pa(self, value):
-        if (value >= 0) and (value <= 1):
-            self._pa = value
-        else:
-            raise ValueError('pa must be >= 0 and <= 1')
+        self._pa = is_decimal_fraction(value)
 
     @property
     def limits(self):
-        """tuple of (int or float, int or float)
+        """
         The minimum and maximum frequencies for the simulated lineshape.
+
+        Returns
+        -------
+        (int or float, int or float)
         """
         return self._vmin, self._vmax
 
     @limits.setter
     def limits(self, limits):
-        try:
-            vmin, vmax = limits
-            vmin = float(vmin)
-            vmax = float(vmax)
-        except Exception as e:
-            print(e)
-            print('limits must be a tuple of two numbers')
-            raise
+        limits = is_tuple_of_two_numbers(limits)
+        self._vmin = min(limits)
+        self._vmax = max(limits)
 
-        if vmax < vmin:
-            vmin, vmax = vmax, vmin
-        self._vmin = vmin
-        self._vmax = vmax
+    @property
+    def points(self):
+        """
+        The length of the returned arrays (i.e. the number of points plotted).
+
+        Returns
+        -------
+        int
+        """
+        return self._points
+
+    @points.setter
+    def points(self, value):
+        self._points = is_integer(value)
 
     def lineshape(self):
         """
@@ -513,9 +596,6 @@ class DnmrTwoSinglets:
         return x, y
 
 
-# TODO: It doesn't look like v1 > v2 should be a necessity. Test here and
-# in other AB functions if v1 and v2 can safely commute. If so, remove code
-# that checks/fixes their order.
 def _dnmr_AB_func(v, v1, v2, J, k, w):
     """
     Implement the equation from Weil et al for simulation of the DNMR lineshape
@@ -530,7 +610,7 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
         amplitude (y coordinate) is to be calculated.
     v1, v2 : float
         frequencies of a and b nuclei (at the slow exchange limit,
-        in the absence of coupling; `va` > `vb`)
+        in the absence of coupling)
     J : float
         the coupling constant between the two nuclei.
     k : float
@@ -589,19 +669,15 @@ def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
 
     Parameters
     ---------
-
-    v : float or array-like
-        a frequency (x coordinate) or array of frequencies at which an
-        amplitude (y coordinate) is to be calculated.
     va, vb : float
         frequencies of a and b nuclei (at the slow exchange limit,
-        in the absence of coupling; `va` > `vb`)
+        in the absence of coupling)
     J : float
         the coupling constant between the two nuclei.
     k : float
         rate constant for state A--> state B
     w : float
-        peak widths at half height (slow exchange limit).
+        peak widths at half height (at the slow-exchange limit).
     limits : (int or float, int or float), optional
         The minimum and maximum frequencies (in any order) for the simulation.
     points : int
@@ -609,8 +685,8 @@ def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
 
     Returns
     -------
-    float
-        amplitude at frequency `v`.
+    x, y : numpy.array, numpy.array
+        Arrays for the x (frequency) and y (intensity) lineshape data points.
 
     See Also
     --------
@@ -620,14 +696,12 @@ def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
     ----------
     See the documentation for the nmrtools.dnmr module.
     """
-    if vb > va:
-        va, vb = vb, va
     if limits:
         l_limit = min(limits)
         r_limit = max(limits)
     else:
-        l_limit = vb - 50
-        r_limit = va + 50
+        l_limit = min(va, vb) - 50
+        r_limit = max(va, vb) + 50
     x = np.linspace(l_limit, r_limit, points)
     y = _dnmr_AB_func(x, va, vb, J, k, w)
     return x, y
@@ -635,149 +709,173 @@ def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
 
 class DnmrAB:
     """
-    TODO: finish the docs.
-    """
+    Simulate the DNMR lineshape for two coupled nuclei undergoing exchange
+    (AB or AX pattern at the slow-exchange limit).
 
-    _pi = np.pi
-    _pi_squared = _pi ** 2
+    Parameters
+    ----------
+    va, vb : int or float
+        frequencies of a and b nuclei (at the slow exchange limit,
+        in the absence of coupling)
+    J : int or float
+        the coupling constant between the two nuclei.
+    k : int or float
+        rate constant for state A--> state B
+    w : int or float
+        peak widths at half height (at the slow-exchange limit).
+    limits : (int or float, int or float), optional
+        The minimum and maximum frequencies (in any order) for the simulation.
+    points : int
+        The length of the returned arrays (i.e. the number of points plotted).
+
+    Attributes
+    ----------
+    va
+    vb
+    J
+    k
+    w
+    limits
+    points
+
+    Methods
+    -------
+    lineshape
+        Return the x, y (frequency, intensity) data for the lineshape
+        simulation.
+
+    See Also
+    --------
+    DnmrAB : A class representation for this simulation.
+
+    References
+    ----------
+    See the documentation for the nmrtools.dnmr module.
+    """
     
-    def __init__(self, v1=165.0, v2=135.0, J=12.0, k=12.0, W=0.5,
-                 limits=None):
-        self._v1 = v1
-        self._v2 = v2
-        self._J = J
-        self._k = k
-        self._W = W
+    def __init__(self, va=165.0, vb=135.0, J=12.0, k=12.0, w=0.5,
+                 limits=None, points=800):
+        self.va = va
+        self.vb = vb
+        self.J = J
+        self.k = k
+        self.w = w
         if limits:
             self.limits = limits
         else:
-            self._vmin = min([v1, v2]) - 50
-            self._vmax = max([v1, v2]) + 50
-
-        self._set_vo()
-        self._set_tau()
-        self._set_tau2()
-        self._set_a2()
-        self._set_a3()
-        self._set_a4()
-        self._set_s()
-
-    def _set_vo(self):
-        self._vo = (self._v1 + self._v2) / 2
-
-    def _set_tau(self):
-        self._tau = 1 / self._k
-
-    def _set_tau2(self):
-        self._tau2 = 1 / (self._pi * self._W)
-
-    def _set_a2(self):
-        self._a2 = - ((1 / self._tau) + (1 / self._tau2)) ** 2
-
-    def _set_a3(self):
-        self._a3 = - self._pi_squared * (self._v1 - self._v2) ** 2
-
-    def _set_a4(self):
-        self._a4 = - self._pi_squared * self._J ** 2 + (1 / self._tau ** 2)
-
-    def _set_s(self):
-        self._s = (2 / self._tau) + (1 / self._tau2)
+            self._vmin = min([va, vb]) - 50
+            self._vmax = max([va, vb]) + 50
+        self.points = points
 
     @property
-    def v1(self):
-        return self._v1
+    def va(self):
+        """
+        The frequency of nucleus "a" (Hz) at the slow-exchange limit, in the
+        absence of coupling.
 
-    @v1.setter
-    def v1(self, value):
-        self._v1 = value
-        self._set_vo()
-        self._set_a3()
+        Returns
+        -------
+        int or float
+        """
+        return self._va
+
+    @va.setter
+    def va(self, value):
+        self._va = is_number(value)
 
     @property
-    def v2(self):
-        return self._v2
+    def vb(self):
+        """
+        The frequency of nucleus "b" (Hz) at the slow-exchange limit, in the
+        absence of coupling.
 
-    @v2.setter
-    def v2(self, value):
-        self._v2 = value
-        self._set_vo()
-        self._set_a3()
+        Returns
+        -------
+        int or float
+        """
+        return self._vb
+
+    @vb.setter
+    def vb(self, value):
+        self._vb = is_number(value)
 
     @property
     def J(self):
+        """
+        The coupling constant (Hz) between the two nuclei.
+
+        Returns
+        -------
+        int or float
+        """
         return self._J
 
     @J.setter
     def J(self, value):
-        self._J = value
-        self._set_a4()
+        self._J = is_number(value)
 
     @property
     def k(self):
+        """
+        The rate constant (Hz) for state A--> state B (must be >0).
+
+        Returns
+        -------
+        int or float
+        """
         return self._k
 
     @k.setter
     def k(self, value):
-        self._k = value
-        self._set_tau()
-        self._set_a2()
-        self._set_a4()
-        self._set_s()
+        self._k = is_positive(value)
 
     @property
-    def W(self):
-        return self._W
+    def w(self):
+        """
+        The peak width (Hz) at half height (at the slow-exchange limit).
+        Returns
+        -------
+        int or float
+        """
+        return self._w
 
-    @W.setter
-    def W(self, value):
-        self._W = value
-        self._set_tau2()
-        self._set_a2()
-        self._set_s()
+    @w.setter
+    def w(self, value):
+        self._w = is_number(value)
 
     @property
     def limits(self):
+        """
+        The minimum and maximum frequencies for the simulated lineshape.
+
+        Returns
+        -------
+        (int or float, int or float)
+        """
         return self._vmin, self._vmax
 
     @limits.setter
     def limits(self, limits):
-        try:
-            vmin, vmax = limits
-            vmin = float(vmin)
-            vmax = float(vmax)
-        except Exception as e:
-            print(e)
-            print('limits must be a tuple of two numbers')
-            raise
+        limits = is_tuple_of_two_numbers(limits)
+        self._vmin = min(limits)
+        self._vmax = max(limits)
 
-        if vmax < vmin:
-            vmin, vmax = vmax, vmin
-        self._vmin = vmin
-        self._vmax = vmax
+    @property
+    def points(self):
+        """
+        The length of the returned arrays (i.e. the number of points plotted).
 
-    def intensity(self, v):
-        a1_plus = 4 * self._pi_squared * (self._vo - v + self._J / 2) ** 2
-        a1_minus = 4 * self._pi_squared * (self._vo - v - self._J / 2) ** 2
-        a_plus = a1_plus + self._a2 + self._a3 + self._a4
-        a_minus = a1_minus + self._a2 + self._a3 + self._a4
+        Returns
+        -------
+        int
+        """
+        return self._points
 
-        b_plus = 4 * self._pi * (self._vo - v + self._J / 2) * (
-                (1 / self._tau) + (1 / self._tau2)) - 2 * self._pi * self._J / self._tau
-        b_minus = 4 * self._pi * (self._vo - v - self._J / 2) * (
-                (1 / self._tau) + (1 / self._tau2)) + 2 * self._pi * self._J / self._tau
+    @points.setter
+    def points(self, value):
+        self._points = is_integer(value)
 
-        r_plus = 2 * self._pi * (self._vo - v + self._J)
-        r_minus = 2 * self._pi * (self._vo - v - self._J)
-        n1 = r_plus * b_plus - self._s * a_plus
-        d1 = a_plus ** 2 + b_plus ** 2
-        n2 = r_minus * b_minus - self._s * a_minus
-        d2 = a_minus ** 2 + b_minus ** 2
-        I = (n1 / d1) + (n2 / d2)
-        return I
-
-    def spectrum(self):
-        x = np.linspace(self._vmin, self._vmax, 800)
-        y = self.intensity(x)
+    def lineshape(self):
+        x = np.linspace(self._vmin, self._vmax, self.points)
+        y = _dnmr_AB_func(x, self.va, self.vb, self.J, self.k, self.w)
         return x, y
-
-

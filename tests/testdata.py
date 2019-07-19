@@ -1421,7 +1421,7 @@ TWOSPIN_FAST = (np.array([
          3.58368993e-05,   3.56511991e-05,   3.54669004e-05,
          3.52839891e-05,   3.51024513e-05]))
 
-# DNMR two coupled spins. v1=165, v2=135, J=12, k=12, W=0.5;
+# DNMR two coupled spins. va=165, vb=135, J=12, k=12, w=0.5;
 # 800 point linspace from 85 to 215.
 AB_WINDNMR = (np.array([
          85.        ,   85.16270338,   85.32540676,   85.48811014,
