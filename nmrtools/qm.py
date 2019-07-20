@@ -21,7 +21,7 @@ import os
 
 import numpy as np
 import sparse
-from nmrtools.math import normalize_spectrum
+from nmrtools.math import normalize_peaklist
 
 CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
@@ -219,7 +219,7 @@ def nspinspec_dense(freqs, couplings, normalize=True):
     I = np.square(V.T.dot(T.dot(V)))
     spectrum = new_compile_spectrum(I, E)
     if normalize:
-        spectrum = normalize_spectrum(spectrum, nspins)
+        spectrum = normalize_peaklist(spectrum, nspins)
     return spectrum
 
 
@@ -348,7 +348,7 @@ def nspinspec_sparse(freqs, couplings, normalize=True):
     H = hamiltonian_sparse(freqs, couplings)
     spectrum = vectorized_simsignals(H.todense(), nspins)
     if normalize:
-        spectrum = normalize_spectrum(spectrum, nspins)
+        spectrum = normalize_peaklist(spectrum, nspins)
     return spectrum
 
 

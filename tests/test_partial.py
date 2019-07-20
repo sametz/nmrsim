@@ -1,12 +1,12 @@
 import numpy as np
 
-from nmrtools.math import normalize_spectrum
+from nmrtools.math import normalize_peaklist
 from nmrtools.partial import (AB, AB2, ABX, ABX3, AAXX, AABB)
 
 
 def test_convert_refspec():
     refspec = [(1, 1), (2, 3), (3, 3), (4, 1)]
-    new_refspec = normalize_spectrum(refspec, 2)
+    new_refspec = normalize_peaklist(refspec, 2)
     print(sum([y for x, y in new_refspec]))
     assert new_refspec == [(1, 0.25), (2, 0.75), (3, 0.75), (4, 0.25)]
 
@@ -18,7 +18,7 @@ def test_AB():
                (153.60468635614927, 1.6246950475544244),
                (165.60468635614927, 0.3753049524455757)]
 
-    refspec_normalized = normalize_spectrum(refspec, 2)
+    refspec_normalized = normalize_peaklist(refspec, 2)
     print('ref normalized:')
     print(refspec_normalized)
     print(sum([y for x, y in refspec_normalized]))
@@ -43,7 +43,7 @@ def test_AB2():
                (30.134498392075365, 1.5421221179826525),
                (31.75794977340369, 1.3201931947004837),
                (55.300397938882746, 0.001346383244293953)]
-    refspec = normalize_spectrum(refspec, 3)
+    refspec = normalize_peaklist(refspec, 3)
     print('ref normalized;')
     print(refspec)
     print(sum([y for x, y in refspec]))
@@ -71,7 +71,7 @@ def test_ABX():
                       (105.0, 1),
                       (80.69806479936946, 0.009709662154539944),
                       (119.30193520063054, 0.009709662154539944)])
-    refspec = normalize_spectrum(refspec, 3)
+    refspec = normalize_peaklist(refspec, 3)
     print('ref normalized;')
     print(refspec)
     print(sum([y for x, y in refspec]))
@@ -107,7 +107,7 @@ def test_ABX3():
     # refspec appropriate if normalize=False, but want to cover all code, so
     sum_intensities = sum([y for x, y in refspec])
     print('target total intensity is: ', sum_intensities)  # 4
-    testspec = normalize_spectrum(testspec, sum_intensities)
+    testspec = normalize_peaklist(testspec, sum_intensities)
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 
@@ -127,7 +127,7 @@ def test_AAXX():
     # refspec appropriate if normalize=False, but want to cover all code, so
     sum_intensities = sum([y for x, y in refspec])
     print('target total intensity is: ', sum_intensities)  # 8
-    testspec = normalize_spectrum(testspec, sum_intensities)
+    testspec = normalize_peaklist(testspec, sum_intensities)
     np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
 
 

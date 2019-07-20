@@ -14,7 +14,7 @@ from math import sqrt
 import numpy as np
 
 from nmrtools.firstorder import multiplet
-from nmrtools.math import _normalize, normalize_spectrum
+from nmrtools.math import _normalize, normalize_peaklist
 
 
 def AB(Jab, Vab, Vcentr, normalize=True):
@@ -336,7 +336,7 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize=True):
         scaled_sub_abq = [(v, i * scale_factor) for v, i in sub_abq]
         res.extend(scaled_sub_abq)
     if normalize:
-        normalize_spectrum(res, 5)  # TODO: check this factor
+        normalize_peaklist(res, 5)  # TODO: check this factor
     return res
 
 

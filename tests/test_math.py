@@ -2,7 +2,7 @@ import numpy as np
 from pytest import approx
 
 from nmrtools.math import (add_peaks, get_intensity, lorentz, reduce_peaks,
-                           _normalize, normalize_spectrum)
+                           _normalize, normalize_peaklist)
 from tests.testdata import TWOSPIN_SLOW
 
 
@@ -49,7 +49,7 @@ def test_normalize():
 def test_normalize_spectrum():
     unnormalized = [(1200.0, 1.0), (500.0, 2.0)]
     expected = [(1200.0, 2.0), (500.0, 4.0)]
-    result = normalize_spectrum(unnormalized, n=6)
+    result = normalize_peaklist(unnormalized, n=6)
     assert np.allclose(result, expected)
 
 

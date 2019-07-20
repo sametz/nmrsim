@@ -27,5 +27,6 @@ first-order or second-order).
 * Spectrum: a collection of components such as Multiplets or SpinSystems that
 contribute to a total NMR spectrum simulation.
 """
+# TODO: consider including a glossary here? e.g. peaklist, spectrum
 
 from ._classes import Multiplet, SpinSystem, Spectrum
