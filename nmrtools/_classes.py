@@ -1,31 +1,20 @@
-"""This module provides classes to abstract NMR concepts such as spin systems
-and spectra.
+"""This module provides high-level API classes for abstract NMR concepts such
+as spin systems and spectra.
 """
 import itertools
 import numbers
 
 import numpy as np
 
-from nmrtools.firstorder import first_order, first_order_spin_system
+from nmrtools.firstorder import first_order_spin_system, multiplet
 from nmrtools.math import reduce_peaks
 from nmrtools.qm import spectrum
 
 from ._descriptors import Number, Couplings
 
 
-# work in progress
-# def spectrum_from_signals(signals):
-#     spectrum = []
-#     for signal in signals:
-#         spectrum += multiplet(signals)
-#     return reduce_peaks(spectrum)
-
-
-# https://realpython.com/python-type-checking/
-# https://blog.florimond.dev/reconciling-dataclasses-and-properties-in-python
-
-
-
+# TODO: Multiplet "belongs" in the nmrtools.firstorder namespace, but has a
+# cyclic dependency with
 class Multiplet:
     """A representation of a first-order multiplet.
 
@@ -38,7 +27,7 @@ class Multiplet:
         self.v = v
         self.I = I
         self.J = J
-        self._peaklist = first_order((v, I), J)
+        self._peaklist = multiplet((v, I), J)
 
     def __eq__(self, other):
         if hasattr(other, 'peaklist') and callable(other.peaklist):
@@ -70,7 +59,7 @@ class Multiplet:
         return self.__imul__(1 / scalar)
 
     def _refresh(self):
-        self._peaklist = first_order((self.v, self.I), self.J)
+        self._peaklist = multiplet((self.v, self.I), self.J)
 
     def peaklist(self):
         """Return a list of (frequency, intensity) signals."""

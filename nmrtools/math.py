@@ -36,7 +36,7 @@ def reduce_peaks(plist_, tolerance=0):
     Parameters
     ---------
     plist_ : [(float, float)...]
-        A list of (x, y) tuples (sorted by x)
+        A list of (x, y) tuples
     tolerance : float
         tuples that differ in x by <= tolerance are combined using `add_peaks`
 

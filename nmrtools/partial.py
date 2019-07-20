@@ -13,7 +13,7 @@ from math import sqrt
 
 import numpy as np
 
-from nmrtools.firstorder import first_order
+from nmrtools.firstorder import multiplet
 from nmrtools.math import _normalize, normalize_spectrum
 
 
@@ -324,8 +324,8 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize=True):
     # Refactoring of Reich's code for simulating the ABX3 system.
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
-    a_quartet = first_order((va, 1), [(Jax, 3)])
-    b_quartet = first_order((vb, 1), [(Jbx, 3)])
+    a_quartet = multiplet((va, 1), [(Jax, 3)])
+    b_quartet = multiplet((vb, 1), [(Jbx, 3)])
     res = []
     for i in range(4):
         dv = b_quartet[i][0] - a_quartet[i][0]

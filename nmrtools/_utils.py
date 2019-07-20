@@ -1,3 +1,5 @@
+"""Utilities used elsewhere in the nmrtools package."""
+
 import numbers
 
 

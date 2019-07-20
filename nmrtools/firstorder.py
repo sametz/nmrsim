@@ -1,9 +1,18 @@
-""""Functions for calculating first-order spectra will appear here."""
+""""Functions for calculating first-order spectra.
+
+The nmrtools.firstorder module provides the following functions:
+
+* multiplet: performs first-order splitting of a signal into multiple signals.
+
+* first_order_spin_system: provides a peaklist for several nuclei, using the
+    same v/J parameters that are used for second-order spin systems.
+    See nmrtools.qm for details on these parameters.
+"""
 
 from nmrtools.math import reduce_peaks
 
 
-def doublet(plist, J):
+def _doublet(plist, J):
     """
     Applies a *J* coupling to each signal in a list of (frequency, intensity)
     signals, creating two half-intensity signals at +/- *J*/2.
@@ -34,7 +43,7 @@ def multiplet(signal, couplings):
     Parameters
     ---------
     signal : (float, float)
-        a (frequency{Hz}, intensity) tuple;
+        a (frequency (Hz), intensity) tuple;
     couplings : [(float, int)...]
         A list of (*J*, # of nuclei) tuples. The order of the tuples in
         couplings does not matter.
@@ -44,40 +53,26 @@ def multiplet(signal, couplings):
     Returns
     -------
     [(float, float)...]
-        a plist of the multiplet that results from splitting the plist
-        signal(s) by each J.
+        a peaklist of the multiplet that results from splitting the signal
+        by each J.
 
     """
     res = [signal]
     for coupling in couplings:
         for i in range(coupling[1]):
-            res = doublet(res, coupling[0])
-    return res
-
-
-def first_order(signal, couplings):  # Wa, RightHz, WdthHz not implemented yet
-    """
-    Splits a signal into a first-order multiplet.
-
-    Parameters
-    ---------
-    signal : (float, float)
-        a (frequency, intensity) tuple.
-    couplings : [(float, int)...]
-        a list of (J, # of nuclei) tuples.
-
-    Returns
-    -------
-    [(float, float)...}
-        a plist-style spectrum (list of (frequency, intensity) tuples)
-    """
-    return reduce_peaks(sorted(multiplet(signal, couplings)))
+            res = _doublet(res, coupling[0])
+    return reduce_peaks(res)
 
 
 def first_order_spin_system(v, J):
     """
-    Can create a first-order peaklist from the same v/J arguments used for
-    qm calculations.
+    Create a first-order peaklist of several multiplets from the same v/J
+    arguments used for qm calculations.
+
+    This allows a user to model several multiplets at once, rather than
+    creating each multiplet individually. It also provides a "toggle" where
+    the user, or a higher-level function/class (such as nmrtools.SpinSystem)
+    can decide whether a spin system is modeled as first order or second order.
 
     Parameters
     ----------
@@ -88,7 +83,9 @@ def first_order_spin_system(v, J):
 
     Returns
     -------
-
+    [(float, float)...]
+        a combined peaklist of signals for all the multiplets in the spin
+        system.
     """
     result = []
     for i, v_ in enumerate(v):
