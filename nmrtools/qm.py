@@ -127,6 +127,8 @@ def hamiltonian_dense(v, J):
     nspins = len(v)
     Lz, Lproduct = so_dense(nspins)  # noqa
     H = np.tensordot(v, Lz, axes=1)
+    if not isinstance(J, np.ndarray):
+        J = np.array(J)
     scalars = 0.5 * J
     H += np.tensordot(scalars, Lproduct, axes=2)
     return H
@@ -149,7 +151,13 @@ def hamiltonian_sparse(v, J):
         """
     nspins = len(v)
     Lz, Lproduct = so_sparse(nspins)  # noqa
-    # On large spin systems, converting v and J to sparse improved speed, so:
+    # On large spin systems, converting v and J to sparse improved speed of
+    # sparse.tensordot calls with them.
+    # First make sure v and J are a numpy array (required by sparse.COO)
+    if not isinstance(v, np.ndarray):
+        v = np.array(v)
+    if not isinstance(J, np.ndarray):
+        J = np.array(J)
     H = sparse.tensordot(sparse.COO(v), Lz, axes=1)
     scalars = 0.5 * sparse.COO(J)
     H += sparse.tensordot(scalars, Lproduct, axes=2)
@@ -188,7 +196,7 @@ def transition_matrix_dense(nspins):
     return T
 
 
-def nspinspec_dense(freqs, couplings, normalize=True):
+def nspinspec_dense(freqs, couplings, normalize=True, **kwargs):
     """
     Calculates second-order spectral data (freqency and intensity of signals)
     for *n* spin-half nuclei.
@@ -210,6 +218,11 @@ def nspinspec_dense(freqs, couplings, normalize=True):
     -------
     spectrum : [[float, float]...] numpy 2D array
          of [frequency, intensity] pairs.
+
+    Other Parameters
+    ----------------
+    cutoff : float
+        The intensity cutoff for reporting signals (default is 0.001).
     """
     nspins = len(freqs)
     H = hamiltonian_dense(freqs, couplings)
@@ -217,7 +230,7 @@ def nspinspec_dense(freqs, couplings, normalize=True):
     V = V.real
     T = transition_matrix_dense(nspins)
     I = np.square(V.T.dot(T.dot(V)))
-    spectrum = new_compile_spectrum(I, E)
+    spectrum = new_compile_spectrum(I, E, **kwargs)
     if normalize:
         spectrum = normalize_peaklist(spectrum, nspins)
     return spectrum
@@ -275,7 +288,7 @@ def intensity_and_energy(H, nspins):
     return I, E
 
 
-def new_compile_spectrum(I, E):
+def new_compile_spectrum(I, E, cutoff=0.001):
     """
 
     Parameters
@@ -284,6 +297,8 @@ def new_compile_spectrum(I, E):
         matrix of relative intensities
     E: numpy.ndarray (1D)
         array of energies
+    cutoff : float
+        The intensity cutoff for reporting signals (default is 0.001).
 
     Returns
     -------
@@ -295,11 +310,11 @@ def new_compile_spectrum(I, E):
     E_upper = np.triu(E_matrix)
     combo = np.stack([E_upper, I_upper])
     iv = combo.reshape(2, I.shape[0] ** 2).T
+    # TODO: consider making the following tolerance limit a kwarg
+    return iv[iv[:, 1] >= cutoff]
 
-    return iv[iv[:, 1] >= 0.01]
 
-
-def vectorized_simsignals(H, nspins):
+def vectorized_simsignals(H, nspins, **kwargs):
     """
     Calculates frequencies and intensities of signals from a spin Hamiltonian
     and number of spins.
@@ -316,12 +331,17 @@ def vectorized_simsignals(H, nspins):
     Returns
     -------
     [[float, float]...] numpy 2D array of frequency, intensity pairs.
+
+    Other Parameters
+    ----------------
+    cutoff : float
+        The intensity cutoff for reporting signals (default is 0.001).
     """
     I, E = intensity_and_energy(H, nspins)
-    return new_compile_spectrum(I, E)
+    return new_compile_spectrum(I, E, **kwargs)
 
 
-def nspinspec_sparse(freqs, couplings, normalize=True):
+def nspinspec_sparse(freqs, couplings, normalize=True, **kwargs):
     """
     Calculates second-order spectral data (freqency and intensity of signals)
     for *n* spin-half nuclei.
@@ -343,17 +363,40 @@ def nspinspec_sparse(freqs, couplings, normalize=True):
     -------
     spectrum : [[float, float]...] numpy 2D array
         of [frequency, intensity] pairs.
+
+    Other Parameters
+    ----------------
+    cutoff : float
+        The intensity cutoff for reporting signals (default is 0.001).
     """
     nspins = len(freqs)
     H = hamiltonian_sparse(freqs, couplings)
-    spectrum = vectorized_simsignals(H.todense(), nspins)
+    spectrum = vectorized_simsignals(H.todense(), nspins, **kwargs)
     if normalize:
         spectrum = normalize_peaklist(spectrum, nspins)
     return spectrum
 
 
 def spectrum(*args, cache=CACHE, sparse=SPARSE, **kwargs):
+    """
+
+    Parameters
+    ----------
+    args
+    cache
+    sparse
+    kwargs
+
+    Returns
+    -------
+
+    Other Parameters
+    ----------------
+    cutoff : float
+        The intensity cutoff for reporting signals (default is 0.001).
+    """
     # for key, val in kwargs.items():
     if not (cache and sparse):
         return nspinspec_dense(*args, **kwargs)
     return nspinspec_sparse(*args, **kwargs)
+

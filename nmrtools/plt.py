@@ -128,15 +128,16 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
         if l_limit > r_limit:
             l_limit, r_limit = r_limit, l_limit
     else:
-        l_limit = peaklist[0][0] - 50
-        r_limit = peaklist[-1][0] + 50
+        l_limit = sorted(peaklist)[0][0] - 50
+        r_limit = sorted(peaklist)[-1][0] + 50
     x, y = zip(*peaklist)
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
     ax.stem(x, y, markerfmt=' ', basefmt='C0-')
-    ax.invert_xaxis()
+    # ax.invert_xaxis()
+    # plt.gca().invert_xaxis()
     plt.show()
     return x, y
 

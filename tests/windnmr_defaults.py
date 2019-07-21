@@ -10,14 +10,14 @@ AB2dict = {'Jab': 12.0,
            'Vab': 15.0,
            'Vcentr': 150.0}
 
-# for expediency, including the 2,6-dichlorophenol AB2 for test_nmrmath
+# for expediency, including the 2,6-dichlorophenol AB2 for test_partial
 dcp = {'Jab': 7.9,
         'Vab': 26.5,
         'Vcentr': 13.25}
 
 ABXdict = {'Jab': 12.0,
-           'Jax': 2.0,
-           'Jbx': 8.0,
+           'Jax': 8.0,
+           'Jbx': 2.0,
            'Vab': 15.0,
            'Vcentr': 7.5}
 

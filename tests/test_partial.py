@@ -71,15 +71,15 @@ def test_ABX():
                       (105.0, 1),
                       (80.69806479936946, 0.009709662154539944),
                       (119.30193520063054, 0.009709662154539944)])
-    refspec = normalize_peaklist(refspec, 3)
+    refspec = sorted(normalize_peaklist(refspec, 3))
     print('ref normalized;')
     print(refspec)
     print(sum([y for x, y in refspec]))
-    testspec = sorted(ABX(**ABXdict))
+    testspec = sorted(ABX(**ABXdict, vx=100))
     print('testspec:')
     print(testspec)
     print(sum([y for x, y in testspec]))
-    np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
+    np.testing.assert_array_almost_equal(sorted(testspec), refspec, decimal=2)
 
 
 def test_ABX3():
@@ -102,13 +102,10 @@ def test_ABX3():
          (168.7195444572929, 0.13095323495401182),
          (175.7195444572929, 0.04365107831800394)]
     )
-
-    testspec = sorted(ABX3(**ABX3dict, normalize=True))
-    # refspec appropriate if normalize=False, but want to cover all code, so
-    sum_intensities = sum([y for x, y in refspec])
-    print('target total intensity is: ', sum_intensities)  # 4
-    testspec = normalize_peaklist(testspec, sum_intensities)
-    np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
+    # refspec intensities add to 4
+    refspec_normalized = sorted(normalize_peaklist(refspec, 2))
+    testspec = sorted(ABX3(**ABX3dict))
+    assert np.allclose(refspec_normalized, testspec)
 
 
 def test_AAXX():
@@ -123,12 +120,10 @@ def test_AAXX():
          (141.3990521539908, 0.7961952252387591),
          (116.39905215399081, 0.20380477476124093)]
     )
+    # Total intensity in refspec = 8
+    refspec_normalized = sorted(normalize_peaklist(refspec, 2))
     testspec = sorted(AAXX(**AAXXdict, normalize=True))
-    # refspec appropriate if normalize=False, but want to cover all code, so
-    sum_intensities = sum([y for x, y in refspec])
-    print('target total intensity is: ', sum_intensities)  # 8
-    testspec = normalize_peaklist(testspec, sum_intensities)
-    np.testing.assert_array_almost_equal(testspec, refspec, decimal=2)
+    assert np.allclose(refspec_normalized, testspec)
 
 
 def test_AABB():
@@ -159,7 +154,7 @@ def test_AABB():
          (203.47950130825626, 0.49078895567299208),
          (207.77859771619566, 0.10166662880050205)]
     )
-    result = AABB(**AABBdict, normalize=False)
+    result = AABB(**AABBdict, normalize=False, cutoff=0.01)
     x, y = result.T
     testspec = sorted(list(zip(x, y)))
     assert np.allclose(testspec, refspec)

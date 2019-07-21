@@ -1,20 +1,33 @@
-##############################################################################
-# Non-QM solutions for specific second-order patterns
-##############################################################################
+"""Non-quantum mechanical solutions for specific second-order patterns.
 
-# TODO: consistent names/API between arguments and internal variables.
-# Cobbling these together from various sources resulted in inconsistencies
-# between variable names in Reich's VB6 code and other sources. Need to find
-# specific references for all formulas and refactor to consistent variable
-# names.
-# TODO: appropriate use of normalize-- for which of these functions, if any,
-# is normalization possibly of interest?
+These are adapted from the routines from WINDNMR [1] by Hans Reich,
+U. Wisconsin, and equations from Pople, Schneider and Bernstein [2]. Note that
+many of the names for arguments, etc. are non-Pythonic but chosen to match the
+WINDNMR interface and source code (for now).
+
+The `partials` module provides the following functions:
+
+* AB: simulates an AB quartet.
+
+* AB2: simulates an AB2 system.
+
+* ABX: simulates an ABX system.
+
+References
+----------
+.. [1] WINDNMR-Pro home page:
+    https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm
+.. [2] Pople, J.A.; Schneider, W.G.; Bernstein, H.J. *High-Resolution Nuclear
+Magnetic Resonance.* New York: McGraw-Hill, 1959.
+"""
+# TODO: refactor away from legacy argument/variable names to user-friendly,
+# pythonic ones.
 from math import sqrt
 
 import numpy as np
 
 from nmrtools.firstorder import multiplet
-from nmrtools.math import _normalize, normalize_peaklist
+from nmrtools.math import _normalize
 
 
 def AB(Jab, Vab, Vcentr, normalize=True):
@@ -25,19 +38,19 @@ def AB(Jab, Vab, Vcentr, normalize=True):
     Parameters
     ---------
     Jab : float
-        the coupling constant (Hz) between Ha and Hb
+        The coupling constant (Hz) between Ha and Hb
     Vab : float
-        the chemical shift difference (Hz) between Ha and Hb in the absence
+        The chemical shift difference (Hz) between Ha and Hb in the absence
         of coupling.
     Vcentr : float
-        the frequency (Hz) for the center of the AB quartet.
+        The frequency (Hz) for the center of the AB quartet.
     normalize: bool
-        whether the signal intensity should be normalized.
+        Whether the signal intensity should be normalized.
 
     Returns
     -------
     [(float, float)...]
-        a list of four (frequency, intensity) tuples.
+        A list of four (frequency, intensity) tuples.
     """
     J = Jab
     dv = Vab
@@ -68,8 +81,8 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
     Jab : float
         the Ha-Hb coupling constant (Hz).
     Vab : float
-        the difference in the frequencies (Hz) of Ha and Hb in the absence of
-        coupling.
+        the difference in the frequencies (Hz). A positive value means vb > va;
+        negative means va > vb.
     Vcentr : float
         the frequency (Hz) for the center of the AB2 signal.
     normalize: bool
@@ -80,52 +93,34 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
     [(float, float)...]
         a list of (frequency, intensity) tuples.
     """
-    # Currently, there is a disconnect between the variable names in the GUI
-    # and the variable names in this function. The following code provides a
-    # temporary interface.
-
+    # There is a disconnect between the variable names in the WINDNMR GUI and
+    # the variable names in this function.
+    # The following code provides a temporary interface until this is
+    # refactored.
     J, dV, Vab = Jab, Vab, Vcentr
 
-    # for now, old Jupyter code using Pople equations kept hashed out for now
-    # Reich vs. Pople variable names are confused, e.g. Vab
-    # So, variables being placed by position in the def header--CAUTION
-    # From main passed in order of: Jab, Vab, Vcentr, Wa, RightHz, WdthHz
-    # Here read in as:              J,   dV,  Vab,    "     "        "
-    # dV = va - vb  # Reich: used d = Vb - vA and then mucked with sign of d
-    # Vab = (va + vb) / 2  # Reich: ABOff
+    # Also, inconsistencies in WINDNMR GUI, internal WINDNMR code, and Pople
+    # equations require a conversion.
     dV = - dV
     va = Vab + (dV / 2)
     vb = va - dV
-    Jmod = J * (3 / 4)  # This factor used in frequency calculations
 
-    # In Reich's code, the definitions of cp/cm (for C_plus/C_minus) were
-    # swapped, and then modifications using sign of d were employed. This
-    # code hews closer to Pople definitions
+    Jmod = J * (3 / 4)
     C_plus = sqrt(dV ** 2 + dV * J + (9 / 4) * (J ** 2)) / 2
     C_minus = sqrt(dV ** 2 - dV * J + (9 / 4) * (J ** 2)) / 2
-
-    cos2theta_plus = (dV / 2 + J / 4) / C_plus  # Reich: cos2x
-    cos2theta_minus = (dV / 2 - J / 4) / C_minus  # Reich: cos2y
-
-    # This code differs from Reich's in the calculation of
-    # the sin/cos x/y values
-
-    sintheta_plus = sqrt((1 - cos2theta_plus) / 2)  # Reich: sinx
-    sintheta_minus = sqrt((1 - cos2theta_minus) / 2)  # Reich: siny
-    costheta_plus = sqrt((1 + cos2theta_plus) / 2)  # Reich: cosx
-    costheta_minus = sqrt((1 + cos2theta_minus) / 2)  # Reich: cosy
-
-    # Intensity formulas use the sin and cos of (theta_plus - theta_minus)
-    # sin_dtheta is Reich's qq; cos_dtheta is Reich's rr
-
+    cos2theta_plus = (dV / 2 + J / 4) / C_plus
+    cos2theta_minus = (dV / 2 - J / 4) / C_minus
+    sintheta_plus = sqrt((1 - cos2theta_plus) / 2)
+    sintheta_minus = sqrt((1 - cos2theta_minus) / 2)
+    costheta_plus = sqrt((1 + cos2theta_plus) / 2)
+    costheta_minus = sqrt((1 + cos2theta_minus) / 2)
     sin_dtheta = sintheta_plus * costheta_minus - costheta_plus * sintheta_minus
     cos_dtheta = costheta_plus * costheta_minus + sintheta_plus * sintheta_minus
 
-    # Calculate the frequencies and intensities.
-    # V1-V4 are "Origin: A" (PSB Table 6-8);
+    # In Pople, Schneider and Bernstein, Table 6-8:
+    # V1-V4 are "Origin: A";
     # V5-V8 are "Origin: B";
-    # V9-V12 are "Origin: Comb."
-
+    # V9 is "Origin: Comb."
     V1 = Vab + Jmod + C_plus
     V2 = vb + C_plus + C_minus
     V3 = va
@@ -150,115 +145,64 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
 
     if normalize:
         _normalize(IList, 3)
-
     return list(zip(vList, IList))
 
 
-def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize=True):
+def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
     """
-    Reich-style inputs for an ABX spin system. TODO: complete rewrite
-    Jab is the A-B coupling constant (Hz)
-    dV is the difference in nuclei frequencies in the absence of coupling (Hz)
-    Vab is the frequency for the center of the AB2 signal
-    Wa is width of peak at half-height (not implemented yet)
-    RightHz is the lower frequency limit for the window (not implemented yet)
-    WdthHz is the width of the window in Hz (not implemented yet)
-    return: peaklist of (frequency, intensity) tuples
-    Calculates signal frequencies and intensities for an ABX spin system.
+    Non-QM approximation for an ABX spin system. The approximation assumes
+    that Hx is very far away in chemical shift from Ha/Hb.
 
     Parameters
     ---------
     Jab : float
-        the Ha-Hb coupling constant (Hz).
+        The Ha-Hb coupling constant (Hz).
     Jbx : float
-        the Ha-Hb coupling constant (Hz).
+        The Ha-Hb coupling constant (Hz).
     Jax : float
-        the Ha-Hb coupling constant (Hz).
+        The Ha-Hb coupling constant (Hz).
     Vab : float
-        the difference in the frequencies (Hz) of Ha and Hb in the absence of
-        coupling.
+        The difference in the frequencies (in the absence of
+        coupling) of Ha and Hb (Hz).
     Vcentr : float
-        the frequency (Hz) for the center of the AB2 signal.
+        The frequency (Hz) for the center of the AB2 signal.
+    vx : float
+        The frequency (Hz) for Hx in the absence of coupling.
+
     normalize: bool
-        whether the signal intensity should be normalized.
+        whether the signal intensity should be normalized. If false, the total
+        signal intensity happens to be ~12.
 
     Returns
     -------
     [(float, float)...]
         a list of (frequency, intensity) tuples.
     """
-    """
-    In the WINDNMR main toolbar, only the parameters in the function args 
-    can be changed (Jab, Jax, Jbx, Vab, Vcentr, ignoring the 
-    Wa/Right-Hz/WdthHz parameters that nmrtools isn't adopting). However, 
-    in WINDNMR parameters popup, each individual chemical shift for Ha, Hb, 
-    and Hx can be entered.
-
-    In the original WINDNMR interface, Vab is the difference in Ha/Hb 
-    frequencies in the absence of coupling, and Vcentr is the average of 
-    those frequencies.
-
-    There's two ways I can see a user wanting to use the ABX function:
-    1. as in WINDNMR: to see the effect of moving signals closer to each 
-    other by adjusting Vab/Vcentr
-    2. as in 2nd-order: supplying frequencies for all signals and Js. 
-
-    The ABX formula here is a simplification that assumes X is far away in 
-    chemical shift. Moving the frequency of x (vx) closer to those of a and b
-    (va, vb) has no effect. Whatever the final decision is on API 
-    implementation, this difference must be clear to the user.
-    """
-    # Another function where Reich vs. non-Reich variable names gets confusing
-    # See comments in AB2 function
-    # So, variables being placed by position in the def header--CAUTION
-    # From main passed in order of: Jab, Jax, Jbx, Vab,  Vcentr, ...
-    # Here read in as:              Jab, Jbx, Jax, dVab, Vab,    ...
-
-    # CHANGE: with switch to kwargs used in function calls, the following
-    # code matches this Reich code to the current view dictionary
-    Jbx, Jax = Jax, Jbx
+    # Contradictions in naming between WINDNMR's interface, internal code, and
+    # Pople/Schneider/Bernstein "fixed" with these reassignments:
     dVab = Vab
     Vab = Vcentr
 
-    # dVab = va - vb  # Reich: Vab
-    # Vab = (va + vb) / 2  # Reich: ABOff
-
-    # Reich's ABX: vx initialized as vb + 100
-    vx = Vab - (dVab / 2) + 100
-
-    dJx = Jax - Jbx  # GMS stepping-stone constant for readability
-
-    # Retaining Reich names for next two constants
+    dJx = Jax - Jbx
     cm = dJx / 2
     cp = Jax + Jbx
-
-    # Reich re-defines constants m and l
-    # (declaration/garbage-collection efficiency?)
-    # GMS: using M and L for the first instance, m and n for second
-    # (avoid lower-case l for variables)
-    # Reich redefines m a third time for calculating X intensities
-    # GMS: uses t
-
     M = dVab + cm
     L = dVab - cm
-
     D_plus = sqrt(M ** 2 + Jab ** 2) / 2
     D_minus = sqrt(L ** 2 + Jab ** 2) / 2
-
-    sin2phi_plus = Jab / (2 * D_plus)  # Reich: sin2x
-    sin2phi_minus = Jab / (2 * D_minus)  # Reich: sin2y
-    cos2phi_plus = M / (2 * D_plus)  # Reich: cos2x
-    cos2phi_minus = L / (2 * D_minus)  # Reich: cos2y
-
+    sin2phi_plus = Jab / (2 * D_plus)
+    sin2phi_minus = Jab / (2 * D_minus)
+    cos2phi_plus = M / (2 * D_plus)
+    cos2phi_minus = L / (2 * D_minus)
     m = (cp + 2 * Jab) / 4
-    n = (cp - 2 * Jab) / 4  # Reich: l
-
+    n = (cp - 2 * Jab) / 4
     t = cos2phi_plus * cos2phi_minus + sin2phi_plus * sin2phi_minus
-    # Calculate the frequencies and intensities.
+
+    # In Pople, Schneider and Bernstein, Table 6-15:
     # V1-V4 are "Origin: B" (PSB Table 6-15);
     # V5-V8 are "Origin: A";
-    # V9-V12 are "Origin: X" and V13-14 are "Origin: Comb. (X)"
-
+    # V9-V12 are "Origin: X";
+    # V13-14 are "Origin: Comb. (X)"
     V1 = Vab - m - D_minus
     V2 = Vab + n - D_plus
     V3 = Vab - n - D_minus
@@ -294,11 +238,9 @@ def ABX(Jab, Jbx, Jax, Vab, Vcentr, normalize=True):
     return list(zip(VList, IList))
 
 
-def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize=True):
+def ABX3(Jab, Jax, Jbx, Vab, Vcentr):
     """
     Simulation of the AB part of an ABX3 spin system.
-
-    TODO: explain simplification
 
     Parameters
     ---------
@@ -310,33 +252,30 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr, normalize=True):
         the Ha-Hb coupling constant (Hz).
     Vab : float
         the difference in the frequencies (Hz) of Ha and Hb in the absence of
-        coupling.
+        coupling. Positive when vb > va.
     Vcentr : float
         the frequency (Hz) for the center of the AB2 signal.
-    normalize: bool
-        whether the signal intensity should be normalized.
 
     Returns
     -------
     [(float, float)...]
         a list of (frequency, intensity) tuples.
     """
-    # Refactoring of Reich's code for simulating the ABX3 system.
+    # First: simulate two quartets for va and vb ("Jab turned off")
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
     a_quartet = multiplet((va, 1), [(Jax, 3)])
     b_quartet = multiplet((vb, 1), [(Jbx, 3)])
     res = []
+    # Then: for each pair of a and b singlets in the quartets, calculate an
+    # AB quartet ("Turn Jab on").
     for i in range(4):
         dv = b_quartet[i][0] - a_quartet[i][0]
         abcenter = (b_quartet[i][0] + a_quartet[i][0]) / 2
-        sub_abq = AB(Jab, dv, abcenter, normalize)  # Wa, RightHz, WdthHz not
-        # implemented
+        sub_abq = AB(Jab, dv, abcenter, normalize=True)
         scale_factor = a_quartet[i][1]
         scaled_sub_abq = [(v, i * scale_factor) for v, i in sub_abq]
         res.extend(scaled_sub_abq)
-    if normalize:
-        normalize_peaklist(res, 5)  # TODO: check this factor
     return res
 
 
@@ -348,7 +287,7 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
 
     Parameters
     ---------
-    float Jaa, Jax, Jax, Jax_prime :
+    Jaa, Jax, Jax, Jax_prime : float
         Jaa is the JAA' coupling constant;
         Jxx the JXX';
         Jax the JAX; and
@@ -356,7 +295,7 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
     Vcentr : float
         the frequency for the center of the signal.
     normalize: bool
-        whether the signal intensity should be normalized.
+        whether the signal intensity should be normalized (to 2).
 
     Returns
     -------
@@ -365,26 +304,19 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
     """
     # Define the constants required to calculate frequencies and intensities
 
-    # K, L, M, N are as defined in PSB
-    K = Jaa + Jxx  # Reich: K
-    M = Jaa - Jxx  # Reich: l
-    L = Jax - Jax_prime  # Reich: m
-    N = Jax + Jax_prime  # Reich: n
-
-    # Retaining Reich names for next two constants
-    # Suggested refactoring: don't divide by 2 here; can simplify later formulas
-
+    # K, L, M, N are as defined in Pople, Schneider and Bernstein
+    K = Jaa + Jxx
+    M = Jaa - Jxx
+    L = Jax - Jax_prime
+    N = Jax + Jax_prime
     p = sqrt((K ** 2 + L ** 2)) / 2
     r = sqrt((M ** 2 + L ** 2)) / 2
-
     sin2theta_s = (1 - K / (2 * p)) / 2
     sin2theta_a = (1 - M / (2 * r)) / 2
     cos2theta_s = (1 + K / (2 * p)) / 2
     cos2theta_a = (1 + M / (2 * r)) / 2
 
-    # Calculate the frequencies and intensities.
     # See PSB Table 6-18. Transitions 1-4 are condensed into V1 and V2.
-
     V1 = Vcentr + N / 2
     V2 = Vcentr - N / 2
     V3 = Vcentr + K / 2 + p
@@ -409,26 +341,22 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
 
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10]
-
     if normalize:
-        _normalize(IList, 4)
-
+        _normalize(IList, 2)
     return list(zip(VList, IList))
 
 
-def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True):
+def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
     """
     A wrapper for a second-order AA'BB' calculation, but using the
-    values taken from the WINDNMR-style AA'BB' bar selected by the Multiplet
-    menu.
+    same arguments as WINDNMR.
 
     Parameters
     ---------
-
     Vab : float
         the difference in frequency (Hz) between Ha and Hb in the absence of
-        coupling.
-    float Jaa, Jbb, Jab, Jab_prime :
+        coupling. A positive number indicates vb > va.
+    Jaa, Jbb, Jab, Jab_prime : float
         Jaa is the JAA' coupling constant;
         Jxx the JXX';
         Jax the JAX; and
@@ -456,5 +384,5 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True):
     J[2, 3] = Jbb
     J = J + J.T
 
-    result = spectrum(freqlist, J, normalize=normalize, sparse=False)
+    result = spectrum(freqlist, J, normalize=normalize, sparse=False, **kwargs)
     return result

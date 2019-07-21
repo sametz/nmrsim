@@ -1,3 +1,4 @@
+import copy
 import pathlib
 import numpy as np
 
@@ -83,3 +84,28 @@ def test_nspinspec_spectrum():
     # THEN they all match the expected result
     for s in [spectrum_TT, spectrum_FT, spectrum_TF, spectrum_FF]:
         assert np.allclose(s, SPECTRUM_RIOUX)
+
+
+def test_vj_can_be_lists():
+    # Allows user to use Python lists as inputs for QM calculations
+    # GIVEN v and J arguments as lists
+    v = [110.5, 125.5, 200]
+    J = [[0, 12, 2],
+         [12, 0, 8],
+         [2, 8, 0]]
+    v_id = id(v)
+    j_id = id(J)
+    v_original = copy.deepcopy(v)
+    j_original = copy.deepcopy(J)
+    # WHEN a peaklist calculation is run with v and J as arguments
+    peaklist_dense = nspinspec_dense(v, J)
+    peaklist_sparse = nspinspec_sparse(v, J)
+    # dense and sparse Hamiltonians apply separate conversions, so check
+    # both are consistent:
+    assert np.allclose(peaklist_dense, peaklist_sparse)
+    # THEN there are no errors
+    # AND the original v/J objects have not mutated
+    assert v_id == id(v)
+    assert j_id == id(J)
+    assert v == v_original
+    assert J == j_original
