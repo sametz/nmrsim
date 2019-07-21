@@ -1,26 +1,28 @@
+"""The plt module provides convenience functions for creating matplotlib plots,
+plus applying Lorentzian distributions about signals.
+
+The plt module provides the following functions:
+
+* add_lorentzians: Creates lineshape data from a provided linspace (array of x
+coordinates) and peaklist).
+
+* mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot
+data.
+
+* mplplot_stick: Creates a "stick" (matplotlib "stem" plot) plot from a
+peaklist and returns the x, y plot data.
+
+* mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
+and returns the x, y plot data.
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 
 from nmrtools.math import lorentz
 
-"""TODO: rethink plot routines. There are two main flavors:
-    * plot peaklists, either as stick plots or with Lorentzians
-    * plot lineshapes
-    
-Different routes:
-    peaklist -> stick plot
-    peaklist -> Lorentzian lineshape
-    DNMR simulation -> lineshape
-    
-Consider function factories that will crank out the desired plot object.
 
-Peaklists may be np.arrays, or lists of tuples, depending on origin. Either
-use a consistent form throughout (e.g. np.array, converting users array-like
-objects as needed) or refactor to allow multiple inputs.
-"""
-
-
-def add_signals(linspace, peaklist, w):
+def add_lorentzians(linspace, peaklist, w):
     """
     Given a numpy linspace, a spectrum as a list of (frequency, intensity)
     tuples, and a linewidth, returns an array of y coordinates for the
@@ -29,12 +31,12 @@ def add_signals(linspace, peaklist, w):
     Arguments
     ---------
     linspace : array-like
-        normally a numpy.linspace of x coordinates corresponding to frequency
+        Normally a numpy.linspace of x coordinates corresponding to frequency
         in Hz.
     peaklist : [(float, float)...]
-        a list of (frequency, intensity) tuples.
+        A list of (frequency, intensity) tuples.
     w : float
-        peak width at half maximum intensity.
+        Peak width at half maximum intensity.
 
     Returns
     -------
@@ -51,24 +53,29 @@ def add_signals(linspace, peaklist, w):
 
 def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     """
-    A no-frills routine that plots spectral simulation data.
+    A matplotlib plot of the simulated lineshape for a peaklist.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     peaklist : [(float, float)...]
-        a list of (frequency, intensity) tuples.
+        A list of (frequency, intensity) tuples.
     w : float
-        peak width at half height
+        Peak width at half height
+    y_min : float or int
+        Minimum intensity for the plot.
     y_max : float or int
-        maximum intensity for the plot.
+        Maximum intensity for the plot.
     points : int
-        number of data points
+        Number of data points.
     limits : (float, float)
-        frequency limits for the plot
-    """
-    # import matplotlib.pyplot as plt
+        Frequency limits for the plot.
 
-    peaklist.sort()  # Could become costly with larger spectra
+    Returns
+    -------
+    x, y : numpy.array
+        Arrays for frequency (x) and intensity (y) for the simulated lineshape.
+    """
+    peaklist.sort()
     if limits:
         try:
             l_limit, r_limit = limits
@@ -77,7 +84,6 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
         except Exception as e:
             print(e)
             print('limits must be a tuple of two numbers')
-            # return None
             raise
         if l_limit > r_limit:
             l_limit, r_limit = r_limit, l_limit
@@ -87,7 +93,7 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     x = np.linspace(l_limit, r_limit, points)
     plt.ylim(y_min, y_max)
     plt.gca().invert_xaxis()  # reverses the x axis
-    y = add_signals(x, peaklist, w)
+    y = add_lorentzians(x, peaklist, w)
     # noinspection PyTypeChecker
     plt.plot(x, y)
     plt.show()
@@ -96,25 +102,24 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
 
 
 def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
-    """TODO: description below incorrect. x, y must be numpy.ndarray.
-    Decide on a consistent interface (e.g. vs. mplplot).
-    Also: setting limits by adding small peaks is hacky, and also doesn't work
-    if peaklist isn't ordered.
-    """
-    """
-    matplotlib plot a spectrum in "stick" (stem) style.
+    """A  matplotlib plot of a spectrum in "stick" (stem) style.
 
-    Arguments
-    ---------
-    x : [float...]
-        a list of frequencies
-    y : [float...]
-        a list of intensities corresponding with x
-    max_y : float
-        maximum intensity for the plot.
-    """
-    # import matplotlib.pyplot as plt
+    Parameters
+    ----------
+    peaklist : [(float, float)...]
+        A list of (frequency, intensity) tuples.
+    y_min : float or int
+        Minimum intensity for the plot.
+    y_max : float or int
+        Maximum intensity for the plot.
+    limits : (float, float)
+        Frequency limits for the plot.
 
+    Returns
+    -------
+    numpy.array, numpy.array
+        The arrays of x and y coordinates used for the plot.
+    """
     fig, ax = plt.subplots()
     if limits:
         try:
@@ -131,20 +136,41 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
         l_limit = sorted(peaklist)[0][0] - 50
         r_limit = sorted(peaklist)[-1][0] + 50
     x, y = zip(*peaklist)
+    # If the next two lines are omitted, there is no baseline from the outer
+    # peaks to the left/right limits. Until a matplotlib solution is found,
+    # using this hack of adding two outer miniscule peaks to extend the
+    # baseline.
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
     ax.stem(x, y, markerfmt=' ', basefmt='C0-')
-    # ax.invert_xaxis()
-    # plt.gca().invert_xaxis()
     plt.show()
     return x, y
+    # TODO: or return plt object? Decide behavior.
 
 
 def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
-    # fig, ax = plt.subplots()
+    """
+    A matplotlib plot that accepts arrays of x and y coordinates.
 
+    Parameters
+    ----------
+    x : array-like
+        The list of x coordinates.
+    y : array-like
+        The list of y coordinates.
+    y_min : float or int
+        Minimum intensity for the plot. Default is -10% max y.
+    y_max : float or int
+        Maximum intensity for the plot. Default is 110% max y.
+    limits : (float, float)
+        Frequency limits for the plot.
+
+    Returns
+    -------
+    x, y : The original x, y arguments.
+    """
     if limits:
         try:
             l_limit, r_limit = limits
@@ -157,8 +183,8 @@ def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
         if l_limit > r_limit:
             l_limit, r_limit = r_limit, l_limit
     else:
-        l_limit = x[0]  # assumes x already sorted low->high
-        r_limit = x[-1]
+        l_limit = min(x)  #x[0]  # assumes x already sorted low->high
+        r_limit = max(x)  #x[-1]
 
     if y_min is None or y_max is None:  # must test vs None so that 0 = True
         margin = max(y) * 0.1

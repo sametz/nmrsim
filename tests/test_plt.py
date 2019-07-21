@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from nmrtools.plt import add_signals, mplplot, mplplot_stick, mplplot_lineshape
+from nmrtools.plt import add_lorentzians, mplplot, mplplot_stick, mplplot_lineshape
 from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.testdata import TWOSPIN_SLOW
 
@@ -11,14 +11,14 @@ from tests.testdata import TWOSPIN_SLOW
 
 def test_add_signals():
     """
-    Tests that current nmrplot.add_signals output agrees with an accepted
+    Tests that current nmrplot.add_lorentzians output agrees with an accepted
     dataset.
     """
     # test was written before normalization of height vs width was built into
     #  lorentz(). Fudge-factor added to scale old accepted data.
     x = np.linspace(390, 410, 200)
     doublet = [(399, 1), (401, 1)]
-    y = add_signals(x, doublet, 1)
+    y = add_lorentzians(x, doublet, 1)
     X = np.array([x for x, _ in ADD_SIGNALS_DATASET])
     Y = np.array([y * 0.5 for _, y in ADD_SIGNALS_DATASET])
 

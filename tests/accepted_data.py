@@ -22,11 +22,11 @@ SPECTRUM_RIOUX = [(260.66152857482973, 0.23011249131787825),
                   (269.1576903807885, 0.27256416758689167)]
 
 
-# accepted OLD output [(x, y)...] for nmrtools.plt.add_signals, using:
+# accepted OLD output [(x, y)...] for nmrtools.plt.add_lorentzians, using:
 #  linspace = np.linspace(390, 410, 200)
 # spectrum = [(399, 1), (401, 1)]
 # 1 Hz linewidth
-# HOWEVER this used an older lorentz function. The current add_signals
+# HOWEVER this used an older lorentz function. The current add_lorentzians
 # has half the y intensity as that listed here.
 ADD_SIGNALS_DATASET = [(390.0, 0.0051387787470261702),
     (390.1005025125628, 0.0052465661367609943),
