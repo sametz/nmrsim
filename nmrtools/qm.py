@@ -1,8 +1,36 @@
 """qm contains functions for the quantum-mechanical (second-order)
 calculation of NMR spectra.
 
-Because numpy.matrix is marked as deprecated, in Winter/Spring 2019 the qm
-code was refactored to a) accommodate this deprecation and b) speed up the
+The qm module provides the following attributes:
+
+* CACHE: bool (default True)
+    Whether saving to disk of partial solutions is allowed.
+* SPARSE: bool (default True)
+    Whether the sparse library can be used.
+
+The qm module provides the following functions:
+
+* qm_spinsystem: The high-level function for computing a second-order
+simulation from frequency and J-coupling data.
+
+* hamiltonian_dense: Calculate a spin Hamiltonian using dense arrays
+(slower).
+
+* hamiltonian_sparse: Calculate a spin Hamiltonian using cached sparse arrays
+(faster).
+
+* solve_hamiltonian: Calculate a peaklist from a spin Hamiltonian.
+
+* secondorder_dense: Calculate a peaklist for a second-order spin system,
+using dense arrays (slower).
+
+* secondorder_sparse: Calculate a peaklist for a second-order spin system,
+using cached sparse arrays (faster).
+
+Notes
+-----
+Because numpy.matrix is marked as deprecated, starting with Version 0.2.0 the
+qm code was refactored to a) accommodate this deprecation and b) speed up the
 calculations. The fastest calculations rely on:
 
 1. the pydata/sparse library. SciPy's sparse depends on numpy.matrix,
@@ -27,14 +55,15 @@ CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
 
 
-def so_dense(nspins):
+def _so_dense(nspins):
     """
-    Calculate spin operators required for constructing the spin hamiltonian.
+    Calculate spin operators required for constructing the spin hamiltonian,
+    using dense (numpy) arrays.
 
     Parameters
     ----------
     nspins: int
-        the number of spins in the spin system
+        The number of spins in the spin system.
 
     Returns
     -------
@@ -50,7 +79,7 @@ def so_dense(nspins):
     unit = np.array([[1, 0], [0, 1]])
 
     L = np.empty((3, nspins, 2 ** nspins, 2 ** nspins),
-                 dtype=np.complex128)  # consider other dtype?
+                 dtype=np.complex128)  # TODO: consider other dtype?
     for n in range(nspins):
         Lx_current = 1
         Ly_current = 1
@@ -78,7 +107,7 @@ def so_dense(nspins):
     return L[2], Lproduct
 
 
-def so_sparse(nspins):
+def _so_sparse(nspins):
     """Either load a presaved set of spin operators as numpy arrays, or
     calculate them and save them if a presaved set wasn't found.
 
@@ -101,6 +130,12 @@ def so_sparse(nspins):
     Saves the results as .npz files to the bin directory if they were not
     found there.
     """
+    # TODO: once nmrtools demonstrates installing via the PyPI *test* server,
+    # need to determine how the saved solutions will be handled. For example,
+    # part of the final build may be generating these files then testing.
+    # Also, need to consider different users with different system capabilities
+    # (e.g. at extreme, Raspberry Pi). Some way to let user select, or select
+    # for user?
     filename_Lz = f'Lz{nspins}.npz'
     filename_Lproduct = f'Lproduct{nspins}.npz'
     bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
@@ -114,7 +149,7 @@ def so_sparse(nspins):
     except FileNotFoundError:
         print('no SO file ', filename_Lz, ' found in: ', bin_dir)
         print(f'creating {filename_Lz} and {filename_Lproduct}')
-    Lz, Lproduct = so_dense(nspins)
+    Lz, Lproduct = _so_dense(nspins)
     Lz_sparse = sparse.COO(Lz)
     Lproduct_sparse = sparse.COO(Lproduct)
     sparse.save_npz(path_Lz, Lz_sparse)
@@ -125,7 +160,7 @@ def so_sparse(nspins):
 
 def hamiltonian_dense(v, J):
     nspins = len(v)
-    Lz, Lproduct = so_dense(nspins)  # noqa
+    Lz, Lproduct = _so_dense(nspins)  # noqa
     H = np.tensordot(v, Lz, axes=1)
     if not isinstance(J, np.ndarray):
         J = np.array(J)
@@ -150,7 +185,7 @@ def hamiltonian_sparse(v, J):
             a sparse spin Hamiltonian
         """
     nspins = len(v)
-    Lz, Lproduct = so_sparse(nspins)  # noqa
+    Lz, Lproduct = _so_sparse(nspins)  # noqa
     # On large spin systems, converting v and J to sparse improved speed of
     # sparse.tensordot calls with them.
     # First make sure v and J are a numpy array (required by sparse.COO)
@@ -164,9 +199,9 @@ def hamiltonian_sparse(v, J):
     return H
 
 
-def transition_matrix_dense(nspins):
+def _transition_matrix_dense(nspins):
     """
-    Creates a matrix of allowed transitions.
+    Creates a matrix of allowed transitions, as a dense array.
 
     The integers 0-`n`, in their binary form, code for a spin state
     (alpha/beta). The (i,j) cells in the matrix indicate whether a transition
@@ -183,11 +218,26 @@ def transition_matrix_dense(nspins):
         a transition matrix that can be used to compute the intensity of
     allowed transitions.
 
+    Notes
+    -----
+    The integers 0-`n`, in their binary form, code for a pure spin state
+    (alpha/beta). For example, for a three-spin system:
+    0 = 000 = alpha-alpha-alpha,
+    1 = 001 = alpha-alpha-beta,
+    ⋮
+    7 = 111 = beta-beta-beta.
+    A transition between two of these states is allowed if only one spin flips.
+    This is equal to a single bit change in the binary representation of the
+    index.
+
+    The (i,j) cells in the transition matrix indicate whether a transition
+    from spin state i to spin state j is allowed or forbidden (1 = allowed,
+    0 = forbidden).
     """
     # function was optimized by only calculating upper triangle and then adding
     # the lower.
     n = 2 ** nspins
-    T = np.zeros((n, n))  # sparse matrix created
+    T = np.zeros((n, n))
     for i in range(n - 1):
         for j in range(i + 1, n):
             if bin(i ^ j).count('1') == 1:
@@ -196,7 +246,7 @@ def transition_matrix_dense(nspins):
     return T
 
 
-def nspinspec_dense(freqs, couplings, normalize=True, **kwargs):
+def secondorder_dense(freqs, couplings, normalize=True, **kwargs):
     """
     Calculates second-order spectral data (freqency and intensity of signals)
     for *n* spin-half nuclei.
@@ -216,8 +266,8 @@ def nspinspec_dense(freqs, couplings, normalize=True, **kwargs):
 
     Returns
     -------
-    spectrum : [[float, float]...] numpy 2D array
-         of [frequency, intensity] pairs.
+    peaklist : [[float, float]...]
+        numpy 2D array of [frequency, intensity] pairs.
 
     Other Parameters
     ----------------
@@ -228,44 +278,51 @@ def nspinspec_dense(freqs, couplings, normalize=True, **kwargs):
     H = hamiltonian_dense(freqs, couplings)
     E, V = np.linalg.eigh(H)
     V = V.real
-    T = transition_matrix_dense(nspins)
+    T = _transition_matrix_dense(nspins)
     I = np.square(V.T.dot(T.dot(V)))
-    spectrum = new_compile_spectrum(I, E, **kwargs)
+    peaklist = _compile_peaklist(I, E, **kwargs)
     if normalize:
-        spectrum = normalize_peaklist(spectrum, nspins)
-    return spectrum
+        peaklist = normalize_peaklist(peaklist, nspins)
+    return peaklist
 
 
-def cache_tm(nspins):
+def _tm_cache(nspins):
     """
+    Loads a saved sparse transition matrix if it exists, or creates and saves
+    one if it is not.
 
     Parameters
     ----------
-    nspins
+    nspins : int
+        The number of spins in the spin system.
 
     Returns
     -------
+    T_sparse : sparse.COO
+        The sparse transition matrix.
 
+    Side Effects
+    ------------
+    Saves a sparse array to the bin folder if the required array was not
+    found there.
     """
-    """spin11 test indicates this leads to faster overall simsignals().
-
-    11 spin x 6: 29.6 vs. 35.1 s
-    8 spin x 60: 2.2 vs 3.0 s"""
+    # Speed tests indicated that using sparse-array transition matrices
+    # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
     bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
     path = os.path.join(bin_dir, filename)
     try:
-        T = sparse.load_npz(path)
-        return T
+        T_sparse = sparse.load_npz(path)
+        return T_sparse
     except FileNotFoundError:
         print(f'creating {filename}')
-        T = transition_matrix_dense(nspins)
-        T_sparse = sparse.COO(T)
+        T_sparse = _transition_matrix_dense(nspins)
+        T_sparse = sparse.COO(T_sparse)
         sparse.save_npz(path, T_sparse)
         return T_sparse
 
 
-def intensity_and_energy(H, nspins):
+def _intensity_and_energy(H, nspins):
     """Calculate intensity matrix and energies (eigenvalues) from Hamiltonian.
 
     Parameters
@@ -283,13 +340,14 @@ def intensity_and_energy(H, nspins):
     """
     E, V = np.linalg.eigh(H)
     V = V.real
-    T = cache_tm(nspins)
+    T = _tm_cache(nspins)
     I = np.square(V.T.dot(T.dot(V)))
     return I, E
 
 
-def new_compile_spectrum(I, E, cutoff=0.001):
+def _compile_peaklist(I, E, cutoff=0.001):
     """
+    Generate a peaklist from intensity and energy matrices.
 
     Parameters
     ----------
@@ -297,24 +355,23 @@ def new_compile_spectrum(I, E, cutoff=0.001):
         matrix of relative intensities
     E: numpy.ndarray (1D)
         array of energies
-    cutoff : float
-        The intensity cutoff for reporting signals (default is 0.001).
+    cutoff : float, optional
+        The intensity cutoff for reporting signals.
 
     Returns
     -------
     numpy.ndarray (2D)
-        [[frequency, intensity]...]
+        A [[frequency, intensity]...] peaklist.
     """
     I_upper = np.triu(I)
     E_matrix = np.abs(E[:, np.newaxis] - E)
     E_upper = np.triu(E_matrix)
     combo = np.stack([E_upper, I_upper])
     iv = combo.reshape(2, I.shape[0] ** 2).T
-    # TODO: consider making the following tolerance limit a kwarg
     return iv[iv[:, 1] >= cutoff]
 
 
-def vectorized_simsignals(H, nspins, **kwargs):
+def solve_hamiltonian(H, nspins, **kwargs):
     """
     Calculates frequencies and intensities of signals from a spin Hamiltonian
     and number of spins.
@@ -337,11 +394,11 @@ def vectorized_simsignals(H, nspins, **kwargs):
     cutoff : float
         The intensity cutoff for reporting signals (default is 0.001).
     """
-    I, E = intensity_and_energy(H, nspins)
-    return new_compile_spectrum(I, E, **kwargs)
+    I, E = _intensity_and_energy(H, nspins)
+    return _compile_peaklist(I, E, **kwargs)
 
 
-def nspinspec_sparse(freqs, couplings, normalize=True, **kwargs):
+def secondorder_sparse(freqs, couplings, normalize=True, **kwargs):
     """
     Calculates second-order spectral data (freqency and intensity of signals)
     for *n* spin-half nuclei.
@@ -361,7 +418,7 @@ def nspinspec_sparse(freqs, couplings, normalize=True, **kwargs):
 
     Returns
     -------
-    spectrum : [[float, float]...] numpy 2D array
+    peaklist : [[float, float]...] numpy 2D array
         of [frequency, intensity] pairs.
 
     Other Parameters
@@ -371,13 +428,13 @@ def nspinspec_sparse(freqs, couplings, normalize=True, **kwargs):
     """
     nspins = len(freqs)
     H = hamiltonian_sparse(freqs, couplings)
-    spectrum = vectorized_simsignals(H.todense(), nspins, **kwargs)
+    peaklist = solve_hamiltonian(H.todense(), nspins, **kwargs)
     if normalize:
-        spectrum = normalize_peaklist(spectrum, nspins)
-    return spectrum
+        peaklist = normalize_peaklist(peaklist, nspins)
+    return peaklist
 
 
-def spectrum(*args, cache=CACHE, sparse=SPARSE, **kwargs):
+def qm_spinsystem(*args, cache=CACHE, sparse=SPARSE, **kwargs):
     """
 
     Parameters
@@ -397,6 +454,6 @@ def spectrum(*args, cache=CACHE, sparse=SPARSE, **kwargs):
     """
     # for key, val in kwargs.items():
     if not (cache and sparse):
-        return nspinspec_dense(*args, **kwargs)
-    return nspinspec_sparse(*args, **kwargs)
+        return secondorder_dense(*args, **kwargs)
+    return secondorder_sparse(*args, **kwargs)
 

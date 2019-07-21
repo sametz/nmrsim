@@ -8,7 +8,7 @@ import numpy as np
 
 from nmrtools.firstorder import first_order_spin_system, multiplet
 from nmrtools.math import reduce_peaks
-from nmrtools.qm import spectrum
+from nmrtools.qm import qm_spinsystem
 
 from ._descriptors import Number, Couplings
 
@@ -119,7 +119,7 @@ class SpinSystem:
 
     def peaklist(self):
         if self._second_order:
-            return spectrum(self._v, self._J)
+            return qm_spinsystem(self._v, self._J)
         else:
             return first_order_spin_system(self._v, self._J)
 

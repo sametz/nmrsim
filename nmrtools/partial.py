@@ -371,7 +371,7 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
     [(float, float)...]
         a list of (frequency, intensity) tuples.
     """
-    from nmrtools.qm import spectrum
+    from nmrtools.qm import qm_spinsystem
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
     freqlist = [va, va, vb, vb]
@@ -384,5 +384,5 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
     J[2, 3] = Jbb
     J = J + J.T
 
-    result = spectrum(freqlist, J, normalize=normalize, sparse=False, **kwargs)
+    result = qm_spinsystem(freqlist, J, normalize=normalize, sparse=False, **kwargs)
     return result
