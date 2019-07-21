@@ -1,9 +1,6 @@
 import time
 
-import numpy as np
-import pytest
-
-from nmrtools.nmrmath import *
+from old_modules.nmrmath import *
 
 
 def spin8():

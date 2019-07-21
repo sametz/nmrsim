@@ -1,10 +1,14 @@
 """Stores data of approved simulation results, for unit tests"""
-
+# TODO: this is specifically DNMR. Rename or move
 # TODO: separate into raw data file (e.g. csv) and import routine
 
 
 import numpy as np
 
+# DNMR data for two singlets, using (165, 135, k, 0.5, 0.5, 0.5) as arguments
+# and an 800-point linspace from 85 to 215.
+
+# k = 1.5:
 TWOSPIN_SLOW = (np.array([
          85.        ,   85.16270338,   85.32540676,   85.48811014,
          85.65081352,   85.8135169 ,   85.97622028,   86.13892365,
@@ -475,6 +479,7 @@ TWOSPIN_SLOW = (np.array([
          1.24430994e-05,   1.23647452e-05,   1.22871542e-05,
          1.22103165e-05,   1.21342220e-05]))
 
+# k = 65.9:
 TWOSPIN_COALESCE = (np.array([
          85.        ,   85.16270338,   85.32540676,   85.48811014,
          85.65081352,   85.8135169 ,   85.97622028,   86.13892365,
@@ -945,6 +950,7 @@ TWOSPIN_COALESCE = (np.array([
          5.48079432e-05,   5.43068463e-05,   5.38117568e-05,
          5.33225870e-05,   5.28392508e-05]))
 
+# k = 1000
 TWOSPIN_FAST = (np.array([
          85.        ,   85.16270338,   85.32540676,   85.48811014,
          85.65081352,   85.8135169 ,   85.97622028,   86.13892365,
@@ -1415,6 +1421,8 @@ TWOSPIN_FAST = (np.array([
          3.58368993e-05,   3.56511991e-05,   3.54669004e-05,
          3.52839891e-05,   3.51024513e-05]))
 
+# DNMR two coupled spins. va=165, vb=135, J=12, k=12, w=0.5;
+# 800 point linspace from 85 to 215.
 AB_WINDNMR = (np.array([
          85.        ,   85.16270338,   85.32540676,   85.48811014,
          85.65081352,   85.8135169 ,   85.97622028,   86.13892365,

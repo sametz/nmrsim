@@ -1,9 +1,11 @@
-from nmrtools.nmrmath import *
-from nmrtools.nmrmath import _normalize  # temporary
+import pytest
+
+from old_modules.nmrmath import *
+from old_modules.nmrmath import _normalize  # temporary
 import numpy as np
-from scipy.sparse import lil_matrix
-from scipy.linalg import eigh
 from tests.testdata import TWOSPIN_SLOW, AB_WINDNMR
+
+pytest.skip("nmrmath is deprecated", allow_module_level=True)
 # , TWOSPIN_COALESCE, TWOSPIN_FAST omitted for now
 
 # The attempt to put pytest code in a class failed. For whatever reason,

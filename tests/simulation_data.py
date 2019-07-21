@@ -135,3 +135,12 @@ def rioux():
     J[1, 2] = 1.50
     J = J + J.T
     return v, J
+
+
+# def ethyl_propionate():
+#     v = np.array([1651.3, 926.9, 503.2, 455.6])
+#     J = np.zeros((4, 4))
+#     J[0, 2] = 7.1
+#     J[1, 3] = 7.6
+#     J = J + J.T
+#     return v, J

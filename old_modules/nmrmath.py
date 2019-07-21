@@ -11,7 +11,7 @@ References
 ----------
 
 Formulas for simulating two uncoupled spin-1/2 nuclei are derived from:
-Sandstrom, J. *Dynamic NMR Spectroscopy*; Academic Press, 1982, p. 15.
+Sandström, J. *Dynamic NMR Spectroscopy*; Academic Press, 1982, p. 15.
 
 Formulas for simulating two coupled spin-1/2 nuclei are derived from:
 Brown, K.C.; Tyson, R. L.; Weil, J. A. *J. Chem. Educ.* **1998**, *75*, 1632.

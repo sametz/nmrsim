@@ -4,7 +4,7 @@ import numpy as np
 
 from tests import testdata
 from tests.plottools import popplot
-from nmrtools.nmrplot import dnmrplot_2spin, dnmrplot_AB
+from old_modules.nmrplot import dnmrplot_2spin, dnmrplot_AB
 
 
 def test_dnmrplot_2spin_slowexchange():

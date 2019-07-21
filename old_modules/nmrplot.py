@@ -10,39 +10,40 @@ spins are used.
 """
 import numpy as np
 
-from .nmrmath import dnmr_AB, d2s_func
+from nmrtools.math import lorentz
+from old_modules.nmrmath import dnmr_AB, d2s_func
 
 
-def lorentz(v, v0, I, w):
-    """
-    A lorentz function that takes linewidth at half intensity (w) as a
-    parameter.
-
-    When `v` = `v0`, and `w` = 0.5 (Hz), the function returns intensity I.
-
-    Arguments
-    ---------
-    v : float
-        The frequency (x coordinate) at which to evaluate intensity (y
-        coordinate).
-    v0 : float
-        The center of the distribution.
-    I : float
-        the relative intensity of the signal
-    w : float
-        the peak width at half maximum intensity
-
-    Returns
-    -------
-    float
-        the intensity (y coordinate) for the Lorentzian distribution
-        evaluated at frequency `v`.
-    """
-    # Adding a height scaling factor so that peak intensities are lowered as
-    # they are more broad. If I is the intensity with a default w of 0.5 Hz:
-    scaling_factor = 0.5 / w  # i.e. a 1 Hz wide peak will be half as high
-    return scaling_factor * I * (
-            (0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
+# def lorentz(v, v0, I, w):
+#     """
+#     A lorentz function that takes linewidth at half intensity (w) as a
+#     parameter.
+#
+#     When `v` = `v0`, and `w` = 0.5 (Hz), the function returns intensity I.
+#
+#     Arguments
+#     ---------
+#     v : float
+#         The frequency (x coordinate) at which to evaluate intensity (y
+#         coordinate).
+#     v0 : float
+#         The center of the distribution.
+#     I : float
+#         the relative intensity of the signal
+#     w : float
+#         the peak width at half maximum intensity
+#
+#     Returns
+#     -------
+#     float
+#         the intensity (y coordinate) for the Lorentzian distribution
+#         evaluated at frequency `v`.
+#     """
+#     # Adding a height scaling factor so that peak intensities are lowered as
+#     # they are more broad. If I is the intensity with a default w of 0.5 Hz:
+#     scaling_factor = 0.5 / w  # i.e. a 1 Hz wide peak will be half as high
+#     return scaling_factor * I * (
+#             (0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
 
 
 def add_signals(linspace, peaklist, w):
@@ -72,7 +73,7 @@ def add_signals(linspace, peaklist, w):
     return result
 
 
-def nmrplot(spectrum, y=1):
+def mplplot(spectrum, y=1):
     """
     A no-frills routine that plots spectral simulation data.
 
@@ -83,7 +84,7 @@ def nmrplot(spectrum, y=1):
     y : float
         maximum intensity for the plot.
     """
-    """Oddball function. This is really a function for an application, 
+    """Oddball function. This is really a function for an application,
     not a library. TODO: revise or eliminate."""
     import matplotlib.pyplot as plt
 
@@ -96,6 +97,35 @@ def nmrplot(spectrum, y=1):
     # noinspection PyTypeChecker
     plt.plot(x, add_signals(x, spectrum, w=1))
 
+    plt.show()
+    return
+
+
+def mplplot_stick(x, y, max_y=1):
+    """TODO: description below incorrect. x, y must be numpy.ndarray.
+    Decide on a consistent interface (e.g. vs. mplplot)
+    """
+    """
+    matplotlib plot a spectrum in "stick" (stem) style.
+
+    Arguments
+    ---------
+    x : [float...]
+        a list of frequencies
+    y : [float...]
+        a list of intensities corresponding with x
+    max_y : float
+        maximum intensity for the plot.
+    """
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots()
+    l_limit = x.min() - 50
+    r_limit = x.max() + 50
+    x = np.append(x, [l_limit, r_limit])
+    y = np.append(y, [0.001, 0.001])
+    ax.stem(x, y, markerfmt=' ', basefmt='C0-')
+    ax.invert_xaxis()
     plt.show()
     return
 
@@ -181,7 +211,7 @@ def dnmrplot_2spin(va, vb, ka, Wa, Wb, pa):
     needs of applications. Consider the needs of other users and make more
     universal.
     """
-    """A decision needs to be made on the final function to apply along the 
+    """A decision needs to be made on the final function to apply along the
     linspace."""
     if vb > va:
         va, vb = vb, va

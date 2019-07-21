@@ -3,7 +3,7 @@ import io
 import os
 import time
 
-from nmrtools.nmrmath import *
+from old_modules.nmrmath import *
 import numpy as np
 import pytest
 
@@ -215,7 +215,7 @@ def test_hamiltonian():
 
 def test_2spin():
     # currently broken: check AB result
-    from nmrtools.nmrmath import AB
+    from old_modules.nmrmath import AB
     freqlist = [142.5, 157.5]
     freqarray = np.array(freqlist)
     J = np.zeros((2, 2))
