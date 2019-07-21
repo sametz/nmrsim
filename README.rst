@@ -1,5 +1,5 @@
-.. image:: https://mybinder.org/badge.svg
-   :target: https://mybinder.org/v2/gh/sametz/nmrtools/jupytertest?filepath=jupyter
+.. image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/sametz/nmrtools/cleanup?filepath=jupyter
 
 nmrtools (version 0.1 pre-alpha)
 ================================
