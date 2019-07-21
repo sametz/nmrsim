@@ -1,4 +1,0 @@
-The history folder is a repository of old code that was used during initial
-development of the library. For now, it is being preserved within this project
-as part of the historical record. It will be deleted when the contents are no longer
-useful.
