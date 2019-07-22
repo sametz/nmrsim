@@ -376,8 +376,6 @@ def solve_hamiltonian(H, nspins, **kwargs):
     Calculates frequencies and intensities of signals from a spin Hamiltonian
     and number of spins.
 
-    TODO: with a spin Hamiltonian, nspins could be inferred?
-
     Parameters
     ----------
     H: numpy.ndarray (2D)
