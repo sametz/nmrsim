@@ -165,11 +165,11 @@ def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
         The difference in the frequencies (in the absence of
         coupling) of Ha and Hb (Hz).
     Vcentr : float
-        The frequency (Hz) for the center of the AB2 signal.
+        The frequency (Hz) for the center of the AB signal.
     vx : float
         The frequency (Hz) for Hx in the absence of coupling.
 
-    normalize: bool
+    normalize: bool (optional)
         whether the signal intensity should be normalized. If false, the total
         signal intensity happens to be ~12.
 
@@ -254,7 +254,7 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr):
         the difference in the frequencies (Hz) of Ha and Hb in the absence of
         coupling. Positive when vb > va.
     Vcentr : float
-        the frequency (Hz) for the center of the AB2 signal.
+        the frequency (Hz) for the center of the AB signal.
 
     Returns
     -------
