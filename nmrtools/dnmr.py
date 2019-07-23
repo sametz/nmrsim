@@ -11,15 +11,14 @@ exchange (i.e. an AB (or AX) pattern at the slow exchange limit).
 The `dnmr` module provides the following functions:
 
 * `dnmr_two_singlets`: for simulating the lineshape for two uncoupled nuclei
-undergoing exchange [1].
+undergoing exchange [3]_.
 * `dnmr_AB` : for simulating the lineshape for two coupled nuclei undergoing
-exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [2].
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [4]_.
 
 References
 ----------
-.. [1] Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.
-.. [2] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632.
-b) an important math correction to the previous reference:
+.. [3] Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.
+.. [4] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632. b) an important math correction to the previous reference:
     TODO: add reference to correction
 """
 import numpy as np

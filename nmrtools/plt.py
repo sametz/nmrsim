@@ -4,16 +4,14 @@ plus applying Lorentzian distributions about signals.
 The plt module provides the following functions:
 
 * add_lorentzians: Creates lineshape data from a provided linspace (array of x
-coordinates) and peaklist).
-
+  coordinates) and peaklist).
 * mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot
 data.
-
 * mplplot_stick: Creates a "stick" (matplotlib "stem" plot) plot from a
 peaklist and returns the x, y plot data.
-
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
 and returns the x, y plot data.
+
 """
 
 import matplotlib.pyplot as plt

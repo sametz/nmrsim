@@ -7,7 +7,7 @@ Welcome to nmrtools's documentation!
 ====================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    introduction
