@@ -1,7 +1,7 @@
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sametz/nmrtools/cleanup?filepath=jupyter
 
-**Click the Launch Binder link above to see how `nmrtools` can be used in Jupyter notebooks.**
+Click the Launch Binder link above to see how `nmrtools` can be used in Jupyter notebooks.
 
 nmrtools (version 0.2 alpha)
 ============================
@@ -32,7 +32,7 @@ When the project becomes beta, there will be instructions to `pip install` the c
 Contribute
 ----------
 While the project is alpha, the best way to contribute is to send feedback to the author, either by opening an Issue
- or by email (sametz at udel dot edu). This can be anything from a technical suggestion (NMR physics and code) to
- documentation and user-friendliness (e.g. unclear descriptions, typos, awkward namespace).
+or by email (sametz at udel dot edu). This can be anything from a technical suggestion (NMR physics and code) to
+documentation and user-friendliness (e.g. unclear descriptions, typos, awkward namespace).
 
 By the time the project goes beta, there will be developer instructions and a Code of Conduct.
