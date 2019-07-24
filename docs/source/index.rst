@@ -12,7 +12,7 @@ Welcome to nmrtools's documentation!
 
    introduction
    installation
-   feedback
+   contributing
    acknowledgements
 
 Indices and tables

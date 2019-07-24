@@ -19,7 +19,7 @@ Currently, only spin-1/2 nuclei are accommodated.
 The top-level nmrtools namespace provides the following classes:
 
 * Multiplet: a representation of a first-order multiplet (e.g. quartet; doublet of triplets).
-* SpinSystem: a representation of a set of coupled nuclei (modeled as eitherfirst-order or second-order).
+* SpinSystem: a representation of a set of coupled nuclei (modeled as either first-order or second-order).
 * Spectrum: a collection of components such as Multiplets or SpinSystems that contribute to a total NMR spectrum
   simulation.
 
