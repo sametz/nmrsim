@@ -1,7 +1,7 @@
 """Non-quantum mechanical solutions for specific second-order patterns.
 
-These are adapted from the routines from WINDNMR [1] by Hans Reich,
-U. Wisconsin, and equations from Pople, Schneider and Bernstein [2]. Note that
+These are adapted from the routines from WINDNMR [1]_ by Hans Reich,
+U. Wisconsin, and equations from Pople, Schneider and Bernstein [2]_. Note that
 many of the names for arguments, etc. are non-Pythonic but chosen to match the
 WINDNMR interface and source code (for now).
 
@@ -15,10 +15,9 @@ The `partials` module provides the following functions:
 
 References
 ----------
-.. [1] WINDNMR-Pro home page:
-    https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm
-.. [2] Pople, J.A.; Schneider, W.G.; Bernstein, H.J. *High-Resolution Nuclear
-Magnetic Resonance.* New York: McGraw-Hill, 1959.
+.. [1] WINDNMR-Pro home page: https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm
+.. [2] Pople, J.A.; Schneider, W.G.; Bernstein, H.J. *High-Resolution Nuclear Magnetic Resonance.* New York:
+McGraw-Hill, 1959.
 """
 # TODO: refactor away from legacy argument/variable names to user-friendly,
 # pythonic ones.

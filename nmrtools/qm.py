@@ -11,21 +11,16 @@ The qm module provides the following attributes:
 The qm module provides the following functions:
 
 * qm_spinsystem: The high-level function for computing a second-order
-simulation from frequency and J-coupling data.
-
+  simulation from frequency and J-coupling data.
 * hamiltonian_dense: Calculate a spin Hamiltonian using dense arrays
-(slower).
-
+  (slower).
 * hamiltonian_sparse: Calculate a spin Hamiltonian using cached sparse arrays
-(faster).
-
+  (faster).
 * solve_hamiltonian: Calculate a peaklist from a spin Hamiltonian.
-
 * secondorder_dense: Calculate a peaklist for a second-order spin system,
-using dense arrays (slower).
-
+  using dense arrays (slower).
 * secondorder_sparse: Calculate a peaklist for a second-order spin system,
-using cached sparse arrays (faster).
+  using cached sparse arrays (faster).
 
 Notes
 -----

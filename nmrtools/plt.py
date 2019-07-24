@@ -4,16 +4,14 @@ plus applying Lorentzian distributions about signals.
 The plt module provides the following functions:
 
 * add_lorentzians: Creates lineshape data from a provided linspace (array of x
-coordinates) and peaklist).
-
+  coordinates) and peaklist).
 * mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot
 data.
-
 * mplplot_stick: Creates a "stick" (matplotlib "stem" plot) plot from a
 peaklist and returns the x, y plot data.
-
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
 and returns the x, y plot data.
+
 """
 
 import matplotlib.pyplot as plt
@@ -144,7 +142,8 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
-    ax.stem(x, y, markerfmt=' ', basefmt='C0-')
+    ax.stem(x, y, markerfmt=' ', basefmt='C0-',
+            use_line_collection=True)  # suppress warning until mpl 3.3
     plt.show()
     return x, y
     # TODO: or return plt object? Decide behavior.

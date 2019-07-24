@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to nmrtools’s documentation! &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>Introduction to nmrtools v0.2.0 (alpha) &mdash; nmrtools 0.2.0-alpha documentation</title>
   
 
   
@@ -35,7 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction to nmrtools v0.2.0 (alpha)" href="introduction.html" /> 
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to nmrtools’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> nmrtools
+            <a href="index.html" class="icon icon-home"> nmrtools
           
 
           
@@ -84,10 +85,10 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to nmrtools v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <code class="code docutils literal notranslate"><span class="pre">nmrtools</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -103,7 +104,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">nmrtools</a>
+          <a href="index.html">nmrtools</a>
         
       </nav>
 
@@ -132,15 +133,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Welcome to nmrtools’s documentation!</li>
+      <li>Introduction to nmrtools v0.2.0 (alpha)</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -177,25 +178,22 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="welcome-to-nmrtools-s-documentation">
-<h1>Welcome to nmrtools’s documentation!<a class="headerlink" href="#welcome-to-nmrtools-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <strong>nmrtools</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
+<div class="section" id="introduction-to-nmrtools-v0-2-0-alpha">
+<h1>Introduction to nmrtools v0.2.0 (alpha)<a class="headerlink" href="#introduction-to-nmrtools-v0-2-0-alpha" title="Permalink to this headline">¶</a></h1>
+<p><strong>nmrtools</strong> is a library of tools for simulating NMR spectra, starting from
+parameters provided by the user (e.g. chemical shift; <em>J</em> coupling constants;
+rate constants for DNMR spectra). Currently, the application is limited to
+spin-<span class="math">1/2</span> nuclei only, but expanding this to other nuclei is feasible.</p>
+<p>The target niche for <strong>nmrtools</strong> are users that want to model NMR spectra but
+who either are not specialists themselves, and/or who want to model NMR spectra
+and concepts (e.g. spin Hamiltonians) for instructional purposes. If there is a
+feature that you would like to see, or a barrier to you using this library,
+feel free to open an issue on GitHub or to send the author email
+(sametz at udel dot edu).</p>
+<p>The project is inspired by the program <a class="reference external" href="https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm">WINDNMR</a> by Hans
+Reich. The goal for Version 1.0 of <strong>nmrtools</strong> is to provide Python tools for the same types of simulations that
+WINDNMR did: first- and second-order simulation of spin-1/2 spin systems, plus simulation of some dynamic NMR (DNMR)
+lineshapes. A longer-term goal is to expand the toolset (e.g. to allow higher-spin nuclei, or new DNMR models).</p>
 </div>
 
 
@@ -206,8 +204,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="introduction.html" class="btn btn-neutral float-right" title="Introduction to nmrtools v0.2.0 (alpha)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to nmrtools’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

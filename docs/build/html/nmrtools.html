@@ -1,699 +1,1470 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nmrtools package &#8212; nmrtools 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nmrtools package &mdash; nmrtools 0.2.0-alpha documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> nmrtools
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="nmrtools-package">
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <code class="code docutils literal notranslate"><span class="pre">nmrtools</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">nmrtools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>nmrtools package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/nmrtools.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nmrtools-package">
 <h1>nmrtools package<a class="headerlink" href="#nmrtools-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-nmrtools.nmrmath">
-<span id="nmrtools-nmrmath-module"></span><h2>nmrtools.nmrmath module<a class="headerlink" href="#module-nmrtools.nmrmath" title="Permalink to this headline">¶</a></h2>
-<p>Functions for the calculation of NMR spectra.</p>
-<p>This version of nmrmath features speed-optimized hamiltonian, simsignals,
-and transition_matrix functions. Up to at least 8 spins, the new non-sparse
-Hamilton code is about 10x faster. The overall performance is dramatically
-better than the original code.</p>
-<p>Formulas for simulating two uncoupled spin-1/2 nuclei are derived from:
-Sandström, J. “Dynamic NMR Spectroscopy”. Academic Press, 1982, p. 15.</p>
-<p>Formulas for simulating two coupled spin-1/2 nuclei are derived from:
-Brown, K.C.; Tyson, R. L.; Weil, J. A. _J. Chem. Educ._ 1998, 75, 1632.
-(NOTE: Hans Reich pointed out that the paper has a sign typo in Equation (2b)!
-the last term is minus-over-plus, not plus-over-minus.)</p>
-<dl class="function">
-<dt id="nmrtools.nmrmath.AABB">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AABB</code><span class="sig-paren">(</span><em>Vab</em>, <em>Jaa</em>, <em>Jbb</em>, <em>Jab</em>, <em>Jab_prime</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AABB" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a second-order AA’BB’ calculation, but using the
-values taken from the WINDNMR-style AA’BB’ bar selected by the Multiplet
-menu.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.AAXX">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AAXX</code><span class="sig-paren">(</span><em>Jaa</em>, <em>Jxx</em>, <em>Jax</em>, <em>Jax_prime</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AAXX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AAXX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simulates an AA’XX’ spin system. Frequencies and Js in Hz.
-Jaa is the JAA’ coupling constant, Jxx the JXX’, Jax the JAX,
-and JAX2 the JAX’.
-Vcentr is the frequency for the center of the signal.
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window
-WdthHz is the width of the window in Hz
-return: peaklist of (frequency, intensity) tuples</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.AB">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AB</code><span class="sig-paren">(</span><em>Jab</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for AB quartet.
-Jab is the A-B coupling constant (Hz)
-Vab is the difference in nuclei frequencies in the absence of coupling (Hz)
-Vcentr is the frequency for the center of the AB quartet
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window
-WdthHz is the width of the window in Hz
-return: peaklist of (frequency, intensity) tuples</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.AB2">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">AB2</code><span class="sig-paren">(</span><em>Jab</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#AB2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.AB2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for AB2 spin system.
-J is the A-B coupling constant (Hz)
-dV is the difference in nuclei frequencies in the absence of coupling (Hz)
-Vab is the frequency for the center of the AB2 signal
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window (not implemented yet)
-WdthHz is the width of the window in Hz (not implemented yet)
-return: peaklist of (frequency, intensity) tuples</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.ABX">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jbx</em>, <em>Jax</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reich-style inputs for AB2 spin system.
-Jab is the A-B coupling constant (Hz)
-dV is the difference in nuclei frequencies in the absence of coupling (Hz)
-Vab is the frequency for the center of the AB2 signal
-Wa is width of peak at half-height (not implemented yet)
-RightHz is the lower frequency limit for the window (not implemented yet)
-WdthHz is the width of the window in Hz (not implemented yet)
-return: peaklist of (frequency, intensity) tuples</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.ABX3">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">ABX3</code><span class="sig-paren">(</span><em>Jab</em>, <em>Jax</em>, <em>Jbx</em>, <em>Vab</em>, <em>Vcentr</em>, <em>normalize_=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#ABX3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.ABX3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Refactoring of Reich’s code for simulating the ABX3 system.</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="nmrtools.nmrmath.TwoSinglets">
-<em class="property">class </em><code class="descclassname">nmrtools.nmrmath.</code><code class="descname">TwoSinglets</code><span class="sig-paren">(</span><em>va=1</em>, <em>vb=0</em>, <em>k=0.01</em>, <em>wa=0.5</em>, <em>wb=0.5</em>, <em>percent_a=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#TwoSinglets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.TwoSinglets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Attempt at using a class instead of separate functions to represent two
-uncoupled spin-1/2 nuclei undergoing exchange.</p>
-<dl class="method">
-<dt id="nmrtools.nmrmath.TwoSinglets.intensity">
-<code class="descname">intensity</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#TwoSinglets.intensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.TwoSinglets.intensity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Yield a function for the lineshape for TwoSinglets
-:param v: frequency
-:return: a frequency-dependent function that returns the intensity of
-the spectrum at frequency v</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="nmrtools.nmrmath.TwoSinglets.pi">
-<code class="descname">pi</code><em class="property"> = 3.141592653589793</em><a class="headerlink" href="#nmrtools.nmrmath.TwoSinglets.pi" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="nmrtools.nmrmath.TwoSinglets.pi_squared">
-<code class="descname">pi_squared</code><em class="property"> = 9.869604401089358</em><a class="headerlink" href="#nmrtools.nmrmath.TwoSinglets.pi_squared" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="nmrtools.nmrmath.TwoSinglets.spectrum">
-<code class="descname">spectrum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#TwoSinglets.spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.TwoSinglets.spectrum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate a DNMR spectrum, using the parameters TwoSinglets was
-instantiated with.
-:return: a tuple of numpy arrays (x = numpy linspace representing
-frequencies, y = numpy array of intensities along those frequencies)pwd</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.add_peaks">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">add_peaks</code><span class="sig-paren">(</span><em>plist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#add_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.add_peaks" title="Permalink to this definition">¶</a></dt>
-<dd><p>condenses a list of (frequency, intensity) tuples
-input: a list of (v, i) tuples
-output: a tuple of (average v, total i)</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.d2s_func">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">d2s_func</code><span class="sig-paren">(</span><em>va</em>, <em>vb</em>, <em>ka</em>, <em>wa</em>, <em>wb</em>, <em>pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#d2s_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.d2s_func" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a function that requires only frequency as an argurment, and used to
-calculate intensities across array of frequencies in the DNMR
-spectrum for two uncoupled spin-half nuclei.</p>
-<p>The idea is to calculate expressions
-that are independant of frequency only once, and then use them in a new
-function that depends only on v. This would avoid unneccessarily
-repeating some of the same operations.</p>
-<p>This function-within-a-function should be refactored to
-function-within-class!</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>va</strong> – The frequency of nucleus ‘a’ at the slow exchange limit. va &gt; vb</li>
-<li><strong>vb</strong> – The frequency of nucleus ‘b’ at the slow exchange limit. vb &lt; va</li>
-<li><strong>ka</strong> – The rate constant for state a–&gt; state b</li>
-<li><strong>wa</strong> – The width at half heigh of the signal for nucleus a (at the slow</li>
+<div class="section" id="module-nmrtools.discrete">
+<span id="nmrtools-discrete-module"></span><h2>nmrtools.discrete module<a class="headerlink" href="#module-nmrtools.discrete" title="Permalink to this headline">¶</a></h2>
+<p>Non-quantum mechanical solutions for specific second-order patterns.</p>
+<p>These are adapted from the routines from WINDNMR <a class="footnote-reference brackets" href="#id3" id="id1">1</a> by Hans Reich,
+U. Wisconsin, and equations from Pople, Schneider and Bernstein <a class="footnote-reference brackets" href="#id4" id="id2">2</a>. Note that
+many of the names for arguments, etc. are non-Pythonic but chosen to match the
+WINDNMR interface and source code (for now).</p>
+<p>The <cite>partials</cite> module provides the following functions:</p>
+<ul class="simple">
+<li><p>AB: simulates an AB quartet.</p></li>
+<li><p>AB2: simulates an AB2 system.</p></li>
+<li><p>ABX: simulates an ABX system.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>exchange limit).
-:param wb: The width at half heigh of the signal for nucleus b (at the slow
-exchange limit).
-:param pa: The fraction of the population in state a.
-:param pa: fraction of population in state a
-wa, wb: peak widths at half height (slow exchange), used to calculate T2s</p>
-<p>returns: a function that takes v (x coord or numpy linspace) as an argument
-and returns intensity (y).</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.dnmr_2spin">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">dnmr_2spin</code><span class="sig-paren">(</span><em>v</em>, <em>va</em>, <em>vb</em>, <em>ka</em>, <em>Wa</em>, <em>Wb</em>, <em>pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#dnmr_2spin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.dnmr_2spin" title="Permalink to this definition">¶</a></dt>
-<dd><p>A translation of the equation from Sandström’s Dynamic NMR Spectroscopy,
-p. 14, for the uncoupled 2-site exchange simulation.
-v: frequency whose amplitude is to be calculated
-va, vb: frequencies of a and b singlets (slow exchange limit) (va &gt; vb)
-ka: rate constant for state A–&gt; state B
-pa: fraction of population in state Adv: frequency difference (va - vb)
-between a and b singlets (slow exchange)
-Wa, Wb: peak widths at half height (slow exchange), used to calculate T2s</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.dnmr_AB">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">dnmr_AB</code><span class="sig-paren">(</span><em>v</em>, <em>v1</em>, <em>v2</em>, <em>J</em>, <em>k</em>, <em>W</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#dnmr_AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.dnmr_AB" title="Permalink to this definition">¶</a></dt>
-<dd><p>A translation of the equation from Weil’s JCE paper (NOTE: Reich pointed
-out that it has a sign typo!).
-p. 14, for the uncoupled 2-site exchange simulation.
-v: frequency whose amplitude is to be calculated
-va, vb: frequencies of a and b nuclei (slow exchange limit, no coupling;
-va &gt; vb)
-ka: rate constant for state A–&gt; state B
-pa: fraction of population in state Adv: frequency difference (va - vb)
-between a and b singlets (slow exchange)
-T2a, T2b: T2 (transverse relaxation time) for each nuclei
-returns: amplitude at frequency v</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.doublet">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">doublet</code><span class="sig-paren">(</span><em>plist</em>, <em>J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#doublet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.doublet" title="Permalink to this definition">¶</a></dt>
-<dd><p>plist: a list of (frequency{Hz}, intensity) tuples;
-J: a coupling constant {Hz}
-returns: a plist of the result of splitting every peak in plist by J</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.first_order">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">first_order</code><span class="sig-paren">(</span><em>signal</em>, <em>couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#first_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.first_order" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses the above functions to split a signal into a first-order
-multiplet.
-Input:
--signal: a (frequency, intensity) tuple
--Couplings: a list of (J, # of nuclei) tuples. See multiplet
-docstring for more info.
--intensity (optional): the intensity of the signal
-Output:
-a plist-style spectrum (list of (frequency, intensity) tuples)
-Dependencies: doublet, multiplet, reduce_peaks, add_peaks</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.hamiltonian">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">hamiltonian</code><span class="sig-paren">(</span><em>freqlist</em>, <em>couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#hamiltonian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.hamiltonian" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the spin Hamiltonian for spin-1/2 nuclei.
-inputs for n nuclei:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param freqlist:</th><td class="field-body">a list of frequencies in Hz of length n</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param couplings:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">an n x n array of coupling constants in Hz</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p>Returns: a Hamiltonian array</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.is_allowed">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">is_allowed</code><span class="sig-paren">(</span><em>m=0</em>, <em>n=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#is_allowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.is_allowed" title="Permalink to this definition">¶</a></dt>
-<dd><p>determines if a transition between two spin states is allowed or forbidden.
-The transition is allowed if one and only one spin (i.e. bit) changes
-input: integers whose binary codes for a spin state</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param n:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">param m:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<p>output: 1 = allowed, 0 = forbidden</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.multiplet">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">multiplet</code><span class="sig-paren">(</span><em>plist</em>, <em>couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.multiplet" title="Permalink to this definition">¶</a></dt>
-<dd><p>plist: a list of (frequency{Hz}, intensity) tuples;
-couplings: one or more (J, # of nuclei) tuples.
-e.g. to split a signal into a dt, J = 8, 5 Hz, use:</p>
-<blockquote>
-<div>couplings = [(8, 2), (5, 3)]</div></blockquote>
-<p>Dependency: doublet function
-returns: a plist of the multiplet that results from splitting the plist
-signal(s) by each J.
-The order of the tuples in couplings does not matter</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.normalize">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>intensities</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.normalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scale a list of intensities so that they sum to the total number of
-nuclei.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>intensities</strong> – [float] A list of intensities.</li>
-<li><strong>n</strong> – (int) Number of nuclei.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.normalize_spectrum">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">normalize_spectrum</code><span class="sig-paren">(</span><em>spectrum</em>, <em>n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#normalize_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.normalize_spectrum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Normalize the intensities in a spectrum so that total intensity equals
-value n (nominally the number of nuclei giving rise to the signal).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spectrum</strong> – [(float, float)…] a list of (frequency, intensity)</td>
-</tr>
-</tbody>
-</table>
-<p>tuples.
-:param n: total intensity to normalize to.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.nspinspec">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">nspinspec</code><span class="sig-paren">(</span><em>freqs</em>, <em>couplings</em>, <em>normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#nspinspec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.nspinspec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function that calculates a spectrum for n spin-half nuclei.
-Inputs:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param freqs:</th><td class="field-body">a list of n nuclei frequencies in Hz</td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">param couplings:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">an n x n array of couplings in Hz. The order</td>
-</tr>
-</tbody>
-</table>
-<p>of nuclei in the list corresponds to the column and row order in the
-matrix, e.g. couplings[0][1] and [1]0] are the J coupling between
-the nuclei of freqs[0] and freqs [1].
-:param normalize: (bool) True if the intensities should be normalized
-so that total intensity equals the total number of nuclei.</p>
-</div></blockquote>
-<p>Returns:
--spectrum: a list of (frequency, intensity) tuples.
-Dependencies: hamiltonian, simsignals</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.popcount">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">popcount</code><span class="sig-paren">(</span><em>n=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#popcount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.popcount" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the popcount (binary Hamming weight) of integer n
-input:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param n:</th><td class="field-body">an integer</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<dl class="docutils">
-<dt>returns:</dt>
-<dd>popcount of integer (binary Hamming weight)</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.reduce_peaks">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">reduce_peaks</code><span class="sig-paren">(</span><em>plist</em>, <em>tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#reduce_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.reduce_peaks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes an ordered list of (x, y) tuples and adds together tuples whose first
-values are within a certain tolerance limit.
-Dependency: add_peaks
-Input:</p>
-<blockquote>
-<div>plist: a <em>sorted</em> list of (x, y) tuples (sorted by x)
-tolerance: tuples that differ in x by &lt;= tolerance are combined
-using add_peaks</div></blockquote>
-<dl class="docutils">
-<dt>Output:</dt>
-<dd>a list of (x, y) tuples where all x values differ by &gt; tolerance</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.reich">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">reich</code><span class="sig-paren">(</span><em>v</em>, <em>va</em>, <em>vb</em>, <em>ka</em>, <em>Wa</em>, <em>Wb</em>, <em>pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#reich"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.reich" title="Permalink to this definition">¶</a></dt>
-<dd><p>A traslation of the actual VB code used in WINDNMR. Was used for error
-checking. Scheduled for deletion.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.simsignals">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">simsignals</code><span class="sig-paren">(</span><em>H</em>, <em>nspins</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#simsignals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.simsignals" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the spin Hamiltonian H and returns a list of (frequency, intensity)
-tuples. Nuclei must be spin-1/2.
-Inputs:</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param H:</th><td class="field-body">a Hamiltonian array</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param nspins:</th><td class="field-body">number of nuclei</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Return spectrum:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body">a list of (frequency, intensity) tuples.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="nmrtools.nmrmath.transition_matrix">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">transition_matrix</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#transition_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.transition_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a matrix of allowed transitions.
-The integers 0-n, in their binary form, code for a spin state (alpha/beta).
-The (i,j) cells in the matrix indicate whether a transition from spin state
-i to spin state j is allowed or forbidden.
-See the is_allowed function for more information.</p>
-<dl class="docutils">
-<dt>input:</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param n:</th><td class="field-body">size of the n,n matrix (i.e. number of possible spin states)</td>
-</tr>
-</tbody>
-</table>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>WINDNMR-Pro home page: <a class="reference external" href="https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm">https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm</a></p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Pople, J.A.; Schneider, W.G.; Bernstein, H.J. <em>High-Resolution Nuclear Magnetic Resonance.</em> New York:</p>
 </dd>
 </dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a transition matrix that can be used to compute the intensity of</td>
-</tr>
-</tbody>
-</table>
-<p>allowed transitions.</p>
+<p>McGraw-Hill, 1959.</p>
+<dl class="function">
+<dt id="nmrtools.discrete.AABB">
+<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AABB</code><span class="sig-paren">(</span><em class="sig-param">Vab</em>, <em class="sig-param">Jaa</em>, <em class="sig-param">Jbb</em>, <em class="sig-param">Jab</em>, <em class="sig-param">Jab_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AABB" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a second-order AA’BB’ calculation, but using the
+same arguments as WINDNMR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Vab</strong> (<em>float</em>) – the difference in frequency (Hz) between Ha and Hb in the absence of
+coupling. A positive number indicates vb &gt; va.</p></li>
+<li><p><strong>Jbb</strong><strong>, </strong><strong>Jab</strong><strong>, </strong><strong>Jab_prime</strong> (<em>Jaa</em><em>,</em>) – Jaa is the JAA’ coupling constant;
+Jxx the JXX’;
+Jax the JAX; and
+JAX_prime the JAX’.</p></li>
+<li><p><strong>Vcentr</strong> (<em>float</em>) – the frequency for the center of the signal.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of (frequency, intensity) tuples.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrmath.two_spin">
-<code class="descclassname">nmrtools.nmrmath.</code><code class="descname">two_spin</code><span class="sig-paren">(</span><em>v</em>, <em>va</em>, <em>vb</em>, <em>ka</em>, <em>wa</em>, <em>wb</em>, <em>pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrmath.html#two_spin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrmath.two_spin" title="Permalink to this definition">¶</a></dt>
-<dd><p>pyDNMR renamed dnmr_2spin and some arguments. This is temporary glue
-to make sure that pyDNMR will work with the nmrtools library.</p>
+<dt id="nmrtools.discrete.AAXX">
+<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AAXX</code><span class="sig-paren">(</span><em class="sig-param">Jaa</em>, <em class="sig-param">Jxx</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jax_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AAXX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AAXX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates one half (‘A’ part) of an AA’XX’ spin system.</p>
+<p>All frequencies are in Hz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Jax</strong><strong>, </strong><strong>Jax</strong><strong>, </strong><strong>Jax_prime</strong> (<em>Jaa</em><em>,</em>) – Jaa is the JAA’ coupling constant;
+Jxx the JXX’;
+Jax the JAX; and
+JAX_prime the JAX’.</p></li>
+<li><p><strong>Vcentr</strong> (<em>float</em>) – the frequency for the center of the signal.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized (to 2).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of (frequency, intensity) tuples.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.discrete.AB">
+<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AB</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the signal frequencies and intensities for two strongly
+coupled protons (Ha and Hb).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Jab</strong> (<em>float</em>) – The coupling constant (Hz) between Ha and Hb</p></li>
+<li><p><strong>Vab</strong> (<em>float</em>) – The chemical shift difference (Hz) between Ha and Hb in the absence
+of coupling.</p></li>
+<li><p><strong>Vcentr</strong> (<em>float</em>) – The frequency (Hz) for the center of the AB quartet.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – Whether the signal intensity should be normalized.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of four (frequency, intensity) tuples.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.discrete.AB2">
+<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AB2</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AB2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AB2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates signal frequencies and intensities for an AB2 spin system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Jab</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Vab</strong> (<em>float</em>) – the difference in the frequencies (Hz). A positive value means vb &gt; va;
+negative means va &gt; vb.</p></li>
+<li><p><strong>Vcentr</strong> (<em>float</em>) – the frequency (Hz) for the center of the AB2 signal.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – whether the signal intensity should be normalized.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of (frequency, intensity) tuples.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.discrete.ABX">
+<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">ABX</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jbx</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">vx</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.ABX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-QM approximation for an ABX spin system. The approximation assumes
+that Hx is very far away in chemical shift from Ha/Hb.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Jab</strong> (<em>float</em>) – The Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Jbx</strong> (<em>float</em>) – The Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Jax</strong> (<em>float</em>) – The Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Vab</strong> (<em>float</em>) – The difference in the frequencies (in the absence of
+coupling) of Ha and Hb (Hz).</p></li>
+<li><p><strong>Vcentr</strong> (<em>float</em>) – The frequency (Hz) for the center of the AB signal.</p></li>
+<li><p><strong>vx</strong> (<em>float</em>) – The frequency (Hz) for Hx in the absence of coupling.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em><em> (</em><em>optional</em><em>)</em>) – whether the signal intensity should be normalized. If false, the total
+signal intensity happens to be ~12.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of (frequency, intensity) tuples.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.discrete.ABX3">
+<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">ABX3</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jbx</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#ABX3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.ABX3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation of the AB part of an ABX3 spin system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Jab</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Jax</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Jbx</strong> (<em>float</em>) – the Ha-Hb coupling constant (Hz).</p></li>
+<li><p><strong>Vab</strong> (<em>float</em>) – the difference in the frequencies (Hz) of Ha and Hb in the absence of
+coupling. Positive when vb &gt; va.</p></li>
+<li><p><strong>Vcentr</strong> (<em>float</em>) – the frequency (Hz) for the center of the AB signal.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of (frequency, intensity) tuples.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools.nmrplot">
-<span id="nmrtools-nmrplot-module"></span><h2>nmrtools.nmrplot module<a class="headerlink" href="#module-nmrtools.nmrplot" title="Permalink to this headline">¶</a></h2>
-<p>Provide functions for creating lineshapes suitable for plotting.</p>
-<p>For non-DNMR calculations, inputs are lists of (frequency, intensity) tuples,
-which then have Lorentzian distributions applied to them.</p>
-<p>For DNMR calculations, the lineshapes are directly computed. Currently,
-non-quantum mechanical formulas for two uncoupled spins and for two coupled
-spins are used.</p>
+<div class="section" id="module-nmrtools.dnmr">
+<span id="nmrtools-dnmr-module"></span><h2>nmrtools.dnmr module<a class="headerlink" href="#module-nmrtools.dnmr" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>dnmr</cite> module provides functions for calculating DNMR line shapes, and
+classes to describe DNMR systems.</p>
+<p>The dnmr module provides the following classes:</p>
+<ul class="simple">
+<li><p><cite>DnmrTwoSinglets</cite>: a sumulation of the lineshape for two uncoupled nuclei</p></li>
+</ul>
+<p>undergoing exchange.
+* <cite>DnmrAB</cite>: a simulation of the lineshape for two coupled nuclei undergoing
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit).</p>
+<p>The <cite>dnmr</cite> module provides the following functions:</p>
+<ul class="simple">
+<li><p><cite>dnmr_two_singlets</cite>: for simulating the lineshape for two uncoupled nuclei</p></li>
+</ul>
+<p>undergoing exchange <a class="footnote-reference brackets" href="#id7" id="id5">3</a>.
+* <cite>dnmr_AB</cite> : for simulating the lineshape for two coupled nuclei undergoing
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit) <a class="footnote-reference brackets" href="#id8" id="id6">4</a>.</p>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id5">3</a></span></dt>
+<dd><p>Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id6">4</a></span></dt>
+<dd><p>a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632. b) an important math correction to the previous reference:
+TODO: add reference to correction</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="nmrtools.dnmr.DnmrAB">
+<em class="property">class </em><code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">DnmrAB</code><span class="sig-paren">(</span><em class="sig-param">va=165.0</em>, <em class="sig-param">vb=135.0</em>, <em class="sig-param">J=12.0</em>, <em class="sig-param">k=12.0</em>, <em class="sig-param">w=0.5</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrAB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrAB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simulate the DNMR lineshape for two coupled nuclei undergoing exchange
+(AB or AX pattern at the slow-exchange limit).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vb</strong> (<em>va</em><em>,</em>) – frequencies of a and b nuclei (at the slow exchange limit,
+in the absence of coupling)</p></li>
+<li><p><strong>J</strong> (<em>int</em><em> or </em><em>float</em>) – the coupling constant between the two nuclei.</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> or </em><em>float</em>) – rate constant for state A–&gt; state B</p></li>
+<li><p><strong>w</strong> (<em>int</em><em> or </em><em>float</em>) – peak widths at half height (at the slow-exchange limit).</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>int</em><em> or </em><em>float</em><em>, </em><em>int</em><em> or </em><em>float</em><em>)</em><em>, </em><em>optional</em>) – The minimum and maximum frequencies (in any order) for the simulation.</p></li>
+<li><p><strong>points</strong> (<em>int</em>) – The length of the returned arrays (i.e. the number of points plotted).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.va">
+<code class="sig-name descname">va</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.va" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.vb">
+<code class="sig-name descname">vb</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.vb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.J">
+<code class="sig-name descname">J</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.J" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.k">
+<code class="sig-name descname">k</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.w">
+<code class="sig-name descname">w</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.w" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.limits">
+<code class="sig-name descname">limits</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.limits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrAB.points">
+<code class="sig-name descname">points</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nmrtools.dnmr.DnmrAB.lineshape">
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrAB.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.lineshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the x, y (frequency, intensity) data for the lineshape
+simulation.</p>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrAB" title="nmrtools.dnmr.DnmrAB"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnmrAB</span></code></a></dt><dd><p>A class representation for this simulation.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<p>See the documentation for the nmrtools.dnmr module.</p>
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">J</code></dt>
+<dd><p>The coupling constant (Hz) between the two nuclei.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">k</code></dt>
+<dd><p>The rate constant (Hz) for state A–&gt; state B (must be &gt;0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">limits</code></dt>
+<dd><p>The minimum and maximum frequencies for the simulated lineshape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(int or float, int or float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrAB.lineshape"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">points</code></dt>
+<dd><p>The length of the returned arrays (i.e. the number of points plotted).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">va</code></dt>
+<dd><p>The frequency of nucleus “a” (Hz) at the slow-exchange limit, in the
+absence of coupling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">vb</code></dt>
+<dd><p>The frequency of nucleus “b” (Hz) at the slow-exchange limit, in the
+absence of coupling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">w</code></dt>
+<dd><p>The peak width (Hz) at half height (at the slow-exchange limit).
+:returns:
+:rtype: int or float</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets">
+<em class="property">class </em><code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">DnmrTwoSinglets</code><span class="sig-paren">(</span><em class="sig-param">va=1</em>, <em class="sig-param">vb=0</em>, <em class="sig-param">k=0.01</em>, <em class="sig-param">wa=0.5</em>, <em class="sig-param">wb=0.5</em>, <em class="sig-param">pa=0.5</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrTwoSinglets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A DNMR simulation for two uncoupled nuclei undergoing exchange.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vb</strong> (<em>va</em><em>,</em>) – The frequencies (Hz) of nuclei ‘a’ and ‘b’ at the slow exchange limit.</p></li>
+<li><p><strong>k</strong> (<em>int</em><em> or </em><em>float</em>) – The rate constant (Hz) for state a–&gt; state b</p></li>
+<li><p><strong>wb</strong> (<em>wa</em><em>,</em>) – The peak widths at half height for the ‘a’ and ‘b’ singlets at the
+slow-exchange limit.</p></li>
+<li><p><strong>pa</strong> (<em>float</em><em> (</em><em>0 &lt;= pa &lt;= 1</em><em>)</em>) – The fraction of the population in state a</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>int</em><em> or </em><em>float</em><em>, </em><em>int</em><em> or </em><em>float</em><em>)</em><em>, </em><em>optional</em>) – The minimum and maximum frequencies (in any order) for the simulation.</p></li>
+<li><p><strong>points</strong> (<em>int</em>) – The length of the returned arrays (i.e. the number of points plotted).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.va">
+<code class="sig-name descname">va</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.va" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.vb">
+<code class="sig-name descname">vb</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.vb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.k">
+<code class="sig-name descname">k</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.wa">
+<code class="sig-name descname">wa</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.wa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.wb">
+<code class="sig-name descname">wb</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.wb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.pa">
+<code class="sig-name descname">pa</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.pa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.limits">
+<code class="sig-name descname">limits</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.limits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.points">
+<code class="sig-name descname">points</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nmrtools.dnmr.DnmrTwoSinglets.lineshape">
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrTwoSinglets.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.lineshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the x, y (frequency, intensity) data for the lineshape
+simulation.</p>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrTwoSinglets" title="nmrtools.dnmr.DnmrTwoSinglets"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnmrTwoSinglets</span></code></a></dt><dd><p>A class representation for this simulation</p>
+</dd>
+</dl>
+</div>
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">k</code></dt>
+<dd><p>The rate constant (Hz) for state A–&gt; state B (must be &gt;0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">limits</code></dt>
+<dd><p>The minimum and maximum frequencies for the simulated lineshape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(int or float, int or float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrTwoSinglets.lineshape"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Calculate and return the lineshape for the DNMR spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>x, y</strong> – Arrays for the x (frequency) and y (intensity) lineshape data
+points.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.array, numpy.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">pa</code></dt>
+<dd><p>float
+The fraction of the population in state a. Must be &gt;=0 and &lt;=1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">points</code></dt>
+<dd><p>The length of the returned arrays (i.e. the number of points plotted).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">va</code></dt>
+<dd><p>The frequency of nucleus “a” (Hz) at the slow-exchange limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">vb</code></dt>
+<dd><p>The frequency of nucleus “b” (Hz) at the slow-exchange limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">wa</code></dt>
+<dd><p>The peak width at half height (Hz) for the ‘a’ singlet at the
+slow-exchange limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">wb</code></dt>
+<dd><p>The peak width at half height (Hz) for the ‘b’ singlet at the
+slow-exchange limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
-<dt id="nmrtools.nmrplot.add_signals">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">add_lorentzians</code><span class="sig-paren">(</span><em>linspace</em>, <em>peaklist</em>, <em>w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#add_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.add_signals" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrtools.dnmr.dnmr_AB">
+<code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">dnmr_AB</code><span class="sig-paren">(</span><em class="sig-param">va</em>, <em class="sig-param">vb</em>, <em class="sig-param">J</em>, <em class="sig-param">k</em>, <em class="sig-param">w</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#dnmr_AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.dnmr_AB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate the DNMR lineshape for two coupled nuclei undergoing exchange
+(AB or AX pattern at the slow-exchange limit).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vb</strong> (<em>va</em><em>,</em>) – frequencies of a and b nuclei (at the slow exchange limit,
+in the absence of coupling)</p></li>
+<li><p><strong>J</strong> (<em>float</em>) – the coupling constant between the two nuclei.</p></li>
+<li><p><strong>k</strong> (<em>float</em>) – rate constant for state A–&gt; state B</p></li>
+<li><p><strong>w</strong> (<em>float</em>) – peak widths at half height (at the slow-exchange limit).</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>int</em><em> or </em><em>float</em><em>, </em><em>int</em><em> or </em><em>float</em><em>)</em><em>, </em><em>optional</em>) – The minimum and maximum frequencies (in any order) for the simulation.</p></li>
+<li><p><strong>points</strong> (<em>int</em>) – The length of the returned arrays (i.e. the number of points plotted).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x, y</strong> – Arrays for the x (frequency) and y (intensity) lineshape data points.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array, numpy.array</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrAB" title="nmrtools.dnmr.DnmrAB"><code class="xref py py-func docutils literal notranslate"><span class="pre">DnmrAB()</span></code></a></dt><dd><p>A class representation for this simulation.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<p>See the documentation for the nmrtools.dnmr module.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.dnmr.dnmr_two_singlets">
+<code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">dnmr_two_singlets</code><span class="sig-paren">(</span><em class="sig-param">va</em>, <em class="sig-param">vb</em>, <em class="sig-param">ka</em>, <em class="sig-param">wa</em>, <em class="sig-param">wb</em>, <em class="sig-param">pa</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#dnmr_two_singlets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.dnmr_two_singlets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a the lineshape for a DNMR spectrum of two uncoupled spin-half
+nuclei.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vb</strong> (<em>va</em><em>,</em>) – The frequencies (Hz) of nuclei ‘a’ and ‘b’ at the slow exchange limit.</p></li>
+<li><p><strong>ka</strong> (<em>int</em><em> or </em><em>float</em>) – The rate constant (Hz) for state a–&gt; state b</p></li>
+<li><p><strong>wb</strong> (<em>wa</em><em>,</em>) – The peak widths at half height for the ‘a’ and ‘b’ singlets at the
+slow-exchange limit.</p></li>
+<li><p><strong>pa</strong> (<em>float</em><em> (</em><em>0 &lt;= pa &lt;= 1</em><em>)</em>) – The fraction of the population in state a</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>int</em><em> or </em><em>float</em><em>, </em><em>int</em><em> or </em><em>float</em><em>)</em><em>, </em><em>optional</em>) – The minimum and maximum frequencies (in any order) for the simulation.</p></li>
+<li><p><strong>points</strong> (<em>int</em>) – The length of the returned arrays (i.e. the number of points plotted).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x, y</strong> – Arrays for the x (frequency) and y (intensity) lineshape data points.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array, numpy.array</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrTwoSinglets" title="nmrtools.dnmr.DnmrTwoSinglets"><code class="xref py py-func docutils literal notranslate"><span class="pre">DnmrTwoSinglets()</span></code></a></dt><dd><p>A class representation for this simulation.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<p>See the documentation for the nmrtools.dnmr module.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nmrtools.firstorder">
+<span id="nmrtools-firstorder-module"></span><h2>nmrtools.firstorder module<a class="headerlink" href="#module-nmrtools.firstorder" title="Permalink to this headline">¶</a></h2>
+<p>“Functions for calculating first-order spectra.</p>
+<p>The nmrtools.firstorder module provides the following functions:</p>
+<ul class="simple">
+<li><p>multiplet: performs first-order splitting of a signal into multiple signals.</p></li>
+<li><dl class="simple">
+<dt>first_order_spin_system: provides a peaklist for several nuclei, using the</dt><dd><p>same v/J parameters that are used for second-order spin systems.
+See nmrtools.qm for details on these parameters.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="function">
+<dt id="nmrtools.firstorder.first_order_spin_system">
+<code class="sig-prename descclassname">nmrtools.firstorder.</code><code class="sig-name descname">first_order_spin_system</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/firstorder.html#first_order_spin_system"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.firstorder.first_order_spin_system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a first-order peaklist of several multiplets from the same v/J
+arguments used for qm calculations.</p>
+<p>This allows a user to model several multiplets at once, rather than
+creating each multiplet individually. It also provides a “toggle” where
+the user, or a higher-level function/class (such as nmrtools.SpinSystem)
+can decide whether a spin system is modeled as first order or second order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> (<em>array-like</em><em> [</em><em>float...</em><em>]</em>) – an array of frequencies</p></li>
+<li><p><strong>J</strong> (<em>2D array-like</em><em> (</em><em>square</em><em>)</em>) – a matrix of J coupling constants</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a combined peaklist of signals for all the multiplets in the spin
+system.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.firstorder.multiplet">
+<code class="sig-prename descclassname">nmrtools.firstorder.</code><code class="sig-name descname">multiplet</code><span class="sig-paren">(</span><em class="sig-param">signal</em>, <em class="sig-param">couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/firstorder.html#multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.firstorder.multiplet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a set of signals into first-order multiplets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – a (frequency (Hz), intensity) tuple;</p></li>
+<li><p><strong>couplings</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>int</em><em>)</em><em>..</em><em>]</em>) – A list of (<em>J</em>, # of nuclei) tuples. The order of the tuples in
+couplings does not matter.
+e.g. to split a signal into a <em>dt, J</em> = 8, 5 Hz, use:
+<code class="docutils literal notranslate"><span class="pre">couplings</span> <span class="pre">=</span> <span class="pre">[(8,</span> <span class="pre">2),</span> <span class="pre">(5,</span> <span class="pre">3)]</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a peaklist of the multiplet that results from splitting the signal
+by each J.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nmrtools.math">
+<span id="nmrtools-math-module"></span><h2>nmrtools.math module<a class="headerlink" href="#module-nmrtools.math" title="Permalink to this headline">¶</a></h2>
+<p>A collection of functions for processing simulated NMR spectra.</p>
+<p>Terms used:
+signal: a pair (e.g. tuple) of frequency, intensity values
+peaklist: a list (or 1D-array-like) of signals.</p>
+<p>Provides the following functions:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>add_peaks: combines a list of signals into one signal of average frequency</dt><dd><p>and summed intensity.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>reduce_peaks: processes a peaklist so that signals within a frequency</dt><dd><p>tolerance are added together.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>normalize_peaklist: scales a peaklist so that intensities add to a specific</dt><dd><p>value.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>lorentz: given a frequency, a signal and a linewidth, calculates an</dt><dd><p>intensity. Used to calculate Lorentzian lineshapes for signals.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>get_intensity: given a lineshape and a frequency, find the intensity at the</dt><dd><p>datapoint closest to that frequency.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="function">
+<dt id="nmrtools.math.add_peaks">
+<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">add_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#add_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.add_peaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduces a list of (frequency, intensity) tuples to an
+(average frequency, total intensity) tuple.</p>
+<dl class="simple">
+<dt>plist: [(float, float)…]</dt><dd><p>a list of (frequency, intensity) tuples</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of (average frequency, total intensity)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(float, float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.math.get_intensity">
+<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">get_intensity</code><span class="sig-paren">(</span><em class="sig-param">lineshape</em>, <em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#get_intensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.get_intensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>A crude method to find the intensity of data point closest to
+frequency x. Better: interpolate between two data points if match isn’t
+exact (TODO?)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lineshape</strong> (<em>tuple of</em><em> (</em><em>x</em><em>, </em><em>y</em><em>) </em><em>arrays for frequency</em><em>, </em><em>intensity data</em>) – </p></li>
+<li><p><strong>x</strong> (<em>frequency lookup</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>float</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>the intensity at that frequency</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.math.get_maxima">
+<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">get_maxima</code><span class="sig-paren">(</span><em class="sig-param">lineshape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#get_maxima"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.get_maxima" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crude function that returns maxima in the lineshape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lineshape</strong> (<em>tuple of frequency</em><em>, </em><em>intensity arrays</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>a list of (frequency, intensity) tuples for individual maxima.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.math.lorentz">
+<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">lorentz</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">v0</em>, <em class="sig-param">I</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#lorentz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.lorentz" title="Permalink to this definition">¶</a></dt>
+<dd><p>A lorentz function that takes linewidth at half intensity (w) as a
+parameter.</p>
+<p>When <cite>v</cite> = <cite>v0</cite>, and <cite>w</cite> = 0.5 (Hz), the function returns intensity I.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> (<em>float</em>) – The frequency (x coordinate) at which to evaluate intensity (y
+coordinate).</p></li>
+<li><p><strong>v0</strong> (<em>float</em>) – The center of the distribution.</p></li>
+<li><p><strong>I</strong> (<em>float</em>) – the relative intensity of the signal</p></li>
+<li><p><strong>w</strong> (<em>float</em>) – the peak width at half maximum intensity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the intensity (y coordinate) for the Lorentzian distribution
+evaluated at frequency <cite>v</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.math.normalize_peaklist">
+<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">normalize_peaklist</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#normalize_peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.normalize_peaklist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize the intensities in a spectrum so that total intensity equals
+value n (nominally the number of nuclei giving rise to the signal).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peaklist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency, intensity) tuples.</p></li>
+<li><p><strong>n</strong> (<em>int</em><em> or </em><em>float</em><em> (</em><em>optional</em><em>)</em>) – total intensity to normalize to (default = 1).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.math.reduce_peaks">
+<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">reduce_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist_</em>, <em class="sig-param">tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#reduce_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.reduce_peaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of (x, y) tuples and adds together tuples whose values are
+within a certain tolerance limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – A list of (x, y) tuples</p></li>
+<li><p><strong>tolerance</strong> (<em>float</em>) – tuples that differ in x by &lt;= tolerance are combined using <cite>add_peaks</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of (x, y) tuples where all x values differ by &gt; <cite>tolerance</cite></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nmrtools.plt">
+<span id="nmrtools-plt-module"></span><h2>nmrtools.plt module<a class="headerlink" href="#module-nmrtools.plt" title="Permalink to this headline">¶</a></h2>
+<p>The plt module provides convenience functions for creating matplotlib plots,
+plus applying Lorentzian distributions about signals.</p>
+<p>The plt module provides the following functions:</p>
+<ul class="simple">
+<li><p>add_lorentzians: Creates lineshape data from a provided linspace (array of x
+coordinates) and peaklist).</p></li>
+<li><p>mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot</p></li>
+</ul>
+<p>data.
+* mplplot_stick: Creates a “stick” (matplotlib “stem” plot) plot from a
+peaklist and returns the x, y plot data.
+* mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
+and returns the x, y plot data.</p>
+<dl class="function">
+<dt id="nmrtools.plt.add_lorentzians">
+<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">add_lorentzians</code><span class="sig-paren">(</span><em class="sig-param">linspace</em>, <em class="sig-param">peaklist</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#add_lorentzians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.add_lorentzians" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a numpy linspace, a spectrum as a list of (frequency, intensity)
 tuples, and a linewidth, returns an array of y coordinates for the
-lineshape.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>linspace</strong> – a numpy linspace of x coordinates for the lineshape.</li>
-<li><strong>peaklist</strong> – a list of (frequency, intensity) tuples</li>
-<li><strong>w</strong> – peak width at half maximum intensity</li>
+total line shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>linspace</strong> (<em>array-like</em>) – Normally a numpy.linspace of x coordinates corresponding to frequency
+in Hz.</p></li>
+<li><p><strong>peaklist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – A list of (frequency, intensity) tuples.</p></li>
+<li><p><strong>w</strong> (<em>float</em>) – Peak width at half maximum intensity.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of y coordinates for the lineshape</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an array of y coordinates corresponding to intensity.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[float…]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrplot.dnmrplot_2spin">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">dnmrplot_2spin</code><span class="sig-paren">(</span><em>va</em>, <em>vb</em>, <em>ka</em>, <em>Wa</em>, <em>Wb</em>, <em>pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#dnmrplot_2spin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.dnmrplot_2spin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a lineshape for the DNMR spectrum of two uncoupled nuclei
-undergoing exchange.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>va</strong> – The frequency of nucleus ‘a’ at the slow exchange limit</li>
-<li><strong>vb</strong> – The frequency of nucleus ‘b’ at the slow exchange limit</li>
-<li><strong>ka</strong> – The rate of nuclear exchange</li>
-<li><strong>Wa</strong> – The width at half heigh of the signal for nucleus a (at the slow</li>
+<dt id="nmrtools.plt.mplplot">
+<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">mplplot</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">w=1</em>, <em class="sig-param">y_min=-0.01</em>, <em class="sig-param">y_max=1</em>, <em class="sig-param">points=800</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#mplplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.mplplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matplotlib plot of the simulated lineshape for a peaklist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peaklist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – A list of (frequency, intensity) tuples.</p></li>
+<li><p><strong>w</strong> (<em>float</em>) – Peak width at half height</p></li>
+<li><p><strong>y_min</strong> (<em>float</em><em> or </em><em>int</em>) – Minimum intensity for the plot.</p></li>
+<li><p><strong>y_max</strong> (<em>float</em><em> or </em><em>int</em>) – Maximum intensity for the plot.</p></li>
+<li><p><strong>points</strong> (<em>int</em>) – Number of data points.</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – Frequency limits for the plot.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>exchange limit).
-:param Wb: The width at half height of the signal for nucleus b (at the slow
-exchange limit).
-:param pa: The fraction of the population in state a (vs. state b)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a tuple of numpy arrays for frequencies (x coordinate) and</td>
-</tr>
-</tbody>
-</table>
-<p>corresponding intensities (y coordinate). Hard-coded for 800 data points
-and a frequency range from vb-50 to va+50.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x, y</strong> – Arrays for frequency (x) and intensity (y) for the simulated lineshape.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrplot.dnmrplot_AB">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">dnmrplot_AB</code><span class="sig-paren">(</span><em>v1</em>, <em>v2</em>, <em>J</em>, <em>k</em>, <em>W</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#dnmrplot_AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.dnmrplot_AB" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a lineshape for the DNMR spectrum of two uncoupled nuclei
-undergoing exchange.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>v1</strong> – The frequency of nucleus ‘a’ at the slow exchange limit</li>
-<li><strong>v2</strong> – The frequency of nucleus ‘b’ at the slow exchange limit</li>
-<li><strong>J</strong> – The coupling constant between nuclei a and b</li>
-<li><strong>k</strong> – The rate of two-site exchange of nuclei a and b</li>
-<li><strong>W</strong> – The line width at the slow exchange limit</li>
+<dt id="nmrtools.plt.mplplot_lineshape">
+<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">mplplot_lineshape</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">y_min=None</em>, <em class="sig-param">y_max=None</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#mplplot_lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.mplplot_lineshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matplotlib plot that accepts arrays of x and y coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – The list of x coordinates.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – The list of y coordinates.</p></li>
+<li><p><strong>y_min</strong> (<em>float</em><em> or </em><em>int</em>) – Minimum intensity for the plot. Default is -10% max y.</p></li>
+<li><p><strong>y_max</strong> (<em>float</em><em> or </em><em>int</em>) – Maximum intensity for the plot. Default is 110% max y.</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – Frequency limits for the plot.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple of numpy arrays for frequencies (x coordinate) and</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p>corresponding intensities (y coordinate). Hard-coded for 800 data points
-and a frequency range from vb-50 to va+50.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x, y</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The original x, y arguments.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrplot.lorentz">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">lorentz</code><span class="sig-paren">(</span><em>v</em>, <em>v0</em>, <em>I</em>, <em>w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#lorentz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.lorentz" title="Permalink to this definition">¶</a></dt>
-<dd><p>A lorentz function that takes linewidth at half intensity (w) as a
-parameter.
-:param v: Array of values at which to evaluate distribution.
-:param v0: Center of the distribution.
-:param I: relative intensity of the signal
-:param w: Peak width at half max intensity</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Distribution evaluated at points in x.</td>
-</tr>
-</tbody>
-</table>
+<dt id="nmrtools.plt.mplplot_stick">
+<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">mplplot_stick</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">y_min=-0.01</em>, <em class="sig-param">y_max=1</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#mplplot_stick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.mplplot_stick" title="Permalink to this definition">¶</a></dt>
+<dd><p>A  matplotlib plot of a spectrum in “stick” (stem) style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>peaklist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – A list of (frequency, intensity) tuples.</p></li>
+<li><p><strong>y_min</strong> (<em>float</em><em> or </em><em>int</em>) – Minimum intensity for the plot.</p></li>
+<li><p><strong>y_max</strong> (<em>float</em><em> or </em><em>int</em>) – Maximum intensity for the plot.</p></li>
+<li><p><strong>limits</strong> (<em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) – Frequency limits for the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The arrays of x and y coordinates used for the plot.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.array, numpy.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nmrtools.qm">
+<span id="nmrtools-qm-module"></span><h2>nmrtools.qm module<a class="headerlink" href="#module-nmrtools.qm" title="Permalink to this headline">¶</a></h2>
+<p>qm contains functions for the quantum-mechanical (second-order)
+calculation of NMR spectra.</p>
+<p>The qm module provides the following attributes:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>CACHE: bool (default True)</dt><dd><p>Whether saving to disk of partial solutions is allowed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>SPARSE: bool (default True)</dt><dd><p>Whether the sparse library can be used.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The qm module provides the following functions:</p>
+<ul class="simple">
+<li><p>qm_spinsystem: The high-level function for computing a second-order
+simulation from frequency and J-coupling data.</p></li>
+<li><p>hamiltonian_dense: Calculate a spin Hamiltonian using dense arrays
+(slower).</p></li>
+<li><p>hamiltonian_sparse: Calculate a spin Hamiltonian using cached sparse arrays
+(faster).</p></li>
+<li><p>solve_hamiltonian: Calculate a peaklist from a spin Hamiltonian.</p></li>
+<li><p>secondorder_dense: Calculate a peaklist for a second-order spin system,
+using dense arrays (slower).</p></li>
+<li><p>secondorder_sparse: Calculate a peaklist for a second-order spin system,
+using cached sparse arrays (faster).</p></li>
+</ul>
+<p class="rubric">Notes</p>
+<p>Because numpy.matrix is marked as deprecated, starting with Version 0.2.0 the
+qm code was refactored to a) accommodate this deprecation and b) speed up the
+calculations. The fastest calculations rely on:</p>
+<p>1. the pydata/sparse library. SciPy’s sparse depends on numpy.matrix,
+and they currently recommend that pydata/sparse be used for now.</p>
+<p>2. Caching partial solutions for spin operators and transition matrices as
+.npz files.</p>
+<p>If the pydata/sparse package is no longer available, and/or if distributing
+the library with .npz files via PyPI is problematic, then a backup is
+required. The qm module for now provides two sets of functions for
+calculating second-order spectra: one using pydata/sparse and caching,
+and the other using neither.</p>
+<dl class="function">
+<dt id="nmrtools.qm.hamiltonian_dense">
+<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">hamiltonian_dense</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#hamiltonian_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.hamiltonian_dense" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.qm.hamiltonian_sparse">
+<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">hamiltonian_sparse</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#hamiltonian_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.hamiltonian_sparse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> (<em>array-like</em>) – list of frequencies in Hz</p></li>
+<li><p><strong>J</strong> (<em>2D array-like</em>) – matrix of coupling constants</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>H</strong> – a sparse spin Hamiltonian</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse.COO</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrplot.nmrplot">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">nmrplot</code><span class="sig-paren">(</span><em>spectrum</em>, <em>y=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#nmrplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.nmrplot" title="Permalink to this definition">¶</a></dt>
-<dd><p>A no-frills routine that plots spectral simulation data.
-:param spectrum: A list of (frequency, intensity) tuples
-:param y: max intensity</p>
+<dt id="nmrtools.qm.qm_spinsystem">
+<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">qm_spinsystem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">cache=True</em>, <em class="sig-param">sparse=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#qm_spinsystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.qm_spinsystem" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – </p></li>
+<li><p><strong>cache</strong> – </p></li>
+<li><p><strong>sparse</strong> – </p></li>
+<li><p><strong>kwargs</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><p><strong>cutoff</strong> (<em>float</em>) – The intensity cutoff for reporting signals (default is 0.001).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrplot.tkplot">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">tkplot</code><span class="sig-paren">(</span><em>spectrum</em>, <em>w=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#tkplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.tkplot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate linspaces of x and y coordinates suitable for plotting on a
-matplotlib tkinter canvas.
-:param spectrum: A list of (frequency, intensity) tuples
-:param w: peak width at half height
-:param spectrometer_frequency: the frequency of the spectrometer (i.e
-frequency in MHz that 1H nuclei resonate at)
-:return: a tuple of x and y numpy.ndarrays</p>
+<dt id="nmrtools.qm.secondorder_dense">
+<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">secondorder_dense</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#secondorder_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.secondorder_dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates second-order spectral data (freqency and intensity of signals)
+for <em>n</em> spin-half nuclei.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqs</strong> (<em>[</em><em>float...</em><em>]</em>) – a list of <em>n</em> nuclei frequencies in Hz</p></li>
+<li><p><strong>couplings</strong> (<em>array-like</em>) – an <em>n, n</em> array of couplings in Hz. The order
+of nuclei in the list corresponds to the column and row order in the
+matrix, e.g. couplings[0][1] and [1]0] are the J coupling between
+the nuclei of freqs[0] and freqs[1].</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – True if the intensities should be normalized so that total intensity
+equals the total number of nuclei.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>peaklist</strong> – numpy 2D array of [frequency, intensity] pairs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[[float, float]..]</p>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><p><strong>cutoff</strong> (<em>float</em>) – The intensity cutoff for reporting signals (default is 0.001).</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.nmrplot.tkplot_nmrmint">
-<code class="descclassname">nmrtools.nmrplot.</code><code class="descname">tkplot_nmrmint</code><span class="sig-paren">(</span><em>spectrum</em>, <em>w=0.5</em>, <em>spectrometer_frequency=300</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/nmrplot.html#tkplot_nmrmint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.nmrplot.tkplot_nmrmint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate linspaces of x and y coordinates suitable for plotting on a
-matplotlib tkinter canvas.</p>
-<p>Hard-coding a -1 to 15 ppm linspace, with resolution such that a 1 GHz
-spectrometer has 10 points per Hz.
-:param spectrum: A list of (frequency, intensity) tuples
-:param w: peak width at half height
-:param spectrometer_frequency: the frequency of the spectrometer (i.e
-frequency in MHz that 1H nuclei resonate at)
-:return: a tuple of x and y numpy.ndarrays</p>
+<dt id="nmrtools.qm.secondorder_sparse">
+<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">secondorder_sparse</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#secondorder_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.secondorder_sparse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates second-order spectral data (freqency and intensity of signals)
+for <em>n</em> spin-half nuclei.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqs</strong> (<em>[</em><em>float...</em><em>]</em>) – a list of <em>n</em> nuclei frequencies in Hz</p></li>
+<li><p><strong>couplings</strong> (<em>array-like</em>) – an <em>n, n</em> array of couplings in Hz. The order
+of nuclei in the list corresponds to the column and row order in the
+matrix, e.g. couplings[0][1] and [1]0] are the J coupling between
+the nuclei of freqs[0] and freqs[1].</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em>) – True if the intensities should be normalized so that total intensity
+equals the total number of nuclei.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>peaklist</strong> – of [frequency, intensity] pairs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[[float, float]..] numpy 2D array</p>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><p><strong>cutoff</strong> (<em>float</em>) – The intensity cutoff for reporting signals (default is 0.001).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="nmrtools.qm.solve_hamiltonian">
+<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">solve_hamiltonian</code><span class="sig-paren">(</span><em class="sig-param">H</em>, <em class="sig-param">nspins</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#solve_hamiltonian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.solve_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates frequencies and intensities of signals from a spin Hamiltonian
+and number of spins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>numpy.ndarray</em><em> (</em><em>2D</em><em>)</em>) – The spin Hamiltonian</p></li>
+<li><p><strong>nspins</strong> (<em>int</em>) – The number of spins in the system</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[[float, float]..] numpy 2D array of frequency, intensity pairs.</p>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><p><strong>cutoff</strong> (<em>float</em>) – The intensity cutoff for reporting signals (default is 0.001).</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 <div class="section" id="module-nmrtools">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nmrtools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="nmrtools">
+<h3>nmrtools<a class="headerlink" href="#nmrtools" title="Permalink to this headline">¶</a></h3>
+<p>The nmrtools package provides tools for simulating nuclear magnetic resonance
+(NMR) spectra.</p>
+<p>The API is still in flux. Currently, it includes the following modules:</p>
+<ul class="simple">
+<li><p>dnmr: for modeling Dynamic NMR systems</p></li>
+<li><p>firstorder: for modeling first-order spectra</p></li>
+<li><p>math: core math routines for handling NMR data</p></li>
+<li><p>partial: uses non-quantum-mechanical solutions for common second-order NMR patterns</p></li>
+<li><p>plt: convenience plotting routines for NMR results</p></li>
+<li><p>qm: quantum-mechanical second-order simulation of spin systems (currently capped at 11 nuclei)</p></li>
+</ul>
+<p>Currently, only spin-1/2 nuclei are accommodated.</p>
+<p>The top-level nmrtools namespace provides the following classes:</p>
+<ul class="simple">
+<li><p>Multiplet: a representation of a first-order multiplet (e.g. quartet; doublet of triplets).</p></li>
+<li><p>SpinSystem: a representation of a set of coupled nuclei (modeled as either first-order or second-order).</p></li>
+<li><p>Spectrum: a collection of components such as Multiplets or SpinSystems that contribute to a total NMR spectrum
+simulation.</p></li>
+</ul>
+<dl class="class">
+<dt id="nmrtools.Multiplet">
+<em class="property">class </em><code class="sig-prename descclassname">nmrtools.</code><code class="sig-name descname">Multiplet</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">I</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Multiplet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A representation of a first-order multiplet.</p>
+<dl class="attribute">
+<dt id="nmrtools.Multiplet.I">
+<code class="sig-name descname">I</code><a class="headerlink" href="#nmrtools.Multiplet.I" title="Permalink to this definition">¶</a></dt>
+<dd><p>test that a value is a real number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.Multiplet.J">
+<code class="sig-name descname">J</code><a class="headerlink" href="#nmrtools.Multiplet.J" title="Permalink to this definition">¶</a></dt>
+<dd><p>test that J resembles an array of number pairs (for each J/# of nuclei
+entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nmrtools.Multiplet.peaklist">
+<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Multiplet.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Multiplet.peaklist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of (frequency, intensity) signals.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nmrtools.Multiplet.v">
+<code class="sig-name descname">v</code><a class="headerlink" href="#nmrtools.Multiplet.v" title="Permalink to this definition">¶</a></dt>
+<dd><p>test that a value is a real number</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nmrtools.SpinSystem">
+<em class="property">class </em><code class="sig-prename descclassname">nmrtools.</code><code class="sig-name descname">SpinSystem</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em>, <em class="sig-param">second_order=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#SpinSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.SpinSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stub implementation of SpinSystem.
+Flesh out API (e.g. getters/setters; dunder methods) later.</p>
+<dl class="method">
+<dt id="nmrtools.SpinSystem.J">
+<em class="property">property </em><code class="sig-name descname">J</code><a class="headerlink" href="#nmrtools.SpinSystem.J" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nmrtools.SpinSystem.peaklist">
+<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#SpinSystem.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.SpinSystem.peaklist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nmrtools.SpinSystem.second_order">
+<em class="property">property </em><code class="sig-name descname">second_order</code><a class="headerlink" href="#nmrtools.SpinSystem.second_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="nmrtools.SpinSystem.v">
+<em class="property">property </em><code class="sig-name descname">v</code><a class="headerlink" href="#nmrtools.SpinSystem.v" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nmrtools.Spectrum">
+<em class="property">class </em><code class="sig-prename descclassname">nmrtools.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param">components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stub implementation of Spectrum.
+Flesh out API (e.g. getter/setters; dunder methods) later.</p>
+<dl class="method">
+<dt id="nmrtools.Spectrum.peaklist">
+<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Spectrum.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Spectrum.peaklist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 </div>
 
 
+           </div>
+           
           </div>
-          
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Geoffrey M. Sametz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">nmrtools package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-nmrtools.nmrmath">nmrtools.nmrmath module</a></li>
-<li><a class="reference internal" href="#module-nmrtools.nmrplot">nmrtools.nmrplot module</a></li>
-<li><a class="reference internal" href="#module-nmrtools">Module contents</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/nmrtools.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2018, Geoffrey M. Sametz.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
-      
-      |
-      <a href="_sources/nmrtools.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>
