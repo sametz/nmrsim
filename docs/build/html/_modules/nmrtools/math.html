@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nmrtools.math &mdash; nmrtools 0.2.0-alpha documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> nmrtools
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">nmrtools</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nmrtools.math</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nmrtools.math</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;A collection of functions for processing simulated NMR spectra.</span>
+
+<span class="sd">Terms used:</span>
+<span class="sd">signal: a pair (e.g. tuple) of frequency, intensity values</span>
+<span class="sd">peaklist: a list (or 1D-array-like) of signals.</span>
+
+<span class="sd">Provides the following functions:</span>
+
+<span class="sd">* add_peaks: combines a list of signals into one signal of average frequency</span>
+<span class="sd">    and summed intensity.</span>
+
+<span class="sd">* reduce_peaks: processes a peaklist so that signals within a frequency</span>
+<span class="sd">    tolerance are added together.</span>
+
+<span class="sd">* normalize_peaklist: scales a peaklist so that intensities add to a specific</span>
+<span class="sd">    value.</span>
+<span class="sd">* lorentz: given a frequency, a signal and a linewidth, calculates an</span>
+<span class="sd">    intensity. Used to calculate Lorentzian lineshapes for signals.</span>
+
+<span class="sd">* get_intensity: given a lineshape and a frequency, find the intensity at the</span>
+<span class="sd">    datapoint closest to that frequency.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="add_peaks"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.add_peaks">[docs]</a><span class="k">def</span> <span class="nf">add_peaks</span><span class="p">(</span><span class="n">plist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reduces a list of (frequency, intensity) tuples to an</span>
+<span class="sd">    (average frequency, total intensity) tuple.</span>
+
+<span class="sd">    Parameter</span>
+<span class="sd">    --------</span>
+<span class="sd">    plist: [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (float, float)</span>
+<span class="sd">        a tuple of (average frequency, total intensity)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">v_total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i_total</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">plist</span><span class="p">:</span>
+        <span class="n">v_total</span> <span class="o">+=</span> <span class="n">v</span>
+        <span class="n">i_total</span> <span class="o">+=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">v_total</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">plist</span><span class="p">),</span> <span class="n">i_total</span></div>
+
+
+<div class="viewcode-block" id="reduce_peaks"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.reduce_peaks">[docs]</a><span class="k">def</span> <span class="nf">reduce_peaks</span><span class="p">(</span><span class="n">plist_</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes a list of (x, y) tuples and adds together tuples whose values are</span>
+<span class="sd">    within a certain tolerance limit.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    plist_ : [(float, float)...]</span>
+<span class="sd">        A list of (x, y) tuples</span>
+<span class="sd">    tolerance : float</span>
+<span class="sd">        tuples that differ in x by &lt;= tolerance are combined using `add_peaks`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [(float, float)...]</span>
+<span class="sd">        a list of (x, y) tuples where all x values differ by &gt; `tolerance`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">work</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># an accumulator of peaks to be added</span>
+    <span class="n">plist</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">plist_</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">plist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">work</span><span class="p">:</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">peak</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">peak</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">work</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="n">work</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">peak</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_peaks</span><span class="p">(</span><span class="n">work</span><span class="p">))</span>
+            <span class="n">work</span> <span class="o">=</span> <span class="p">[</span><span class="n">peak</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">work</span><span class="p">:</span>  <span class="c1"># process any remaining work after for loop</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_peaks</span><span class="p">(</span><span class="n">work</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+<span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">intensities</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scale a list of intensities so that they sum to the total number of</span>
+<span class="sd">    nuclei.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    intensities : [float...]</span>
+<span class="sd">        A list of intensities.</span>
+<span class="sd">    n : int (optional)</span>
+<span class="sd">        Number of nuclei (default = 1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factor</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">intensities</span><span class="p">)</span>
+    <span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">factor</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">intensities</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="normalize_peaklist"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.normalize_peaklist">[docs]</a><span class="k">def</span> <span class="nf">normalize_peaklist</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalize the intensities in a spectrum so that total intensity equals</span>
+<span class="sd">    value n (nominally the number of nuclei giving rise to the signal).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ---------</span>
+<span class="sd">    peaklist : [(float, float)...]</span>
+<span class="sd">        a list of (frequency, intensity) tuples.</span>
+<span class="sd">    n : int or float (optional)</span>
+<span class="sd">        total intensity to normalize to (default = 1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">freq</span><span class="p">,</span> <span class="n">int_</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">peaklist</span><span class="p">],</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">peaklist</span><span class="p">]</span>
+    <span class="n">_normalize</span><span class="p">(</span><span class="n">int_</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">int_</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="lorentz"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.lorentz">[docs]</a><span class="k">def</span> <span class="nf">lorentz</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A lorentz function that takes linewidth at half intensity (w) as a</span>
+<span class="sd">    parameter.</span>
+
+<span class="sd">    When `v` = `v0`, and `w` = 0.5 (Hz), the function returns intensity I.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    v : float</span>
+<span class="sd">        The frequency (x coordinate) at which to evaluate intensity (y</span>
+<span class="sd">        coordinate).</span>
+<span class="sd">    v0 : float</span>
+<span class="sd">        The center of the distribution.</span>
+<span class="sd">    I : float</span>
+<span class="sd">        the relative intensity of the signal</span>
+<span class="sd">    w : float</span>
+<span class="sd">        the peak width at half maximum intensity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        the intensity (y coordinate) for the Lorentzian distribution</span>
+<span class="sd">        evaluated at frequency `v`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Adding a height scaling factor so that peak intensities are lowered as</span>
+    <span class="c1"># they are more broad. If I is the intensity with a default w of 0.5 Hz:</span>
+    <span class="n">scaling_factor</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">w</span>  <span class="c1"># i.e. a 1 Hz wide peak will be half as high</span>
+    <span class="k">return</span> <span class="n">scaling_factor</span> <span class="o">*</span> <span class="n">I</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_intensity"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.get_intensity">[docs]</a><span class="k">def</span> <span class="nf">get_intensity</span><span class="p">(</span><span class="n">lineshape</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A crude method to find the intensity of data point closest to</span>
+<span class="sd">    frequency x. Better: interpolate between two data points if match isn&#39;t</span>
+<span class="sd">    exact (TODO?)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lineshape : tuple of (x, y) arrays for frequency, intensity data</span>
+<span class="sd">    x : frequency lookup</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float : the intensity at that frequency</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nearest_x_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lineshape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lineshape</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">nearest_x_index</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_maxima"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.get_maxima">[docs]</a><span class="k">def</span> <span class="nf">get_maxima</span><span class="p">(</span><span class="n">lineshape</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crude function that returns maxima in the lineshape.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lineshape : tuple of frequency, intensity arrays</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    a list of (frequency, intensity) tuples for individual maxima.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lineshape</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span>  <span class="c1"># start at lineshape[1][1]</span>
+        <span class="n">lastvalue</span> <span class="o">=</span> <span class="n">lineshape</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">nextvalue</span> <span class="o">=</span> <span class="n">lineshape</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">lastvalue</span> <span class="o">&lt;</span> <span class="n">val</span> <span class="ow">and</span> <span class="n">nextvalue</span> <span class="o">&lt;</span> <span class="n">val</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAXIMUM FOUND AT: &#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">((</span><span class="n">lineshape</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="n">val</span><span class="p">))</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">lineshape</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">index</span><span class="p">],</span> <span class="n">val</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Geoffrey M. Sametz
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
