@@ -23,7 +23,7 @@ Working towards a Version 1.0.0 release, the author interprets the terms below a
 * **Version 1.0.0 release**: API is stable. The package is available on PyPI (and perhaps conda).
 
 
-0.2.0 - 2019-nn-nn (alpha release)
+0.2.0 - 2019-07-25 (alpha release)
 ----------------------------------
 Radical revisions (including a renaming of the project from "nmrtools" to "nmrsim") and migration to the
 sametz/nmrsim repo on GitHub). Includes:
