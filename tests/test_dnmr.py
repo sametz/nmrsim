@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
 
-from nmrtools.dnmr import (dnmr_two_singlets, _dnmr_AB_func, dnmr_AB,
-                           DnmrTwoSinglets, DnmrAB)
-from nmrtools.math import get_maxima
+from nmrsim.dnmr import (dnmr_two_singlets, _dnmr_AB_func, dnmr_AB,
+                         DnmrTwoSinglets, DnmrAB)
+from nmrsim.math import get_maxima
 from tests.plottools import popplot
 from tests.testdata import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
                             TWOSPIN_SLOW)

@@ -23,7 +23,7 @@ References
 """
 import numpy as np
 
-from nmrtools._utils import is_number, is_decimal_fraction, is_tuple_of_two_numbers, is_positive, is_integer
+from nmrsim._utils import is_number, is_decimal_fraction, is_tuple_of_two_numbers, is_positive, is_integer
 
 
 def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
@@ -60,7 +60,7 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
 
      Notes
     -----
-    The nmrtools.dnmr module gives a reference for the algorithm used here.
+    The nmrsim.dnmr module gives a reference for the algorithm used here.
     """
 
     pi = np.pi
@@ -130,7 +130,7 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
 
     References
     ----------
-    See the documentation for the nmrtools.dnmr module.
+    See the documentation for the nmrsim.dnmr module.
     """
     if vb > va:
         va, vb = vb, va
@@ -380,7 +380,7 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
 
     References
     ----------
-    See the documentation for the nmrtools.dnmr module.
+    See the documentation for the nmrsim.dnmr module.
     """
     pi = np.pi
     vo = (v1 + v2) / 2
@@ -445,7 +445,7 @@ def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
 
     References
     ----------
-    See the documentation for the nmrtools.dnmr module.
+    See the documentation for the nmrsim.dnmr module.
     """
     if limits:
         l_limit = min(limits)
@@ -501,7 +501,7 @@ class DnmrAB:
 
     References
     ----------
-    See the documentation for the nmrtools.dnmr module.
+    See the documentation for the nmrsim.dnmr module.
     """
     
     def __init__(self, va=165.0, vb=135.0, J=12.0, k=12.0, w=0.5,

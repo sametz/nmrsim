@@ -44,7 +44,7 @@ import os
 
 import numpy as np
 import sparse
-from nmrtools.math import normalize_peaklist
+from nmrsim.math import normalize_peaklist
 
 CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
@@ -125,7 +125,7 @@ def _so_sparse(nspins):
     Saves the results as .npz files to the bin directory if they were not
     found there.
     """
-    # TODO: once nmrtools demonstrates installing via the PyPI *test* server,
+    # TODO: once nmrsim demonstrates installing via the PyPI *test* server,
     # need to determine how the saved solutions will be handled. For example,
     # part of the final build may be generating these files then testing.
     # Also, need to consider different users with different system capabilities

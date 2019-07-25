@@ -6,14 +6,14 @@ import numbers
 
 import numpy as np
 
-from nmrtools.firstorder import first_order_spin_system, multiplet
-from nmrtools.math import reduce_peaks
-from nmrtools.qm import qm_spinsystem
+from nmrsim.firstorder import first_order_spin_system, multiplet
+from nmrsim.math import reduce_peaks
+from nmrsim.qm import qm_spinsystem
 
 from ._descriptors import Number, Couplings
 
 
-# TODO: Multiplet "belongs" in the nmrtools.firstorder namespace, but has a
+# TODO: Multiplet "belongs" in the nmrsim.firstorder namespace, but has a
 # cyclic dependency with
 class Multiplet:
     """A representation of a first-order multiplet.

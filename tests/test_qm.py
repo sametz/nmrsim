@@ -2,9 +2,9 @@ import copy
 import pathlib
 import numpy as np
 
-from nmrtools.qm import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,
-                         secondorder_dense, secondorder_sparse, _so_sparse,
-                         qm_spinsystem)
+from nmrsim.qm import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,
+                       secondorder_dense, secondorder_sparse, _so_sparse,
+                       qm_spinsystem)
 from tests.accepted_data import HAMILTONIAN_RIOUX, SPECTRUM_RIOUX
 from tests.simulation_data import rioux
 
@@ -13,7 +13,7 @@ def test_so_sparse_creates_files(fs):
     test_bin = (pathlib.Path(__file__)
                 .resolve()
                 .parent.parent
-                .joinpath('nmrtools', 'bin'))
+                .joinpath('nmrsim', 'bin'))
     fs.create_dir(test_bin)
     expected_Lz = test_bin.joinpath('Lz3.npz')
     expected_Lproduct = test_bin.joinpath('Lproduct3.npz')
@@ -28,7 +28,7 @@ def test_tm_cache_creates_file(fs):
     test_bin = (pathlib.Path(__file__)
                 .resolve()
                 .parent.parent
-                .joinpath('nmrtools', 'bin'))
+                .joinpath('nmrsim', 'bin'))
     fs.create_dir(test_bin)
     expected_T = test_bin.joinpath('T3.npz')
     assert not expected_T.exists()
