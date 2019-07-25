@@ -4,7 +4,7 @@ with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="nmrsim",
+    name="nmrtools",
     version="0.2.0",
     author="Geoffrey M. Sametz",
     author_email="sametz@udel.edu",

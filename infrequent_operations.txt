@@ -39,3 +39,6 @@ it seemed to recognize only what was installed in venv
 
 with setup.py and extras_require setup:
 pip install -e ".[dev]"
+see https://docs.python-eve.org/en/stable/contributing.html
+
+cd geoffrey\documents\github\nmrtools
