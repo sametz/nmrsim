@@ -1,11 +1,16 @@
-Thoughts on API, namespaces etc. for final nmrtools library:
+TODOs for API/documentation.
 
-some natural divisions:
-nmrtools.qm for QM calculations. Currently this is second-order normal spectra.
-Looking ahead: if QM DNMR is implemented, where does it belong?
+Consistent names for various data types? Create a glossary?
 
-nmrtools.firstorder for first-order calculations
-nmrtools.partial for partial solutions? Thinking eg. of the ABX that assumes X
-is far away in chemical shift, AAXX that only shows A, etc.
-nmrtools.dnmr for dynamic nmr simulations
-nmrtools.plt for plotting utilities
+peak = (v, I) -- signal?
+peaklist = [peak...]
+lineshape = [[x...], [y...]]
+and not spectrum = ""?
+
+There is a mixture of 2D array-like forms for peaklists. Define a spec (e.g.
+"2D array-like"?
+[(v, I)...] allows use of zip, e.g. x, y = zip(*peaklist). Pro: non-numpy users can construct these from scratch if
+they wish.
+np.array [[v, I]...] allows x, y = peaklist.T.
+
+

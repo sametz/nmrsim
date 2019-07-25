@@ -1,8 +1,13 @@
 # Created by .ignore support plugin (hsz.mobi)
-/.idea/
-nmrtools/.cache/
+.idea
+nmrsim/.cache/
 .cache
 /coverage/
 __pycache__/
 *.pyc
 .pytest_cache/
+.ipynb_checkpoints
+venv
+eggs/
+.eggs/
+*.egg-info/
