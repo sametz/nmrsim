@@ -362,26 +362,31 @@ coupling. Positive when vb &gt; va.</p></li>
 classes to describe DNMR systems.</p>
 <p>The dnmr module provides the following classes:</p>
 <ul class="simple">
-<li><p><cite>DnmrTwoSinglets</cite>: a sumulation of the lineshape for two uncoupled nuclei</p></li>
+<li><p><cite>DnmrTwoSinglets</cite>: a sumulation of the lineshape for two uncoupled nuclei
+undergoing exchange.</p></li>
+<li><p><cite>DnmrAB</cite>: a simulation of the lineshape for two coupled nuclei undergoing
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit).</p></li>
 </ul>
-<p>undergoing exchange.
-* <cite>DnmrAB</cite>: a simulation of the lineshape for two coupled nuclei undergoing
-exchange (i.e. an AB (or AX) pattern at the slow exchange limit).</p>
 <p>The <cite>dnmr</cite> module provides the following functions:</p>
 <ul class="simple">
-<li><p><cite>dnmr_two_singlets</cite>: for simulating the lineshape for two uncoupled nuclei</p></li>
+<li><p><cite>dnmr_two_singlets</cite>: for simulating the lineshape for two uncoupled nuclei
+undergoing exchange <a class="footnote-reference brackets" href="#id7" id="id5">3</a>.</p></li>
+<li><p><cite>dnmr_AB</cite> : for simulating the lineshape for two coupled nuclei undergoing
+exchange (i.e. an AB (or AX) pattern at the slow exchange limit) <a class="footnote-reference brackets" href="#id8" id="id6">4</a>.</p></li>
 </ul>
-<p>undergoing exchange <a class="footnote-reference brackets" href="#id7" id="id5">3</a>.
-* <cite>dnmr_AB</cite> : for simulating the lineshape for two coupled nuclei undergoing
-exchange (i.e. an AB (or AX) pattern at the slow exchange limit) <a class="footnote-reference brackets" href="#id8" id="id6">4</a>.</p>
 <p class="rubric">References</p>
 <dl class="footnote brackets">
 <dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id5">3</a></span></dt>
 <dd><p>Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.</p>
 </dd>
 <dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id6">4</a></span></dt>
-<dd><p>a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632. b) an important math correction to the previous reference:
-TODO: add reference to correction</p>
+<dd><ol class="loweralpha simple">
+<li><p>Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632.</p></li>
+<li><p>an important math correction to the previous reference:</p></li>
+</ol>
+<blockquote>
+<div><p>TODO: add reference to correction</p>
+</div></blockquote>
 </dd>
 </dl>
 <dl class="class">
@@ -902,31 +907,16 @@ signal: a pair (e.g. tuple) of frequency, intensity values
 peaklist: a list (or 1D-array-like) of signals.</p>
 <p>Provides the following functions:</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt>add_peaks: combines a list of signals into one signal of average frequency</dt><dd><p>and summed intensity.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>reduce_peaks: processes a peaklist so that signals within a frequency</dt><dd><p>tolerance are added together.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>normalize_peaklist: scales a peaklist so that intensities add to a specific</dt><dd><p>value.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>lorentz: given a frequency, a signal and a linewidth, calculates an</dt><dd><p>intensity. Used to calculate Lorentzian lineshapes for signals.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>get_intensity: given a lineshape and a frequency, find the intensity at the</dt><dd><p>datapoint closest to that frequency.</p>
-</dd>
-</dl>
-</li>
+<li><p>add_peaks: combines a list of signals into one signal of average frequency
+and summed intensity.</p></li>
+<li><p>reduce_peaks: processes a peaklist so that signals within a frequency
+tolerance are added together.</p></li>
+<li><p>normalize_peaklist: scales a peaklist so that intensities add to a specific
+value.</p></li>
+<li><p>lorentz: given a frequency, a signal and a linewidth, calculates an
+intensity. Used to calculate Lorentzian lineshapes for signals.</p></li>
+<li><p>get_intensity: given a lineshape and a frequency, find the intensity at the
+datapoint closest to that frequency.</p></li>
 </ul>
 <dl class="function">
 <dt id="nmrsim.math.add_peaks">
@@ -1057,13 +1047,13 @@ plus applying Lorentzian distributions about signals.</p>
 <ul class="simple">
 <li><p>add_lorentzians: Creates lineshape data from a provided linspace (array of x
 coordinates) and peaklist).</p></li>
-<li><p>mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot</p></li>
+<li><p>mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot
+data.</p></li>
+<li><p>mplplot_stick: Creates a “stick” (matplotlib “stem” plot) plot from a
+peaklist and returns the x, y plot data.</p></li>
+<li><p>mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
+and returns the x, y plot data.</p></li>
 </ul>
-<p>data.
-* mplplot_stick: Creates a “stick” (matplotlib “stem” plot) plot from a
-peaklist and returns the x, y plot data.
-* mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
-and returns the x, y plot data.</p>
 <dl class="function">
 <dt id="nmrsim.plt.add_lorentzians">
 <code class="sig-prename descclassname">nmrsim.plt.</code><code class="sig-name descname">add_lorentzians</code><span class="sig-paren">(</span><em class="sig-param">linspace</em>, <em class="sig-param">peaklist</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/plt.html#add_lorentzians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.plt.add_lorentzians" title="Permalink to this definition">¶</a></dt>

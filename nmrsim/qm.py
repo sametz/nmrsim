@@ -449,4 +449,3 @@ def qm_spinsystem(*args, cache=CACHE, sparse=SPARSE, **kwargs):
     if not (cache and sparse):
         return secondorder_dense(*args, **kwargs)
     return secondorder_sparse(*args, **kwargs)
-

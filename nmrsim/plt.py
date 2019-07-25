@@ -6,11 +6,11 @@ The plt module provides the following functions:
 * add_lorentzians: Creates lineshape data from a provided linspace (array of x
   coordinates) and peaklist).
 * mplplot: Creates a lineshape plot from a peaklist and returns the x, y plot
-data.
+  data.
 * mplplot_stick: Creates a "stick" (matplotlib "stem" plot) plot from a
-peaklist and returns the x, y plot data.
+  peaklist and returns the x, y plot data.
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
-and returns the x, y plot data.
+  and returns the x, y plot data.
 
 """
 
@@ -182,8 +182,8 @@ def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
         if l_limit > r_limit:
             l_limit, r_limit = r_limit, l_limit
     else:
-        l_limit = min(x)  #x[0]  # assumes x already sorted low->high
-        r_limit = max(x)  #x[-1]
+        l_limit = min(x)  # x[0]  # assumes x already sorted low->high
+        r_limit = max(x)  # x[-1]
 
     if y_min is None or y_max is None:  # must test vs None so that 0 = True
         margin = max(y) * 0.1

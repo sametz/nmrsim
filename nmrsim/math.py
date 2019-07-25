@@ -7,18 +7,18 @@ peaklist: a list (or 1D-array-like) of signals.
 Provides the following functions:
 
 * add_peaks: combines a list of signals into one signal of average frequency
-    and summed intensity.
+  and summed intensity.
 
 * reduce_peaks: processes a peaklist so that signals within a frequency
-    tolerance are added together.
+  tolerance are added together.
 
 * normalize_peaklist: scales a peaklist so that intensities add to a specific
-    value.
+  value.
 * lorentz: given a frequency, a signal and a linewidth, calculates an
-    intensity. Used to calculate Lorentzian lineshapes for signals.
+  intensity. Used to calculate Lorentzian lineshapes for signals.
 
 * get_intensity: given a lineshape and a frequency, find the intensity at the
-    datapoint closest to that frequency.
+  datapoint closest to that frequency.
 """
 import numpy as np
 
