@@ -4,21 +4,23 @@ classes to describe DNMR systems.
 The dnmr module provides the following classes:
 
 * `DnmrTwoSinglets`: a sumulation of the lineshape for two uncoupled nuclei
-undergoing exchange.
+  undergoing exchange.
 * `DnmrAB`: a simulation of the lineshape for two coupled nuclei undergoing
-exchange (i.e. an AB (or AX) pattern at the slow exchange limit).
+  exchange (i.e. an AB (or AX) pattern at the slow exchange limit).
 
 The `dnmr` module provides the following functions:
 
 * `dnmr_two_singlets`: for simulating the lineshape for two uncoupled nuclei
-undergoing exchange [3]_.
+  undergoing exchange [3]_.
 * `dnmr_AB` : for simulating the lineshape for two coupled nuclei undergoing
-exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [4]_.
+  exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [4]_.
 
 References
 ----------
 .. [3] Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.
-.. [4] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632. b) an important math correction to the previous reference:
+.. [4] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632.
+   b) an important math correction to the previous reference:
+
     TODO: add reference to correction
 """
 import numpy as np
@@ -503,7 +505,7 @@ class DnmrAB:
     ----------
     See the documentation for the nmrsim.dnmr module.
     """
-    
+
     def __init__(self, va=165.0, vb=135.0, J=12.0, k=12.0, w=0.5,
                  limits=None, points=800):
         self.va = va

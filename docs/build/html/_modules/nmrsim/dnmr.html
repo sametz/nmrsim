@@ -157,21 +157,23 @@
 <span class="sd">The dnmr module provides the following classes:</span>
 
 <span class="sd">* `DnmrTwoSinglets`: a sumulation of the lineshape for two uncoupled nuclei</span>
-<span class="sd">undergoing exchange.</span>
+<span class="sd">  undergoing exchange.</span>
 <span class="sd">* `DnmrAB`: a simulation of the lineshape for two coupled nuclei undergoing</span>
-<span class="sd">exchange (i.e. an AB (or AX) pattern at the slow exchange limit).</span>
+<span class="sd">  exchange (i.e. an AB (or AX) pattern at the slow exchange limit).</span>
 
 <span class="sd">The `dnmr` module provides the following functions:</span>
 
 <span class="sd">* `dnmr_two_singlets`: for simulating the lineshape for two uncoupled nuclei</span>
-<span class="sd">undergoing exchange [3]_.</span>
+<span class="sd">  undergoing exchange [3]_.</span>
 <span class="sd">* `dnmr_AB` : for simulating the lineshape for two coupled nuclei undergoing</span>
-<span class="sd">exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [4]_.</span>
+<span class="sd">  exchange (i.e. an AB (or AX) pattern at the slow exchange limit) [4]_.</span>
 
 <span class="sd">References</span>
 <span class="sd">----------</span>
 <span class="sd">.. [3] Sandström, J. Dynamic NMR Spectroscopy; Academic Press: New York, 1982.</span>
-<span class="sd">.. [4] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632. b) an important math correction to the previous reference:</span>
+<span class="sd">.. [4] a) Brown, K.C.; Tyson, R.L.; Weil, J.A. J. Chem. Educ. 1998, 75, 1632.</span>
+<span class="sd">   b) an important math correction to the previous reference:</span>
+
 <span class="sd">    TODO: add reference to correction</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -656,7 +658,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    See the documentation for the nmrsim.dnmr module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="mf">165.0</span><span class="p">,</span> <span class="n">vb</span><span class="o">=</span><span class="mf">135.0</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
                  <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">va</span> <span class="o">=</span> <span class="n">va</span>
