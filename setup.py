@@ -24,8 +24,11 @@ setuptools.setup(
                       'sparse'],
     extras_require={
         'dev': [
+            'flake8',
             'pytest',
             'pyfakefs',
+            'sphinx',
+            'sphinxcontrib-napoleon',
         ]
     }
 )
