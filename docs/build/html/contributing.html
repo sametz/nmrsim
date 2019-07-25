@@ -185,8 +185,29 @@ the author, either by opening an Issue or by email (sametz at udel dot edu).
 This can be anything from a technical suggestion (NMR physics and code) to
 documentation and user-friendliness (e.g. unclear descriptions, typos, awkward
 namespace).</p>
-<p>By the time the project goes beta, there will be developer instructions and a
-Code of Conduct.</p>
+<p>If you are familiar with virtual environments (e.g. with venv, or a conda
+environment if you use a conda/Anaconda install), you can fork/clone/download
+the repo; create your virtual environment; and then, from the base nmrsim
+directory, run this from the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+<p>This will install nmrsim into your environment as well as developer tools. To
+check that your installation is working, you can then run the tests from the
+command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>There will be some “graph spam” since some of the tests generate matplotlib
+plots of spectra; just close the windows as they appear to move through the
+tests.</p>
+<p>If you are contributing to documentation, you can generate the html
+documentation by navigating to the “docs” directory and running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>By the time the project goes beta, there will be more detailed developer
+instructions and a Code of Conduct.</p>
 <p>Disclaimer: the author is neither an NMR spectroscopist, nor a software
 engineer. I’m figuring this out as I go along. I welcome any constructive
 criticism on any aspect of the project.</p>
