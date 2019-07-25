@@ -1,4 +1,4 @@
-"""Utilities used elsewhere in the nmrtools package."""
+"""Utilities used elsewhere in the nmrsim package."""
 
 import numbers
 

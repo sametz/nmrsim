@@ -2,7 +2,7 @@ This is a list of infrequent tasks, so that I remember how to perform them.
 
 If 'make html' isn't working for some reason, do this from the
 'docs' directory:
-    sphinx-apidoc -f -o source/ ../nmrtools/
+    sphinx-apidoc -f -o source/ ../nmrsim/
 
 When using pipenv, matplotlib on OSX gives an error. The solution is to edit the
  matplotlib configuration so as not to use the Mac backend, but TkAgg:
@@ -41,4 +41,4 @@ with setup.py and extras_require setup:
 pip install -e ".[dev]"
 see https://docs.python-eve.org/en/stable/contributing.html
 
-cd geoffrey\documents\github\nmrtools
+cd geoffrey\documents\github\nmrsim

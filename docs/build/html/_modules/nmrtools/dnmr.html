@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools.dnmr &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim.dnmr &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools.dnmr</li>
+      <li>nmrsim.dnmr</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +150,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools.dnmr</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim.dnmr</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;The `dnmr` module provides functions for calculating DNMR line shapes, and</span>
 <span class="sd">classes to describe DNMR systems.</span>
 
@@ -176,7 +176,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">nmrtools._utils</span> <span class="k">import</span> <span class="n">is_number</span><span class="p">,</span> <span class="n">is_decimal_fraction</span><span class="p">,</span> <span class="n">is_tuple_of_two_numbers</span><span class="p">,</span> <span class="n">is_positive</span><span class="p">,</span> <span class="n">is_integer</span>
+<span class="kn">from</span> <span class="nn">nmrsim._utils</span> <span class="k">import</span> <span class="n">is_number</span><span class="p">,</span> <span class="n">is_decimal_fraction</span><span class="p">,</span> <span class="n">is_tuple_of_two_numbers</span><span class="p">,</span> <span class="n">is_positive</span><span class="p">,</span> <span class="n">is_integer</span>
 
 
 <span class="k">def</span> <span class="nf">_dnmr_two_singlets_func</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">wa</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">):</span>
@@ -213,7 +213,7 @@
 
 <span class="sd">     Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The nmrtools.dnmr module gives a reference for the algorithm used here.</span>
+<span class="sd">    The nmrsim.dnmr module gives a reference for the algorithm used here.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
@@ -251,7 +251,7 @@
     <span class="k">return</span> <span class="n">_maker</span>
 
 
-<div class="viewcode-block" id="dnmr_two_singlets"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.dnmr.dnmr_two_singlets">[docs]</a><span class="k">def</span> <span class="nf">dnmr_two_singlets</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">wa</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">):</span>
+<div class="viewcode-block" id="dnmr_two_singlets"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.dnmr.dnmr_two_singlets">[docs]</a><span class="k">def</span> <span class="nf">dnmr_two_singlets</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">ka</span><span class="p">,</span> <span class="n">wa</span><span class="p">,</span> <span class="n">wb</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a the lineshape for a DNMR spectrum of two uncoupled spin-half</span>
 <span class="sd">    nuclei.</span>
@@ -283,7 +283,7 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    See the documentation for the nmrtools.dnmr module.</span>
+<span class="sd">    See the documentation for the nmrsim.dnmr module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">vb</span> <span class="o">&gt;</span> <span class="n">va</span><span class="p">:</span>
         <span class="n">va</span><span class="p">,</span> <span class="n">vb</span> <span class="o">=</span> <span class="n">vb</span><span class="p">,</span> <span class="n">va</span>
@@ -301,7 +301,7 @@
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
 
 
-<div class="viewcode-block" id="DnmrTwoSinglets"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.dnmr.DnmrTwoSinglets">[docs]</a><span class="k">class</span> <span class="nc">DnmrTwoSinglets</span><span class="p">:</span>
+<div class="viewcode-block" id="DnmrTwoSinglets"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.dnmr.DnmrTwoSinglets">[docs]</a><span class="k">class</span> <span class="nc">DnmrTwoSinglets</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot; A DNMR simulation for two uncoupled nuclei undergoing exchange.</span>
 
 <span class="sd">    Parameters</span>
@@ -484,7 +484,7 @@
     <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DnmrTwoSinglets.lineshape"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.dnmr.DnmrTwoSinglets.lineshape">[docs]</a>    <span class="k">def</span> <span class="nf">lineshape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DnmrTwoSinglets.lineshape"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.dnmr.DnmrTwoSinglets.lineshape">[docs]</a>    <span class="k">def</span> <span class="nf">lineshape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate and return the lineshape for the DNMR spectrum.</span>
 
@@ -533,7 +533,7 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    See the documentation for the nmrtools.dnmr module.</span>
+<span class="sd">    See the documentation for the nmrsim.dnmr module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
     <span class="n">vo</span> <span class="o">=</span> <span class="p">(</span><span class="n">v1</span> <span class="o">+</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
@@ -566,7 +566,7 @@
     <span class="k">return</span> <span class="n">I</span>
 
 
-<div class="viewcode-block" id="dnmr_AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.dnmr.dnmr_AB">[docs]</a><span class="k">def</span> <span class="nf">dnmr_AB</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">):</span>
+<div class="viewcode-block" id="dnmr_AB"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.dnmr.dnmr_AB">[docs]</a><span class="k">def</span> <span class="nf">dnmr_AB</span><span class="p">(</span><span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulate the DNMR lineshape for two coupled nuclei undergoing exchange</span>
 <span class="sd">    (AB or AX pattern at the slow-exchange limit).</span>
@@ -598,7 +598,7 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    See the documentation for the nmrtools.dnmr module.</span>
+<span class="sd">    See the documentation for the nmrsim.dnmr module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">limits</span><span class="p">:</span>
         <span class="n">l_limit</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">limits</span><span class="p">)</span>
@@ -611,7 +611,7 @@
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
 
 
-<div class="viewcode-block" id="DnmrAB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.dnmr.DnmrAB">[docs]</a><span class="k">class</span> <span class="nc">DnmrAB</span><span class="p">:</span>
+<div class="viewcode-block" id="DnmrAB"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.dnmr.DnmrAB">[docs]</a><span class="k">class</span> <span class="nc">DnmrAB</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulate the DNMR lineshape for two coupled nuclei undergoing exchange</span>
 <span class="sd">    (AB or AX pattern at the slow-exchange limit).</span>
@@ -654,7 +654,7 @@
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
-<span class="sd">    See the documentation for the nmrtools.dnmr module.</span>
+<span class="sd">    See the documentation for the nmrsim.dnmr module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="mf">165.0</span><span class="p">,</span> <span class="n">vb</span><span class="o">=</span><span class="mf">135.0</span><span class="p">,</span> <span class="n">J</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
@@ -779,7 +779,7 @@
     <span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">is_integer</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DnmrAB.lineshape"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.dnmr.DnmrAB.lineshape">[docs]</a>    <span class="k">def</span> <span class="nf">lineshape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DnmrAB.lineshape"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.dnmr.DnmrAB.lineshape">[docs]</a>    <span class="k">def</span> <span class="nf">lineshape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">_dnmr_AB_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">va</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">J</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div></div>

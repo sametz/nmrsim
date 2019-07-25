@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools.plt &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim.plt &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools.plt</li>
+      <li>nmrsim.plt</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +150,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools.plt</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim.plt</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;The plt module provides convenience functions for creating matplotlib plots,</span>
 <span class="sd">plus applying Lorentzian distributions about signals.</span>
 
@@ -170,10 +170,10 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">nmrtools.math</span> <span class="k">import</span> <span class="n">lorentz</span>
+<span class="kn">from</span> <span class="nn">nmrsim.math</span> <span class="k">import</span> <span class="n">lorentz</span>
 
 
-<div class="viewcode-block" id="add_lorentzians"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.plt.add_lorentzians">[docs]</a><span class="k">def</span> <span class="nf">add_lorentzians</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">peaklist</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+<div class="viewcode-block" id="add_lorentzians"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.plt.add_lorentzians">[docs]</a><span class="k">def</span> <span class="nf">add_lorentzians</span><span class="p">(</span><span class="n">linspace</span><span class="p">,</span> <span class="n">peaklist</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a numpy linspace, a spectrum as a list of (frequency, intensity)</span>
 <span class="sd">    tuples, and a linewidth, returns an array of y coordinates for the</span>
@@ -202,7 +202,7 @@
     <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="mplplot"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.plt.mplplot">[docs]</a><span class="k">def</span> <span class="nf">mplplot</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="mplplot"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.plt.mplplot">[docs]</a><span class="k">def</span> <span class="nf">mplplot</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A matplotlib plot of the simulated lineshape for a peaklist.</span>
 
@@ -252,7 +252,7 @@
     <span class="c1"># TODO: or return plt? Decide behavior</span>
 
 
-<div class="viewcode-block" id="mplplot_stick"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.plt.mplplot_stick">[docs]</a><span class="k">def</span> <span class="nf">mplplot_stick</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="mplplot_stick"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.plt.mplplot_stick">[docs]</a><span class="k">def</span> <span class="nf">mplplot_stick</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=-</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A  matplotlib plot of a spectrum in &quot;stick&quot; (stem) style.</span>
 
 <span class="sd">    Parameters</span>
@@ -302,7 +302,7 @@
     <span class="c1"># TODO: or return plt object? Decide behavior.</span>
 
 
-<div class="viewcode-block" id="mplplot_lineshape"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.plt.mplplot_lineshape">[docs]</a><span class="k">def</span> <span class="nf">mplplot_lineshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="mplplot_lineshape"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.plt.mplplot_lineshape">[docs]</a><span class="k">def</span> <span class="nf">mplplot_lineshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A matplotlib plot that accepts arrays of x and y coordinates.</span>
 

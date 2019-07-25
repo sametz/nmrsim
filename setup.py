@@ -4,7 +4,7 @@ with open("README.rst", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="nmrtools",
+    name="nmrsim",
     version="0.2.0",
     author="Geoffrey M. Sametz",
     author_email="sametz@udel.edu",
@@ -24,10 +24,12 @@ setuptools.setup(
                       'sparse'],
     extras_require={
         'dev': [
+            'nbsphinx',
             'flake8',
             'pytest',
             'pyfakefs',
             'sphinx',
+            'sphinx_rtd_theme',
             'sphinxcontrib-napoleon',
         ]
     }

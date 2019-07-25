@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools.firstorder &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim.firstorder &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools.firstorder</li>
+      <li>nmrsim.firstorder</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,19 +150,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools.firstorder</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim.firstorder</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;&quot;Functions for calculating first-order spectra.</span>
 
-<span class="sd">The nmrtools.firstorder module provides the following functions:</span>
+<span class="sd">The nmrsim.firstorder module provides the following functions:</span>
 
 <span class="sd">* multiplet: performs first-order splitting of a signal into multiple signals.</span>
 
 <span class="sd">* first_order_spin_system: provides a peaklist for several nuclei, using the</span>
 <span class="sd">    same v/J parameters that are used for second-order spin systems.</span>
-<span class="sd">    See nmrtools.qm for details on these parameters.</span>
+<span class="sd">    See nmrsim.qm for details on these parameters.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">nmrtools.math</span> <span class="k">import</span> <span class="n">reduce_peaks</span>
+<span class="kn">from</span> <span class="nn">nmrsim.math</span> <span class="k">import</span> <span class="n">reduce_peaks</span>
 
 
 <span class="k">def</span> <span class="nf">_doublet</span><span class="p">(</span><span class="n">plist</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
@@ -189,7 +189,7 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
-<div class="viewcode-block" id="multiplet"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.firstorder.multiplet">[docs]</a><span class="k">def</span> <span class="nf">multiplet</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
+<div class="viewcode-block" id="multiplet"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.firstorder.multiplet">[docs]</a><span class="k">def</span> <span class="nf">multiplet</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits a set of signals into first-order multiplets.</span>
 
@@ -217,14 +217,14 @@
     <span class="k">return</span> <span class="n">reduce_peaks</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="first_order_spin_system"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.firstorder.first_order_spin_system">[docs]</a><span class="k">def</span> <span class="nf">first_order_spin_system</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
+<div class="viewcode-block" id="first_order_spin_system"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.firstorder.first_order_spin_system">[docs]</a><span class="k">def</span> <span class="nf">first_order_spin_system</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a first-order peaklist of several multiplets from the same v/J</span>
 <span class="sd">    arguments used for qm calculations.</span>
 
 <span class="sd">    This allows a user to model several multiplets at once, rather than</span>
 <span class="sd">    creating each multiplet individually. It also provides a &quot;toggle&quot; where</span>
-<span class="sd">    the user, or a higher-level function/class (such as nmrtools.SpinSystem)</span>
+<span class="sd">    the user, or a higher-level function/class (such as nmrsim.SpinSystem)</span>
 <span class="sd">    can decide whether a spin system is modeled as first order or second order.</span>
 
 <span class="sd">    Parameters</span>

@@ -1,15 +1,15 @@
 """"Functions for calculating first-order spectra.
 
-The nmrtools.firstorder module provides the following functions:
+The nmrsim.firstorder module provides the following functions:
 
 * multiplet: performs first-order splitting of a signal into multiple signals.
 
 * first_order_spin_system: provides a peaklist for several nuclei, using the
     same v/J parameters that are used for second-order spin systems.
-    See nmrtools.qm for details on these parameters.
+    See nmrsim.qm for details on these parameters.
 """
 
-from nmrtools.math import reduce_peaks
+from nmrsim.math import reduce_peaks
 
 
 def _doublet(plist, J):
@@ -71,7 +71,7 @@ def first_order_spin_system(v, J):
 
     This allows a user to model several multiplets at once, rather than
     creating each multiplet individually. It also provides a "toggle" where
-    the user, or a higher-level function/class (such as nmrtools.SpinSystem)
+    the user, or a higher-level function/class (such as nmrsim.SpinSystem)
     can decide whether a spin system is modeled as first order or second order.
 
     Parameters

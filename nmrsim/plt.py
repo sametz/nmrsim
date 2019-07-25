@@ -17,7 +17,7 @@ and returns the x, y plot data.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from nmrtools.math import lorentz
+from nmrsim.math import lorentz
 
 
 def add_lorentzians(linspace, peaklist, w):

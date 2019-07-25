@@ -1,53 +1,53 @@
-nmrtools package
+nmrsim package
 ================
 
 Submodules
 ----------
 
-nmrtools.discrete module
+nmrsim.discrete module
 ------------------------
 
-.. automodule:: nmrtools.discrete
+.. automodule:: nmrsim.discrete
    :members:
    :undoc-members:
    :show-inheritance:
 
-nmrtools.dnmr module
+nmrsim.dnmr module
 --------------------
 
-.. automodule:: nmrtools.dnmr
+.. automodule:: nmrsim.dnmr
    :members:
    :undoc-members:
    :show-inheritance:
 
-nmrtools.firstorder module
+nmrsim.firstorder module
 --------------------------
 
-.. automodule:: nmrtools.firstorder
+.. automodule:: nmrsim.firstorder
    :members:
    :undoc-members:
    :show-inheritance:
 
-nmrtools.math module
+nmrsim.math module
 --------------------
 
-.. automodule:: nmrtools.math
+.. automodule:: nmrsim.math
    :members:
    :undoc-members:
    :show-inheritance:
 
-nmrtools.plt module
+nmrsim.plt module
 -------------------
 
-.. automodule:: nmrtools.plt
+.. automodule:: nmrsim.plt
    :members:
    :undoc-members:
    :show-inheritance:
 
-nmrtools.qm module
+nmrsim.qm module
 ------------------
 
-.. automodule:: nmrtools.qm
+.. automodule:: nmrsim.qm
    :members:
    :undoc-members:
    :show-inheritance:
@@ -56,7 +56,7 @@ nmrtools.qm module
 Module contents
 ---------------
 
-.. automodule:: nmrtools
+.. automodule:: nmrsim
    :members: Multiplet, SpinSystem, Spectrum
    :undoc-members:
    :show-inheritance:

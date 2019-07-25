@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from nmrtools import Multiplet, SpinSystem, Spectrum
-from nmrtools.firstorder import first_order_spin_system
+from nmrsim import Multiplet, SpinSystem, Spectrum
+from nmrsim.firstorder import first_order_spin_system
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.simulation_data import rioux
 

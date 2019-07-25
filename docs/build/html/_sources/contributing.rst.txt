@@ -1,4 +1,4 @@
-Contributing to **nmrtools**
+Contributing to **nmrsim**
 ----------------------------
 
 While the project is alpha, the best way to contribute is to send feedback to

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools._classes &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim._classes &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools._classes</li>
+      <li>nmrsim._classes</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +150,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools._classes</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim._classes</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;This module provides high-level API classes for abstract NMR concepts such</span>
 <span class="sd">as spin systems and spectra.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -159,16 +159,16 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">nmrtools.firstorder</span> <span class="k">import</span> <span class="n">first_order_spin_system</span><span class="p">,</span> <span class="n">multiplet</span>
-<span class="kn">from</span> <span class="nn">nmrtools.math</span> <span class="k">import</span> <span class="n">reduce_peaks</span>
-<span class="kn">from</span> <span class="nn">nmrtools.qm</span> <span class="k">import</span> <span class="n">qm_spinsystem</span>
+<span class="kn">from</span> <span class="nn">nmrsim.firstorder</span> <span class="k">import</span> <span class="n">first_order_spin_system</span><span class="p">,</span> <span class="n">multiplet</span>
+<span class="kn">from</span> <span class="nn">nmrsim.math</span> <span class="k">import</span> <span class="n">reduce_peaks</span>
+<span class="kn">from</span> <span class="nn">nmrsim.qm</span> <span class="k">import</span> <span class="n">qm_spinsystem</span>
 
 <span class="kn">from</span> <span class="nn">._descriptors</span> <span class="k">import</span> <span class="n">Number</span><span class="p">,</span> <span class="n">Couplings</span>
 
 
-<span class="c1"># TODO: Multiplet &quot;belongs&quot; in the nmrtools.firstorder namespace, but has a</span>
+<span class="c1"># TODO: Multiplet &quot;belongs&quot; in the nmrsim.firstorder namespace, but has a</span>
 <span class="c1"># cyclic dependency with</span>
-<div class="viewcode-block" id="Multiplet"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.Multiplet">[docs]</a><span class="k">class</span> <span class="nc">Multiplet</span><span class="p">:</span>
+<div class="viewcode-block" id="Multiplet"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Multiplet">[docs]</a><span class="k">class</span> <span class="nc">Multiplet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A representation of a first-order multiplet.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -214,13 +214,13 @@
     <span class="k">def</span> <span class="nf">_refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_peaklist</span> <span class="o">=</span> <span class="n">multiplet</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">J</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Multiplet.peaklist"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.Multiplet.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Multiplet.peaklist"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Multiplet.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a list of (frequency, intensity) signals.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_refresh</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peaklist</span></div></div>
 
 
-<div class="viewcode-block" id="SpinSystem"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.SpinSystem">[docs]</a><span class="k">class</span> <span class="nc">SpinSystem</span><span class="p">:</span>
+<div class="viewcode-block" id="SpinSystem"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.SpinSystem">[docs]</a><span class="k">class</span> <span class="nc">SpinSystem</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Stub implementation of SpinSystem.</span>
 <span class="sd">    Flesh out API (e.g. getters/setters; dunder methods) later.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">second_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -270,7 +270,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;second_order must be a boolean&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SpinSystem.peaklist"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.SpinSystem.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SpinSystem.peaklist"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.SpinSystem.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_second_order</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">qm_spinsystem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_J</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -287,7 +287,7 @@
             <span class="k">return</span> <span class="bp">NotImplemented</span></div>
 
 
-<div class="viewcode-block" id="Spectrum"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.Spectrum">[docs]</a><span class="k">class</span> <span class="nc">Spectrum</span><span class="p">:</span>
+<div class="viewcode-block" id="Spectrum"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Spectrum">[docs]</a><span class="k">class</span> <span class="nc">Spectrum</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Stub implementation of Spectrum.</span>
 <span class="sd">    Flesh out API (e.g. getter/setters; dunder methods) later.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
@@ -312,7 +312,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-<div class="viewcode-block" id="Spectrum.peaklist"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.Spectrum.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Spectrum.peaklist"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Spectrum.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peaklist</span></div></div>
 </pre></div>
 

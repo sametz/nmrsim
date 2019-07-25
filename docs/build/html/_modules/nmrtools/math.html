@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools.math &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim.math &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools.math</li>
+      <li>nmrsim.math</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +150,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools.math</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim.math</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;A collection of functions for processing simulated NMR spectra.</span>
 
 <span class="sd">Terms used:</span>
@@ -176,7 +176,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="add_peaks"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.add_peaks">[docs]</a><span class="k">def</span> <span class="nf">add_peaks</span><span class="p">(</span><span class="n">plist</span><span class="p">):</span>
+<div class="viewcode-block" id="add_peaks"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.math.add_peaks">[docs]</a><span class="k">def</span> <span class="nf">add_peaks</span><span class="p">(</span><span class="n">plist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reduces a list of (frequency, intensity) tuples to an</span>
 <span class="sd">    (average frequency, total intensity) tuple.</span>
@@ -199,7 +199,7 @@
     <span class="k">return</span> <span class="n">v_total</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">plist</span><span class="p">),</span> <span class="n">i_total</span></div>
 
 
-<div class="viewcode-block" id="reduce_peaks"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.reduce_peaks">[docs]</a><span class="k">def</span> <span class="nf">reduce_peaks</span><span class="p">(</span><span class="n">plist_</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="reduce_peaks"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.math.reduce_peaks">[docs]</a><span class="k">def</span> <span class="nf">reduce_peaks</span><span class="p">(</span><span class="n">plist_</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes a list of (x, y) tuples and adds together tuples whose values are</span>
 <span class="sd">    within a certain tolerance limit.</span>
@@ -251,7 +251,7 @@
     <span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">factor</span> <span class="o">*</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">intensities</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="normalize_peaklist"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.normalize_peaklist">[docs]</a><span class="k">def</span> <span class="nf">normalize_peaklist</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="normalize_peaklist"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.math.normalize_peaklist">[docs]</a><span class="k">def</span> <span class="nf">normalize_peaklist</span><span class="p">(</span><span class="n">peaklist</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Normalize the intensities in a spectrum so that total intensity equals</span>
 <span class="sd">    value n (nominally the number of nuclei giving rise to the signal).</span>
@@ -268,7 +268,7 @@
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">int_</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="lorentz"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.lorentz">[docs]</a><span class="k">def</span> <span class="nf">lorentz</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+<div class="viewcode-block" id="lorentz"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.math.lorentz">[docs]</a><span class="k">def</span> <span class="nf">lorentz</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A lorentz function that takes linewidth at half intensity (w) as a</span>
 <span class="sd">    parameter.</span>
@@ -300,7 +300,7 @@
             <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">((</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="get_intensity"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.get_intensity">[docs]</a><span class="k">def</span> <span class="nf">get_intensity</span><span class="p">(</span><span class="n">lineshape</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="get_intensity"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.math.get_intensity">[docs]</a><span class="k">def</span> <span class="nf">get_intensity</span><span class="p">(</span><span class="n">lineshape</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A crude method to find the intensity of data point closest to</span>
 <span class="sd">    frequency x. Better: interpolate between two data points if match isn&#39;t</span>
@@ -319,7 +319,7 @@
     <span class="k">return</span> <span class="n">lineshape</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">nearest_x_index</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="get_maxima"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.math.get_maxima">[docs]</a><span class="k">def</span> <span class="nf">get_maxima</span><span class="p">(</span><span class="n">lineshape</span><span class="p">):</span>
+<div class="viewcode-block" id="get_maxima"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.math.get_maxima">[docs]</a><span class="k">def</span> <span class="nf">get_maxima</span><span class="p">(</span><span class="n">lineshape</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Crude function that returns maxima in the lineshape.</span>
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools.discrete &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim.discrete &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools.discrete</li>
+      <li>nmrsim.discrete</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +150,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools.discrete</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim.discrete</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Non-quantum mechanical solutions for specific second-order patterns.</span>
 
 <span class="sd">These are adapted from the routines from WINDNMR [1]_ by Hans Reich,</span>
@@ -178,11 +178,11 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">nmrtools.firstorder</span> <span class="k">import</span> <span class="n">multiplet</span>
-<span class="kn">from</span> <span class="nn">nmrtools.math</span> <span class="k">import</span> <span class="n">_normalize</span>
+<span class="kn">from</span> <span class="nn">nmrsim.firstorder</span> <span class="k">import</span> <span class="n">multiplet</span>
+<span class="kn">from</span> <span class="nn">nmrsim.math</span> <span class="k">import</span> <span class="n">_normalize</span>
 
 
-<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.discrete.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.discrete.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the signal frequencies and intensities for two strongly</span>
 <span class="sd">    coupled protons (Ha and Hb).</span>
@@ -224,7 +224,7 @@
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">vList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="AB2"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.discrete.AB2">[docs]</a><span class="k">def</span> <span class="nf">AB2</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="AB2"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.discrete.AB2">[docs]</a><span class="k">def</span> <span class="nf">AB2</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates signal frequencies and intensities for an AB2 spin system.</span>
 
@@ -300,7 +300,7 @@
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">vList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="ABX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.discrete.ABX">[docs]</a><span class="k">def</span> <span class="nf">ABX</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ABX"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.discrete.ABX">[docs]</a><span class="k">def</span> <span class="nf">ABX</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Non-QM approximation for an ABX spin system. The approximation assumes</span>
 <span class="sd">    that Hx is very far away in chemical shift from Ha/Hb.</span>
@@ -390,7 +390,7 @@
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">VList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="ABX3"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.discrete.ABX3">[docs]</a><span class="k">def</span> <span class="nf">ABX3</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">):</span>
+<div class="viewcode-block" id="ABX3"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.discrete.ABX3">[docs]</a><span class="k">def</span> <span class="nf">ABX3</span><span class="p">(</span><span class="n">Jab</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jbx</span><span class="p">,</span> <span class="n">Vab</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulation of the AB part of an ABX3 spin system.</span>
 
@@ -431,7 +431,7 @@
     <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="AAXX"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.discrete.AAXX">[docs]</a><span class="k">def</span> <span class="nf">AAXX</span><span class="p">(</span><span class="n">Jaa</span><span class="p">,</span> <span class="n">Jxx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jax_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="AAXX"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.discrete.AAXX">[docs]</a><span class="k">def</span> <span class="nf">AAXX</span><span class="p">(</span><span class="n">Jaa</span><span class="p">,</span> <span class="n">Jxx</span><span class="p">,</span> <span class="n">Jax</span><span class="p">,</span> <span class="n">Jax_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulates one half (&#39;A&#39; part) of an AA&#39;XX&#39; spin system.</span>
 
@@ -498,7 +498,7 @@
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">VList</span><span class="p">,</span> <span class="n">IList</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="AABB"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.discrete.AABB">[docs]</a><span class="k">def</span> <span class="nf">AABB</span><span class="p">(</span><span class="n">Vab</span><span class="p">,</span> <span class="n">Jaa</span><span class="p">,</span> <span class="n">Jbb</span><span class="p">,</span> <span class="n">Jab</span><span class="p">,</span> <span class="n">Jab_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="AABB"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.discrete.AABB">[docs]</a><span class="k">def</span> <span class="nf">AABB</span><span class="p">(</span><span class="n">Vab</span><span class="p">,</span> <span class="n">Jaa</span><span class="p">,</span> <span class="n">Jbb</span><span class="p">,</span> <span class="n">Jab</span><span class="p">,</span> <span class="n">Jab_prime</span><span class="p">,</span> <span class="n">Vcentr</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A wrapper for a second-order AA&#39;BB&#39; calculation, but using the</span>
 <span class="sd">    same arguments as WINDNMR.</span>
@@ -523,7 +523,7 @@
 <span class="sd">    [(float, float)...]</span>
 <span class="sd">        a list of (frequency, intensity) tuples.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">nmrtools.qm</span> <span class="k">import</span> <span class="n">qm_spinsystem</span>
+    <span class="kn">from</span> <span class="nn">nmrsim.qm</span> <span class="k">import</span> <span class="n">qm_spinsystem</span>
     <span class="n">va</span> <span class="o">=</span> <span class="n">Vcentr</span> <span class="o">-</span> <span class="n">Vab</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">vb</span> <span class="o">=</span> <span class="n">Vcentr</span> <span class="o">+</span> <span class="n">Vab</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">freqlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">va</span><span class="p">,</span> <span class="n">va</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="n">vb</span><span class="p">]</span>

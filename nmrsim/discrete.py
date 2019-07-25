@@ -25,8 +25,8 @@ from math import sqrt
 
 import numpy as np
 
-from nmrtools.firstorder import multiplet
-from nmrtools.math import _normalize
+from nmrsim.firstorder import multiplet
+from nmrsim.math import _normalize
 
 
 def AB(Jab, Vab, Vcentr, normalize=True):
@@ -370,7 +370,7 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
     [(float, float)...]
         a list of (frequency, intensity) tuples.
     """
-    from nmrtools.qm import qm_spinsystem
+    from nmrsim.qm import qm_spinsystem
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
     freqlist = [va, va, vb, vb]

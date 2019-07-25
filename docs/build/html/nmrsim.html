@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools package &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim package &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> nmrtools
+            <a href="index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <code class="code docutils literal notranslate"><span class="pre">nmrtools</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">nmrtools</a>
+          <a href="index.html">nmrsim</a>
         
       </nav>
 
@@ -133,13 +133,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>nmrtools package</li>
+      <li>nmrsim package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/nmrtools.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/nmrsim.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -176,13 +176,13 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="nmrtools-package">
-<h1>nmrtools package<a class="headerlink" href="#nmrtools-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="nmrsim-package">
+<h1>nmrsim package<a class="headerlink" href="#nmrsim-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-nmrtools.discrete">
-<span id="nmrtools-discrete-module"></span><h2>nmrtools.discrete module<a class="headerlink" href="#module-nmrtools.discrete" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nmrsim.discrete">
+<span id="nmrsim-discrete-module"></span><h2>nmrsim.discrete module<a class="headerlink" href="#module-nmrsim.discrete" title="Permalink to this headline">¶</a></h2>
 <p>Non-quantum mechanical solutions for specific second-order patterns.</p>
 <p>These are adapted from the routines from WINDNMR <a class="footnote-reference brackets" href="#id3" id="id1">1</a> by Hans Reich,
 U. Wisconsin, and equations from Pople, Schneider and Bernstein <a class="footnote-reference brackets" href="#id4" id="id2">2</a>. Note that
@@ -205,8 +205,8 @@ WINDNMR interface and source code (for now).</p>
 </dl>
 <p>McGraw-Hill, 1959.</p>
 <dl class="function">
-<dt id="nmrtools.discrete.AABB">
-<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AABB</code><span class="sig-paren">(</span><em class="sig-param">Vab</em>, <em class="sig-param">Jaa</em>, <em class="sig-param">Jbb</em>, <em class="sig-param">Jab</em>, <em class="sig-param">Jab_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AABB" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.discrete.AABB">
+<code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">AABB</code><span class="sig-paren">(</span><em class="sig-param">Vab</em>, <em class="sig-param">Jaa</em>, <em class="sig-param">Jbb</em>, <em class="sig-param">Jab</em>, <em class="sig-param">Jab_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.AABB" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper for a second-order AA’BB’ calculation, but using the
 same arguments as WINDNMR.</p>
 <dl class="field-list simple">
@@ -232,8 +232,8 @@ JAX_prime the JAX’.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.discrete.AAXX">
-<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AAXX</code><span class="sig-paren">(</span><em class="sig-param">Jaa</em>, <em class="sig-param">Jxx</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jax_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AAXX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AAXX" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.discrete.AAXX">
+<code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">AAXX</code><span class="sig-paren">(</span><em class="sig-param">Jaa</em>, <em class="sig-param">Jxx</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jax_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#AAXX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.AAXX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simulates one half (‘A’ part) of an AA’XX’ spin system.</p>
 <p>All frequencies are in Hz.</p>
 <dl class="field-list simple">
@@ -257,8 +257,8 @@ JAX_prime the JAX’.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.discrete.AB">
-<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AB</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AB" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.discrete.AB">
+<code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">AB</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.AB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the signal frequencies and intensities for two strongly
 coupled protons (Ha and Hb).</p>
 <dl class="field-list simple">
@@ -281,8 +281,8 @@ of coupling.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.discrete.AB2">
-<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">AB2</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#AB2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.AB2" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.discrete.AB2">
+<code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">AB2</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#AB2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.AB2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates signal frequencies and intensities for an AB2 spin system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -304,8 +304,8 @@ negative means va &gt; vb.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.discrete.ABX">
-<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">ABX</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jbx</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">vx</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.ABX" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.discrete.ABX">
+<code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">ABX</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jbx</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">vx</em>, <em class="sig-param">normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#ABX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.ABX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Non-QM approximation for an ABX spin system. The approximation assumes
 that Hx is very far away in chemical shift from Ha/Hb.</p>
 <dl class="field-list simple">
@@ -332,8 +332,8 @@ signal intensity happens to be ~12.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.discrete.ABX3">
-<code class="sig-prename descclassname">nmrtools.discrete.</code><code class="sig-name descname">ABX3</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jbx</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/discrete.html#ABX3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.discrete.ABX3" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.discrete.ABX3">
+<code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">ABX3</code><span class="sig-paren">(</span><em class="sig-param">Jab</em>, <em class="sig-param">Jax</em>, <em class="sig-param">Jbx</em>, <em class="sig-param">Vab</em>, <em class="sig-param">Vcentr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#ABX3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.ABX3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simulation of the AB part of an ABX3 spin system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -356,8 +356,8 @@ coupling. Positive when vb &gt; va.</p></li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools.dnmr">
-<span id="nmrtools-dnmr-module"></span><h2>nmrtools.dnmr module<a class="headerlink" href="#module-nmrtools.dnmr" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nmrsim.dnmr">
+<span id="nmrsim-dnmr-module"></span><h2>nmrsim.dnmr module<a class="headerlink" href="#module-nmrsim.dnmr" title="Permalink to this headline">¶</a></h2>
 <p>The <cite>dnmr</cite> module provides functions for calculating DNMR line shapes, and
 classes to describe DNMR systems.</p>
 <p>The dnmr module provides the following classes:</p>
@@ -385,8 +385,8 @@ TODO: add reference to correction</p>
 </dd>
 </dl>
 <dl class="class">
-<dt id="nmrtools.dnmr.DnmrAB">
-<em class="property">class </em><code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">DnmrAB</code><span class="sig-paren">(</span><em class="sig-param">va=165.0</em>, <em class="sig-param">vb=135.0</em>, <em class="sig-param">J=12.0</em>, <em class="sig-param">k=12.0</em>, <em class="sig-param">w=0.5</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrAB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrAB" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB">
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.dnmr.</code><code class="sig-name descname">DnmrAB</code><span class="sig-paren">(</span><em class="sig-param">va=165.0</em>, <em class="sig-param">vb=135.0</em>, <em class="sig-param">J=12.0</em>, <em class="sig-param">k=12.0</em>, <em class="sig-param">w=0.5</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#DnmrAB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.dnmr.DnmrAB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Simulate the DNMR lineshape for two coupled nuclei undergoing exchange
 (AB or AX pattern at the slow-exchange limit).</p>
@@ -404,43 +404,43 @@ in the absence of coupling)</p></li>
 </dd>
 </dl>
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.va">
-<code class="sig-name descname">va</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.va" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.va">
+<code class="sig-name descname">va</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.va" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.vb">
-<code class="sig-name descname">vb</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.vb" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.vb">
+<code class="sig-name descname">vb</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.vb" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.J">
-<code class="sig-name descname">J</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.J" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.J">
+<code class="sig-name descname">J</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.J" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.k">
-<code class="sig-name descname">k</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.k" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.k">
+<code class="sig-name descname">k</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.k" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.w">
-<code class="sig-name descname">w</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.w" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.w">
+<code class="sig-name descname">w</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.w" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.limits">
-<code class="sig-name descname">limits</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.limits" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.limits">
+<code class="sig-name descname">limits</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.limits" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrAB.points">
-<code class="sig-name descname">points</code><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.points" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.points">
+<code class="sig-name descname">points</code><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="nmrtools.dnmr.DnmrAB.lineshape">
-<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrAB.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrAB.lineshape" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrAB.lineshape">
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#DnmrAB.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.dnmr.DnmrAB.lineshape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the x, y (frequency, intensity) data for the lineshape
 simulation.</p>
 </dd></dl>
@@ -448,12 +448,12 @@ simulation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrAB" title="nmrtools.dnmr.DnmrAB"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnmrAB</span></code></a></dt><dd><p>A class representation for this simulation.</p>
+<dt><a class="reference internal" href="#nmrsim.dnmr.DnmrAB" title="nmrsim.dnmr.DnmrAB"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnmrAB</span></code></a></dt><dd><p>A class representation for this simulation.</p>
 </dd>
 </dl>
 </div>
 <p class="rubric">References</p>
-<p>See the documentation for the nmrtools.dnmr module.</p>
+<p>See the documentation for the nmrsim.dnmr module.</p>
 <dl class="method">
 <dt>
 <em class="property">property </em><code class="sig-name descname">J</code></dt>
@@ -498,7 +498,7 @@ simulation.</p>
 
 <dl class="method">
 <dt>
-<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrAB.lineshape"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#DnmrAB.lineshape"><span class="viewcode-link">[source]</span></a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -556,8 +556,8 @@ absence of coupling.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets">
-<em class="property">class </em><code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">DnmrTwoSinglets</code><span class="sig-paren">(</span><em class="sig-param">va=1</em>, <em class="sig-param">vb=0</em>, <em class="sig-param">k=0.01</em>, <em class="sig-param">wa=0.5</em>, <em class="sig-param">wb=0.5</em>, <em class="sig-param">pa=0.5</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrTwoSinglets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets">
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.dnmr.</code><code class="sig-name descname">DnmrTwoSinglets</code><span class="sig-paren">(</span><em class="sig-param">va=1</em>, <em class="sig-param">vb=0</em>, <em class="sig-param">k=0.01</em>, <em class="sig-param">wa=0.5</em>, <em class="sig-param">wb=0.5</em>, <em class="sig-param">pa=0.5</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#DnmrTwoSinglets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A DNMR simulation for two uncoupled nuclei undergoing exchange.</p>
 <dl class="field-list simple">
@@ -574,48 +574,48 @@ slow-exchange limit.</p></li>
 </dd>
 </dl>
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.va">
-<code class="sig-name descname">va</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.va" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.va">
+<code class="sig-name descname">va</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.va" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.vb">
-<code class="sig-name descname">vb</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.vb" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.vb">
+<code class="sig-name descname">vb</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.vb" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.k">
-<code class="sig-name descname">k</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.k" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.k">
+<code class="sig-name descname">k</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.k" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.wa">
-<code class="sig-name descname">wa</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.wa" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.wa">
+<code class="sig-name descname">wa</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.wa" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.wb">
-<code class="sig-name descname">wb</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.wb" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.wb">
+<code class="sig-name descname">wb</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.wb" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.pa">
-<code class="sig-name descname">pa</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.pa" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.pa">
+<code class="sig-name descname">pa</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.pa" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.limits">
-<code class="sig-name descname">limits</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.limits" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.limits">
+<code class="sig-name descname">limits</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.limits" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.points">
-<code class="sig-name descname">points</code><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.points" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.points">
+<code class="sig-name descname">points</code><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="nmrtools.dnmr.DnmrTwoSinglets.lineshape">
-<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrTwoSinglets.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.DnmrTwoSinglets.lineshape" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.DnmrTwoSinglets.lineshape">
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#DnmrTwoSinglets.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.dnmr.DnmrTwoSinglets.lineshape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the x, y (frequency, intensity) data for the lineshape
 simulation.</p>
 </dd></dl>
@@ -623,7 +623,7 @@ simulation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrTwoSinglets" title="nmrtools.dnmr.DnmrTwoSinglets"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnmrTwoSinglets</span></code></a></dt><dd><p>A class representation for this simulation</p>
+<dt><a class="reference internal" href="#nmrsim.dnmr.DnmrTwoSinglets" title="nmrsim.dnmr.DnmrTwoSinglets"><code class="xref py py-class docutils literal notranslate"><span class="pre">DnmrTwoSinglets</span></code></a></dt><dd><p>A class representation for this simulation</p>
 </dd>
 </dl>
 </div>
@@ -657,7 +657,7 @@ simulation.</p>
 
 <dl class="method">
 <dt>
-<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#DnmrTwoSinglets.lineshape"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#DnmrTwoSinglets.lineshape"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Calculate and return the lineshape for the DNMR spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -760,8 +760,8 @@ slow-exchange limit.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.dnmr.dnmr_AB">
-<code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">dnmr_AB</code><span class="sig-paren">(</span><em class="sig-param">va</em>, <em class="sig-param">vb</em>, <em class="sig-param">J</em>, <em class="sig-param">k</em>, <em class="sig-param">w</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#dnmr_AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.dnmr_AB" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.dnmr_AB">
+<code class="sig-prename descclassname">nmrsim.dnmr.</code><code class="sig-name descname">dnmr_AB</code><span class="sig-paren">(</span><em class="sig-param">va</em>, <em class="sig-param">vb</em>, <em class="sig-param">J</em>, <em class="sig-param">k</em>, <em class="sig-param">w</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#dnmr_AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.dnmr.dnmr_AB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simulate the DNMR lineshape for two coupled nuclei undergoing exchange
 (AB or AX pattern at the slow-exchange limit).</p>
 <dl class="field-list simple">
@@ -786,17 +786,17 @@ in the absence of coupling)</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrAB" title="nmrtools.dnmr.DnmrAB"><code class="xref py py-func docutils literal notranslate"><span class="pre">DnmrAB()</span></code></a></dt><dd><p>A class representation for this simulation.</p>
+<dt><a class="reference internal" href="#nmrsim.dnmr.DnmrAB" title="nmrsim.dnmr.DnmrAB"><code class="xref py py-func docutils literal notranslate"><span class="pre">DnmrAB()</span></code></a></dt><dd><p>A class representation for this simulation.</p>
 </dd>
 </dl>
 </div>
 <p class="rubric">References</p>
-<p>See the documentation for the nmrtools.dnmr module.</p>
+<p>See the documentation for the nmrsim.dnmr module.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.dnmr.dnmr_two_singlets">
-<code class="sig-prename descclassname">nmrtools.dnmr.</code><code class="sig-name descname">dnmr_two_singlets</code><span class="sig-paren">(</span><em class="sig-param">va</em>, <em class="sig-param">vb</em>, <em class="sig-param">ka</em>, <em class="sig-param">wa</em>, <em class="sig-param">wb</em>, <em class="sig-param">pa</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/dnmr.html#dnmr_two_singlets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.dnmr.dnmr_two_singlets" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.dnmr.dnmr_two_singlets">
+<code class="sig-prename descclassname">nmrsim.dnmr.</code><code class="sig-name descname">dnmr_two_singlets</code><span class="sig-paren">(</span><em class="sig-param">va</em>, <em class="sig-param">vb</em>, <em class="sig-param">ka</em>, <em class="sig-param">wa</em>, <em class="sig-param">wb</em>, <em class="sig-param">pa</em>, <em class="sig-param">limits=None</em>, <em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/dnmr.html#dnmr_two_singlets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.dnmr.dnmr_two_singlets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a the lineshape for a DNMR spectrum of two uncoupled spin-half
 nuclei.</p>
 <dl class="field-list simple">
@@ -821,36 +821,36 @@ slow-exchange limit.</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="#nmrtools.dnmr.DnmrTwoSinglets" title="nmrtools.dnmr.DnmrTwoSinglets"><code class="xref py py-func docutils literal notranslate"><span class="pre">DnmrTwoSinglets()</span></code></a></dt><dd><p>A class representation for this simulation.</p>
+<dt><a class="reference internal" href="#nmrsim.dnmr.DnmrTwoSinglets" title="nmrsim.dnmr.DnmrTwoSinglets"><code class="xref py py-func docutils literal notranslate"><span class="pre">DnmrTwoSinglets()</span></code></a></dt><dd><p>A class representation for this simulation.</p>
 </dd>
 </dl>
 </div>
 <p class="rubric">References</p>
-<p>See the documentation for the nmrtools.dnmr module.</p>
+<p>See the documentation for the nmrsim.dnmr module.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools.firstorder">
-<span id="nmrtools-firstorder-module"></span><h2>nmrtools.firstorder module<a class="headerlink" href="#module-nmrtools.firstorder" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nmrsim.firstorder">
+<span id="nmrsim-firstorder-module"></span><h2>nmrsim.firstorder module<a class="headerlink" href="#module-nmrsim.firstorder" title="Permalink to this headline">¶</a></h2>
 <p>“Functions for calculating first-order spectra.</p>
-<p>The nmrtools.firstorder module provides the following functions:</p>
+<p>The nmrsim.firstorder module provides the following functions:</p>
 <ul class="simple">
 <li><p>multiplet: performs first-order splitting of a signal into multiple signals.</p></li>
 <li><dl class="simple">
 <dt>first_order_spin_system: provides a peaklist for several nuclei, using the</dt><dd><p>same v/J parameters that are used for second-order spin systems.
-See nmrtools.qm for details on these parameters.</p>
+See nmrsim.qm for details on these parameters.</p>
 </dd>
 </dl>
 </li>
 </ul>
 <dl class="function">
-<dt id="nmrtools.firstorder.first_order_spin_system">
-<code class="sig-prename descclassname">nmrtools.firstorder.</code><code class="sig-name descname">first_order_spin_system</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/firstorder.html#first_order_spin_system"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.firstorder.first_order_spin_system" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.firstorder.first_order_spin_system">
+<code class="sig-prename descclassname">nmrsim.firstorder.</code><code class="sig-name descname">first_order_spin_system</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/firstorder.html#first_order_spin_system"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.firstorder.first_order_spin_system" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a first-order peaklist of several multiplets from the same v/J
 arguments used for qm calculations.</p>
 <p>This allows a user to model several multiplets at once, rather than
 creating each multiplet individually. It also provides a “toggle” where
-the user, or a higher-level function/class (such as nmrtools.SpinSystem)
+the user, or a higher-level function/class (such as nmrsim.SpinSystem)
 can decide whether a spin system is modeled as first order or second order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -870,8 +870,8 @@ system.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.firstorder.multiplet">
-<code class="sig-prename descclassname">nmrtools.firstorder.</code><code class="sig-name descname">multiplet</code><span class="sig-paren">(</span><em class="sig-param">signal</em>, <em class="sig-param">couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/firstorder.html#multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.firstorder.multiplet" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.firstorder.multiplet">
+<code class="sig-prename descclassname">nmrsim.firstorder.</code><code class="sig-name descname">multiplet</code><span class="sig-paren">(</span><em class="sig-param">signal</em>, <em class="sig-param">couplings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/firstorder.html#multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.firstorder.multiplet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits a set of signals into first-order multiplets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -894,8 +894,8 @@ by each J.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools.math">
-<span id="nmrtools-math-module"></span><h2>nmrtools.math module<a class="headerlink" href="#module-nmrtools.math" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nmrsim.math">
+<span id="nmrsim-math-module"></span><h2>nmrsim.math module<a class="headerlink" href="#module-nmrsim.math" title="Permalink to this headline">¶</a></h2>
 <p>A collection of functions for processing simulated NMR spectra.</p>
 <p>Terms used:
 signal: a pair (e.g. tuple) of frequency, intensity values
@@ -929,8 +929,8 @@ peaklist: a list (or 1D-array-like) of signals.</p>
 </li>
 </ul>
 <dl class="function">
-<dt id="nmrtools.math.add_peaks">
-<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">add_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#add_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.add_peaks" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.math.add_peaks">
+<code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">add_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#add_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.add_peaks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduces a list of (frequency, intensity) tuples to an
 (average frequency, total intensity) tuple.</p>
 <dl class="simple">
@@ -948,8 +948,8 @@ peaklist: a list (or 1D-array-like) of signals.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.math.get_intensity">
-<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">get_intensity</code><span class="sig-paren">(</span><em class="sig-param">lineshape</em>, <em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#get_intensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.get_intensity" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.math.get_intensity">
+<code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">get_intensity</code><span class="sig-paren">(</span><em class="sig-param">lineshape</em>, <em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#get_intensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.get_intensity" title="Permalink to this definition">¶</a></dt>
 <dd><p>A crude method to find the intensity of data point closest to
 frequency x. Better: interpolate between two data points if match isn’t
 exact (TODO?)</p>
@@ -970,8 +970,8 @@ exact (TODO?)</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.math.get_maxima">
-<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">get_maxima</code><span class="sig-paren">(</span><em class="sig-param">lineshape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#get_maxima"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.get_maxima" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.math.get_maxima">
+<code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">get_maxima</code><span class="sig-paren">(</span><em class="sig-param">lineshape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#get_maxima"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.get_maxima" title="Permalink to this definition">¶</a></dt>
 <dd><p>Crude function that returns maxima in the lineshape.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -987,8 +987,8 @@ exact (TODO?)</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.math.lorentz">
-<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">lorentz</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">v0</em>, <em class="sig-param">I</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#lorentz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.lorentz" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.math.lorentz">
+<code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">lorentz</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">v0</em>, <em class="sig-param">I</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#lorentz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.lorentz" title="Permalink to this definition">¶</a></dt>
 <dd><p>A lorentz function that takes linewidth at half intensity (w) as a
 parameter.</p>
 <p>When <cite>v</cite> = <cite>v0</cite>, and <cite>w</cite> = 0.5 (Hz), the function returns intensity I.</p>
@@ -1013,8 +1013,8 @@ evaluated at frequency <cite>v</cite>.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.math.normalize_peaklist">
-<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">normalize_peaklist</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#normalize_peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.normalize_peaklist" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.math.normalize_peaklist">
+<code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">normalize_peaklist</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#normalize_peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.normalize_peaklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Normalize the intensities in a spectrum so that total intensity equals
 value n (nominally the number of nuclei giving rise to the signal).</p>
 <dl class="field-list simple">
@@ -1028,8 +1028,8 @@ value n (nominally the number of nuclei giving rise to the signal).</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.math.reduce_peaks">
-<code class="sig-prename descclassname">nmrtools.math.</code><code class="sig-name descname">reduce_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist_</em>, <em class="sig-param">tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/math.html#reduce_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.math.reduce_peaks" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.math.reduce_peaks">
+<code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">reduce_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist_</em>, <em class="sig-param">tolerance=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#reduce_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.reduce_peaks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a list of (x, y) tuples and adds together tuples whose values are
 within a certain tolerance limit.</p>
 <dl class="field-list simple">
@@ -1049,8 +1049,8 @@ within a certain tolerance limit.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools.plt">
-<span id="nmrtools-plt-module"></span><h2>nmrtools.plt module<a class="headerlink" href="#module-nmrtools.plt" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nmrsim.plt">
+<span id="nmrsim-plt-module"></span><h2>nmrsim.plt module<a class="headerlink" href="#module-nmrsim.plt" title="Permalink to this headline">¶</a></h2>
 <p>The plt module provides convenience functions for creating matplotlib plots,
 plus applying Lorentzian distributions about signals.</p>
 <p>The plt module provides the following functions:</p>
@@ -1065,8 +1065,8 @@ peaklist and returns the x, y plot data.
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
 and returns the x, y plot data.</p>
 <dl class="function">
-<dt id="nmrtools.plt.add_lorentzians">
-<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">add_lorentzians</code><span class="sig-paren">(</span><em class="sig-param">linspace</em>, <em class="sig-param">peaklist</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#add_lorentzians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.add_lorentzians" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.plt.add_lorentzians">
+<code class="sig-prename descclassname">nmrsim.plt.</code><code class="sig-name descname">add_lorentzians</code><span class="sig-paren">(</span><em class="sig-param">linspace</em>, <em class="sig-param">peaklist</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/plt.html#add_lorentzians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.plt.add_lorentzians" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a numpy linspace, a spectrum as a list of (frequency, intensity)
 tuples, and a linewidth, returns an array of y coordinates for the
 total line shape.</p>
@@ -1089,8 +1089,8 @@ in Hz.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.plt.mplplot">
-<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">mplplot</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">w=1</em>, <em class="sig-param">y_min=-0.01</em>, <em class="sig-param">y_max=1</em>, <em class="sig-param">points=800</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#mplplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.mplplot" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.plt.mplplot">
+<code class="sig-prename descclassname">nmrsim.plt.</code><code class="sig-name descname">mplplot</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">w=1</em>, <em class="sig-param">y_min=-0.01</em>, <em class="sig-param">y_max=1</em>, <em class="sig-param">points=800</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/plt.html#mplplot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.plt.mplplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>A matplotlib plot of the simulated lineshape for a peaklist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1113,8 +1113,8 @@ in Hz.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.plt.mplplot_lineshape">
-<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">mplplot_lineshape</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">y_min=None</em>, <em class="sig-param">y_max=None</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#mplplot_lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.mplplot_lineshape" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.plt.mplplot_lineshape">
+<code class="sig-prename descclassname">nmrsim.plt.</code><code class="sig-name descname">mplplot_lineshape</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">y_min=None</em>, <em class="sig-param">y_max=None</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/plt.html#mplplot_lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.plt.mplplot_lineshape" title="Permalink to this definition">¶</a></dt>
 <dd><p>A matplotlib plot that accepts arrays of x and y coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1136,8 +1136,8 @@ in Hz.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.plt.mplplot_stick">
-<code class="sig-prename descclassname">nmrtools.plt.</code><code class="sig-name descname">mplplot_stick</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">y_min=-0.01</em>, <em class="sig-param">y_max=1</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/plt.html#mplplot_stick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.plt.mplplot_stick" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.plt.mplplot_stick">
+<code class="sig-prename descclassname">nmrsim.plt.</code><code class="sig-name descname">mplplot_stick</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">y_min=-0.01</em>, <em class="sig-param">y_max=1</em>, <em class="sig-param">limits=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/plt.html#mplplot_stick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.plt.mplplot_stick" title="Permalink to this definition">¶</a></dt>
 <dd><p>A  matplotlib plot of a spectrum in “stick” (stem) style.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1158,8 +1158,8 @@ in Hz.</p></li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools.qm">
-<span id="nmrtools-qm-module"></span><h2>nmrtools.qm module<a class="headerlink" href="#module-nmrtools.qm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nmrsim.qm">
+<span id="nmrsim-qm-module"></span><h2>nmrsim.qm module<a class="headerlink" href="#module-nmrsim.qm" title="Permalink to this headline">¶</a></h2>
 <p>qm contains functions for the quantum-mechanical (second-order)
 calculation of NMR spectra.</p>
 <p>The qm module provides the following attributes:</p>
@@ -1203,13 +1203,13 @@ required. The qm module for now provides two sets of functions for
 calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.</p>
 <dl class="function">
-<dt id="nmrtools.qm.hamiltonian_dense">
-<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">hamiltonian_dense</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#hamiltonian_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.hamiltonian_dense" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.qm.hamiltonian_dense">
+<code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">hamiltonian_dense</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#hamiltonian_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.hamiltonian_dense" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.qm.hamiltonian_sparse">
-<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">hamiltonian_sparse</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#hamiltonian_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.hamiltonian_sparse" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.qm.hamiltonian_sparse">
+<code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">hamiltonian_sparse</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#hamiltonian_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.hamiltonian_sparse" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1227,8 +1227,8 @@ and the other using neither.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.qm.qm_spinsystem">
-<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">qm_spinsystem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">cache=True</em>, <em class="sig-param">sparse=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#qm_spinsystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.qm_spinsystem" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.qm.qm_spinsystem">
+<code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">qm_spinsystem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">cache=True</em>, <em class="sig-param">sparse=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#qm_spinsystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.qm_spinsystem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1245,8 +1245,8 @@ and the other using neither.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.qm.secondorder_dense">
-<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">secondorder_dense</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#secondorder_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.secondorder_dense" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.qm.secondorder_dense">
+<code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">secondorder_dense</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#secondorder_dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.secondorder_dense" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates second-order spectral data (freqency and intensity of signals)
 for <em>n</em> spin-half nuclei.</p>
 <dl class="field-list simple">
@@ -1274,8 +1274,8 @@ equals the total number of nuclei.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.qm.secondorder_sparse">
-<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">secondorder_sparse</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#secondorder_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.secondorder_sparse" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.qm.secondorder_sparse">
+<code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">secondorder_sparse</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#secondorder_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.secondorder_sparse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates second-order spectral data (freqency and intensity of signals)
 for <em>n</em> spin-half nuclei.</p>
 <dl class="field-list simple">
@@ -1303,8 +1303,8 @@ equals the total number of nuclei.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="nmrtools.qm.solve_hamiltonian">
-<code class="sig-prename descclassname">nmrtools.qm.</code><code class="sig-name descname">solve_hamiltonian</code><span class="sig-paren">(</span><em class="sig-param">H</em>, <em class="sig-param">nspins</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/qm.html#solve_hamiltonian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.qm.solve_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.qm.solve_hamiltonian">
+<code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">solve_hamiltonian</code><span class="sig-paren">(</span><em class="sig-param">H</em>, <em class="sig-param">nspins</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#solve_hamiltonian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.solve_hamiltonian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates frequencies and intensities of signals from a spin Hamiltonian
 and number of spins.</p>
 <dl class="field-list simple">
@@ -1327,11 +1327,11 @@ and number of spins.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-nmrtools">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nmrtools" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="nmrtools">
-<h3>nmrtools<a class="headerlink" href="#nmrtools" title="Permalink to this headline">¶</a></h3>
-<p>The nmrtools package provides tools for simulating nuclear magnetic resonance
+<div class="section" id="module-nmrsim">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nmrsim" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="nmrsim">
+<h3>nmrsim<a class="headerlink" href="#nmrsim" title="Permalink to this headline">¶</a></h3>
+<p>The nmrsim package provides tools for simulating nuclear magnetic resonance
 (NMR) spectra.</p>
 <p>The API is still in flux. Currently, it includes the following modules:</p>
 <ul class="simple">
@@ -1343,7 +1343,7 @@ and number of spins.</p>
 <li><p>qm: quantum-mechanical second-order simulation of spin systems (currently capped at 11 nuclei)</p></li>
 </ul>
 <p>Currently, only spin-1/2 nuclei are accommodated.</p>
-<p>The top-level nmrtools namespace provides the following classes:</p>
+<p>The top-level nmrsim namespace provides the following classes:</p>
 <ul class="simple">
 <li><p>Multiplet: a representation of a first-order multiplet (e.g. quartet; doublet of triplets).</p></li>
 <li><p>SpinSystem: a representation of a set of coupled nuclei (modeled as either first-order or second-order).</p></li>
@@ -1351,74 +1351,74 @@ and number of spins.</p>
 simulation.</p></li>
 </ul>
 <dl class="class">
-<dt id="nmrtools.Multiplet">
-<em class="property">class </em><code class="sig-prename descclassname">nmrtools.</code><code class="sig-name descname">Multiplet</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">I</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Multiplet" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Multiplet">
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Multiplet</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">I</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Multiplet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A representation of a first-order multiplet.</p>
 <dl class="attribute">
-<dt id="nmrtools.Multiplet.I">
-<code class="sig-name descname">I</code><a class="headerlink" href="#nmrtools.Multiplet.I" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Multiplet.I">
+<code class="sig-name descname">I</code><a class="headerlink" href="#nmrsim.Multiplet.I" title="Permalink to this definition">¶</a></dt>
 <dd><p>test that a value is a real number</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.Multiplet.J">
-<code class="sig-name descname">J</code><a class="headerlink" href="#nmrtools.Multiplet.J" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Multiplet.J">
+<code class="sig-name descname">J</code><a class="headerlink" href="#nmrsim.Multiplet.J" title="Permalink to this definition">¶</a></dt>
 <dd><p>test that J resembles an array of number pairs (for each J/# of nuclei
 entry.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="nmrtools.Multiplet.peaklist">
-<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Multiplet.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Multiplet.peaklist" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Multiplet.peaklist">
+<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Multiplet.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Multiplet.peaklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of (frequency, intensity) signals.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="nmrtools.Multiplet.v">
-<code class="sig-name descname">v</code><a class="headerlink" href="#nmrtools.Multiplet.v" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Multiplet.v">
+<code class="sig-name descname">v</code><a class="headerlink" href="#nmrsim.Multiplet.v" title="Permalink to this definition">¶</a></dt>
 <dd><p>test that a value is a real number</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="nmrtools.SpinSystem">
-<em class="property">class </em><code class="sig-prename descclassname">nmrtools.</code><code class="sig-name descname">SpinSystem</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em>, <em class="sig-param">second_order=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#SpinSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.SpinSystem" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.SpinSystem">
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">SpinSystem</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em>, <em class="sig-param">second_order=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#SpinSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.SpinSystem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stub implementation of SpinSystem.
 Flesh out API (e.g. getters/setters; dunder methods) later.</p>
 <dl class="method">
-<dt id="nmrtools.SpinSystem.J">
-<em class="property">property </em><code class="sig-name descname">J</code><a class="headerlink" href="#nmrtools.SpinSystem.J" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.SpinSystem.J">
+<em class="property">property </em><code class="sig-name descname">J</code><a class="headerlink" href="#nmrsim.SpinSystem.J" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="nmrtools.SpinSystem.peaklist">
-<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#SpinSystem.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.SpinSystem.peaklist" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.SpinSystem.peaklist">
+<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#SpinSystem.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.SpinSystem.peaklist" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="nmrtools.SpinSystem.second_order">
-<em class="property">property </em><code class="sig-name descname">second_order</code><a class="headerlink" href="#nmrtools.SpinSystem.second_order" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.SpinSystem.second_order">
+<em class="property">property </em><code class="sig-name descname">second_order</code><a class="headerlink" href="#nmrsim.SpinSystem.second_order" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="nmrtools.SpinSystem.v">
-<em class="property">property </em><code class="sig-name descname">v</code><a class="headerlink" href="#nmrtools.SpinSystem.v" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.SpinSystem.v">
+<em class="property">property </em><code class="sig-name descname">v</code><a class="headerlink" href="#nmrsim.SpinSystem.v" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="nmrtools.Spectrum">
-<em class="property">class </em><code class="sig-prename descclassname">nmrtools.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param">components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Spectrum" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Spectrum">
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param">components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stub implementation of Spectrum.
 Flesh out API (e.g. getter/setters; dunder methods) later.</p>
 <dl class="method">
-<dt id="nmrtools.Spectrum.peaklist">
-<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrtools/_classes.html#Spectrum.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrtools.Spectrum.peaklist" title="Permalink to this definition">¶</a></dt>
+<dt id="nmrsim.Spectrum.peaklist">
+<code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum.peaklist" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

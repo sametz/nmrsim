@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>nmrtools.qm &mdash; nmrtools 0.2.0-alpha documentation</title>
+  <title>nmrsim.qm &mdash; nmrsim 0.2.0-alpha documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> nmrtools
+            <a href="../../index.html" class="icon icon-home"> nmrsim
           
 
           
@@ -84,9 +84,9 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrtools v0.2.0 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.0 (alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrtools</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
@@ -102,7 +102,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">nmrtools</a>
+          <a href="../../index.html">nmrsim</a>
         
       </nav>
 
@@ -135,7 +135,7 @@
         
           <li><a href="../index.html">Module code</a> &raquo;</li>
         
-      <li>nmrtools.qm</li>
+      <li>nmrsim.qm</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,7 +150,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for nmrtools.qm</h1><div class="highlight"><pre>
+  <h1>Source code for nmrsim.qm</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;qm contains functions for the quantum-mechanical (second-order)</span>
 <span class="sd">calculation of NMR spectra.</span>
 
@@ -197,7 +197,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">sparse</span>
-<span class="kn">from</span> <span class="nn">nmrtools.math</span> <span class="k">import</span> <span class="n">normalize_peaklist</span>
+<span class="kn">from</span> <span class="nn">nmrsim.math</span> <span class="k">import</span> <span class="n">normalize_peaklist</span>
 
 <span class="n">CACHE</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># saving of partial solutions is allowed</span>
 <span class="n">SPARSE</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># the sparse library is available</span>
@@ -278,7 +278,7 @@
 <span class="sd">    Saves the results as .npz files to the bin directory if they were not</span>
 <span class="sd">    found there.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># TODO: once nmrtools demonstrates installing via the PyPI *test* server,</span>
+    <span class="c1"># TODO: once nmrsim demonstrates installing via the PyPI *test* server,</span>
     <span class="c1"># need to determine how the saved solutions will be handled. For example,</span>
     <span class="c1"># part of the final build may be generating these files then testing.</span>
     <span class="c1"># Also, need to consider different users with different system capabilities</span>
@@ -306,7 +306,7 @@
     <span class="k">return</span> <span class="n">Lz_sparse</span><span class="p">,</span> <span class="n">Lproduct_sparse</span>
 
 
-<div class="viewcode-block" id="hamiltonian_dense"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.qm.hamiltonian_dense">[docs]</a><span class="k">def</span> <span class="nf">hamiltonian_dense</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
+<div class="viewcode-block" id="hamiltonian_dense"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.qm.hamiltonian_dense">[docs]</a><span class="k">def</span> <span class="nf">hamiltonian_dense</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
     <span class="n">nspins</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
     <span class="n">Lz</span><span class="p">,</span> <span class="n">Lproduct</span> <span class="o">=</span> <span class="n">_so_dense</span><span class="p">(</span><span class="n">nspins</span><span class="p">)</span>  <span class="c1"># noqa</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tensordot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Lz</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -317,7 +317,7 @@
     <span class="k">return</span> <span class="n">H</span></div>
 
 
-<div class="viewcode-block" id="hamiltonian_sparse"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.qm.hamiltonian_sparse">[docs]</a><span class="k">def</span> <span class="nf">hamiltonian_sparse</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
+<div class="viewcode-block" id="hamiltonian_sparse"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.qm.hamiltonian_sparse">[docs]</a><span class="k">def</span> <span class="nf">hamiltonian_sparse</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Parameters</span>
@@ -394,7 +394,7 @@
     <span class="k">return</span> <span class="n">T</span>
 
 
-<div class="viewcode-block" id="secondorder_dense"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.qm.secondorder_dense">[docs]</a><span class="k">def</span> <span class="nf">secondorder_dense</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">couplings</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="secondorder_dense"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.qm.secondorder_dense">[docs]</a><span class="k">def</span> <span class="nf">secondorder_dense</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">couplings</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates second-order spectral data (freqency and intensity of signals)</span>
 <span class="sd">    for *n* spin-half nuclei.</span>
@@ -519,7 +519,7 @@
     <span class="k">return</span> <span class="n">iv</span><span class="p">[</span><span class="n">iv</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cutoff</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="solve_hamiltonian"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.qm.solve_hamiltonian">[docs]</a><span class="k">def</span> <span class="nf">solve_hamiltonian</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">nspins</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="solve_hamiltonian"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.qm.solve_hamiltonian">[docs]</a><span class="k">def</span> <span class="nf">solve_hamiltonian</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">nspins</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates frequencies and intensities of signals from a spin Hamiltonian</span>
 <span class="sd">    and number of spins.</span>
@@ -544,7 +544,7 @@
     <span class="k">return</span> <span class="n">_compile_peaklist</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="secondorder_sparse"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.qm.secondorder_sparse">[docs]</a><span class="k">def</span> <span class="nf">secondorder_sparse</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">couplings</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="secondorder_sparse"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.qm.secondorder_sparse">[docs]</a><span class="k">def</span> <span class="nf">secondorder_sparse</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">couplings</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates second-order spectral data (freqency and intensity of signals)</span>
 <span class="sd">    for *n* spin-half nuclei.</span>
@@ -580,7 +580,7 @@
     <span class="k">return</span> <span class="n">peaklist</span></div>
 
 
-<div class="viewcode-block" id="qm_spinsystem"><a class="viewcode-back" href="../../nmrtools.html#nmrtools.qm.qm_spinsystem">[docs]</a><span class="k">def</span> <span class="nf">qm_spinsystem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">CACHE</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="n">SPARSE</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="qm_spinsystem"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.qm.qm_spinsystem">[docs]</a><span class="k">def</span> <span class="nf">qm_spinsystem</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">CACHE</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="n">SPARSE</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Parameters</span>

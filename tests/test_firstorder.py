@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from nmrtools.firstorder import *
-from nmrtools.plt import mplplot_stick
+from nmrsim.firstorder import *
+from nmrsim.plt import mplplot_stick
 from tests.simulation_data import rioux
 
 

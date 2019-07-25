@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-nmrtools/.cache/
+nmrsim/.cache/
 .cache
 /coverage/
 __pycache__/

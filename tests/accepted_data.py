@@ -22,7 +22,7 @@ SPECTRUM_RIOUX = [(260.66152857482973, 0.23011249131787825),
                   (269.1576903807885, 0.27256416758689167)]
 
 
-# accepted OLD output [(x, y)...] for nmrtools.plt.add_lorentzians, using:
+# accepted OLD output [(x, y)...] for nmrsim.plt.add_lorentzians, using:
 #  linspace = np.linspace(390, 410, 200)
 # spectrum = [(399, 1), (401, 1)]
 # 1 Hz linewidth
