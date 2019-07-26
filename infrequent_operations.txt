@@ -31,4 +31,6 @@ virtual environments:
 
 Installing the venv with an Anaconda install on Windows was problematic. Seemed
 to get it to work by using the Anaconda Prompt (not cli), then creating the
-venv from the base conda Python followed by 'conda deactivate'.
+venv from the base conda Python.
+    (venv) (base) {path}> pip install x
+
