@@ -1,5 +1,5 @@
 nmrsim
-========
+======
 
 .. toctree::
    :maxdepth: 4

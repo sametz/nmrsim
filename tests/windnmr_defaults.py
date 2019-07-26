@@ -1,5 +1,7 @@
 """
-Reich default values for multiplet calculations. Consider merging with nspin.py
+WINDNMR default values for multiplet calculations.
+
+Used to compare nmrsim results with WINDNMR. Consider merging with nspin.py
 """
 
 ABdict = {'Jab': 12.0,
@@ -12,8 +14,8 @@ AB2dict = {'Jab': 12.0,
 
 # for expediency, including the 2,6-dichlorophenol AB2 for test_partial
 dcp = {'Jab': 7.9,
-        'Vab': 26.5,
-        'Vcentr': 13.25}
+       'Vab': 26.5,
+       'Vcentr': 13.25}
 
 ABXdict = {'Jab': 12.0,
            'Jax': 8.0,
@@ -70,7 +72,6 @@ multiplet_bar_defaults = {'AB': ab_kwargs,
                           'ABX3': abx3_kwargs,
                           'AAXX': aaxx_kwargs,
                           'AABB': aabb_kwargs}
-
 
 if __name__ == '__main__':
     for bar in ['AB', 'AB2', 'ABX', 'ABX3', 'AAXX', 'AABB']:

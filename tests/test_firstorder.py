@@ -3,7 +3,7 @@ import pytest
 
 from nmrsim.firstorder import *
 from nmrsim.plt import mplplot_stick
-from tests.simulation_data import rioux
+from tests.qm_arguments import rioux
 
 
 def test_multiplet_allows_singlet():

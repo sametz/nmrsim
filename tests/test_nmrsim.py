@@ -4,7 +4,7 @@ import pytest
 from nmrsim import Multiplet, SpinSystem, Spectrum
 from nmrsim.firstorder import first_order_spin_system
 from tests.accepted_data import SPECTRUM_RIOUX
-from tests.simulation_data import rioux
+from tests.qm_arguments import rioux
 
 
 def test_AutoStorage_get_without_instance():

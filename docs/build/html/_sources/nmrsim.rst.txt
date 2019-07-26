@@ -1,11 +1,11 @@
 nmrsim package
-================
+==============
 
 Submodules
 ----------
 
 nmrsim.discrete module
-------------------------
+----------------------
 
 .. automodule:: nmrsim.discrete
    :members:
@@ -13,7 +13,7 @@ nmrsim.discrete module
    :show-inheritance:
 
 nmrsim.dnmr module
---------------------
+------------------
 
 .. automodule:: nmrsim.dnmr
    :members:
@@ -21,7 +21,7 @@ nmrsim.dnmr module
    :show-inheritance:
 
 nmrsim.firstorder module
---------------------------
+------------------------
 
 .. automodule:: nmrsim.firstorder
    :members:
@@ -29,7 +29,7 @@ nmrsim.firstorder module
    :show-inheritance:
 
 nmrsim.math module
---------------------
+------------------
 
 .. automodule:: nmrsim.math
    :members:
@@ -37,7 +37,7 @@ nmrsim.math module
    :show-inheritance:
 
 nmrsim.plt module
--------------------
+-----------------
 
 .. automodule:: nmrsim.plt
    :members:
@@ -45,7 +45,7 @@ nmrsim.plt module
    :show-inheritance:
 
 nmrsim.qm module
-------------------
+----------------
 
 .. automodule:: nmrsim.qm
    :members:

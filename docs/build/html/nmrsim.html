@@ -25,6 +25,8 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -200,10 +202,10 @@ WINDNMR interface and source code (for now).</p>
 <dd><p>WINDNMR-Pro home page: <a class="reference external" href="https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm">https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm</a></p>
 </dd>
 <dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
-<dd><p>Pople, J.A.; Schneider, W.G.; Bernstein, H.J. <em>High-Resolution Nuclear Magnetic Resonance.</em> New York:</p>
+<dd><p>Pople, J.A.; Schneider, W.G.; Bernstein, H.J. <em>High-Resolution Nuclear Magnetic Resonance.</em> New York:
+McGraw-Hill, 1959.</p>
 </dd>
 </dl>
-<p>McGraw-Hill, 1959.</p>
 <dl class="function">
 <dt id="nmrsim.discrete.AABB">
 <code class="sig-prename descclassname">nmrsim.discrete.</code><code class="sig-name descname">AABB</code><span class="sig-paren">(</span><em class="sig-param">Vab</em>, <em class="sig-param">Jaa</em>, <em class="sig-param">Jbb</em>, <em class="sig-param">Jab</em>, <em class="sig-param">Jab_prime</em>, <em class="sig-param">Vcentr</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/discrete.html#AABB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.discrete.AABB" title="Permalink to this definition">¶</a></dt>
@@ -923,16 +925,15 @@ datapoint closest to that frequency.</p></li>
 <code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">add_peaks</code><span class="sig-paren">(</span><em class="sig-param">plist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#add_peaks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.add_peaks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reduces a list of (frequency, intensity) tuples to an
 (average frequency, total intensity) tuple.</p>
-<dl class="simple">
-<dt>plist: [(float, float)…]</dt><dd><p>a list of (frequency, intensity) tuples</p>
-</dd>
-</dl>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a tuple of (average frequency, total intensity)</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>plist</strong> (<em>[</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em><em>..</em><em>]</em>) – a list of (frequency, intensity) tuples</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>(float, float)</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tuple of (average frequency, total intensity)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(float, float)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1266,7 +1267,7 @@ equals the total number of nuclei.</p></li>
 <dl class="function">
 <dt id="nmrsim.qm.secondorder_sparse">
 <code class="sig-prename descclassname">nmrsim.qm.</code><code class="sig-name descname">secondorder_sparse</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">couplings</em>, <em class="sig-param">normalize=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/qm.html#secondorder_sparse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.qm.secondorder_sparse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates second-order spectral data (freqency and intensity of signals)
+<dd><p>Calculates second-order spectral data (frequency and intensity of signals)
 for <em>n</em> spin-half nuclei.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1346,28 +1347,70 @@ simulation.</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A representation of a first-order multiplet.</p>
 <dl class="attribute">
+<dt id="nmrsim.Multiplet.v">
+<code class="sig-name descname">v</code><a class="headerlink" href="#nmrsim.Multiplet.v" title="Permalink to this definition">¶</a></dt>
+<dd><p>The frequency of the center of the multiplet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float or int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="nmrsim.Multiplet.I">
 <code class="sig-name descname">I</code><a class="headerlink" href="#nmrsim.Multiplet.I" title="Permalink to this definition">¶</a></dt>
-<dd><p>test that a value is a real number</p>
+<dd><p>The total intensity (“integration”) of the multiplet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float or int</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nmrsim.Multiplet.J">
 <code class="sig-name descname">J</code><a class="headerlink" href="#nmrsim.Multiplet.J" title="Permalink to this definition">¶</a></dt>
-<dd><p>test that J resembles an array of number pairs (for each J/# of nuclei
-entry.</p>
+<dd><p>For example, a td, <em>J</em> = 7.0, 2.5 Hz would have:
+J = [(7.0, 2), (2.5, 1)].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>2D array-like, e.g. [(int or float, int)..] for [(J, # of nuclei)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">I</code></dt>
+<dd><p>A descriptor used to validate that a class attribute is a real number.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">J</code></dt>
+<dd><p>A descriptor used to validate that a value resembles an array of number
+pairs (for each J/# of nuclei entry.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="nmrsim.Multiplet.peaklist">
 <code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Multiplet.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Multiplet.peaklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of (frequency, intensity) signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of (frequency, intensity) signals.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float, float)..]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="nmrsim.Multiplet.v">
-<code class="sig-name descname">v</code><a class="headerlink" href="#nmrsim.Multiplet.v" title="Permalink to this definition">¶</a></dt>
-<dd><p>test that a value is a real number</p>
+<dt>
+<code class="sig-name descname">v</code></dt>
+<dd><p>A descriptor used to validate that a class attribute is a real number.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1381,22 +1424,64 @@ Flesh out API (e.g. getters/setters; dunder methods) later.</p>
 <dl class="method">
 <dt id="nmrsim.SpinSystem.J">
 <em class="property">property </em><code class="sig-name descname">J</code><a class="headerlink" href="#nmrsim.SpinSystem.J" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>A 2D array of coupling constants.</p>
+<p>J[m][n] corresponds to the coupling between the nuclei of frequencies
+v[m] and v[n].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The array of coupling constants.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="nmrsim.SpinSystem.peaklist">
 <code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#SpinSystem.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.SpinSystem.peaklist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of (frequency, intensity) signals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of (frequency, intensity) signals.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="nmrsim.SpinSystem.second_order">
 <em class="property">property </em><code class="sig-name descname">second_order</code><a class="headerlink" href="#nmrsim.SpinSystem.second_order" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Whether the spin system should use second-order simulation (instead
+of a first-order simulation). If False, will perform a first-order
+calculation instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the spin system should use a second-order simulation
+(instead of a first-order simulation).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="nmrsim.SpinSystem.v">
 <em class="property">property </em><code class="sig-name descname">v</code><a class="headerlink" href="#nmrsim.SpinSystem.v" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>An array of the frequency of each nucleus (in the absence of
+coupling).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float or int</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -1404,12 +1489,21 @@ Flesh out API (e.g. getters/setters; dunder methods) later.</p>
 <dt id="nmrsim.Spectrum">
 <em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param">components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Stub implementation of Spectrum.
-Flesh out API (e.g. getter/setters; dunder methods) later.</p>
+<p>A collection of spectral features (SpinSystem; Multiplet).</p>
+<p>Flesh out API (e.g. getter/setters; dunder methods) later.</p>
 <dl class="method">
 <dt id="nmrsim.Spectrum.peaklist">
 <code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum.peaklist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the peaklist for the spectrum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of (frequency, intensity) signals.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[(float, float)..]</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

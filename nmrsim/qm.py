@@ -393,7 +393,7 @@ def solve_hamiltonian(H, nspins, **kwargs):
 
 def secondorder_sparse(freqs, couplings, normalize=True, **kwargs):
     """
-    Calculates second-order spectral data (freqency and intensity of signals)
+    Calculates second-order spectral data (frequency and intensity of signals)
     for *n* spin-half nuclei.
 
     Parameters

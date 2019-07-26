@@ -6,7 +6,7 @@ from nmrsim.qm import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,
                        secondorder_dense, secondorder_sparse, _so_sparse,
                        qm_spinsystem)
 from tests.accepted_data import HAMILTONIAN_RIOUX, SPECTRUM_RIOUX
-from tests.simulation_data import rioux
+from tests.qm_arguments import rioux
 
 
 def test_so_sparse_creates_files(fs):
