@@ -34,3 +34,14 @@ to get it to work by using the Anaconda Prompt (not cli), then creating the
 venv from the base conda Python.
     (venv) (base) {path}> pip install x
 
+testpypi:
+    python setup.py sdist bdist_wheel
+    (twine check dist/*)  (checks the readme)
+    twine upload --repository testpypi dist/*
+    (in new environment)
+    pip install --index-url https://test.pypi.org/simple/ nmrsim
+First attempt: needed to pip install sparse and matplotlib first. all tests
+initially passed in new env/clone, but when 'nmrsim' folder renamed, some tests
+failed. Reason seems to be the bin folder was not included--so need to edit
+setup.py. also build/lib indicates the jupyter folder with __init__ was copied
+over as well! need to ingore it.
