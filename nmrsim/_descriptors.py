@@ -50,19 +50,51 @@ class Validated(abc.ABC, AutoStorage):
 
 
 class Number(Validated):
-    """test that a value is a real number"""
+    """A descriptor used to validate that a class attribute is a real number.
+    """
 
     def validate(self, instance, value):
+        """Verify that value is a real number.
+
+        Parameters
+        ----------
+        value: The value to be tested.
+
+        Returns
+        -------
+        value
+
+        Raises
+        ------
+        TypeError
+            If the value is not a real number.
+        """
         if not isinstance(value, numbers.Real):
             raise TypeError('value must be a real number')
         return value
 
 
 class Couplings(Validated):
-    """test that J resembles an array of number pairs (for each J/# of nuclei
-    entry.
+    """A descriptor used to validate that a value resembles an array of number
+    pairs (for each J/# of nuclei entry.
     """
     def validate(self, instance, value):
+        """Test that J resembles an array of number pairs (for each J/# of
+        nuclei entry.
+
+        Parameters
+        ----------
+        value: The value to be tested.
+
+        Returns
+        -------
+        value
+
+        Raises
+        ------
+        TypeError
+            If value is not either an empty array or an array of shape (n, 2).
+        """
         testarray = np.array(value)
         if testarray.shape == (0,):  # empty list
             return value

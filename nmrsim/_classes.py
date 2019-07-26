@@ -79,6 +79,9 @@ class SpinSystem:
 
     @property
     def v(self):
+        """An array of the frequency of each nucleus (in the absence of
+        coupling).
+        """
         return self._v
 
     @v.setter
@@ -91,6 +94,11 @@ class SpinSystem:
 
     @property
     def J(self):
+        """A 2D array of coupling constants.
+
+        J[m][n] corresponds to the coupling between the nuclei of frequencies
+        v[m] and v[n].
+        """
         return self._J
 
     @J.setter
@@ -108,6 +116,10 @@ class SpinSystem:
 
     @property
     def second_order(self):
+        """ (bool) Calculate whether a second-order simulation should be
+        calculated (default = True). If False, will perform a first-order
+        calculation instead.
+        """
         return self._second_order
 
     @second_order.setter
@@ -135,7 +147,8 @@ class SpinSystem:
 
 
 class Spectrum:
-    """Stub implementation of Spectrum.
+    """A collection of spectral features (SpinSystem; Multiplet).
+
     Flesh out API (e.g. getter/setters; dunder methods) later."""
     def __init__(self, components):
         self._components = components[:]
@@ -160,4 +173,5 @@ class Spectrum:
             return NotImplemented
 
     def peaklist(self):
+        """Return the peaklist for the spectrum."""
         return self._peaklist

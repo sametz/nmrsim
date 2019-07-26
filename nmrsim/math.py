@@ -29,7 +29,7 @@ def add_peaks(plist):
     (average frequency, total intensity) tuple.
 
     Parameter
-    --------
+    ---------
     plist: [(float, float)...]
         a list of (frequency, intensity) tuples
 

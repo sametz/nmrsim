@@ -25,6 +25,8 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -232,6 +234,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An array of the frequency of each nucleus (in the absence of</span>
+<span class="sd">        coupling).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v</span>
 
     <span class="nd">@v</span><span class="o">.</span><span class="n">setter</span>
@@ -244,6 +249,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">J</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A 2D array of coupling constants.</span>
+
+<span class="sd">        J[m][n] corresponds to the coupling between the nuclei of frequencies</span>
+<span class="sd">        v[m] and v[n].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_J</span>
 
     <span class="nd">@J</span><span class="o">.</span><span class="n">setter</span>
@@ -261,6 +271,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">second_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; (bool) Calculate whether a second-order simulation should be</span>
+<span class="sd">        calculated (default = True). If False, will perform a first-order</span>
+<span class="sd">        calculation instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_second_order</span>
 
     <span class="nd">@second_order</span><span class="o">.</span><span class="n">setter</span>
@@ -288,7 +302,8 @@
 
 
 <div class="viewcode-block" id="Spectrum"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Spectrum">[docs]</a><span class="k">class</span> <span class="nc">Spectrum</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Stub implementation of Spectrum.</span>
+    <span class="sd">&quot;&quot;&quot;A collection of spectral features (SpinSystem; Multiplet).</span>
+
 <span class="sd">    Flesh out API (e.g. getter/setters; dunder methods) later.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="n">components</span><span class="p">[:]</span>
@@ -313,6 +328,7 @@
             <span class="k">return</span> <span class="bp">NotImplemented</span>
 
 <div class="viewcode-block" id="Spectrum.peaklist"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Spectrum.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the peaklist for the spectrum.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peaklist</span></div></div>
 </pre></div>
 

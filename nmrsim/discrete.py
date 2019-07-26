@@ -17,7 +17,7 @@ References
 ----------
 .. [1] WINDNMR-Pro home page: https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm
 .. [2] Pople, J.A.; Schneider, W.G.; Bernstein, H.J. *High-Resolution Nuclear Magnetic Resonance.* New York:
-McGraw-Hill, 1959.
+   McGraw-Hill, 1959.
 
 """
 # TODO: refactor away from legacy argument/variable names to user-friendly,
