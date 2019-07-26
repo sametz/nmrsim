@@ -12,12 +12,23 @@ from nmrsim.qm import qm_spinsystem
 
 from ._descriptors import Number, Couplings
 
-
 # TODO: Multiplet "belongs" in the nmrsim.firstorder namespace, but has a
-# cyclic dependency with
+# cyclic dependency with Spectrum and multiplet. Until a solution found, have
+# to define both in the same module.
+
+
 class Multiplet:
     """A representation of a first-order multiplet.
 
+    Attributes
+    ----------
+    v : float or int
+        The frequency of the center of the multiplet.
+    I : float or int
+        The total intensity ("integration") of the multiplet.
+    J : 2D array-like, e.g. [(int or float, int)...] for [(J, # of nuclei)...].
+        For example, a td, *J* = 7.0, 2.5 Hz would have:
+        J = [(7.0, 2), (2.5, 1)].
     """
     v = Number()
     I = Number()
@@ -62,7 +73,13 @@ class Multiplet:
         self._peaklist = multiplet((self.v, self.I), self.J)
 
     def peaklist(self):
-        """Return a list of (frequency, intensity) signals."""
+        """Return a list of (frequency, intensity) signals.
+
+        Returns
+        -------
+        [(float, float)...]
+            Array of (frequency, intensity) signals.
+        """
         self._refresh()
         return self._peaklist
 
@@ -81,6 +98,10 @@ class SpinSystem:
     def v(self):
         """An array of the frequency of each nucleus (in the absence of
         coupling).
+
+        Returns
+        -------
+        float or int
         """
         return self._v
 
@@ -98,6 +119,11 @@ class SpinSystem:
 
         J[m][n] corresponds to the coupling between the nuclei of frequencies
         v[m] and v[n].
+
+        Returns
+        -------
+        np.array
+            The array of coupling constants.
         """
         return self._J
 
@@ -116,9 +142,15 @@ class SpinSystem:
 
     @property
     def second_order(self):
-        """ (bool) Calculate whether a second-order simulation should be
-        calculated (default = True). If False, will perform a first-order
+        """Whether the spin system should use second-order simulation (instead
+        of a first-order simulation). If False, will perform a first-order
         calculation instead.
+
+        Returns
+        -------
+        bool
+            Whether the spin system should use a second-order simulation
+            (instead of a first-order simulation).
         """
         return self._second_order
 
@@ -130,6 +162,13 @@ class SpinSystem:
             raise TypeError('second_order must be a boolean')
 
     def peaklist(self):
+        """Return a list of (frequency, intensity) signals.
+
+        Returns
+        -------
+        [(float, float)...]
+            Array of (frequency, intensity) signals.
+        """
         if self._second_order:
             return qm_spinsystem(self._v, self._J)
         else:
@@ -173,5 +212,11 @@ class Spectrum:
             return NotImplemented
 
     def peaklist(self):
-        """Return the peaklist for the spectrum."""
+        """Return the peaklist for the spectrum.
+
+        Returns
+        -------
+        [(float, float)...]
+            Array of (frequency, intensity) signals.
+        """
         return self._peaklist

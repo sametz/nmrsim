@@ -1,3 +1,5 @@
+"""Functions that return v, J arguments for testing nmrsim.qm functions."""
+
 import numpy as np
 
 
@@ -123,10 +125,6 @@ def fox():
 
 def rioux():
     """http://www.users.csbsju.edu/~frioux/nmr/ABC-NMR-Tensor.pdf
-
-    Returns
-    -------
-
     """
     v = np.array([430.0, 265.0, 300.0])
     J = np.zeros((3, 3))
@@ -137,10 +135,10 @@ def rioux():
     return v, J
 
 
-# def ethyl_propionate():
-#     v = np.array([1651.3, 926.9, 503.2, 455.6])
-#     J = np.zeros((4, 4))
-#     J[0, 2] = 7.1
-#     J[1, 3] = 7.6
-#     J = J + J.T
-#     return v, J
+def ethyl_propionate():
+    v = np.array([1651.3, 926.9, 503.2, 455.6])
+    J = np.zeros((4, 4))
+    J[0, 2] = 7.1
+    J[1, 3] = 7.6
+    J = J + J.T
+    return v, J

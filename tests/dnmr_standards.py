@@ -1,7 +1,5 @@
-"""Stores data of approved simulation results, for unit tests"""
-# TODO: this is specifically DNMR. Rename or move
-# TODO: separate into raw data file (e.g. csv) and import routine
-
+"""Stores data of approved DNMR simulation results, for unit tests"""
+# consider using other formats for storing such data besides .py files.
 
 import numpy as np
 

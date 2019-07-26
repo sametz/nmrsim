@@ -22,23 +22,13 @@ interactive ipywidgets not appearing in Jupyter:
     and may also require an npm install.
 
 virtual environments:
-python -m venv venv  # second venv is name of dir
-source venv/bin/activate
-{when requirements/setup work}
-pip install -e .
-then test
-deactivate  # when done
+    python -m venv venv  # second venv is name of dir
+    source venv/bin/activate (linux/macOS), or
+    venv\Scripts\activate.bat (Windows CLI)
+    pip install -e ".[dev]"
+    then test
+    deactivate  # when done
 
-however, for windows, it seems instead of source, use from cmd.exe:
-venv\Scripts\activate.bat
-It then also seems that you get a (venv)(condaenvname) double reference, and
-that if something (e.g. pytest) is not installed in venv then it is fetched
-from conda.
-BUT "conda deactivate" removed the conda env leaving only (venv), and then
-it seemed to recognize only what was installed in venv
-
-with setup.py and extras_require setup:
-pip install -e ".[dev]"
-see https://docs.python-eve.org/en/stable/contributing.html
-
-cd geoffrey\documents\github\nmrsim
+Installing the venv with an Anaconda install on Windows was problematic. Seemed
+to get it to work by using the Anaconda Prompt (not cli), then creating the
+venv from the base conda Python followed by 'conda deactivate'.

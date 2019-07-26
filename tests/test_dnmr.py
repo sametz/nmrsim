@@ -5,8 +5,8 @@ from nmrsim.dnmr import (dnmr_two_singlets, _dnmr_AB_func, dnmr_AB,
                          DnmrTwoSinglets, DnmrAB)
 from nmrsim.math import get_maxima
 from tests.plottools import popplot
-from tests.testdata import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
-                            TWOSPIN_SLOW)
+from tests.dnmr_standards import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
+                                  TWOSPIN_SLOW)
 
 
 class TestDnmrTwoSinglets:
