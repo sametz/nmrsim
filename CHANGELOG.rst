@@ -1,4 +1,4 @@
-gi##########
+##########
 Change Log
 ##########
 
@@ -21,6 +21,11 @@ Working towards a Version 1.0.0 release, the author interprets the terms below a
   and installed with pip.
 
 * **Version 1.0.0 release**: API is stable. The package is available on PyPI (and perhaps conda).
+
+
+0.2.1 - 2019-07-26 (alpha release)
+----------------------------------
+* Binaries for accelerating qm calculations packaged in distribution.
 
 
 0.2.0 - 2019-07-25 (alpha release)

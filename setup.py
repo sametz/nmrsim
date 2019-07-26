@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="nmrsim",
-    version="0.2.0",
+    version="0.2.1",
     author="Geoffrey M. Sametz",
     author_email="sametz@udel.edu",
     description="A library for simulating nuclear magnetic resonance (NMR) spectra.",
@@ -17,7 +17,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
         "Intended Audience :: Education",
         "Programming Language :: Python :: 3 :: Only",
