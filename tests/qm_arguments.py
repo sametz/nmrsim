@@ -57,7 +57,7 @@ def spin11():
     # 10- or 11-nuclei test case works.
     v = np.array([1.63, 1.63, 2.2, 2.2, 2.5, 2.5, 2.5, 2.5, 2.5,
                   2.5,
-                  5.71 #,
+                  5.71  # ,
                   # 5.77
                   ]) * 400
     J = np.zeros((len(v), len(v)))
@@ -95,7 +95,7 @@ def fox():
     # 10- or 11-nuclei test case works.
     v = np.array([1.63, 1.63, 2.2, 2.2, 2.5, 2.5, 2.5, 2.5, 2.5,
                   2.5,
-                  5.71 #,
+                  5.71  # ,
                   # 5.77
                   ]) * 400
     J = np.zeros((len(v), len(v)))

@@ -115,7 +115,7 @@ class TestMultiplet:
                                     (70, 0.25)])
         assert np.array_equal(result.peaklist(), expected_peaklist)
         with pytest.raises(TypeError):
-            bad_result = m1 + 3
+            _ = m1 + 3
 
     def test_mul(self, dummy_multiplet):
         doubled = dummy_multiplet * 2.0
@@ -158,7 +158,7 @@ class TestMultiplet:
         with pytest.raises(ZeroDivisionError):
             dummy_multiplet /= 0
 
-# @pytest.mark.usefixtures('abx')
+
 class TestSpinSystem:
     def test_instantiates(self, abx):
         v, J = abx
@@ -228,7 +228,7 @@ class TestSpinSystem:
         spectrum_2 = ss + dummy_multiplet
         assert spectrum_1 == spectrum_2
         with pytest.raises(TypeError):
-            bad_ss = ss + 1
+            _ = ss + 1
 
 
 class TestSpectrum:
@@ -252,7 +252,7 @@ class TestSpectrum:
                                     (70, 0.5)])
         assert np.allclose(s3.peaklist(), expected_peaklist)
         with pytest.raises(TypeError):
-            s4 = s + 1
+            _ = s + 1
 
     def test_add_appends_to_components(self):
         m1 = Multiplet(100, 1, [(10, 2)])

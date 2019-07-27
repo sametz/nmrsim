@@ -13,7 +13,7 @@ a.b.c format:
             introduction.rst v0.2.0 (alpha)
 
     nmrsim:
-
+        __init__ __version__ = '0.2.0'
 Location of year:
     top level:
         LICENSE
