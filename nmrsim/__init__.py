@@ -26,4 +26,6 @@ The top-level nmrsim namespace provides the following classes:
 """
 # TODO: consider including a glossary here? e.g. peaklist, spectrum
 
-from ._classes import Multiplet, SpinSystem, Spectrum
+from ._classes import Multiplet, SpinSystem, Spectrum  # noqa: F401
+
+__version__ = '0.2.2'

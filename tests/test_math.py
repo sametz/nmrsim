@@ -59,8 +59,8 @@ def test_lorentz_width():
     I = 1
     w = 2
     max_height = lorentz(v0, v0, I, w)
-    low_width_height = lorentz(v0 - w/2, v0, I, w)
-    high_width_height = lorentz(v0 + w/2, v0, I, w)
+    low_width_height = lorentz(v0 - w/2, v0, I, w)  # noqa: E226
+    high_width_height = lorentz(v0 + w/2, v0, I, w)  # noqa: E226
     assert low_width_height / max_height == approx(0.5)
     assert high_width_height / max_height == approx(0.5)
 

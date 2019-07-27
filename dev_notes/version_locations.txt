@@ -1,0 +1,19 @@
+Until a version number managing scheme is implemented: here is a list of places
+where a version number is found (ignoring build folders). Includes examples of
+surrounding context (v vs version, alpha/beta, etc).
+
+a.b.c format:
+    top level:
+        CHANGELOG.rst a.b.c
+        README.rst version 0.2.0 alpha
+        setup.py version="0.2.0"
+    docs:
+        source
+            conf.py release='0.2.0-alpha'; version = '0.2'
+            introduction.rst v0.2.0 (alpha)
+
+    nmrsim:
+        __init__ __version__ = '0.2.0'
+Location of year:
+    top level:
+        LICENSE

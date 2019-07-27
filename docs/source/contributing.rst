@@ -1,5 +1,5 @@
 Contributing to **nmrsim**
-----------------------------
+--------------------------
 
 While the project is alpha, the best way to contribute is to send feedback to
 the author, either by opening an Issue or by email (sametz at udel dot edu).

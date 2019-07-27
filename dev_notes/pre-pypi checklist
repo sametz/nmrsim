@@ -1,0 +1,7 @@
+flake8
+test
+change version numbers
+test
+build
+CHECK BUILD for bin, no jupyter
+push

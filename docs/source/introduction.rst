@@ -1,5 +1,5 @@
-Introduction to nmrsim v0.2.0 (alpha)
-===========================================
+Introduction to nmrsim v0.2.2 (alpha)
+=====================================
 
 **nmrsim** is a library of tools for simulating NMR spectra, starting from
 parameters provided by the user (e.g. chemical shift; *J* coupling constants;

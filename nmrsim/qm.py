@@ -44,6 +44,7 @@ import os
 
 import numpy as np
 import sparse
+
 from nmrsim.math import normalize_peaklist
 
 CACHE = True  # saving of partial solutions is allowed

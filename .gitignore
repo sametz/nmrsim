@@ -11,3 +11,6 @@ venv
 eggs/
 .eggs/
 *.egg-info/
+build
+dist
+.vscode/
