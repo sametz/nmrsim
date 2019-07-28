@@ -30,6 +30,7 @@ setuptools.setup(
         "Topic :: Scientific/Engineering :: Visualization",
     ],
     keywords='NMR simulation spectra spectrum',
+    python_requires='>=3.6',
     install_requires=['matplotlib',
                       'numpy',
                       'sparse'],

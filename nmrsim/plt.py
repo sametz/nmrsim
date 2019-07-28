@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from nmrsim.math import lorentz
+from nmrsim._utils import low_high
 
 
 def add_lorentzians(linspace, peaklist, w):
@@ -49,6 +50,7 @@ def add_lorentzians(linspace, peaklist, w):
     return result
 
 
+# TODO: possibly refactor plot routines to avoid repetitive code
 def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     """
     A matplotlib plot of the simulated lineshape for a peaklist.
@@ -75,16 +77,7 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     """
     peaklist.sort()
     if limits:
-        try:
-            l_limit, r_limit = limits
-            l_limit = float(l_limit)
-            r_limit = float(r_limit)
-        except Exception as e:
-            print(e)
-            print('limits must be a tuple of two numbers')
-            raise
-        if l_limit > r_limit:
-            l_limit, r_limit = r_limit, l_limit
+        l_limit, r_limit = low_high(limits)
     else:
         l_limit = peaklist[0][0] - 50
         r_limit = peaklist[-1][0] + 50
@@ -93,10 +86,10 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     plt.gca().invert_xaxis()  # reverses the x axis
     y = add_lorentzians(x, peaklist, w)
     # noinspection PyTypeChecker
-    plt.plot(x, y)
+    lines = plt.plot(x, y)
+    print(lines)
     plt.show()
     return x, y
-    # TODO: or return plt? Decide behavior
 
 
 def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
@@ -120,16 +113,7 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
     """
     fig, ax = plt.subplots()
     if limits:
-        try:
-            l_limit, r_limit = limits
-            l_limit = float(l_limit)
-            r_limit = float(r_limit)
-        except Exception as e:
-            print(e)
-            print('limits must be a tuple of two numbers')
-            raise
-        if l_limit > r_limit:
-            l_limit, r_limit = r_limit, l_limit
+        l_limit, r_limit = low_high(limits)
     else:
         l_limit = sorted(peaklist)[0][0] - 50
         r_limit = sorted(peaklist)[-1][0] + 50
@@ -171,16 +155,7 @@ def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
     x, y : The original x, y arguments.
     """
     if limits:
-        try:
-            l_limit, r_limit = limits
-            l_limit = float(l_limit)
-            r_limit = float(r_limit)
-        except Exception as e:
-            print(e)
-            print('limits must be a tuple of two numbers')
-            raise
-        if l_limit > r_limit:
-            l_limit, r_limit = r_limit, l_limit
+        l_limit, r_limit = low_high(limits)
     else:
         l_limit = min(x)  # x[0]  # assumes x already sorted low->high
         r_limit = max(x)  # x[-1]

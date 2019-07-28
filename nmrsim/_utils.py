@@ -33,3 +33,8 @@ def is_positive(n):
     if n > 0:
         return n
     raise ValueError('Number must be positive.')
+
+
+def low_high(t):
+    two_numbers = is_tuple_of_two_numbers(t)
+    return min(two_numbers), max(two_numbers)
