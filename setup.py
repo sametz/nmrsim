@@ -35,13 +35,18 @@ setuptools.setup(
                       'sparse'],
     extras_require={
         'dev': [
-            'nbsphinx',
             'flake8',
+            'ipykernel',
+            'jupyter',
+            'nbsphinx',
             'pytest',
             'pyfakefs',
             'sphinx',
             'sphinx_rtd_theme',
             'sphinxcontrib-napoleon',
+            # below are for current "extra" jupyter notebook features,
+            # which may change as other dataviz options tested.
+            'plotly',
         ]
     }
 )
