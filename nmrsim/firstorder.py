@@ -36,6 +36,7 @@ def _doublet(plist, J):
     return res
 
 
+# TODO: consider making the multiplet and nmrsim.Multiplet arguments similar
 def multiplet(signal, couplings):
     """
     Splits a set of signals into first-order multiplets.

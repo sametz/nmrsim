@@ -203,15 +203,39 @@ class Spectrum:
         peaklists_merged = itertools.chain.from_iterable(peaklists)
         self._peaklist = sorted(reduce_peaks(peaklists_merged))
         if vmin is None:  # Must compare to None so 0 is a valid input
-            vmin = min(self._peaklist)[0] - 50
-        self.vmin = vmin
+            self._reset_vmin()
+        else:
+            self.vmin = vmin
         if vmax is None:
-            vmax = max(self._peaklist)[0] + 50
-        self.vmax = vmax
+            self._reset_vmax()
+        else:
+            self.vmax = vmax
 
     def _add_peaklist(self, other):
-        self._peaklist = reduce_peaks(
-            itertools.chain(self._peaklist, other.peaklist()))
+        self._peaklist = sorted(reduce_peaks(
+            itertools.chain(self._peaklist, other.peaklist())))
+        self._reset_minmax()
+
+    def _reset_minmax(self):
+        self._reset_vmin()
+        self._reset_vmax()
+
+    def _reset_vmin(self):
+        self.vmin = min(self._peaklist)[0] - 50
+
+    def _reset_vmax(self):
+        self.vmax = max(self._peaklist)[0] + 50
+
+    def default_limits(self):
+        """Reset vmin and vmax to defaults.
+
+        Returns
+        -------
+        float or int, float or int
+            Spectrum.vmin, Spectrum.vmax
+        """
+        self._reset_minmax()
+        return self.vmin, self.vmax
 
     def __eq__(self, other):
         if hasattr(other, 'peaklist') and callable(other.peaklist):
@@ -219,8 +243,24 @@ class Spectrum:
 
     def __add__(self, other):
         if hasattr(other, 'peaklist') and callable(other.peaklist):
-            self._add_peaklist(other)
-            self._components.append(other)
+            if isinstance(other, Spectrum):
+                for component in other._components:
+                    self.__add__(component)
+            else:
+                self._add_peaklist(other)
+                self._components.append(other)
+            return self
+        else:
+            return NotImplemented
+
+    def __iadd__(self, other):
+        if hasattr(other, 'peaklist') and callable(other.peaklist):
+            if isinstance(other, Spectrum):
+                for component in other._components:
+                    self.__add__(component)
+            else:
+                self._add_peaklist(other)
+                self._components.append(other)
             return self
         else:
             return NotImplemented

@@ -1,4 +1,4 @@
-Introduction to nmrsim v0.2.2 (alpha)
+Introduction to nmrsim v0.2.2 (beta)
 =====================================
 
 **nmrsim** is a library of tools for simulating NMR spectra, starting from

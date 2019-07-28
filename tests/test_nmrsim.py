@@ -264,12 +264,31 @@ class TestSpectrum:
 
     def test_lineshape(self):
         m1 = Multiplet(100, 1, [(10, 2)])
-        m2 = Multiplet(80, 1, [(10, 2)], w=1.0)
-        spectrum = m1 + m2
-        x = np.linspace(spectrum.vmin, spectrum.vmax, 1000)
+        m2 = Multiplet(80, 1, [(10, 2)], w=1.0)  # also test w
+        # also test vmin/vmax work
+        spectrum = Spectrum([m1, m2], vmin=0.0, vmax=200.0)
+        x = np.linspace(0.0, 200.0, 1000)
         y1 = add_lorentzians(x, m1.peaklist(), m1.w)
         y2 = add_lorentzians(x, m2.peaklist(), m2.w)
         y_sum = [sum(i) for i in zip(y1, y2)]
         spec_x, spec_y = spectrum.lineshape(points=1000)
         assert np.allclose(spec_x, x)
         assert np.allclose(spec_y, y_sum)
+
+    def test_default_limits(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)], w=1.0)
+        spectrum = Spectrum([m1, m2], vmin=0.0, vmax=200.0)
+        vmin, vmax = spectrum.default_limits()
+        assert vmin == 20
+        assert vmax == 160
+
+    def test_iadd(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        m3 = Multiplet(40, 1, [(10, 2)])
+        spectrum = Spectrum([m1, m2])
+        spectrum += m3
+        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
+                                    (70, 0.25), (50, 0.25), (40, 0.5), (30, 0.25)])
+        assert np.allclose(expected_peaklist, spectrum.peaklist())
