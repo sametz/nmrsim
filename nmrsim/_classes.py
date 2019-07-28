@@ -8,13 +8,16 @@ import numpy as np
 
 from nmrsim.firstorder import first_order_spin_system, multiplet
 from nmrsim.math import reduce_peaks
+from nmrsim.plt import add_lorentzians
 from nmrsim.qm import qm_spinsystem
+from nmrsim._utils import low_high
 
 from ._descriptors import Number, Couplings
 
 # TODO: Multiplet "belongs" in the nmrsim.firstorder namespace, but has a
 # cyclic dependency with Spectrum and multiplet. Until a solution found, have
 # to define both in the same module.
+# TODO: consider a base class that has common features such as .peaklist()
 
 
 class Multiplet:
@@ -29,15 +32,19 @@ class Multiplet:
     J : 2D array-like, e.g. [(int or float, int)...] for [(J, # of nuclei)...].
         For example, a td, *J* = 7.0, 2.5 Hz would have:
         J = [(7.0, 2), (2.5, 1)].
+    w : float or int (optional)
+        the peak width at half-height. Currently only used when Multiplet is a
+        component of a nmrsim.Spectrum object.
     """
     v = Number()
     I = Number()
     J = Couplings()
 
-    def __init__(self, v, I, J):
+    def __init__(self, v, I, J, w=0.5):
         self.v = v
         self.I = I
         self.J = J
+        self.w = 0.5
         self._peaklist = multiplet((v, I), J)
 
     def __eq__(self, other):
@@ -87,10 +94,11 @@ class Multiplet:
 class SpinSystem:
     """Stub implementation of SpinSystem.
     Flesh out API (e.g. getters/setters; dunder methods) later."""
-    def __init__(self, v, J, second_order=True):
+    def __init__(self, v, J, w=0.5, second_order=True):
         self._nuclei_number = len(v)
         self.v = v
         self.J = J
+        self.w = w
         self._second_order = second_order
         self._peaklist = self.peaklist()
 
@@ -189,11 +197,17 @@ class Spectrum:
     """A collection of spectral features (SpinSystem; Multiplet).
 
     Flesh out API (e.g. getter/setters; dunder methods) later."""
-    def __init__(self, components):
+    def __init__(self, components, vmin=None, vmax=None):
         self._components = components[:]
         peaklists = [c.peaklist() for c in self._components]
         peaklists_merged = itertools.chain.from_iterable(peaklists)
-        self._peaklist = reduce_peaks(peaklists_merged)
+        self._peaklist = sorted(reduce_peaks(peaklists_merged))
+        if vmin is None:  # Must compare to None so 0 is a valid input
+            vmin = min(self._peaklist)[0] - 50
+        self.vmin = vmin
+        if vmax is None:
+            vmax = max(self._peaklist)[0] + 50
+        self.vmax = vmax
 
     def _add_peaklist(self, other):
         self._peaklist = reduce_peaks(
@@ -220,3 +234,18 @@ class Spectrum:
             Array of (frequency, intensity) signals.
         """
         return self._peaklist
+
+    def lineshape(self, points=800):
+        """Return the x and y arrays for the spectrum's lineshape.
+
+        Returns
+        -------
+        [float...], [float...]
+            a tuple of x array, y array.
+        """
+        vmin, vmax = low_high((self.vmin, self.vmax))
+        x = np.linspace(vmin, vmax, points)
+        y = [add_lorentzians(x, c.peaklist(), c.w)
+             for c in self._components]
+        y_sum = np.sum(y, 0)
+        return x, y_sum

@@ -3,6 +3,7 @@ import pytest
 
 from nmrsim import Multiplet, SpinSystem, Spectrum
 from nmrsim.firstorder import first_order_spin_system
+from nmrsim.plt import add_lorentzians
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.qm_arguments import rioux
 
@@ -260,3 +261,15 @@ class TestSpectrum:
         s = Spectrum([m1])
         s2 = s + m2
         assert s2._components == [m1, m2]
+
+    def test_lineshape(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)], w=1.0)
+        spectrum = m1 + m2
+        x = np.linspace(spectrum.vmin, spectrum.vmax, 1000)
+        y1 = add_lorentzians(x, m1.peaklist(), m1.w)
+        y2 = add_lorentzians(x, m2.peaklist(), m2.w)
+        y_sum = [sum(i) for i in zip(y1, y2)]
+        spec_x, spec_y = spectrum.lineshape(points=1000)
+        assert np.allclose(spec_x, x)
+        assert np.allclose(spec_y, y_sum)
