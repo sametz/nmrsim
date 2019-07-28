@@ -198,7 +198,9 @@ class Spectrum:
 
     Flesh out API (e.g. getter/setters; dunder methods) later."""
     def __init__(self, components, vmin=None, vmax=None):
-        self._components = components[:]
+        combo = [extract_components(c) for c in components]
+        result = list(itertools.chain.from_iterable(combo))
+        self._components = result
         peaklists = [c.peaklist() for c in self._components]
         peaklists_merged = itertools.chain.from_iterable(peaklists)
         self._peaklist = sorted(reduce_peaks(peaklists_merged))
@@ -242,28 +244,21 @@ class Spectrum:
             return np.allclose(self.peaklist(), other.peaklist())
 
     def __add__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
-            if isinstance(other, Spectrum):
-                for component in other._components:
-                    self.__add__(component)
-            else:
-                self._add_peaklist(other)
-                self._components.append(other)
-            return self
-        else:
-            return NotImplemented
+        new_spectrum = Spectrum(self._components[:], vmin=self.vmin, vmax=self.vmax)
+        new_spectrum += other
+        return new_spectrum
 
     def __iadd__(self, other):
         if hasattr(other, 'peaklist') and callable(other.peaklist):
             if isinstance(other, Spectrum):
                 for component in other._components:
-                    self.__add__(component)
+                    self.__iadd__(component)
             else:
                 self._add_peaklist(other)
                 self._components.append(other)
             return self
         else:
-            return NotImplemented
+            raise TypeError('Item being added to Spectrum object not compatible')
 
     def peaklist(self):
         """Return the peaklist for the spectrum.
@@ -289,3 +284,15 @@ class Spectrum:
              for c in self._components]
         y_sum = np.sum(y, 0)
         return x, y_sum
+
+
+def extract_components(nmr_object, clist=None):
+    """"""
+    if clist is None:
+        clist = []
+    if isinstance(nmr_object, Spectrum):
+        for c in nmr_object._components:
+            extract_components(c, clist)
+    else:
+        clist.append(nmr_object)
+    return clist
