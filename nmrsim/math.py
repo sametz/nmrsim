@@ -125,7 +125,7 @@ def lorentz(v, v0, I, w):
     Arguments
     ---------
     v : float
-        The frequency (x coordinate) at which to evaluate intensity (y
+        The frequency (x coordinate) in Hz at which to evaluate intensity (y
         coordinate).
     v0 : float
         The center of the distribution.
