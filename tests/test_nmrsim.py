@@ -43,10 +43,11 @@ def spinsystem(abx):
 class TestMultiplet:
     def test_instantiates(self, td):
         v, I, J = td
-        td_multiplet = Multiplet(v, I, J)
+        td_multiplet = Multiplet(v, I, J, 1.5)
         assert td_multiplet.v == 1200.0
         assert td_multiplet.I == 2
         assert td_multiplet.J == [(7.1, 2), (1.1, 1)]
+        assert td_multiplet.w == 1.5
         expected_peaklist = [
             (1192.35, 0.25), (1193.45, 0.25),
             (1199.45, 0.5), (1200.55, 0.5),
@@ -310,6 +311,7 @@ class TestSpectrum:
         spectrum2 = Spectrum([m1])
         spectrum += spectrum2
         assert spectrum._components == [m1, m2, m3, m1]
+
 
 def test_extract_components():
     m1 = Multiplet(100, 1, [(10, 2)])

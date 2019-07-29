@@ -44,7 +44,7 @@ class Multiplet:
         self.v = v
         self.I = I
         self.J = J
-        self.w = 0.5
+        self.w = w
         self._peaklist = multiplet((v, I), J)
 
     def __eq__(self, other):
