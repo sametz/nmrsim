@@ -176,7 +176,21 @@
 
 
 <div class="viewcode-block" id="Multiplet"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Multiplet">[docs]</a><span class="k">class</span> <span class="nc">Multiplet</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A representation of a first-order multiplet.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A representation of a first-order multiplet.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : float or int</span>
+<span class="sd">        The frequency of the center of the multiplet.</span>
+<span class="sd">    I : float or int</span>
+<span class="sd">        The total intensity (&quot;integration&quot;) of the multiplet.</span>
+<span class="sd">    J : 2D array-like, e.g. [(int or float, int)...] for [(J, # of nuclei)...].</span>
+<span class="sd">        For example, a td, *J* = 7.0, 2.5 Hz would have:</span>
+<span class="sd">        J = [(7.0, 2), (2.5, 1)].</span>
+<span class="sd">    w : float or int (optional)</span>
+<span class="sd">        the peak width at half-height. Currently only used when Multiplet is a</span>
+<span class="sd">        component of a nmrsim.Spectrum object.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -190,6 +204,20 @@
 <span class="sd">    w : float or int (optional)</span>
 <span class="sd">        the peak width at half-height. Currently only used when Multiplet is a</span>
 <span class="sd">        component of a nmrsim.Spectrum object.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Multiplet equates equal to other objects if their peaklists are identical.</span>
+
+<span class="sd">    Multiplets can be added to other Multiplet/SpinSystem/Spectrum objects.</span>
+<span class="sd">    Addition returns a Spectrum object with the Multiplet as a component.</span>
+
+<span class="sd">    Multiplets can be multiplied by a scalar to scale their intensities and</span>
+<span class="sd">    return a new Multiplet object, or be multiplied in-place to modify and</span>
+<span class="sd">    return `self`.</span>
+
+<span class="sd">    Similarly, multiplets can be divided or divided in-place by a scalar.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">Number</span><span class="p">()</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">Number</span><span class="p">()</span>
@@ -235,20 +263,58 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_peaklist</span> <span class="o">=</span> <span class="n">multiplet</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">J</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Multiplet.peaklist"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Multiplet.peaklist">[docs]</a>    <span class="k">def</span> <span class="nf">peaklist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a list of (frequency, intensity) signals.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a peaklist for the multiplet.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        [(float, float)...]</span>
-<span class="sd">            Array of (frequency, intensity) signals.</span>
+<span class="sd">            List of (frequency, intensity) peaks.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_refresh</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_peaklist</span></div></div>
 
 
 <div class="viewcode-block" id="SpinSystem"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.SpinSystem">[docs]</a><span class="k">class</span> <span class="nc">SpinSystem</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Stub implementation of SpinSystem.</span>
-<span class="sd">    Flesh out API (e.g. getters/setters; dunder methods) later.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A representation of an NMR spectrum composed of one or more</span>
+<span class="sd">    Multiplet/SpinSystem components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : [float or int...]</span>
+<span class="sd">        a list of *n* nuclei frequencies in Hz</span>
+<span class="sd">    J : 2D array-like</span>
+<span class="sd">        An *n, n* array of couplings in Hz. The order of nuclei in the list</span>
+<span class="sd">        corresponds to the column and row order in the matrix, e.g.</span>
+<span class="sd">        couplings[0][1] and [1]0] are the J coupling between the nuclei of</span>
+<span class="sd">        freqs[0] and freqs[1].</span>
+<span class="sd">    w : float or int (optional, default = 0.5)</span>
+<span class="sd">        the peak width (in Hz) at half-height.</span>
+<span class="sd">        Currently only used when SpinSystem is a component of a nmrsim.Spectrum</span>
+<span class="sd">        object.</span>
+<span class="sd">    second_order : bool (optional, default = True)</span>
+<span class="sd">        Whether the SpinSystem should be simulated as second-order. If false,</span>
+<span class="sd">        a first-order simulation will be used.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v</span>
+<span class="sd">    J</span>
+<span class="sd">    w : float or int (optional, default = 0.5)</span>
+<span class="sd">        the peak width (in Hz) at half-height.</span>
+<span class="sd">        Currently only used when SpinSystem is a component of a nmrsim.Spectrum</span>
+<span class="sd">        object.</span>
+<span class="sd">    second_order</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    SpinSystem equates equal to other objects if their peaklists are identical.</span>
+
+<span class="sd">    SpinSystem objects can be added to Multiplet/SpinSystem/Spectrum objects.</span>
+<span class="sd">    Addition returns a Spectrum object with the SpinSystem as a component.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">second_order</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nuclei_number</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">v</span>
@@ -349,9 +415,30 @@
 
 
 <div class="viewcode-block" id="Spectrum"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.Spectrum">[docs]</a><span class="k">class</span> <span class="nc">Spectrum</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A collection of spectral features (SpinSystem; Multiplet).</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A collection of spectral features (SpinSystem; Multiplet).</span>
 
-<span class="sd">    Flesh out API (e.g. getter/setters; dunder methods) later.&quot;&quot;&quot;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    components : list</span>
+<span class="sd">        A list of Multiplet and/or SpinSystem objects that the Spectrum is</span>
+<span class="sd">        composed from.</span>
+<span class="sd">    vmin, vmax : float or int (optional)</span>
+<span class="sd">        The minimum and maximum frequencies for the Spectrum window.</span>
+<span class="sd">        The defaults give a 50 Hz margin from the lowest- and highest-</span>
+<span class="sd">        frequency peaks in the spectrum, respectively.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vmin, vmax : float or int (optional)</span>
+<span class="sd">        The minimum and maximum frequencies for the Spectrum window.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Spectrum objects can be added to other Multiplet/SpinSystem/Spectrum</span>
+<span class="sd">    objects, to return a new Spectrum object. In-place addition is also</span>
+<span class="sd">    recognized, modifying the Spectrum object in-place and returning self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">combo</span> <span class="o">=</span> <span class="p">[</span><span class="n">extract_components</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">components</span><span class="p">]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">combo</span><span class="p">))</span>

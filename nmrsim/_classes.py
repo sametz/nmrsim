@@ -21,7 +21,21 @@ from ._descriptors import Number, Couplings
 
 
 class Multiplet:
-    """A representation of a first-order multiplet.
+    """
+    A representation of a first-order multiplet.
+
+    Parameters
+    ----------
+    v : float or int
+        The frequency of the center of the multiplet.
+    I : float or int
+        The total intensity ("integration") of the multiplet.
+    J : 2D array-like, e.g. [(int or float, int)...] for [(J, # of nuclei)...].
+        For example, a td, *J* = 7.0, 2.5 Hz would have:
+        J = [(7.0, 2), (2.5, 1)].
+    w : float or int (optional)
+        the peak width at half-height. Currently only used when Multiplet is a
+        component of a nmrsim.Spectrum object.
 
     Attributes
     ----------
@@ -35,6 +49,20 @@ class Multiplet:
     w : float or int (optional)
         the peak width at half-height. Currently only used when Multiplet is a
         component of a nmrsim.Spectrum object.
+
+    Notes
+    -----
+    Multiplet equates equal to other objects if their peaklists are identical.
+
+    Multiplets can be added to other Multiplet/SpinSystem/Spectrum objects.
+    Addition returns a Spectrum object with the Multiplet as a component.
+
+    Multiplets can be multiplied by a scalar to scale their intensities and
+    return a new Multiplet object, or be multiplied in-place to modify and
+    return `self`.
+
+    Similarly, multiplets can be divided or divided in-place by a scalar.
+
     """
     v = Number()
     I = Number()
@@ -80,20 +108,58 @@ class Multiplet:
         self._peaklist = multiplet((self.v, self.I), self.J)
 
     def peaklist(self):
-        """Return a list of (frequency, intensity) signals.
+        """
+        Return a peaklist for the multiplet.
 
         Returns
         -------
         [(float, float)...]
-            Array of (frequency, intensity) signals.
+            List of (frequency, intensity) peaks.
         """
         self._refresh()
         return self._peaklist
 
 
 class SpinSystem:
-    """Stub implementation of SpinSystem.
-    Flesh out API (e.g. getters/setters; dunder methods) later."""
+    """
+    A representation of an NMR spectrum composed of one or more
+    Multiplet/SpinSystem components.
+
+    Parameters
+    ----------
+    v : [float or int...]
+        a list of *n* nuclei frequencies in Hz
+    J : 2D array-like
+        An *n, n* array of couplings in Hz. The order of nuclei in the list
+        corresponds to the column and row order in the matrix, e.g.
+        couplings[0][1] and [1]0] are the J coupling between the nuclei of
+        freqs[0] and freqs[1].
+    w : float or int (optional, default = 0.5)
+        the peak width (in Hz) at half-height.
+        Currently only used when SpinSystem is a component of a nmrsim.Spectrum
+        object.
+    second_order : bool (optional, default = True)
+        Whether the SpinSystem should be simulated as second-order. If false,
+        a first-order simulation will be used.
+
+    Attributes
+    ----------
+    v
+    J
+    w : float or int (optional, default = 0.5)
+        the peak width (in Hz) at half-height.
+        Currently only used when SpinSystem is a component of a nmrsim.Spectrum
+        object.
+    second_order
+
+    Notes
+    -----
+    SpinSystem equates equal to other objects if their peaklists are identical.
+
+    SpinSystem objects can be added to Multiplet/SpinSystem/Spectrum objects.
+    Addition returns a Spectrum object with the SpinSystem as a component.
+
+    """
     def __init__(self, v, J, w=0.5, second_order=True):
         self._nuclei_number = len(v)
         self.v = v
@@ -194,9 +260,30 @@ class SpinSystem:
 
 
 class Spectrum:
-    """A collection of spectral features (SpinSystem; Multiplet).
+    """
+    A collection of spectral features (SpinSystem; Multiplet).
 
-    Flesh out API (e.g. getter/setters; dunder methods) later."""
+    Parameters
+    ----------
+    components : list
+        A list of Multiplet and/or SpinSystem objects that the Spectrum is
+        composed from.
+    vmin, vmax : float or int (optional)
+        The minimum and maximum frequencies for the Spectrum window.
+        The defaults give a 50 Hz margin from the lowest- and highest-
+        frequency peaks in the spectrum, respectively.
+
+    Attributes
+    ----------
+    vmin, vmax : float or int (optional)
+        The minimum and maximum frequencies for the Spectrum window.
+
+    Notes
+    -----
+    Spectrum objects can be added to other Multiplet/SpinSystem/Spectrum
+    objects, to return a new Spectrum object. In-place addition is also
+    recognized, modifying the Spectrum object in-place and returning self.
+    """
     def __init__(self, components, vmin=None, vmax=None):
         combo = [extract_components(c) for c in components]
         result = list(itertools.chain.from_iterable(combo))
