@@ -86,7 +86,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.2 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to nmrsim v0.2.2 (beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
@@ -191,6 +191,7 @@
     <span class="k">return</span> <span class="n">res</span>
 
 
+<span class="c1"># TODO: consider making the multiplet and nmrsim.Multiplet arguments similar</span>
 <div class="viewcode-block" id="multiplet"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.firstorder.multiplet">[docs]</a><span class="k">def</span> <span class="nf">multiplet</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">couplings</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits a set of signals into first-order multiplets.</span>
@@ -208,15 +209,14 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    [(float, float)...]</span>
-<span class="sd">        a peaklist of the multiplet that results from splitting the signal</span>
-<span class="sd">        by each J.</span>
-
+<span class="sd">        a sorted peaklist for the multiplet that results from splitting the</span>
+<span class="sd">        signal by each J.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">signal</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">coupling</span> <span class="ow">in</span> <span class="n">couplings</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">coupling</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">res</span> <span class="o">=</span> <span class="n">_doublet</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">coupling</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">reduce_peaks</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">reduce_peaks</span><span class="p">(</span><span class="n">res</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="first_order_spin_system"><a class="viewcode-back" href="../../nmrsim.html#nmrsim.firstorder.first_order_spin_system">[docs]</a><span class="k">def</span> <span class="nf">first_order_spin_system</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>

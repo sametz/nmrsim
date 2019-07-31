@@ -100,7 +100,7 @@ def _normalize(intensities, n=1):
 
 def normalize_peaklist(peaklist, n=1):
     """
-    Normalize the intensities in a spectrum so that total intensity equals
+    Normalize the intensities in a peaklist so that total intensity equals
     value n (nominally the number of nuclei giving rise to the signal).
 
     Parameters

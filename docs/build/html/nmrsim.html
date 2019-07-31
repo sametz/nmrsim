@@ -86,7 +86,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrsim v0.2.2 (alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to nmrsim v0.2.2 (beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to <strong>nmrsim</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
@@ -891,8 +891,8 @@ e.g. to split a signal into a <em>dt, J</em> = 8, 5 Hz, use:
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a peaklist of the multiplet that results from splitting the signal
-by each J.</p>
+<dd class="field-even"><p>a sorted peaklist for the multiplet that results from splitting the
+signal by each J.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>[(float, float)..]</p>
@@ -986,7 +986,7 @@ parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>v</strong> (<em>float</em>) – The frequency (x coordinate) at which to evaluate intensity (y
+<li><p><strong>v</strong> (<em>float</em>) – The frequency (x coordinate) in Hz at which to evaluate intensity (y
 coordinate).</p></li>
 <li><p><strong>v0</strong> (<em>float</em>) – The center of the distribution.</p></li>
 <li><p><strong>I</strong> (<em>float</em>) – the relative intensity of the signal</p></li>
@@ -1006,7 +1006,7 @@ evaluated at frequency <cite>v</cite>.</p>
 <dl class="function">
 <dt id="nmrsim.math.normalize_peaklist">
 <code class="sig-prename descclassname">nmrsim.math.</code><code class="sig-name descname">normalize_peaklist</code><span class="sig-paren">(</span><em class="sig-param">peaklist</em>, <em class="sig-param">n=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/math.html#normalize_peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.math.normalize_peaklist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Normalize the intensities in a spectrum so that total intensity equals
+<dd><p>Normalize the intensities in a peaklist so that total intensity equals
 value n (nominally the number of nuclei giving rise to the signal).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1058,7 +1058,7 @@ and returns the x, y plot data.</p></li>
 <dl class="function">
 <dt id="nmrsim.plt.add_lorentzians">
 <code class="sig-prename descclassname">nmrsim.plt.</code><code class="sig-name descname">add_lorentzians</code><span class="sig-paren">(</span><em class="sig-param">linspace</em>, <em class="sig-param">peaklist</em>, <em class="sig-param">w</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/plt.html#add_lorentzians"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.plt.add_lorentzians" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a numpy linspace, a spectrum as a list of (frequency, intensity)
+<dd><p>Given a numpy linspace, a peaklist of (frequency, intensity)
 tuples, and a linewidth, returns an array of y coordinates for the
 total line shape.</p>
 <dl class="field-list simple">
@@ -1329,21 +1329,55 @@ and number of spins.</p>
 <li><p>dnmr: for modeling Dynamic NMR systems</p></li>
 <li><p>firstorder: for modeling first-order spectra</p></li>
 <li><p>math: core math routines for handling NMR data</p></li>
-<li><p>partial: uses non-quantum-mechanical solutions for common second-order NMR patterns</p></li>
+<li><p>partial: uses non-quantum-mechanical solutions for common second-order NMR
+patterns</p></li>
 <li><p>plt: convenience plotting routines for NMR results</p></li>
-<li><p>qm: quantum-mechanical second-order simulation of spin systems (currently capped at 11 nuclei)</p></li>
+<li><p>qm: quantum-mechanical second-order simulation of spin systems (currently
+capped at 11 nuclei)</p></li>
 </ul>
 <p>Currently, only spin-1/2 nuclei are accommodated.</p>
 <p>The top-level nmrsim namespace provides the following classes:</p>
 <ul class="simple">
-<li><p>Multiplet: a representation of a first-order multiplet (e.g. quartet; doublet of triplets).</p></li>
-<li><p>SpinSystem: a representation of a set of coupled nuclei (modeled as either first-order or second-order).</p></li>
-<li><p>Spectrum: a collection of components such as Multiplets or SpinSystems that contribute to a total NMR spectrum
-simulation.</p></li>
+<li><p>Multiplet: a representation of a first-order multiplet (e.g. quartet;
+doublet of triplets).</p></li>
+<li><p>SpinSystem: a representation of a set of coupled nuclei (modeled as either
+first-order or second-order).</p></li>
+<li><p>Spectrum: a collection of components such as Multiplets or SpinSystems that
+contribute to a total NMR spectrum simulation.</p></li>
 </ul>
+<div class="section" id="definitions-of-terms-used">
+<h4>Definitions of Terms Used<a class="headerlink" href="#definitions-of-terms-used" title="Permalink to this headline">¶</a></h4>
+<p>In naming classes, functions, methods, data types etc. certain phrases, taken from NMR nomenclature, have the following
+interpretations:</p>
+<ul class="simple">
+<li><p><strong>multiplet</strong> (e.g. the <cite>nmrsim.Multiplet</cite> class): a first-order simulation
+for one signal (i.e. one or more chemical shift-equivalent nuclei).
+Examples: doublet, triplet, doublet of triplets, but <strong>not</strong> an AB quartet
+(which is a second-order pattern for two nuclei).</p></li>
+<li><p><strong>spin system</strong> (e.g. the <cite>SpinSystem</cite> class): a simulation of a set of
+coupled nuclei.</p></li>
+<li><p><strong>spectrum</strong> (e.g. the <cite>Spectrum</cite> class): a complete collection of first-
+and/or second-order components for simulating a total NMR spectrum.
+‘Spectrum’ can also refer in general to the simulation results for the
+system, e.g a peaklist or lineshape (see below).</p></li>
+<li><p><strong>peak</strong>: a pair of frequency (Hz), intensity values corresponding to a
+resonance in an NMR spectrum. For example, a 1H triplet centered at 100 Hz
+with J = 10 Hz would have the following  peaks:
+(110, 0.25), (100, 0.5), (90, 0.25).</p></li>
+<li><p><strong>peaklist</strong>: a list of peaks
+(e.g. [(110, 0.25), (100, 0.5), (90, 0.25)] for the above triplet).</p></li>
+<li><p><strong>lineshape</strong>: a pair of [x coordinates…], [y coordinates] arrays for
+plotting the lineshape of a spectrum.</p></li>
+</ul>
+<p>The following idioms are used for arguments:
+* <strong>v</strong> for a frequency or list of frequencies (similar to the Greek lowercase
+“nu” character).
+* <strong>I</strong> for a signal intensity  (despite being a PEP8 naming violation)
+* <strong>J</strong> for coupling constant data (exact format depends on the
+implementation).</p>
 <dl class="class">
 <dt id="nmrsim.Multiplet">
-<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Multiplet</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">I</em>, <em class="sig-param">J</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Multiplet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Multiplet</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">I</em>, <em class="sig-param">J</em>, <em class="sig-param">w=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Multiplet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Multiplet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A representation of a first-order multiplet.</p>
 <dl class="attribute">
@@ -1376,6 +1410,18 @@ J = [(7.0, 2), (2.5, 1)].</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>2D array-like, e.g. [(int or float, int)..] for [(J, # of nuclei)..]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nmrsim.Multiplet.w">
+<code class="sig-name descname">w</code><a class="headerlink" href="#nmrsim.Multiplet.w" title="Permalink to this definition">¶</a></dt>
+<dd><p>the peak width at half-height. Currently only used when Multiplet is a
+component of a nmrsim.Spectrum object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float or int (optional)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1417,7 +1463,7 @@ pairs (for each J/# of nuclei entry.</p>
 
 <dl class="class">
 <dt id="nmrsim.SpinSystem">
-<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">SpinSystem</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em>, <em class="sig-param">second_order=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#SpinSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.SpinSystem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">SpinSystem</code><span class="sig-paren">(</span><em class="sig-param">v</em>, <em class="sig-param">J</em>, <em class="sig-param">w=0.5</em>, <em class="sig-param">second_order=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#SpinSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.SpinSystem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stub implementation of SpinSystem.
 Flesh out API (e.g. getters/setters; dunder methods) later.</p>
@@ -1487,10 +1533,38 @@ coupling).</p>
 
 <dl class="class">
 <dt id="nmrsim.Spectrum">
-<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param">components</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nmrsim.</code><code class="sig-name descname">Spectrum</code><span class="sig-paren">(</span><em class="sig-param">components</em>, <em class="sig-param">vmin=None</em>, <em class="sig-param">vmax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A collection of spectral features (SpinSystem; Multiplet).</p>
 <p>Flesh out API (e.g. getter/setters; dunder methods) later.</p>
+<dl class="method">
+<dt id="nmrsim.Spectrum.default_limits">
+<code class="sig-name descname">default_limits</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum.default_limits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum.default_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset vmin and vmax to defaults.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Spectrum.vmin, Spectrum.vmax</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float or int, float or int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="nmrsim.Spectrum.lineshape">
+<code class="sig-name descname">lineshape</code><span class="sig-paren">(</span><em class="sig-param">points=800</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum.lineshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum.lineshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the x and y arrays for the spectrum’s lineshape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of x array, y array.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>[float…], [float…]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="nmrsim.Spectrum.peaklist">
 <code class="sig-name descname">peaklist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nmrsim/_classes.html#Spectrum.peaklist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nmrsim.Spectrum.peaklist" title="Permalink to this definition">¶</a></dt>
@@ -1507,6 +1581,7 @@ coupling).</p>
 
 </dd></dl>
 
+</div>
 </div>
 </div>
 </div>

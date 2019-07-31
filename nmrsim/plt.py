@@ -11,7 +11,6 @@ The plt module provides the following functions:
   peaklist and returns the x, y plot data.
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
   and returns the x, y plot data.
-
 """
 
 import matplotlib.pyplot as plt
@@ -23,7 +22,7 @@ from nmrsim._utils import low_high
 
 def add_lorentzians(linspace, peaklist, w):
     """
-    Given a numpy linspace, a spectrum as a list of (frequency, intensity)
+    Given a numpy linspace, a peaklist of (frequency, intensity)
     tuples, and a linewidth, returns an array of y coordinates for the
     total line shape.
 
