@@ -77,4 +77,5 @@ but you can also contribute to:
 
 To get started, see the
 `Developer Page`_.
- .. _Developer Page: DEVELOPERS.rst
+
+.. _Developer Page: DEVELOPERS.rst

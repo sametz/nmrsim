@@ -23,17 +23,29 @@ Features
 
 Installation
 ------------
-Currently, the project is an alpha version, meaning that the files must be downloaded to a user's code directory and
-used there.
+Currently, the project is an alpha version,
+meaning that the files must be downloaded to a user's code directory
+and used there.
+See the `Developer Page`_
+for details on installing a version into a virtual environment.
 
-When the project becomes beta, there will be instructions to :code:`pip install` the code from the downloaded code. A
-"release candidate" (-rc) version will mean that the package can be installed directly from the Python Package Index
-(PyPI) via :code:`pip install`.
+.. _Developer Page: DEVELOPERS.rst
+
+
+When the project becomes beta,
+there will be instructions to :code:`pip install` the code from the downloaded code.
+A "release candidate" (-rc) version will mean that the package can be installed
+directly from the Python Package Index (PyPI)
+via :code:`pip install`.
 
 Contribute
 ----------
-While the project is alpha, the best way to contribute is to send feedback to the author, either by opening an Issue
-or by email (sametz at udel dot edu). This can be anything from a technical suggestion (NMR physics and code) to
-documentation and user-friendliness (e.g. unclear descriptions, typos, awkward namespace).
+While the project is alpha,
+the best way to contribute is to send feedback to the author,
+either by opening an Issue
+or by email (sametz at udel dot edu).
+This can be anything from a technical suggestion (NMR physics and code)
+to documentation and user-friendliness
+(e.g. unclear descriptions, typos, awkward namespace).
 
 By the time the project goes beta, there will be developer instructions and a Code of Conduct.
