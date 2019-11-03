@@ -14,6 +14,7 @@ Welcome to nmrsim's documentation!
    installation
    contributing
    acknowledgements
+   qm_explanation
 
 Indices and tables
 ==================
