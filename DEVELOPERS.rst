@@ -83,7 +83,7 @@ Note that on your system you may need to use 'python3', 'python3.7' etc.
 instead of 'python' if you have more than one version of python installed
 (e.g. 'python3' if 'python' refers to version 2.7).
 
-On Mac, you can activate the environment with:
+You can activate the environment with:
 
 .. code-block:: bash
 
@@ -105,12 +105,10 @@ You should see the (base) indicator disappear.
 If your system does *not* have a Python version 3.6+ already installed,
 or if you want to have more than one version of Python on your system,
 look into the pyenv (Mac/Linux) or pyenv-win (Windows) libraries.
+Note that Windows 10  users can now get Python 3.7+ via the Microsoft store.
 
-source venv/bin/activate (linux/macOS), or
-venv\Scripts\activate.bat (Windows CLI)
-pip install -e ".[dev]"
-then test
-deactivate  # when done
+If you wish to deactivate the venv at any point,
+enter :code:`deactivate` from the command line.
 
 Using conda
 ^^^^^^^^^^^
@@ -176,32 +174,142 @@ you can deliberately break some of the code you're working on
 and re-run the tests to see the tests fail
 (assuming the code was covered by the tests).
 
-Submitting a Pull Request
--------------------------
+Making a contribution
+---------------------
 
-branch
-^^^^^^
+Create a git branch with a descriptive name for your contribution, e.g.
 
-checklist
-^^^^^^^^^
+.. code-block:: bash
 
-* flake8
-* run tests
-* build docs
-* submit
+   git checkout -b add_dnmr_tutorial
+
+Make your changes, and then:
+
+.. code-block:: bash
+
+   pytest
+   flake8
+
+When these tests both pass, navigate to the docs directory,
+and build the html documentation:
+
+.. code-block:: bash
+
+   make html
+
+Open the docs/build/html/index.html page in your browser.
+If you made changes to the documentation, including public docstrings,
+navigate to where the change should appear and check that it looks OK.
+After you're done with the documentation, run:
+
+.. code-block:: bash
+
+   make clean
+
+to delete the contents of the build directory prior to publishing your work.
+
+Commit and push to your fork of nmrsim:
+
+.. code-block:: bash
+
+   git status  # check that your work is staged to commit
+   git commit -m "Brief description of the change you made"
+   git push
+
+Submit a pull request
+---------------------
+
+`See the GitHub Help on creating a pull request from a fork
+<https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork>`_.
+
+Pull requests should be made to nmrsim's 'develop' branch,
+and not directly to 'master'.
+
+From your GitHub page for your fork,
+select the name of your working branch from the 'branch' drop-down menu
+(e.g. "add_dnmr_tutorial" using the above example).
+Click 'New pull request'.
+
+You should check that 'base repository' is 'sametz/nmrsim',
+'base' is 'develop',
+'head repository' is 'yourGitHubname/nmrsim',
+and 'compare' is your branch name (e.g. 'add_dnmr_tutorial').
+Check that you have a commit message
+(a longer message in the "Leave a comment" text field is optional)
+and click "Create pull request" when ready.
+
+The package maintainer will respond via GitHub notification.
+If there is no response after a week, feel free to email them
+(sametz at udel dot edu) with 'nmrsim' somewhere in the subject line... they
+may be busy, on vacation or just distracted :) but will eventually respond.
 
 Code Style and Conventions
 --------------------------
 
-PEP8
-^^^^
+If your code is passing the flake8 test,
+and if the html documentation looks OK, then it should be acceptable. Here are
+some of the guidelines:
 
-docstrings
-^^^^^^^^^^
+PEP 8
+^^^^^
+
+`PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_
+(the Python style guide) is followed, with the following exceptions:
+
+* The max line length is 119, the width of a GitHub preview.
+  This can be exceeded with good reason. The PEP 8 guideline of 79 characters
+  is a good goal, but readability (e.g. splitting up long URLs) shouldn't be
+  sacrificed.
+* Some naming conventions are violated for consistency with NMR terms
+  and with pre-existing code.
+  For example, many variables are upper-case single letters,
+  including H for Hamiltonian, J for coupling constant(s),
+  and (scandalously) I (upper-case 'i') for signal intensity.
+
+The project's .flake8 file makes accomodations for these and other exceptions.
+
+import sorting
+^^^^^^^^^^^^^^
+imports should be sorted into three categories,
+with a blank line separating the categories:
+
+* standard library
+* third-party libraries
+* nmrsim modules
+
+Within each, they should be sorted alphabetically (ignoring "from").
+
+type annotations
+^^^^^^^^^^^^^^^^
+
+We currently don't use type annotations,
+because this is difficult to implement with numpy and related packages.
+
 
 documentation
 ^^^^^^^^^^^^^
-semantic line wraps
+
+The project follows `PEP 257's guidelines
+<https://www.python.org/dev/peps/pep-0257/>`_ for docstrings,
+and adopts `Numpy-style docstrings
+<https://numpydoc.readthedocs.io/en/latest/format.html>`_.
+
+Docstrings are only required for public classes and functions
+(i.e. not for those whose name begins in a single underscore,
+e.g. _normalize).
+However, you may document private classes and functions if you wish--
+it can make the code's purpose clearer to others,
+and it's possible that private code may at some point be 'promoted' to the
+public API.
+
+Currently, "test docstrings" are not used. If you think they should, feel free
+to make a case for them.
+
+The nmrsim project uses Sphinx for documentation,
+and restructuredtext (.rst) for content.
+`Semantic line breaks <https://sembr.org/>`_ are encouraged--
+they make editing and formatting easier.
+
 
 
 
