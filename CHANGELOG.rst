@@ -15,10 +15,11 @@ Working towards a Version 1.0.0 release, the author interprets the terms below a
   installed via setup.py.
 
 * **beta status**: All anticipated Version 1.0.0 features are implemented and documented. The package can be
-  'pip install'ed via TestPyPI or possibly PyPI.
+  'pip install'ed via TestPyPI and possibly PyPI.
 
-* **release candidate status**: The package passes tests on multiple platforms. The package can be deployed on PyPI
-  and installed with pip.
+* **release candidate status**:
+  The package passes tests on multiple platforms and python/dependency versions.
+  The package can be pip installed from PyPI.
 
 * **Version 1.0.0 release**: API is stable. The package is available on PyPI (and perhaps conda).
 
