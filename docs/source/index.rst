@@ -13,7 +13,7 @@ Welcome to nmrsim's documentation!
 
    introduction
    installation
-   ../../jupyter/*
+   jupyter/*
    contributing
    acknowledgements
 
