@@ -9,9 +9,11 @@ Welcome to nmrsim's documentation!
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
+   :glob:
 
    introduction
    installation
+   ../../jupyter/*
    contributing
    acknowledgements
 
