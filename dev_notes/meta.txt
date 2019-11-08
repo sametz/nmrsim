@@ -1,0 +1,21 @@
+A collection of things to consider regarding the structure and deploying of the package.
+
+Apparently pyproject.toml is the new hotness. Implement?
+PEP 440 with SemVer, and adopt a .devx suffix for develop and testpypi.
+Meaning of alpha, beta will change after Version 1 released, so just use .devx in develop
+branch for now.
+src directory vs. the current no-src structure?
+tox vs nox vs...?
+Github hooks and actions?
+automate develop -> testpypi and master -> pypi
+
+Need to grok universal wheels and building on multiple systems/pythons.
+In particular: It is probably a good idea to have creation of the .npz binaries as part of the
+build/packaging process, in case there are differences between OSs and dependency versions.
+This will make building a slow process, but with automation hopefully only needs to be done
+once per push to master (or possibly develop).
+
+Look into ways to programmatically run, test, clear output and save Jupyter notebooks.
+Also consider either removing top-level jupyter folder, or using notebook linking so they're
+not duplicated in two different places, in two styles (one no output for sphinx, one with
+output for github) and with different import paths.

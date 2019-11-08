@@ -100,7 +100,7 @@ def _normalize(intensities, n=1):
 
 def normalize_peaklist(peaklist, n=1):
     """
-    Normalize the intensities in a spectrum so that total intensity equals
+    Normalize the intensities in a peaklist so that total intensity equals
     value n (nominally the number of nuclei giving rise to the signal).
 
     Parameters
@@ -125,7 +125,7 @@ def lorentz(v, v0, I, w):
     Arguments
     ---------
     v : float
-        The frequency (x coordinate) at which to evaluate intensity (y
+        The frequency (x coordinate) in Hz at which to evaluate intensity (y
         coordinate).
     v0 : float
         The center of the distribution.

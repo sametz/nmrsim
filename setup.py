@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/sametz/nmrsim",
     packages=setuptools.find_packages(
-        exclude=['jupyter', 'tests']
+        exclude=['docs', 'jupyter', 'tests']
     ),
     include_package_data=True,  # so MANIFEST is recognized
     classifiers=[
@@ -30,18 +30,24 @@ setuptools.setup(
         "Topic :: Scientific/Engineering :: Visualization",
     ],
     keywords='NMR simulation spectra spectrum',
+    python_requires='>=3.6',
     install_requires=['matplotlib',
                       'numpy',
                       'sparse'],
     extras_require={
         'dev': [
-            'nbsphinx',
             'flake8',
+            'ipykernel',
+            'jupyter',
+            'nbsphinx',
             'pytest',
             'pyfakefs',
             'sphinx',
             'sphinx_rtd_theme',
             'sphinxcontrib-napoleon',
+            # below are for current "extra" jupyter notebook features,
+            # which may change as other dataviz options tested.
+            'plotly',
         ]
     }
 )

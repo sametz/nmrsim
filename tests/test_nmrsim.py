@@ -2,7 +2,9 @@ import numpy as np
 import pytest
 
 from nmrsim import Multiplet, SpinSystem, Spectrum
+from nmrsim._classes import extract_components
 from nmrsim.firstorder import first_order_spin_system
+from nmrsim.plt import add_lorentzians
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.qm_arguments import rioux
 
@@ -41,10 +43,11 @@ def spinsystem(abx):
 class TestMultiplet:
     def test_instantiates(self, td):
         v, I, J = td
-        td_multiplet = Multiplet(v, I, J)
+        td_multiplet = Multiplet(v, I, J, 1.5)
         assert td_multiplet.v == 1200.0
         assert td_multiplet.I == 2
         assert td_multiplet.J == [(7.1, 2), (1.1, 1)]
+        assert td_multiplet.w == 1.5
         expected_peaklist = [
             (1192.35, 0.25), (1193.45, 0.25),
             (1199.45, 0.5), (1200.55, 0.5),
@@ -260,3 +263,67 @@ class TestSpectrum:
         s = Spectrum([m1])
         s2 = s + m2
         assert s2._components == [m1, m2]
+
+    def test_lineshape(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)], w=1.0)  # also test w
+        # also test vmin/vmax work
+        spectrum = Spectrum([m1, m2], vmin=0.0, vmax=200.0)
+        x = np.linspace(0.0, 200.0, 1000)
+        y1 = add_lorentzians(x, m1.peaklist(), m1.w)
+        y2 = add_lorentzians(x, m2.peaklist(), m2.w)
+        y_sum = [sum(i) for i in zip(y1, y2)]
+        spec_x, spec_y = spectrum.lineshape(points=1000)
+        assert np.allclose(spec_x, x)
+        assert np.allclose(spec_y, y_sum)
+
+    def test_default_limits(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)], w=1.0)
+        spectrum = Spectrum([m1, m2], vmin=0.0, vmax=200.0)
+        vmin, vmax = spectrum.default_limits()
+        assert vmin == 20
+        assert vmax == 160
+
+    def test_add(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        m3 = Multiplet(40, 1, [(10, 2)])
+        subspectrum = m1 + m2
+        spectrum = subspectrum + m3
+        spectrum2 = m3 + subspectrum
+        assert spectrum._components == [m1, m2, m3]
+        assert spectrum2._components == [m3, m1, m2]
+        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
+                                    (70, 0.25), (50, 0.25), (40, 0.5), (30, 0.25)])
+        assert np.allclose(expected_peaklist, spectrum.peaklist())
+        assert np.allclose(expected_peaklist, spectrum2.peaklist())
+
+    def test_iadd(self):
+        m1 = Multiplet(100, 1, [(10, 2)])
+        m2 = Multiplet(80, 1, [(10, 2)])
+        m3 = Multiplet(40, 1, [(10, 2)])
+        spectrum = Spectrum([m1, m2])
+        spectrum += m3
+        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
+                                    (70, 0.25), (50, 0.25), (40, 0.5), (30, 0.25)])
+        assert np.allclose(expected_peaklist, spectrum.peaklist())
+        spectrum2 = Spectrum([m1])
+        spectrum += spectrum2
+        assert spectrum._components == [m1, m2, m3, m1]
+
+
+def test_extract_components():
+    m1 = Multiplet(100, 1, [(10, 2)])
+    m2 = Multiplet(80, 1, [(10, 2)])
+    m3 = Multiplet(40, 1, [(10, 2)])
+    print(m1, m2, m3)
+    subspectrum = Spectrum([m1, m2])
+    subcomponents = extract_components(subspectrum)
+    assert subcomponents == [m1, m2]
+    spectrum = Spectrum([subspectrum, m3])
+    components = extract_components(spectrum)
+    assert components == [m1, m2, m3]
+    spectrum2 = Spectrum([m3, subspectrum])
+    components2 = extract_components(spectrum2)
+    assert components2 == [m3, m1, m2]

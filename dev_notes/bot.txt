@@ -1,0 +1,24 @@
+A list of specific actions to do when publishing the package. Ideally this can all be automated.
+
+Plan: a push to develop will trigger a testpypi update. It will not trigger a ReadtheDocs update.
+A push to master will trigger a pypi update and ReadtheDocs update.
+
+With parametrized testing (python 3.6+; possibly numpy/scipy/sparse/matplotlib), and possibly
+parametrized on mac vs windows vs linux:
+
+python -m venv venv
+source venv/bin/activate (or windows variant)
+pip install -e ".[dev]"
+(re)build .npz binaries
+pytest
+flake8
+(bump version) * this is a tricky bit
+cd docs; make html; make clean; or something like that
+pip install twine wheel
+python setup.py sdist bdist_wheel
+(check for bin, no extras... check-manifest?)
+twine check dist/*
+twine upload --repository testpypi dist/*
+
+Note: tox project uses a 'tasks' directory for useful scripts, e.g. release.py.
+May be a good model.

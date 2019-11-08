@@ -15,12 +15,39 @@ Working towards a Version 1.0.0 release, the author interprets the terms below a
   installed via setup.py.
 
 * **beta status**: All anticipated Version 1.0.0 features are implemented and documented. The package can be
-  'pip install'ed via TestPyPI or possibly PyPI.
+  'pip install'ed via TestPyPI and possibly PyPI.
 
-* **release candidate status**: The package passes tests on multiple platforms. The package can be deployed on PyPI
-  and installed with pip.
+* **release candidate status**:
+  The package passes tests on multiple platforms and python/dependency versions.
+  The package can be pip installed from PyPI.
 
 * **Version 1.0.0 release**: API is stable. The package is available on PyPI (and perhaps conda).
+
+
+Unreleased
+----------
+Added
+^^^^^
+* nmrsim.Multiplet:
+    * :code:`w` attribute added (peak width at half height).
+* nmrsim.SpinSystem:
+    * :code:`w` attribute added (peak width at half height).
+* nmrsim.Spectrum:
+    * In-place addition modifies the Spectrum object in-place.
+    * :code:`vmin` and :code:`vmax` attributes added, to set spectral width.
+    * :code:`default_limits` method added, to reset spectral width to default.
+    * :code:`lineshape()` method added, to return lineshape data for the
+      spectrum.
+
+Changed
+^^^^^^^
+* nmrsim.firstorder.multiplet now returns a *sorted* peaklist.
+
+Fixed
+^^^^^
+* nmrsim.Spectum:
+    * Addition of Spectrum objects is commutative, and returns a new Spectrum
+      object.
 
 
 0.2.1 - 2019-07-26 (alpha release)

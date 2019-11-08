@@ -40,8 +40,8 @@ testpypi:
     twine upload --repository testpypi dist/*
     (in new environment)
     pip install --index-url https://test.pypi.org/simple/ nmrsim
-First attempt: needed to pip install sparse and matplotlib first. all tests
-initially passed in new env/clone, but when 'nmrsim' folder renamed, some tests
-failed. Reason seems to be the bin folder was not included--so need to edit
-setup.py. also build/lib indicates the jupyter folder with __init__ was copied
-over as well! need to ingore it.
+    UPDATE 2019-10-27: need to add reference to standard pypi to guarantee dependencies load:
+        pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ nmrsim
+
+
+Adding jupyter to dev requirements. Also to get it working:
