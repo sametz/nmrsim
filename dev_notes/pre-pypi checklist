@@ -1,7 +1,9 @@
+{rebuild binaries}
 flake8
-test
-change version numbers
-test
-build
-CHECK BUILD for bin, no jupyter
-push
+pytest
+bump version
+cd docs; make html; make clean
+python setup.py sdist bdist_wheel
+CHECK BUILD for bin, and no jupyter or other extras
+twine check dist/*
+twine upload --repository testpypi dist/*  for pypi

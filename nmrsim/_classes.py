@@ -1,5 +1,5 @@
-"""This module provides high-level API classes for abstract NMR concepts such
-as spin systems and spectra.
+"""
+This module provides high-level API classes for abstract NMR concepts such as spin systems and spectra.
 """
 import itertools
 import numbers
@@ -374,7 +374,25 @@ class Spectrum:
 
 
 def extract_components(nmr_object, clist=None):
-    """"""
+    """
+    Flatten the list of components comprising an nmrsim object.
+
+    An nmrsim.Spectrum can be composed from "atomic" objects such as nmrsim.Multiplet or nmrsim.SpinSystem, or from
+    other Spectrum objects. This function recursively un-nests any Spectrum sub-components to return a list of
+    atomic objects.
+
+    Parameters
+    ----------
+    nmr_object : nmrsim class
+        the nmrsim subclass to be parsed
+    clist : [obj...]
+        the list of atomic objects being compiled
+
+    Returns
+    -------
+    [obj...]
+
+    """
     if clist is None:
         clist = []
     if isinstance(nmr_object, Spectrum):

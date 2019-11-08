@@ -1,0 +1,18 @@
+The sparse .npz files seem to work across platforms and python versions. However, ideally should
+work out how to do parametrized testing and builds. Maybe at some point different binaries will
+be needed on different OSs or dependency versions?
+
+tests/test_nmrtools.py::TestSpinSystem::test_v_validation
+  /opt/anaconda3/lib/python3.7/importlib/_bootstrap.py:219: RuntimeWarning:
+  numpy.ufunc size changed, may indicate binary incompatibility.
+  Expected 192 from C header, got 216 from PyObject
+
+---
+
+Sparse 0.8.0 has a deprecation warning (actually, with numba sub-dependency),
+but it appears that their devs are on this and it's in the process of being fixed (2019-11-08)
+
+env/lib/python3.7/site-packages/numba/types/containers.py:3
+  /Users/geoffreysametz/Documents/testing/nmrsim/env/lib/python3.7/site-packages/numba/types/containers.py:3:
+  DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated, and in 3.8 it will stop working
+    from collections import Iterable

@@ -22,7 +22,9 @@ References
    b) an important math correction to the previous reference:
 
     TODO: add reference to correction
+
 """
+
 import numpy as np
 
 from nmrsim._utils import is_number, is_decimal_fraction, is_tuple_of_two_numbers, is_positive, is_integer
@@ -30,7 +32,7 @@ from nmrsim._utils import is_number, is_decimal_fraction, is_tuple_of_two_number
 
 def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     """
-     Create a function that requires only frequency as an argurment, for
+    Create a function that requires only frequency as an argurment, for
     calculating the lineshape of a DNMR spectrum for two uncoupled spin-half
     nuclei.
 
@@ -63,8 +65,8 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
      Notes
     -----
     The nmrsim.dnmr module gives a reference for the algorithm used here.
-    """
 
+    """
     pi = np.pi
     pi_squared = pi ** 2
     T2a = 1 / (pi * wa)
@@ -80,10 +82,7 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
     r = 2 * pi * (1 + tau * ((1 / T2a) + (1 / T2b)))
 
     def _maker(v):
-        """
-        Calculate the intensity (y coordinate) at a given frequency v
-        (x coordinate).
-        """
+        """Calculate the intensity (y coordinate) at a given frequency v(x coordinate)."""
         # TODO: fix docstring, explain _P _Q etc correlate to P, Q etc in lit.
         # FIXED: previous version of this function used
         # nonlocal Dv, P, Q, R
@@ -102,8 +101,7 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
 
 def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
     """
-    Create a the lineshape for a DNMR spectrum of two uncoupled spin-half
-    nuclei.
+    Create a the lineshape for a DNMR spectrum of two uncoupled spin-half nuclei.
 
     Parameters
     ----------
@@ -133,6 +131,7 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
     References
     ----------
     See the documentation for the nmrsim.dnmr module.
+
     """
     if vb > va:
         va, vb = vb, va
@@ -151,7 +150,8 @@ def dnmr_two_singlets(va, vb, ka, wa, wb, pa, limits=None, points=800):
 
 
 class DnmrTwoSinglets:
-    """ A DNMR simulation for two uncoupled nuclei undergoing exchange.
+    """
+    A DNMR simulation for two uncoupled nuclei undergoing exchange.
 
     Parameters
     ----------
@@ -217,6 +217,7 @@ class DnmrTwoSinglets:
         Returns
         -------
         int or float
+
         """
         return self._va
 
@@ -232,6 +233,7 @@ class DnmrTwoSinglets:
         Returns
         -------
         int or float
+
         """
         return self._vb
 
@@ -242,12 +244,13 @@ class DnmrTwoSinglets:
     @property
     def k(self):
         """
-       The rate constant (Hz) for state A--> state B (must be >0).
+        The rate constant (Hz) for state A--> state B (must be >0).
 
-       Returns
-       -------
-       int or float
-       """
+        Returns
+        -------
+        int or float
+
+        """
         return self._k
 
     @k.setter
@@ -263,6 +266,7 @@ class DnmrTwoSinglets:
         Returns
         -------
         int or float
+
         """
         return self._wa
 
@@ -279,6 +283,7 @@ class DnmrTwoSinglets:
         Returns
         -------
         int or float
+
         """
         return self._wb
 
@@ -288,12 +293,13 @@ class DnmrTwoSinglets:
 
     @property
     def pa(self):
-        """float
+        """
         The fraction of the population in state a. Must be >=0 and <=1.
 
         Returns
         -------
         float
+
         """
         return self._pa
 
@@ -309,6 +315,7 @@ class DnmrTwoSinglets:
         Returns
         -------
         (int or float, int or float)
+
         """
         return self._vmin, self._vmax
 
@@ -326,6 +333,7 @@ class DnmrTwoSinglets:
         Returns
         -------
         int
+
         """
         return self._points
 
@@ -342,6 +350,7 @@ class DnmrTwoSinglets:
         x, y : numpy.array, numpy.array
             Arrays for the x (frequency) and y (intensity) lineshape data
             points.
+
         """
         x = np.linspace(self._vmin, self._vmax, self.points)
         x, y = dnmr_two_singlets(self.va, self.vb, self.k, self.wa, self.wb, self.pa,
@@ -356,8 +365,7 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
     slow-exchange limit).
 
     Parameters
-    ---------
-
+    ----------
     v : float or array-like
         a frequency (x coordinate) or array of frequencies at which an
         amplitude (y coordinate) is to be calculated.
@@ -383,6 +391,7 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
     References
     ----------
     See the documentation for the nmrsim.dnmr module.
+
     """
     pi = np.pi
     vo = (v1 + v2) / 2
@@ -448,6 +457,7 @@ def dnmr_AB(va, vb, J, k, w, limits=None, points=800):
     References
     ----------
     See the documentation for the nmrsim.dnmr module.
+
     """
     if limits:
         l_limit = min(limits)
@@ -504,6 +514,7 @@ class DnmrAB:
     References
     ----------
     See the documentation for the nmrsim.dnmr module.
+
     """
 
     def __init__(self, va=165.0, vb=135.0, J=12.0, k=12.0, w=0.5,
@@ -523,12 +534,12 @@ class DnmrAB:
     @property
     def va(self):
         """
-        The frequency of nucleus "a" (Hz) at the slow-exchange limit, in the
-        absence of coupling.
+        The frequency of nucleus "a" (Hz) at the slow-exchange limit, in the absence of coupling.
 
         Returns
         -------
         int or float
+
         """
         return self._va
 
@@ -539,12 +550,12 @@ class DnmrAB:
     @property
     def vb(self):
         """
-        The frequency of nucleus "b" (Hz) at the slow-exchange limit, in the
-        absence of coupling.
+        The frequency of nucleus "b" (Hz) at the slow-exchange limit, in the absence of coupling.
 
         Returns
         -------
         int or float
+
         """
         return self._vb
 
@@ -560,6 +571,7 @@ class DnmrAB:
         Returns
         -------
         int or float
+
         """
         return self._J
 
@@ -575,6 +587,7 @@ class DnmrAB:
         Returns
         -------
         int or float
+
         """
         return self._k
 
@@ -586,9 +599,11 @@ class DnmrAB:
     def w(self):
         """
         The peak width (Hz) at half height (at the slow-exchange limit).
+
         Returns
         -------
         int or float
+
         """
         return self._w
 
@@ -599,11 +614,12 @@ class DnmrAB:
     @property
     def limits(self):
         """
-        The minimum and maximum frequencies for the simulated lineshape.
+        Give minimum and maximum frequencies for the simulated lineshape.
 
         Returns
         -------
         (int or float, int or float)
+
         """
         return self._vmin, self._vmax
 
@@ -616,11 +632,12 @@ class DnmrAB:
     @property
     def points(self):
         """
-        The length of the returned arrays (i.e. the number of points plotted).
+        Give the length of the returned arrays (i.e. the number of points plotted).
 
         Returns
         -------
         int
+
         """
         return self._points
 
@@ -629,6 +646,7 @@ class DnmrAB:
         self._points = is_integer(value)
 
     def lineshape(self):
+        """Return the x, y lineshape data for the simulation."""
         x = np.linspace(self._vmin, self._vmax, self.points)
         y = _dnmr_AB_func(x, self.va, self.vb, self.J, self.k, self.w)
         return x, y
