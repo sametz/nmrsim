@@ -75,6 +75,8 @@ but you can also contribute to:
 * tutorials
 * jupyter notebooks
 
+.. end-of-contrib
+
 To get started, see the
 `Developer Page`_.
 

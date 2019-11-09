@@ -15,6 +15,7 @@ Welcome to nmrsim's documentation!
    installation
    jupyter/*
    contributing
+   developers
    acknowledgements
 
 Indices and tables

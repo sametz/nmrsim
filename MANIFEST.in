@@ -1,1 +1,2 @@
 include nmrsim/bin/*.npz
+exclude docs/*
