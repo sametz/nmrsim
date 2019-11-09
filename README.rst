@@ -3,6 +3,8 @@
 
 Click the "**Launch Binder**" link above to see how **nmrsim** can be used in Jupyter notebooks.
 
+`Documentation on Read the Docs <https://nmrsim.readthedocs.io/>`_
+
 nmrsim (version 0.3.0 beta)
 ============================
 
