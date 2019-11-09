@@ -24,8 +24,8 @@ Working towards a Version 1.0.0 release, the author interprets the terms below a
 * **Version 1.0.0 release**: API is stable. The package is available on PyPI (and perhaps conda).
 
 
-Unreleased
-----------
+0.3.0 - 2019-11-08 (beta release)
+---------------------------------
 Added
 ^^^^^
 * nmrsim.Multiplet:
