@@ -1,5 +1,5 @@
 .. image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/sametz/nmrsim/beta?filepath=jupyter
+   :target: https://mybinder.org/v2/gh/sametz/nmrsim/master?filepath=jupyter
 
 Click the "**Launch Binder**" link above to see how **nmrsim** can be used in Jupyter notebooks.
 
@@ -21,17 +21,20 @@ Features
 * A lower-level API for more "hands-on" calculation of NMR spectra (e.g. functions for creating and solving spin
   Hamiltonians in :code:`nmrsim.qm`).
 
+Examples
+--------
+
+See the Jupyter folder for examples of typical use cases.
+
 Installation
 ------------
 
+:code:`pip install nmrsim`
+
 See the `Developer Page`_
-for details on installing a version into a virtual environment.
+for details on installing a developer version into a virtual environment.
 
 .. _Developer Page: DEVELOPERS.rst
-
-
-When the project becomes beta,
-there will be instructions to :code:`pip install` the code from the downloaded code.
 
 Contribute
 ----------
