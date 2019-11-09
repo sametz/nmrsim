@@ -3,7 +3,7 @@ import pytest
 
 from nmrsim.plt import add_lorentzians, mplplot, mplplot_stick, mplplot_lineshape
 from tests.accepted_data import ADD_SIGNALS_DATASET
-from tests.testdata import TWOSPIN_SLOW
+from tests.dnmr_standards import TWOSPIN_SLOW
 
 # TODO: currently plot routines are returning x, y data. Change to returning
 # the plt object, and introspect it for this x, y data if needed for tests.

@@ -1,0 +1,14 @@
+[flake8]
+exclude =
+    .git,
+    __pycache__,
+    docs/source/conf.py,
+    venv,
+    jupyter,
+    tests/dnmr_standards.py,
+    build,
+    dist
+ignore =
+    # allowing I for Intensity/Integration *for now*
+    E741
+max-line-length = 119

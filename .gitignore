@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
+.ipynb_checkpoints
 nmrsim/.cache/
 .cache
 /coverage/
@@ -11,3 +12,7 @@ venv
 eggs/
 .eggs/
 *.egg-info/
+build
+dist
+.vscode/
+docs/build

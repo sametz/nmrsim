@@ -3,7 +3,7 @@ from pytest import approx
 
 from nmrsim.math import (add_peaks, get_intensity, lorentz, reduce_peaks,
                          _normalize, normalize_peaklist)
-from tests.testdata import TWOSPIN_SLOW
+from tests.dnmr_standards import TWOSPIN_SLOW
 
 
 def test_add_peaks():
@@ -59,8 +59,8 @@ def test_lorentz_width():
     I = 1
     w = 2
     max_height = lorentz(v0, v0, I, w)
-    low_width_height = lorentz(v0 - w/2, v0, I, w)
-    high_width_height = lorentz(v0 + w/2, v0, I, w)
+    low_width_height = lorentz(v0 - w/2, v0, I, w)  # noqa: E226
+    high_width_height = lorentz(v0 + w/2, v0, I, w)  # noqa: E226
     assert low_width_height / max_height == approx(0.5)
     assert high_width_height / max_height == approx(0.5)
 

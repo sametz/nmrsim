@@ -1,0 +1,11 @@
+TODOs for API/documentation.
+
+Consider a glossary of terms, then check for consistent use.
+
+peak = (v, I) -- signal?
+peaklist = [peak...]
+lineshape = [[x...], [y...]]
+and not spectrum = ""?
+
+There is a mixture of 2D array-like forms for peaklists. Define a spec (e.g.
+"2D array-like"?

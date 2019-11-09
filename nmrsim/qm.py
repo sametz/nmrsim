@@ -3,9 +3,9 @@ calculation of NMR spectra.
 
 The qm module provides the following attributes:
 
-* CACHE: bool (default True)
+* CACHE : bool (default True)
     Whether saving to disk of partial solutions is allowed.
-* SPARSE: bool (default True)
+* SPARSE : bool (default True)
     Whether the sparse library can be used.
 
 The qm module provides the following functions:
@@ -44,6 +44,7 @@ import os
 
 import numpy as np
 import sparse
+
 from nmrsim.math import normalize_peaklist
 
 CACHE = True  # saving of partial solutions is allowed
@@ -57,16 +58,16 @@ def _so_dense(nspins):
 
     Parameters
     ----------
-    nspins: int
+    nspins : int
         The number of spins in the spin system.
 
     Returns
     -------
-    (Lz, Lproduct): a tuple of:
-        Lz: 3d array of shape (n, 2^n, 2^n) representing [Lz1, Lz2, ...Lzn]
-        Lproduct: 4d array of shape (n, n, 2^n, 2^n), representing an n x n
-        array (cartesian product) for all combinations of
-        Lxa*Lxb + Lya*Lyb + Lza*Lzb, where 1 <= a, b <= n.
+    (Lz, Lproduct) : a tuple of:
+        Lz : 3d array of shape (n, 2^n, 2^n) representing [Lz1, Lz2, ...Lzn]
+        Lproduct : 4d array of shape (n, n, 2^n, 2^n), representing an n x n
+            array (cartesian product) for all combinations of
+            Lxa*Lxb + Lya*Lyb + Lza*Lzb, where 1 <= a, b <= n.
     """
     sigma_x = np.array([[0, 1 / 2], [1 / 2, 0]])
     sigma_y = np.array([[0, -1j / 2], [1j / 2, 0]])
@@ -103,22 +104,23 @@ def _so_dense(nspins):
 
 
 def _so_sparse(nspins):
-    """Either load a presaved set of spin operators as numpy arrays, or
+    """
+    Either load a presaved set of spin operators as numpy arrays, or
     calculate them and save them if a presaved set wasn't found.
 
     Parameters
     ----------
-    nspins: int
+    nspins : int
         the number of spins in the spin system
 
     Returns
     -------
-    (Lz, Lproduct): a tuple of:
-        Lz: 3d sparse.COO array of shape (n, 2^n, 2^n) representing
-        [Lz1, Lz2, ...Lzn]
-        Lproduct: 4d sparse.COO array of shape (n, n, 2^n, 2^n), representing
-        an n x n array (cartesian product) for all combinations of
-        Lxa*Lxb + Lya*Lyb + Lza*Lzb, where 1 <= a, b <= n.
+    (Lz, Lproduct) : a tuple of:
+        Lz : 3d sparse.COO array of shape (n, 2^n, 2^n) representing
+            [Lz1, Lz2, ...Lzn]
+        Lproduct : 4d sparse.COO array of shape (n, n, 2^n, 2^n), representing
+            an n x n array (cartesian product) for all combinations of
+            Lxa*Lxb + Lya*Lyb + Lza*Lzb, where 1 <= a, b <= n.
 
     Side Effect
     -----------
@@ -154,6 +156,23 @@ def _so_sparse(nspins):
 
 
 def hamiltonian_dense(v, J):
+    """
+    Calculate the spin Hamiltonian as a dense array.
+
+    Parameters
+    ----------
+    v : array-like
+        list of frequencies in Hz (in the absence of splitting) for each
+        nucleus.
+    J : 2D array-like
+        matrix of coupling constants. J[m, n] is the coupling constant between
+        v[m] and v[n].
+
+    Returns
+    -------
+    H : numpy.ndarray
+        a sparse spin Hamiltonian.
+    """
     nspins = len(v)
     Lz, Lproduct = _so_dense(nspins)  # noqa
     H = np.tensordot(v, Lz, axes=1)
@@ -166,19 +185,22 @@ def hamiltonian_dense(v, J):
 
 def hamiltonian_sparse(v, J):
     """
+    Calculate the spin Hamiltonian as a sparse array.
 
-        Parameters
-        ----------
-        v: array-like
-            list of frequencies in Hz
-        J: 2D array-like
-            matrix of coupling constants
+    Parameters
+    ----------
+    v : array-like
+        list of frequencies in Hz (in the absence of splitting) for each
+        nucleus.
+    J : 2D array-like
+        matrix of coupling constants. J[m, n] is the coupling constant between
+        v[m] and v[n].
 
-        Returns
-        -------
-        H: sparse.COO
-            a sparse spin Hamiltonian
-        """
+    Returns
+    -------
+    H : sparse.COO
+        a sparse spin Hamiltonian.
+    """
     nspins = len(v)
     Lz, Lproduct = _so_sparse(nspins)  # noqa
     # On large spin systems, converting v and J to sparse improved speed of
@@ -318,20 +340,21 @@ def _tm_cache(nspins):
 
 
 def _intensity_and_energy(H, nspins):
-    """Calculate intensity matrix and energies (eigenvalues) from Hamiltonian.
+    """
+    Calculate intensity matrix and energies (eigenvalues) from Hamiltonian.
 
     Parameters
     ----------
-    H:  numpy.ndarray
+    H :  numpy.ndarray
         Spin Hamiltonian
-    nspins: int
+    nspins : int
         number of spins in spin system
 
     Returns
     -------
-    (I, E): (numpy.ndarray, numpy.ndarray) tuple of:
-        I: (relative) intensity 2D array
-        V: 1-D array of relative energies.
+    (I, E) : (numpy.ndarray, numpy.ndarray) tuple of:
+        I : (relative) intensity 2D array
+        V : 1-D array of relative energies.
     """
     E, V = np.linalg.eigh(H)
     V = V.real
@@ -346,9 +369,9 @@ def _compile_peaklist(I, E, cutoff=0.001):
 
     Parameters
     ----------
-    I: numpy.ndarray (2D)
+    I : numpy.ndarray (2D)
         matrix of relative intensities
-    E: numpy.ndarray (1D)
+    E : numpy.ndarray (1D)
         array of energies
     cutoff : float, optional
         The intensity cutoff for reporting signals.
@@ -373,7 +396,7 @@ def solve_hamiltonian(H, nspins, **kwargs):
 
     Parameters
     ----------
-    H: numpy.ndarray (2D)
+    H : numpy.ndarray (2D)
         The spin Hamiltonian
     nspins : int
         The number of spins in the system
@@ -393,7 +416,7 @@ def solve_hamiltonian(H, nspins, **kwargs):
 
 def secondorder_sparse(freqs, couplings, normalize=True, **kwargs):
     """
-    Calculates second-order spectral data (freqency and intensity of signals)
+    Calculates second-order spectral data (frequency and intensity of signals)
     for *n* spin-half nuclei.
 
     Parameters
@@ -429,23 +452,50 @@ def secondorder_sparse(freqs, couplings, normalize=True, **kwargs):
 
 def qm_spinsystem(*args, cache=CACHE, sparse=SPARSE, **kwargs):
     """
+    Calculates second-order spectral data (frequency and intensity of signals)
+    for *n* spin-half nuclei.
+
+    Currently, n is capped at 11 spins.
 
     Parameters
     ----------
-    args
-    cache
-    sparse
-    kwargs
+    freqs : [float...]
+        a list of *n* nuclei frequencies in Hz.
+    couplings : array-like
+        An *n, n* array of couplings in Hz. The order of nuclei in the list
+        corresponds to the column and row order in the matrix, e.g.
+        couplings[0][1] and [1]0] are the J coupling between the nuclei of
+        freqs[0] and freqs[1].
+    normalize: bool (optional keyword argument; default = True)
+        True if the intensities should be normalized so that total intensity
+        equals the total number of nuclei.
 
     Returns
     -------
+    peaklist : [[float, float]...] numpy 2D array
+        of [frequency, intensity] pairs.
 
     Other Parameters
     ----------------
+    cache: bool (default = nmrsim.qm.CACHE)
+        Whether caching of partial solutions (for acceleration) is allowed.
+        Currently CACHE = True, but this provides a hook to modify nmrsim for
+        platforms such as Raspberry Pi where storage space is a concern.
+    sparse: bool (default = nmrsim.qm.SPARSE)
+        Whether the pydata sparse library for sparse matrices is available.
+        Currently SPARSE = True, but this provides a hook to modify nmrsim
+        should the sparse library become unavailable (see notes).
     cutoff : float
         The intensity cutoff for reporting signals (default is 0.001).
+
+    Notes
+    -----
+    With numpy.matrix marked for deprecation, the scipy sparse array
+    functionality is on shaky ground, and the current recommendation is to use
+    the pydata sparse library. In case a problem arises in the numpy/scipy/
+    sparse ecosystem, SPARSE provides a hook to use a non-sparse-dependent
+    alternative.
     """
-    # for key, val in kwargs.items():
     if not (cache and sparse):
         return secondorder_dense(*args, **kwargs)
     return secondorder_sparse(*args, **kwargs)

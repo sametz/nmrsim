@@ -36,6 +36,7 @@ def _doublet(plist, J):
     return res
 
 
+# TODO: consider making the multiplet and nmrsim.Multiplet arguments similar
 def multiplet(signal, couplings):
     """
     Splits a set of signals into first-order multiplets.
@@ -53,15 +54,14 @@ def multiplet(signal, couplings):
     Returns
     -------
     [(float, float)...]
-        a peaklist of the multiplet that results from splitting the signal
-        by each J.
-
+        a sorted peaklist for the multiplet that results from splitting the
+        signal by each J.
     """
     res = [signal]
     for coupling in couplings:
         for i in range(coupling[1]):
             res = _doublet(res, coupling[0])
-    return reduce_peaks(res)
+    return sorted(reduce_peaks(res))
 
 
 def first_order_spin_system(v, J):

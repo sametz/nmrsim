@@ -28,8 +28,8 @@ def add_peaks(plist):
     Reduces a list of (frequency, intensity) tuples to an
     (average frequency, total intensity) tuple.
 
-    Parameter
-    --------
+    Parameters
+    ----------
     plist: [(float, float)...]
         a list of (frequency, intensity) tuples
 
@@ -100,7 +100,7 @@ def _normalize(intensities, n=1):
 
 def normalize_peaklist(peaklist, n=1):
     """
-    Normalize the intensities in a spectrum so that total intensity equals
+    Normalize the intensities in a peaklist so that total intensity equals
     value n (nominally the number of nuclei giving rise to the signal).
 
     Parameters
@@ -125,7 +125,7 @@ def lorentz(v, v0, I, w):
     Arguments
     ---------
     v : float
-        The frequency (x coordinate) at which to evaluate intensity (y
+        The frequency (x coordinate) in Hz at which to evaluate intensity (y
         coordinate).
     v0 : float
         The center of the distribution.
@@ -143,8 +143,7 @@ def lorentz(v, v0, I, w):
     # Adding a height scaling factor so that peak intensities are lowered as
     # they are more broad. If I is the intensity with a default w of 0.5 Hz:
     scaling_factor = 0.5 / w  # i.e. a 1 Hz wide peak will be half as high
-    return scaling_factor * I * (
-            (0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
+    return scaling_factor * I * ((0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
 
 
 def get_intensity(lineshape, x):
@@ -180,7 +179,7 @@ def get_maxima(lineshape):
     """
     res = []
     for n, val in enumerate(lineshape[1][1:-2]):
-        index = n+1  # start at lineshape[1][1]
+        index = n + 1  # start at lineshape[1][1]
         lastvalue = lineshape[1][index - 1]
         nextvalue = lineshape[1][index + 1]
 

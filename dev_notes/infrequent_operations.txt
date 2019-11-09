@@ -1,0 +1,47 @@
+This is a list of infrequent tasks, so that I remember how to perform them.
+
+If 'make html' isn't working for some reason, do this from the
+'docs' directory:
+    sphinx-apidoc -f -o source/ ../nmrsim/
+
+When using pipenv, matplotlib on OSX gives an error. The solution is to edit the
+ matplotlib configuration so as not to use the Mac backend, but TkAgg:
+
+ https://stackoverflow.com/questions/49367013/pipenv-install-matplotlib#
+
+Exporting conda env to a .yml:
+
+    conda env export --no-builds > environment.yml
+
+interactive ipywidgets not appearing in Jupyter:
+
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager
+
+    this may require:
+        conda install nodejs
+    and may also require an npm install.
+
+virtual environments:
+    python -m venv venv  # second venv is name of dir
+    source venv/bin/activate (linux/macOS), or
+    venv\Scripts\activate.bat (Windows CLI)
+    pip install -e ".[dev]"
+    then test
+    deactivate  # when done
+
+Installing the venv with an Anaconda install on Windows was problematic. Seemed
+to get it to work by using the Anaconda Prompt (not cli), then creating the
+venv from the base conda Python.
+    (venv) (base) {path}> pip install x
+
+testpypi:
+    python setup.py sdist bdist_wheel
+    (twine check dist/*)  (checks the readme)
+    twine upload --repository testpypi dist/*
+    (in new environment)
+    pip install --index-url https://test.pypi.org/simple/ nmrsim
+    UPDATE 2019-10-27: need to add reference to standard pypi to guarantee dependencies load:
+        pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ nmrsim
+
+
+Adding jupyter to dev requirements. Also to get it working:

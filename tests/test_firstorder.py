@@ -1,9 +1,8 @@
 import numpy as np
-import pytest
 
-from nmrsim.firstorder import *
-from nmrsim.plt import mplplot_stick
-from tests.simulation_data import rioux
+from nmrsim.firstorder import multiplet, first_order_spin_system
+from nmrsim.math import reduce_peaks
+from tests.qm_arguments import rioux
 
 
 def test_multiplet_allows_singlet():
@@ -35,8 +34,11 @@ def test_multiplet():
 def test_first_order_spin_system():
     v, J = rioux()
     spectrum = first_order_spin_system(v, J)
-    x = np.array([i[0] for i in spectrum])
-    y = np.array([i[1] for i in spectrum])
-    mplplot_stick(spectrum)
-    assert 1 == 1
-
+    m1 = multiplet((430, 1), [(7, 1), (15, 1)])
+    m2 = multiplet((265, 1), [(7, 1), (1.5, 1)])
+    m3 = multiplet((300, 1), [(15, 1), (1.5, 1)])
+    m = reduce_peaks(sorted(m1 + m2 + m3))
+    # x = np.array([i[0] for i in spectrum])
+    # y = np.array([i[1] for i in spectrum])
+    # mplplot_stick(spectrum)
+    assert np.allclose(spectrum, m)

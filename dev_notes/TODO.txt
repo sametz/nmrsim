@@ -1,0 +1,5 @@
+A list of high-priority TODOs.
+
+Create a script that will rebuild all binaries for the nmrsim/bin folder of sparse matrices.
+Also, time it so you know how much time this build will take on your fastest computer.
+This should become part of the publish workflow.
