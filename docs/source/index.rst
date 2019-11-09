@@ -17,6 +17,7 @@ Welcome to nmrsim's documentation!
    contributing
    developers
    acknowledgements
+   modules
 
 Indices and tables
 ==================

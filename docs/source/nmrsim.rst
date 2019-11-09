@@ -57,6 +57,6 @@ Module contents
 ---------------
 
 .. automodule:: nmrsim
-   :members: Multiplet, SpinSystem, Spectrum
+   :members:
    :undoc-members:
    :show-inheritance:
