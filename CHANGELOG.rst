@@ -28,11 +28,15 @@ Unreleased
 ----------
 Changed
 ^^^^^^^
-nmrsim.qp now uses importlib.resources.path to find the nmrsim/bin folder,
-instead of relying on the use of __file__.
-For users, this means that if your application uses nmrsim as a dependency,
-and you want to freeze the application (e.g. with PyInstaller or PyOxidizer),
-the frozen app should now find the bin folder and contents.
+* nmrsim.qp now uses importlib.resources.path to find the nmrsim/bin folder,
+  instead of relying on the use of __file__.
+  For users, this means that if your application uses nmrsim as a dependency,
+  and you want to freeze the application (e.g. with PyInstaller or PyOxidizer),
+  the frozen app should now find the bin folder and contents.
+
+Fixed
+^^^^^
+* Documentation errors (Issues #2, #4)
 
 0.3.0 - 2019-11-08 (beta release)
 ---------------------------------
