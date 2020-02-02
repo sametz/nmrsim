@@ -40,11 +40,12 @@ required. The qm module for now provides two sets of functions for
 calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
-import os
+from importlib import resources
 
 import numpy as np
 import sparse
 
+import nmrsim.bin
 from nmrsim.math import normalize_peaklist
 
 CACHE = True  # saving of partial solutions is allowed
@@ -135,16 +136,18 @@ def _so_sparse(nspins):
     # for user?
     filename_Lz = f'Lz{nspins}.npz'
     filename_Lproduct = f'Lproduct{nspins}.npz'
-    bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    path_Lz = os.path.join(bin_dir, filename_Lz)
-    path_Lproduct = os.path.join(bin_dir, filename_Lproduct)
-
+    path_context_Lz = resources.path(nmrsim.bin, filename_Lz)
+    path_context_Lproduct = resources.path(nmrsim.bin, filename_Lproduct)
+    with path_context_Lz as p:
+        path_Lz = p
+    with path_context_Lproduct as p:
+        path_Lproduct = p
     try:
         Lz = sparse.load_npz(path_Lz)
         Lproduct = sparse.load_npz(path_Lproduct)
         return Lz, Lproduct
     except FileNotFoundError:
-        print('no SO file ', filename_Lz, ' found in: ', bin_dir)
+        print('no SO file ', path_Lz, ' found.')
         print(f'creating {filename_Lz} and {filename_Lproduct}')
     Lz, Lproduct = _so_dense(nspins)
     Lz_sparse = sparse.COO(Lz)
@@ -326,8 +329,9 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
-    bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    path = os.path.join(bin_dir, filename)
+    path_context = resources.path(nmrsim.bin, filename)
+    with path_context as p:
+        path = p
     try:
         T_sparse = sparse.load_npz(path)
         return T_sparse
@@ -337,7 +341,6 @@ def _tm_cache(nspins):
         T_sparse = sparse.COO(T_sparse)
         sparse.save_npz(path, T_sparse)
         return T_sparse
-
 
 def _intensity_and_energy(H, nspins):
     """
