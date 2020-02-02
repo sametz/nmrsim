@@ -40,7 +40,9 @@ required. The qm module for now provides two sets of functions for
 calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
+from importlib import resources
 import os
+import sys
 
 import numpy as np
 import sparse
@@ -327,7 +329,25 @@ def _tm_cache(nspins):
     # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
     bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    path = os.path.join(bin_dir, filename)
+    print('BIN DIR: ', bin_dir)
+    # path = os.path.join(bin_dir, filename)
+
+    import nmrsim.bin
+    # newpath = resources.Path(nmrsim.bin, filename)  # returns a context manager
+    # print('NEWPATH', newpath, type(newpath))
+
+    # path = Path('..', 'bin', filename)
+    # path = s2
+    # bin_contents = resources.contents(nmrsim.bin)
+    # print(nmrsim.bin.__name__)
+    # print('BIN CONTAINS:')
+    # for name in bin_contents:
+    #     print(name)
+    #     assert resources.is_resource(nmrsim.bin, name)
+    newpath = resources.path(nmrsim.bin, filename)
+    with newpath as p:
+        print('NEW PATH: ', p)
+        path = p
     try:
         T_sparse = sparse.load_npz(path)
         return T_sparse
@@ -337,7 +357,6 @@ def _tm_cache(nspins):
         T_sparse = sparse.COO(T_sparse)
         sparse.save_npz(path, T_sparse)
         return T_sparse
-
 
 def _intensity_and_energy(H, nspins):
     """

@@ -21,6 +21,10 @@ interactive ipywidgets not appearing in Jupyter:
         conda install nodejs
     and may also require an npm install.
 
+Recognizing conda envs in Jupyter:
+    conda install ipykernel
+    python -m ipykernel install --user --name {EnvironmentName}
+
 virtual environments:
     python -m venv venv  # second venv is name of dir
     source venv/bin/activate (linux/macOS), or
