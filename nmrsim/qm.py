@@ -41,12 +41,11 @@ calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
 from importlib import resources
-import os
-import sys
 
 import numpy as np
 import sparse
 
+import nmrsim.bin
 from nmrsim.math import normalize_peaklist
 
 CACHE = True  # saving of partial solutions is allowed
@@ -137,16 +136,18 @@ def _so_sparse(nspins):
     # for user?
     filename_Lz = f'Lz{nspins}.npz'
     filename_Lproduct = f'Lproduct{nspins}.npz'
-    bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    path_Lz = os.path.join(bin_dir, filename_Lz)
-    path_Lproduct = os.path.join(bin_dir, filename_Lproduct)
-
+    path_context_Lz = resources.path(nmrsim.bin, filename_Lz)
+    path_context_Lproduct = resources.path(nmrsim.bin, filename_Lproduct)
+    with path_context_Lz as p:
+        path_Lz = p
+    with path_context_Lproduct as p:
+        path_Lproduct = p
     try:
         Lz = sparse.load_npz(path_Lz)
         Lproduct = sparse.load_npz(path_Lproduct)
         return Lz, Lproduct
     except FileNotFoundError:
-        print('no SO file ', filename_Lz, ' found in: ', bin_dir)
+        print('no SO file ', path_Lz, ' found.')
         print(f'creating {filename_Lz} and {filename_Lproduct}')
     Lz, Lproduct = _so_dense(nspins)
     Lz_sparse = sparse.COO(Lz)
@@ -328,25 +329,8 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
-    bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    print('BIN DIR: ', bin_dir)
-    # path = os.path.join(bin_dir, filename)
-
-    import nmrsim.bin
-    # newpath = resources.Path(nmrsim.bin, filename)  # returns a context manager
-    # print('NEWPATH', newpath, type(newpath))
-
-    # path = Path('..', 'bin', filename)
-    # path = s2
-    # bin_contents = resources.contents(nmrsim.bin)
-    # print(nmrsim.bin.__name__)
-    # print('BIN CONTAINS:')
-    # for name in bin_contents:
-    #     print(name)
-    #     assert resources.is_resource(nmrsim.bin, name)
-    newpath = resources.path(nmrsim.bin, filename)
-    with newpath as p:
-        print('NEW PATH: ', p)
+    path_context = resources.path(nmrsim.bin, filename)
+    with path_context as p:
         path = p
     try:
         T_sparse = sparse.load_npz(path)
