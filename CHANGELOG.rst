@@ -36,7 +36,7 @@ Changed
 
 Fixed
 ^^^^^
-* Documentation errors (Issues #2, #4)
+* Documentation errors (Issues #2, #3, #4)
 
 0.3.0 - 2019-11-08 (beta release)
 ---------------------------------
