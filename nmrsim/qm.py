@@ -342,6 +342,7 @@ def _tm_cache(nspins):
         sparse.save_npz(path, T_sparse)
         return T_sparse
 
+
 def _intensity_and_energy(H, nspins):
     """
     Calculate intensity matrix and energies (eigenvalues) from Hamiltonian.
