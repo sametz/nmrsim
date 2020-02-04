@@ -333,9 +333,14 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
-    path_context = resources.path(nmrsim.bin, filename)
-    with path_context as p:
-        path = p
+    init_path_context = resources.path(nmrsim.bin, '__init__.py')
+    with init_path_context as p:
+        init_path = p
+    print('path to init: ', init_path)
+    bin_path = init_path.parent
+    print('path to bin: ', bin_path)
+    path = bin_path.joinpath(filename)
+    print('searching for: ', path)
     try:
         T_sparse = sparse.load_npz(path)
         return T_sparse

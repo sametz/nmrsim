@@ -42,5 +42,7 @@ testpypi:
     UPDATE 2019-10-27: need to add reference to standard pypi to guarantee dependencies load:
         pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ nmrsim
 
+pip install from gh branch:
+    pip install git+https://github.com/sametz/nmrsim.git@tox for tox branch
 
 Adding jupyter to dev requirements. Also to get it working:
