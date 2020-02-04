@@ -34,7 +34,8 @@ setuptools.setup(
     install_requires=['matplotlib',
                       'numpy',
                       'sparse',
-                      "importlib_resources ; python_version<'3.7'"],
+                      "importlib_resources ; python_version<'3.7'"
+                      ],
     extras_require={
         'dev': [
             'flake8',
