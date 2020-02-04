@@ -1,0 +1,6 @@
+Notes on getting tox to work:
+- use pyenv to install targeted versions (initially 3.6.10, 3.7.6, 3.8.1)
+- install tox and tox-pyenv
+- use a clone of the rep in a path that doesn't have spaces in the name
+  (googledrive/My Drive caused error)
+- "pyenv global 3.6.10 3.7.6 3.8.1" required for tox to find the envs.
