@@ -56,6 +56,15 @@ CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
 
 
+def _bin_path():
+    """Return a Path to the nmrsim/bin directory."""
+    init_path_context = resources.path(nmrsim.bin, '__init__.py')
+    with init_path_context as p:
+        init_path = p
+    bin_path = init_path.parent
+    return bin_path
+
+
 def _so_dense(nspins):
     """
     Calculate spin operators required for constructing the spin hamiltonian,
@@ -140,12 +149,13 @@ def _so_sparse(nspins):
     # for user?
     filename_Lz = f'Lz{nspins}.npz'
     filename_Lproduct = f'Lproduct{nspins}.npz'
-    path_context_Lz = resources.path(nmrsim.bin, filename_Lz)
-    path_context_Lproduct = resources.path(nmrsim.bin, filename_Lproduct)
-    with path_context_Lz as p:
-        path_Lz = p
-    with path_context_Lproduct as p:
-        path_Lproduct = p
+    bin_path = _bin_path()
+    path_Lz = bin_path.joinpath(filename_Lz)
+    path_Lproduct = bin_path.joinpath(filename_Lproduct)
+    # with path_context_Lz as p:
+    #     path_Lz = p
+    # with path_context_Lproduct as p:
+    #     path_Lproduct = p
     try:
         Lz = sparse.load_npz(path_Lz)
         Lproduct = sparse.load_npz(path_Lproduct)
@@ -333,11 +343,12 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
-    init_path_context = resources.path(nmrsim.bin, '__init__.py')
-    with init_path_context as p:
-        init_path = p
-    print('path to init: ', init_path)
-    bin_path = init_path.parent
+    # init_path_context = resources.path(nmrsim.bin, '__init__.py')
+    # with init_path_context as p:
+    #     init_path = p
+    # print('path to init: ', init_path)
+    # bin_path = init_path.parent
+    bin_path = _bin_path()
     print('path to bin: ', bin_path)
     path = bin_path.joinpath(filename)
     print('searching for: ', path)
