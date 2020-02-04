@@ -16,3 +16,4 @@ build
 dist
 .vscode/
 docs/build
+.tox

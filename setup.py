@@ -48,6 +48,8 @@ setuptools.setup(
             # below are for current "extra" jupyter notebook features,
             # which may change as other dataviz options tested.
             'bokeh',
+            'tox',
+            'tox-pyenv',
         ]
     }
 )
