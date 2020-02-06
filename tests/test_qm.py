@@ -14,12 +14,17 @@ def test_so_sparse_creates_files(fs):
                 .resolve()
                 .parent.parent
                 .joinpath('nmrsim', 'bin'))
-    fs.create_dir(test_bin)
+    fs.add_real_directory(test_bin, read_only=False)
     expected_Lz = test_bin.joinpath('Lz3.npz')
     expected_Lproduct = test_bin.joinpath('Lproduct3.npz')
+    assert expected_Lz.exists()
+    assert expected_Lproduct.exists()
+    fs.remove_object(str(expected_Lz))
+    fs.remove_object(str(expected_Lproduct))
     assert not expected_Lz.exists()
     assert not expected_Lproduct.exists()
     Lz, Lproduct = _so_sparse(3)  # noqa
+    assert Lz, Lproduct
     assert expected_Lz.exists()
     assert expected_Lproduct.exists()
 
@@ -29,33 +34,14 @@ def test_tm_cache_creates_file(fs):
                 .resolve()
                 .parent.parent
                 .joinpath('nmrsim', 'bin'))
-    fs.create_dir(test_bin)
+    fs.add_real_directory(test_bin, read_only=False)
     expected_T = test_bin.joinpath('T3.npz')
+    assert expected_T.exists()
+    fs.remove_object(str(expected_T))
     assert not expected_T.exists()
     T = _tm_cache(3)
     assert T
-    print('test is checking for existence of: ', expected_T)
     assert expected_T.exists()
-
-
-def test_tm_cache_creates_file_IRP(fs):
-    import sys
-    if sys.version_info >= (3, 7):
-        from importlib import resources
-    else:
-        import importlib_resources as resources
-    import nmrsim.bin
-    test_bin_file_context = resources.path(nmrsim.bin, 'T3.npz')
-    with test_bin_file_context as f:
-        test_bin_file = f
-    test_bin = test_bin_file.parent
-    print(f'test creating dir {test_bin}')
-    fs.create_dir(test_bin)
-    assert not test_bin_file.exists()
-    T = _tm_cache(3)
-    assert T
-    print('test is checking for existence of: ', test_bin_file)
-    assert test_bin_file.exists()
 
 
 def test_hamiltonian_dense():
