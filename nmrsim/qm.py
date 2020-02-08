@@ -46,11 +46,11 @@ if sys.version_info >= (3, 7):
 else:
     import importlib_resources as resources
 
-import numpy as np
-import sparse
+import numpy as np  # noqa: E402
+import sparse  # noqa: E402
 
-import nmrsim.bin
-from nmrsim.math import normalize_peaklist
+import nmrsim.bin  # noqa: E402
+from nmrsim.math import normalize_peaklist  # noqa: E402
 
 CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
