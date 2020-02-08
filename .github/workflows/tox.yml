@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - develop
+      - tox
 
 jobs:
   build:
@@ -22,5 +23,5 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install Tox and Dependencies
         run: pip install tox
-      - name: Run Tox Linting
-        run: tox -e flake8
+      - name: Run Tox
+        run: tox -e py

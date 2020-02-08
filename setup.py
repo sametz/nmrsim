@@ -55,4 +55,3 @@ setuptools.setup(
         ]
     }
 )
-# Adding comment to test for passing GH lint
