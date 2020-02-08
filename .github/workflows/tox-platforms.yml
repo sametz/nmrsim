@@ -1,18 +1,17 @@
-name: lint
+name: Tox Cross-Platform
 
 on:
   push:
     branches:
-      - master
-      - develop
       - tox
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: {{ matrix.os }}
     strategy:
       matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
         python: [3.6, 3.7, 3.8]
 
     steps:

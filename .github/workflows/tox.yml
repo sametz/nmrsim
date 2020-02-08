@@ -1,17 +1,18 @@
-name: lint
+name: tox
 
 on:
   push:
     branches:
+      - master
+      - develop
       - tox
 
 jobs:
   build:
 
-    runs-on: {{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
         python: [3.6, 3.7, 3.8]
 
     steps:
