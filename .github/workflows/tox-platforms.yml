@@ -3,6 +3,8 @@ name: Tox Cross-Platform
 on:
   push:
     branches:
+      - master
+      - develop
       - tox
 
 jobs:
