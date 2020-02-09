@@ -1,0 +1,28 @@
+name: Cross-Platform Smoke Test
+
+on:
+  push:
+    branches:
+      - tox
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python: [3.7]
+
+    steps:
+      - name: Enter
+        run: echo 'Checkout at ${{ steps.hello.outputs.time }}'
+#      - uses: actions/checkout@v2
+#      - name: Setup Python
+#        uses: actions/setup-python@v1
+#        with:
+#          python-version: ${{ matrix.python }}
+#      - name: Install Tox and Dependencies
+#        run: pip install tox
+#      - name: Run Tox
+#        run: tox -e py
