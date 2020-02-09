@@ -26,4 +26,5 @@ jobs:
         ##            tox -e docs
       - name: Build HTML
         run:
+          pip install sphinx sphinx_rtd_theme sphinxcontrib-napoleon nbsphinx
           sphinx-build -W -b html -d docs/doctrees docs/source docs/build/html
