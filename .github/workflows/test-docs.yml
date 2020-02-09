@@ -15,7 +15,8 @@ jobs:
 #        with:
 #          python-version: ${{ matrix.python }}
       - name: Install Pandoc
-        uses: docker://pandoc/core:2.9
+        run:
+          sudo apt-get install pandoc
 #      - name: Install Tox and Dependencies
           ##        run: |
           ##          pip install tox
