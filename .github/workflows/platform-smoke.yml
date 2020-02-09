@@ -15,16 +15,18 @@ jobs:
         python: [3.7]
 
     steps:
-      - name: Enter
-        run:
-          echo 'Initiated runner'
-          echo 'Checkout at ${{ steps.hello.outputs.time }}'
+#      - name: Enter
+#        run:
+#          echo 'Initiated runner.'
+#          echo 'Checkout at ${{ steps.hello.outputs.time }}'
       - uses: actions/checkout@v2
-#      - name: Setup Python
-#        uses: actions/setup-python@v1
-#        with:
-#          python-version: ${{ matrix.python }}
-#      - name: Install Tox and Dependencies
-#        run: pip install tox
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox and Dependencies
+        run:
+          pip install tox
+          echo 'smoke test successful through tox intallation'
 #      - name: Run Tox
 #        run: tox -e py
