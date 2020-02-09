@@ -17,8 +17,8 @@ jobs:
     steps:
       - name: Enter
         run:
-          - echo 'Initiated runner.'
-          - echo 'Checkout at ${{ steps.hello.outputs.time }}'
+          echo 'Initiated runner.'
+          echo 'Checkout at ${{ steps.hello.outputs.time }}'
 #      - uses: actions/checkout@v2
 #      - name: Setup Python
 #        uses: actions/setup-python@v1
