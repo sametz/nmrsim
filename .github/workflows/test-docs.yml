@@ -28,7 +28,11 @@ jobs:
           ##        run: |
         ##            echo 'About to run tox'
         ##            tox -e docs
-      - name: Build HTML
-        run: |
+      - name: Install wheel
+        run:
+          pip install wheel
+      - name: Install sphinx dependencies
+        run:
           pip install sphinx sphinx_rtd_theme sphinxcontrib-napoleon nbsphinx
+      - name: Build HTML
           sphinx-build -W -b html -d docs/doctrees docs/source docs/build/html
