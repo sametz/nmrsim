@@ -27,6 +27,6 @@ jobs:
       - name: Install Tox and Dependencies
         run:
           pip install tox
-          echo 'smoke test successful through tox intallation'
+          echo 'Smoke test successful through tox intallation.'
 #      - name: Run Tox
 #        run: tox -e py
