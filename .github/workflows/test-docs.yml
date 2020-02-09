@@ -17,6 +17,10 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python -m pip install -upgrade pip setuptools wheel
+          python -m pip install -e ".[dev]"
       - name: Install Pandoc
         run:
           sudo apt-get install pandoc
@@ -28,15 +32,15 @@ jobs:
           ##        run: |
         ##            echo 'About to run tox'
         ##            tox -e docs
-      - name: Install wheel
-        run:
-          pip install wheel
-      - name: Install sphinx
-        run:
-          sudo apt-get install python-sphinx
-      - name: Install sphinx dependencies
-        run:
-          pip install sphinx_rtd_theme sphinxcontrib-napoleon nbsphinx
+#      - name: Install wheel
+#        run:
+#          pip install wheel
+#      - name: Install sphinx
+#        run:
+#          sudo apt-get install python-sphinx
+#      - name: Install sphinx dependencies
+#        run:
+#          pip install sphinx_rtd_theme sphinxcontrib-napoleon nbsphinx
       - name: Build HTML
         run:
           sphinx-build -W -b html -d docs/doctrees docs/source docs/build/html
