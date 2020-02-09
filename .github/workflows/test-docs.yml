@@ -19,7 +19,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
         run: |
-          python -m pip install -upgrade pip setuptools wheel
+          python -m pip install --upgrade pip setuptools wheel
           python -m pip install -e ".[dev]"
       - name: Install Pandoc
         run:
