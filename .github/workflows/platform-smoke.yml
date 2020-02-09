@@ -16,7 +16,7 @@ jobs:
 
     steps:
 #      - name: Enter
-#        run:
+#        run: |
 #          echo 'Initiated runner.'
 #          echo 'Checkout at ${{ steps.hello.outputs.time }}'
       - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install Tox and Dependencies
-        run:
+        run: |
           pip install tox
           echo 'Smoke test successful through tox intallation.'
 #      - name: Run Tox
