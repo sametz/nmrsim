@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - develop
-      - tox
 
 jobs:
   build:
