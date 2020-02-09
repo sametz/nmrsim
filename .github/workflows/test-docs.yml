@@ -31,9 +31,12 @@ jobs:
       - name: Install wheel
         run:
           pip install wheel
+      - name: Install sphinx
+        run:
+          sudo apt-get install python-sphinx
       - name: Install sphinx dependencies
         run:
-          pip install sphinx sphinx_rtd_theme sphinxcontrib-napoleon nbsphinx
+          pip install sphinx_rtd_theme sphinxcontrib-napoleon nbsphinx
       - name: Build HTML
         run:
           sphinx-build -W -b html -d docs/doctrees docs/source docs/build/html
