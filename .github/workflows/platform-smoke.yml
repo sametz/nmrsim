@@ -28,5 +28,7 @@ jobs:
         run: |
           pip install tox
           echo 'Smoke test successful through tox intallation'
-#      - name: Run Tox
-#        run: tox -e py
+      - name: Run Tox
+        run: |
+            echo 'About to run tox'
+            tox -e py
