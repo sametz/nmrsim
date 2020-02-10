@@ -3,7 +3,9 @@ name: Test Sphinx Build
 on:
   push:
     branches:
-      - to*
+      - master
+      - develop
+      - release-*
 
 jobs:
   docs:
