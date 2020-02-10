@@ -33,7 +33,9 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=['matplotlib',
                       'numpy',
-                      'sparse'],
+                      'sparse',
+                      "importlib_resources ; python_version<'3.7'"
+                      ],
     extras_require={
         'dev': [
             'flake8',
@@ -48,6 +50,8 @@ setuptools.setup(
             # below are for current "extra" jupyter notebook features,
             # which may change as other dataviz options tested.
             'bokeh',
+            'tox',
+            'tox-pyenv',
         ]
     }
 )
