@@ -1,0 +1,33 @@
+name: make source distribution
+
+on:
+  create:
+    tags:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: make sdist
+      run:
+        python setup.py sdist
+    - name: upload sdist
+      uses: actions/upload-artifact@v1
+      with:
+        name: dist
+        path: dist
+    - name: Publish to TestPyPI
+      env:
+        PYPI_PASSWORD: ${{ secrets.test_pypi_password }}
+      run: |
+        pip install twine
+        python -m twine check dist/*
+        python -m twine upload --verbose -u __token__ -p ${PYPI_PASSWORD} dist/*

@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="nmrsim",
-    version="0.3.0.post1",
+    version="0.4.0rc1",
     author="Geoffrey M. Sametz",
     author_email="sametz@udel.edu",
     description="A library for simulating nuclear magnetic resonance (NMR) spectra.",
@@ -33,7 +33,9 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=['matplotlib',
                       'numpy',
-                      'sparse'],
+                      'sparse',
+                      "importlib_resources ; python_version<'3.7'"
+                      ],
     extras_require={
         'dev': [
             'flake8',
@@ -47,7 +49,9 @@ setuptools.setup(
             'sphinxcontrib-napoleon',
             # below are for current "extra" jupyter notebook features,
             # which may change as other dataviz options tested.
-            'plotly',
+            'bokeh',
+            'tox',
+            'tox-pyenv',
         ]
     }
 )

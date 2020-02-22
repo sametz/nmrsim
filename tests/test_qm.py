@@ -14,12 +14,17 @@ def test_so_sparse_creates_files(fs):
                 .resolve()
                 .parent.parent
                 .joinpath('nmrsim', 'bin'))
-    fs.create_dir(test_bin)
+    fs.add_real_directory(test_bin, read_only=False)
     expected_Lz = test_bin.joinpath('Lz3.npz')
     expected_Lproduct = test_bin.joinpath('Lproduct3.npz')
+    assert expected_Lz.exists()
+    assert expected_Lproduct.exists()
+    fs.remove_object(str(expected_Lz))
+    fs.remove_object(str(expected_Lproduct))
     assert not expected_Lz.exists()
     assert not expected_Lproduct.exists()
     Lz, Lproduct = _so_sparse(3)  # noqa
+    assert Lz, Lproduct
     assert expected_Lz.exists()
     assert expected_Lproduct.exists()
 
@@ -29,8 +34,10 @@ def test_tm_cache_creates_file(fs):
                 .resolve()
                 .parent.parent
                 .joinpath('nmrsim', 'bin'))
-    fs.create_dir(test_bin)
+    fs.add_real_directory(test_bin, read_only=False)
     expected_T = test_bin.joinpath('T3.npz')
+    assert expected_T.exists()
+    fs.remove_object(str(expected_T))
     assert not expected_T.exists()
     T = _tm_cache(3)
     assert T

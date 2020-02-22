@@ -40,15 +40,29 @@ required. The qm module for now provides two sets of functions for
 calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
-import os
+import sys
+if sys.version_info >= (3, 7):
+    from importlib import resources
+else:
+    import importlib_resources as resources
 
-import numpy as np
-import sparse
+import numpy as np  # noqa: E402
+import sparse  # noqa: E402
 
-from nmrsim.math import normalize_peaklist
+import nmrsim.bin  # noqa: E402
+from nmrsim.math import normalize_peaklist  # noqa: E402
 
 CACHE = True  # saving of partial solutions is allowed
 SPARSE = True  # the sparse library is available
+
+
+def _bin_path():
+    """Return a Path to the nmrsim/bin directory."""
+    init_path_context = resources.path(nmrsim.bin, '__init__.py')
+    with init_path_context as p:
+        init_path = p
+    bin_path = init_path.parent
+    return bin_path
 
 
 def _so_dense(nspins):
@@ -135,16 +149,19 @@ def _so_sparse(nspins):
     # for user?
     filename_Lz = f'Lz{nspins}.npz'
     filename_Lproduct = f'Lproduct{nspins}.npz'
-    bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    path_Lz = os.path.join(bin_dir, filename_Lz)
-    path_Lproduct = os.path.join(bin_dir, filename_Lproduct)
-
+    bin_path = _bin_path()
+    path_Lz = bin_path.joinpath(filename_Lz)
+    path_Lproduct = bin_path.joinpath(filename_Lproduct)
+    # with path_context_Lz as p:
+    #     path_Lz = p
+    # with path_context_Lproduct as p:
+    #     path_Lproduct = p
     try:
         Lz = sparse.load_npz(path_Lz)
         Lproduct = sparse.load_npz(path_Lproduct)
         return Lz, Lproduct
     except FileNotFoundError:
-        print('no SO file ', filename_Lz, ' found in: ', bin_dir)
+        print('no SO file ', path_Lz, ' found.')
         print(f'creating {filename_Lz} and {filename_Lproduct}')
     Lz, Lproduct = _so_dense(nspins)
     Lz_sparse = sparse.COO(Lz)
@@ -326,8 +343,15 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f'T{nspins}.npz'
-    bin_dir = os.path.join(os.path.dirname(__file__), 'bin')
-    path = os.path.join(bin_dir, filename)
+    # init_path_context = resources.path(nmrsim.bin, '__init__.py')
+    # with init_path_context as p:
+    #     init_path = p
+    # print('path to init: ', init_path)
+    # bin_path = init_path.parent
+    bin_path = _bin_path()
+    print('path to bin: ', bin_path)
+    path = bin_path.joinpath(filename)
+    print('searching for: ', path)
     try:
         T_sparse = sparse.load_npz(path)
         return T_sparse
@@ -335,6 +359,7 @@ def _tm_cache(nspins):
         print(f'creating {filename}')
         T_sparse = _transition_matrix_dense(nspins)
         T_sparse = sparse.COO(T_sparse)
+        print('_tm_cache will save on path: ', path)
         sparse.save_npz(path, T_sparse)
         return T_sparse
 

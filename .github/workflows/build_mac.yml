@@ -1,0 +1,42 @@
+name: build wheels for macos
+
+on:
+  create:
+    tags:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest]
+        architecture: [x64]
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        architecture: ${{ matrix.architecture }}
+        python-version: ${{ matrix.python-version }}
+    - name: build wheel
+      run: |
+        pip install -U wheel
+        python setup.py bdist_wheel
+      shell: bash
+    - name: upload wheel
+      uses: actions/upload-artifact@v1
+      with:
+        name: dist_${{ matrix.os }}_${{ matrix.architecture }}_${{ matrix.python-version }}
+        path: dist
+    - name: Publish to PyPI
+      env:
+        PYPI_PASSWORD: ${{ secrets.test_pypi_password }}
+      run: |
+        pip install twine
+        python -m twine upload --skip-existing -u __token__ -p ${PYPI_PASSWORD} dist/*
+      shell: bash

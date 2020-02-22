@@ -13,6 +13,12 @@ The `partials` module provides the following functions:
 
 * ABX: simulates an ABX system.
 
+* ABX3: simulates an ABX3 system.
+
+* AAXX: simulates an AA'XX' system.
+
+* AABB: simulates an AA'BB' system.
+
 References
 ----------
 .. [1] WINDNMR-Pro home page: https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm
@@ -157,10 +163,10 @@ def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
     ---------
     Jab : float
         The Ha-Hb coupling constant (Hz).
-    Jbx : float
-        The Ha-Hb coupling constant (Hz).
     Jax : float
-        The Ha-Hb coupling constant (Hz).
+        The Ha-Hx coupling constant (Hz).
+    Jbx : float
+        The Hb-Hx coupling constant (Hz).
     Vab : float
         The difference in the frequencies (in the absence of
         coupling) of Ha and Hb (Hz).

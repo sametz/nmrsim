@@ -4,11 +4,6 @@ If 'make html' isn't working for some reason, do this from the
 'docs' directory:
     sphinx-apidoc -f -o source/ ../nmrsim/
 
-When using pipenv, matplotlib on OSX gives an error. The solution is to edit the
- matplotlib configuration so as not to use the Mac backend, but TkAgg:
-
- https://stackoverflow.com/questions/49367013/pipenv-install-matplotlib#
-
 Exporting conda env to a .yml:
 
     conda env export --no-builds > environment.yml
@@ -20,6 +15,10 @@ interactive ipywidgets not appearing in Jupyter:
     this may require:
         conda install nodejs
     and may also require an npm install.
+
+Recognizing conda envs in Jupyter:
+    conda install ipykernel
+    python -m ipykernel install --user --name {EnvironmentName}
 
 virtual environments:
     python -m venv venv  # second venv is name of dir
@@ -43,5 +42,7 @@ testpypi:
     UPDATE 2019-10-27: need to add reference to standard pypi to guarantee dependencies load:
         pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ nmrsim
 
+pip install from gh branch:
+    pip install git+https://github.com/sametz/nmrsim.git@tox for tox branch
 
 Adding jupyter to dev requirements. Also to get it working:

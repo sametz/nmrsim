@@ -137,7 +137,8 @@ use the command line:
    conda activate nmrsim (Mac)
    activate nmrsim (Windows)
 
-If you later want to exit this environment, you can activate another environment,
+If you later want to exit this environment,
+you can activate another environment,
 or enter:
 
 .. code-block:: bash
@@ -156,17 +157,21 @@ This will install nmrsim, plus dependencies.
 It will also install the developer dependencies,
 which are not required by casual nmrsim users,
 but are required for developers to run tests, check formatting and so on.
-From the command line, in the top nmrsim directory that contains setup.py, enter:
+From the command line, in the top nmrsim directory that contains setup.py,
+enter:
 
 .. code-block:: bash
 
    pip install -e ".[dev]"
 
-To check your installation, run the tests using pytest:
+To check your installation, run the tests using pytest,
+then navigate to the `docs` directory and build the documentation:
 
 .. code-block:: bash
 
    pytest
+   cd docs
+   make html
 
 There will be several pop-up plots that are visual tests for correct behavior;
 close these windows as they pop up to proceed through the tests.
