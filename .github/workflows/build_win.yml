@@ -38,5 +38,5 @@ jobs:
         PYPI_PASSWORD: ${{ secrets.test_pypi_password }}
       run: |
         pip install twine
-        python -m twine upload --skip-existing -u __token__ -p ${PYPI_PASSWORD} --repository-url https://test.pypi.org/legacy/ dist/*
+        python -m twine upload --skip-existing -u __token__ -p ${PYPI_PASSWORD} dist/*
       shell: bash

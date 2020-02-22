@@ -30,4 +30,4 @@ jobs:
       run: |
         pip install twine
         python -m twine check dist/*
-        python -m twine upload --verbose -u __token__ -p ${PYPI_PASSWORD} dist/*
+        python -m twine upload --verbose -u __token__ -p ${PYPI_PASSWORD} --repository-url https://test.pypi.org/legacy/ dist/*
