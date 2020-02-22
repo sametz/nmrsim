@@ -26,7 +26,6 @@ jobs:
         path: dist
     - name: Publish to TestPyPI
       env:
-        PYPI_USERNAME: ${{ secrets.test_pypi_user }}
         PYPI_PASSWORD: ${{ secrets.test_pypi_password }}
       run: |
         pip install twine
