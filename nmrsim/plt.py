@@ -12,17 +12,30 @@ The plt module provides the following functions:
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
   and returns the x, y plot data.
 """
-# TODO: pyplot assumes a TkAgg backend as a default. This can cause problems in
-# environments where Tkinter is not available (e.g. some Unix systems;
-# BeeWare's Briefcase packaging for Windows).
-import matplotlib.pyplot as plt
 import numpy as np
 
 from nmrsim.math import add_lorentzians
 from nmrsim._utils import low_high
 
+# Pyplot assumes a TkAgg backend as a default. This can cause problems in
+# environments where Tkinter is not available (e.g. some Unix systems;
+# BeeWare's Briefcase packaging for Windows).
+import matplotlib
+try:
+    import tkinter as tk  # noqa: F401
+except ImportError:
+    matplotlib.use('Agg')
+    print('WARNING: Tkinter not found--plots will not display on screen!')
+
+import matplotlib.pyplot as plt
+
+# TODO: especially considering the possible swap to the 'Agg' backend,
+# makes more intuitive sense for plot functions to return a plot object
+# and not the coordinates.
 
 # TODO: possibly refactor plot routines to avoid repetitive code
+
+
 def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     """
     A matplotlib plot of the simulated lineshape for a peaklist.

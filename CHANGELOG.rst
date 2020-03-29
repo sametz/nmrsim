@@ -48,7 +48,9 @@ Changed
   Some environments
   (some Unix systems; BeeWare's Briefcase packaging tool)
   do not have Tkinter available.
-
+* nmrsim.plt will substitute the matplotlib "Agg" backend for "TkAgg"
+  if tkinter is not found on the users system, and print a warning message
+  that plots will not be visible.
 
 0.4.0 - 2020-xx-xx (beta release)
 ---------------------------------
