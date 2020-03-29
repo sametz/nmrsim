@@ -12,41 +12,14 @@ The plt module provides the following functions:
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
   and returns the x, y plot data.
 """
-
+# TODO: pyplot assumes a TkAgg backend as a default. This can cause problems in
+# environments where Tkinter is not available (e.g. some Unix systems;
+# BeeWare's Briefcase packaging for Windows).
 import matplotlib.pyplot as plt
 import numpy as np
 
-from nmrsim.math import lorentz
+from nmrsim.math import add_lorentzians
 from nmrsim._utils import low_high
-
-
-def add_lorentzians(linspace, peaklist, w):
-    """
-    Given a numpy linspace, a peaklist of (frequency, intensity)
-    tuples, and a linewidth, returns an array of y coordinates for the
-    total line shape.
-
-    Arguments
-    ---------
-    linspace : array-like
-        Normally a numpy.linspace of x coordinates corresponding to frequency
-        in Hz.
-    peaklist : [(float, float)...]
-        A list of (frequency, intensity) tuples.
-    w : float
-        Peak width at half maximum intensity.
-
-    Returns
-    -------
-    [float...]
-        an array of y coordinates corresponding to intensity.
-    """
-    # TODO: consider naming, and confusion with .math.add_peaks
-    # TODO: function looks clunky. Refactor?
-    result = lorentz(linspace, peaklist[0][0], peaklist[0][1], w)
-    for v, i in peaklist[1:]:
-        result += lorentz(linspace, v, i, w)
-    return result
 
 
 # TODO: possibly refactor plot routines to avoid repetitive code

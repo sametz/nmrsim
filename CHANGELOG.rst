@@ -37,6 +37,18 @@ the author interprets the terms below as follows:
   API is stable.
   The package is available on PyPI (and perhaps conda).
 
+x.y.z - 2020-xx-xx (dev)
+------------------------
+Changed
+^^^^^^^
+* add_lorentzians moved from nmr.plt to nmr.math.
+  Besides being more appropriate here,
+  it fixes a problem where importing from nmrsim.plt also requires importing
+  from matplotlib/Tkinter.
+  Some environments
+  (some Unix systems; BeeWare's Briefcase packaging tool)
+  do not have Tkinter available.
+
 
 0.4.0 - 2020-xx-xx (beta release)
 ---------------------------------

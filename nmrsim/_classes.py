@@ -7,8 +7,7 @@ import numbers
 import numpy as np
 
 from nmrsim.firstorder import first_order_spin_system, multiplet
-from nmrsim.math import reduce_peaks
-from nmrsim.plt import add_lorentzians
+from nmrsim.math import reduce_peaks, add_lorentzians
 from nmrsim.qm import qm_spinsystem
 from nmrsim._utils import low_high
 
