@@ -146,6 +146,35 @@ def lorentz(v, v0, I, w):
     return scaling_factor * I * ((0.5 * w) ** 2 / ((0.5 * w) ** 2 + (v - v0) ** 2))
 
 
+def add_lorentzians(linspace, peaklist, w):
+    """
+    Given a numpy linspace, a peaklist of (frequency, intensity)
+    tuples, and a linewidth, returns an array of y coordinates for the
+    total line shape.
+
+    Arguments
+    ---------
+    linspace : array-like
+        Normally a numpy.linspace of x coordinates corresponding to frequency
+        in Hz.
+    peaklist : [(float, float)...]
+        A list of (frequency, intensity) tuples.
+    w : float
+        Peak width at half maximum intensity.
+
+    Returns
+    -------
+    [float...]
+        an array of y coordinates corresponding to intensity.
+    """
+    # TODO: consider naming, and confusion with .math.add_peaks
+    # TODO: function looks clunky. Refactor?
+    result = lorentz(linspace, peaklist[0][0], peaklist[0][1], w)
+    for v, i in peaklist[1:]:
+        result += lorentz(linspace, v, i, w)
+    return result
+
+
 def get_intensity(lineshape, x):
     """
     A crude method to find the intensity of data point closest to
