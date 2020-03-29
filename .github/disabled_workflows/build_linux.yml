@@ -1,0 +1,33 @@
+name: build wheels for linux
+
+on:
+  create:
+    tags:
+      - '*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ./.github/workflows/actions/manylinux1_x86_64/
+    - uses: ./.github/workflows/actions/manylinux1_i686/
+    - name: copy manylinux wheels
+      run: |
+        mkdir dist
+        cp wheelhouse/nmrsim*-manylinux1_x86_64.whl dist/
+        cp wheelhouse/nmrsim*-manylinux1_i686.whl dist/
+    - name: upload wheels
+      uses: actions/upload-artifact@v1
+      with:
+        name: dist
+        path: dist
+    - name: Publish to PyPI
+      env:
+        PYPI_USERNAME: ${{ secrets.test_pypi_user }}
+        PYPI_PASSWORD: ${{ secrets.test_pypi_password }}
+      run: |
+        pip install twine
+        python -m twine upload -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} --repository-url https://test.pypi.org/legacy/ dist/*
