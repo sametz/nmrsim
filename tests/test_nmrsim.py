@@ -4,7 +4,7 @@ import pytest
 from nmrsim import Multiplet, SpinSystem, Spectrum
 from nmrsim._classes import extract_components
 from nmrsim.firstorder import first_order_spin_system
-from nmrsim.plt import add_lorentzians
+from nmrsim.math import add_lorentzians
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.qm_arguments import rioux
 
