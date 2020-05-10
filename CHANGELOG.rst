@@ -37,6 +37,12 @@ the author interprets the terms below as follows:
   API is stable.
   The package is available on PyPI (and perhaps conda).
 
+0.5.1 - 2020-05-10 (beta release)
+---------------------------------
+Fixed
+^^^^^
+* unneccessary print statements removed rom qm.py (Issue #5)
+
 0.5.0 - 2020-03-29 (beta release)
 ---------------------------------
 Changed
