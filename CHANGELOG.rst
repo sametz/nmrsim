@@ -37,8 +37,14 @@ the author interprets the terms below as follows:
   API is stable.
   The package is available on PyPI (and perhaps conda).
 
-x.y.z - 2020-xx-xx (dev)
-------------------------
+0.5.1 - 2020-05-10 (beta release)
+---------------------------------
+Fixed
+^^^^^
+* unneccessary print statements removed rom qm.py (Issue #5)
+
+0.5.0 - 2020-03-29 (beta release)
+---------------------------------
 Changed
 ^^^^^^^
 * add_lorentzians moved from nmr.plt to nmr.math.
@@ -52,7 +58,7 @@ Changed
   if tkinter is not found on the users system, and print a warning message
   that plots will not be visible.
 
-0.4.0 - 2020-xx-xx (beta release)
+0.4.0 - 2020-02-22 (beta release)
 ---------------------------------
 Changed
 ^^^^^^^

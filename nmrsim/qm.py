@@ -349,9 +349,7 @@ def _tm_cache(nspins):
     # print('path to init: ', init_path)
     # bin_path = init_path.parent
     bin_path = _bin_path()
-    print('path to bin: ', bin_path)
     path = bin_path.joinpath(filename)
-    print('searching for: ', path)
     try:
         T_sparse = sparse.load_npz(path)
         return T_sparse
