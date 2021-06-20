@@ -8,6 +8,7 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .ipynb_checkpoints
+env
 venv
 eggs/
 .eggs/
