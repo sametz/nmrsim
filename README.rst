@@ -1,7 +1,14 @@
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sametz/nmrsim/master?filepath=jupyter
 
-Click the "**Launch Binder**" link above to see how **nmrsim** can be used in Jupyter notebooks.
+Click the "**Launch Binder**" link above
+to see how **nmrsim** can be used in Jupyter notebooks.
+
+.. image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/sametz/nmrsim/hotfix-binder?filepath=jupyter
+
+Click the "**Launch Binder**" link above
+to test the hotfix binder (Issue #9)
 
 `Documentation on Read the Docs <https://nmrsim.readthedocs.io/>`_
 
