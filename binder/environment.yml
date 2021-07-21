@@ -153,7 +153,7 @@ dependencies:
 #  - sip=4.19.8
 #  - six=1.11.0
 #  - snowballstemmer=1.2.1
-  - sparse
+  - sparse=0.10.0
 #  - sphinx=1.7.6
 #  - sphinxcontrib=1.0
 #  - sphinxcontrib-websupport=1.1.0

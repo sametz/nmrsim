@@ -3,6 +3,14 @@
 import numpy as np
 
 
+def spin2():
+    v = np.array([10.0, 20.0])
+    J = np.zeros((2, 2))
+    J[0, 1] = 10.0
+    J[1, 0] = 10.0
+    return v, J
+
+
 def spin3():
     v = np.array([115, 140, 190])
     J = np.zeros((3, 3))
