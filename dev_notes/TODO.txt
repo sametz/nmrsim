@@ -8,3 +8,6 @@ Better yet: have GH Actions do this prior to a PyPI release.
 
 Make sure your versioning scheme will agree with the Python standard and not
 necessarily SemVer.
+
+Consolidate Jupyter notebooks to only one spot (docs subfolder), and change
+binder tag in README to navigate directly there.
