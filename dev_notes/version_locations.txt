@@ -7,6 +7,8 @@ a.b.c format:
         CHANGELOG.rst a.b.c
         README.rst version 0.2.0 alpha
         setup.py version="0.2.0"
+    binder:
+        environment.yml (update after the new version is on PyPI)
     docs:
         source
             conf.py release='0.2.0-alpha'; version = '0.2'
