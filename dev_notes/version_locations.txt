@@ -16,6 +16,10 @@ a.b.c format:
 
     nmrsim:
         __init__ __version__ = '0.2.0'
+
+    GitHub:
+        "About" header of project
+
 Location of year:
     top level:
         LICENSE
