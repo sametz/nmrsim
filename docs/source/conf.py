@@ -27,7 +27,7 @@ author = 'Geoffrey M. Sametz'
 # The short X.Y version
 version = '0.5'
 # The full version, including alpha/beta/rc tags
-release = '0.5.1-beta'
+release = '0.5.2-beta'
 
 
 # -- General configuration ---------------------------------------------------

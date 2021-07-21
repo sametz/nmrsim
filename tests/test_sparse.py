@@ -210,13 +210,14 @@ def test_twospin_v_coo():
     v_coo = sparse.COO(v)
     Lz_coo = sparse.COO(Lz)
     H = sparse.tensordot(v_coo, Lz_coo, axes=1)
-    assert np.allclose(H.todense(),
-                       np.array(
-                           [[15. + 0.j, 0. + 0.j, 0. + 0.j, 0. + 0.j],
-                            [0. + 0.j, -5. + 0.j, 0. + 0.j, 0. + 0.j],
-                            [0. + 0.j, 0. + 0.j, 5. + 0.j, 0. + 0.j],
-                            [0. + 0.j, 0. + 0.j, 0. + 0.j, -15. + 0.j]]
-                       ))
+    assert np.allclose(
+        H.todense(),
+        np.array(
+            [[15. + 0.j, 0. + 0.j, 0. + 0.j, 0. + 0.j],
+             [0. + 0.j, -5. + 0.j, 0. + 0.j, 0. + 0.j],
+             [0. + 0.j, 0. + 0.j, 5. + 0.j, 0. + 0.j],
+             [0. + 0.j, 0. + 0.j, 0. + 0.j, -15. + 0.j]]
+        ))
 
 
 # v2, J2 = spin2()
