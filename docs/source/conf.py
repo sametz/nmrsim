@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
 project = 'nmrsim'
-copyright = '2020, Geoffrey M. Sametz'
+copyright = '2021, Geoffrey M. Sametz'
 author = 'Geoffrey M. Sametz'
 
 # The short X.Y version
