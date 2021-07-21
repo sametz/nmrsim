@@ -1,5 +1,7 @@
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sametz/nmrsim/master?filepath=jupyter
+.. image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/sametz/nmrsim/master?filepath=https%3A%2F%2Fgithub.com%2Fsametz%2Fnmrsim%2Ftree%2Fmaster%2Fdocs%2Fsource%2Fjupyter
 
 Click the "**Launch Binder**" link above
 to see how **nmrsim** can be used in Jupyter notebooks.
