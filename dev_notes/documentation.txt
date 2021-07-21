@@ -1,1 +1,5 @@
 semantic line breaks: https://sembr.org/
+
+automatic builds failing to "no such kernel named...": add ipykernel to doc
+requirements.txt:
+https://nbsphinx.readthedocs.io/en/0.8.6/installation.html
