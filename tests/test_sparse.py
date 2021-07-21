@@ -130,6 +130,7 @@ def test_numpy_tensordot():
                           ))
 
 
+@pytest.mark.xfail(reason="sparse bug")
 def test_sparse_tensordot():
     """Tests to see if sparse_tensordot can pass the numpy tensordot test above.
     Fails for all sparse versions. See:
@@ -157,6 +158,7 @@ def test_sparse_tensordot():
                           ))
 
 
+@pytest.mark.xfail(reason="sparse bug will cause second parametrized test to fail")
 @pytest.mark.parametrize("tensordot", [np.tensordot, sparse.tensordot])
 def test_twospin_v(tensordot):
     """A test using one of the sub-calculations for the Hamiltonian
@@ -237,6 +239,7 @@ v2_coo = sparse.COO(v2)
 Lz2_coo = sparse.COO(Lz2)
 
 
+@pytest.mark.xfail(reason="sparse bug will cause double-ndarray case to fail")
 @pytest.mark.parametrize("v, Lz", [
     (v2, Lz2),
     (v2_coo, Lz2),
@@ -267,6 +270,7 @@ a_coo = sparse.COO(a)
 b_coo = sparse.COO(b)
 
 
+@pytest.mark.xfail(reason="sparse bug will cause double ndarray case to fail")
 @pytest.mark.parametrize("a, b", [
     (a, b),
     (a_coo, b),
