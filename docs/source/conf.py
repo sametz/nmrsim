@@ -21,13 +21,13 @@ sys.path.insert(0, os.path.abspath('../../'))
 # -- Project information -----------------------------------------------------
 
 project = 'nmrsim'
-copyright = '2020, Geoffrey M. Sametz'
+copyright = '2021, Geoffrey M. Sametz'
 author = 'Geoffrey M. Sametz'
 
 # The short X.Y version
 version = '0.5'
 # The full version, including alpha/beta/rc tags
-release = '0.5.1-beta'
+release = '0.5.2-beta'
 
 
 # -- General configuration ---------------------------------------------------

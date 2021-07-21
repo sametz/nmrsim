@@ -41,6 +41,9 @@ calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
 import sys
+
+import scipy.sparse
+
 if sys.version_info >= (3, 7):
     from importlib import resources
 else:
@@ -220,6 +223,11 @@ def hamiltonian_sparse(v, J):
     """
     nspins = len(v)
     Lz, Lproduct = _so_sparse(nspins)  # noqa
+    # TODO: remove the following lines once tests pass
+    print('From hamiltonian_sparse:')
+    print('Lz is type: ', type(Lz))
+    print('Lproduct is type: ', type(Lproduct))
+    assert isinstance(Lz, (sparse.COO, np.ndarray, scipy.sparse.spmatrix))
     # On large spin systems, converting v and J to sparse improved speed of
     # sparse.tensordot calls with them.
     # First make sure v and J are a numpy array (required by sparse.COO)

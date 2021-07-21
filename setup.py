@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="nmrsim",
-    version="0.5.1",
+    version="0.5.2",
     author="Geoffrey M. Sametz",
     author_email="sametz@udel.edu",
     description="A library for simulating nuclear magnetic resonance (NMR) spectra.",
@@ -33,7 +33,7 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=['matplotlib',
                       'numpy',
-                      'sparse',
+                      'sparse<=0.10.0',
                       "importlib_resources ; python_version<'3.7'"
                       ],
     extras_require={

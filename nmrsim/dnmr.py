@@ -169,23 +169,6 @@ class DnmrTwoSinglets:
     points : int
         The length of the returned arrays (i.e. the number of points plotted).
 
-    Attributes
-    ----------
-    va
-    vb
-    k
-    wa
-    wb
-    pa
-    limits
-    points
-
-    Methods
-    -------
-    lineshape
-        Return the x, y (frequency, intensity) data for the lineshape
-        simulation.
-
     See Also
     --------
     DnmrTwoSinglets : A class representation for this simulation
@@ -491,22 +474,6 @@ class DnmrAB:
     points : int
         The length of the returned arrays (i.e. the number of points plotted).
 
-    Attributes
-    ----------
-    va
-    vb
-    J
-    k
-    w
-    limits
-    points
-
-    Methods
-    -------
-    lineshape
-        Return the x, y (frequency, intensity) data for the lineshape
-        simulation.
-
     See Also
     --------
     DnmrAB : A class representation for this simulation.
@@ -646,7 +613,14 @@ class DnmrAB:
         self._points = is_integer(value)
 
     def lineshape(self):
-        """Return the x, y lineshape data for the simulation."""
+        """Return the x, y lineshape data for the simulation.
+
+        Returns
+        -------
+        x, y : numpy.array, numpy.array
+            Arrays for the x (frequency) and y (intensity) lineshape data
+            points.
+        """
         x = np.linspace(self._vmin, self._vmax, self.points)
         y = _dnmr_AB_func(x, self.va, self.vb, self.J, self.k, self.w)
         return x, y

@@ -37,6 +37,14 @@ the author interprets the terms below as follows:
   API is stable.
   The package is available on PyPI (and perhaps conda).
 
+0.5.2 - 2021-07-21 (beta release)
+---------------------------------
+Changed
+^^^^^^^
+* Requirement for the `sparse` library capped at v0.10.0.
+  Version 0.11.0+ results in numba errors.
+  See `sparse issue #499 <https://github.com/pydata/sparse/issues/499>`_.
+
 0.5.1 - 2020-05-10 (beta release)
 ---------------------------------
 Fixed

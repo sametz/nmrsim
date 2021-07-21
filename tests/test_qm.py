@@ -2,8 +2,8 @@ import copy
 import pathlib
 import numpy as np
 
-from nmrsim.qm import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,
-                       secondorder_dense, secondorder_sparse, _so_sparse,
+from nmrsim.qm import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,  # noqa
+                       secondorder_dense, secondorder_sparse, _so_sparse,  # noqa
                        qm_spinsystem)
 from tests.accepted_data import HAMILTONIAN_RIOUX, SPECTRUM_RIOUX
 from tests.qm_arguments import rioux
@@ -56,7 +56,7 @@ def test_hamiltonian_dense():
 def test_hamiltonian_sparse():
     # GIVEN v and J inputs for the Rioux 3-spin system
     v, J = rioux()
-    # WHEN hamiltonian_dense is used to calculate the Hamiltonian
+    # WHEN hamiltonian_sparse is used to calculate the Hamiltonian
     H_sparse = hamiltonian_sparse(v, J)
     # THEN it matches the Hamiltonian result using the old accepted algorithm
     assert np.array_equal(H_sparse.todense(), HAMILTONIAN_RIOUX)  # noqa
