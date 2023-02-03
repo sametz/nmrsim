@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from nmrsim.plt import mplplot, mplplot_stick, mplplot_lineshape
-from nmrsim.math import add_lorentzians
+from src.nmrsim import mplplot, mplplot_stick, mplplot_lineshape
+from src.nmrsim import add_lorentzians
 from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.dnmr_standards import TWOSPIN_SLOW
 

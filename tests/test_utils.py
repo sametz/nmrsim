@@ -1,6 +1,6 @@
 import pytest
 
-from nmrsim._utils import is_integer, is_decimal_fraction, is_tuple_of_two_numbers, is_positive
+from src.nmrsim import is_integer, is_decimal_fraction, is_tuple_of_two_numbers, is_positive
 
 
 def test_is_integer():

@@ -1,7 +1,7 @@
 import numpy as np
 
-from nmrsim.math import normalize_peaklist
-from nmrsim.discrete import (AB, AB2, ABX, ABX3, AAXX, AABB)
+from src.nmrsim import normalize_peaklist
+from src.nmrsim import (AB, AB2, ABX, ABX3, AAXX, AABB)
 
 
 def test_convert_refspec():

@@ -9,7 +9,7 @@ The nmrsim.firstorder module provides the following functions:
     See nmrsim.qm for details on these parameters.
 """
 
-from nmrsim.math import reduce_peaks
+from src.nmrsim.math import reduce_peaks
 
 
 def _doublet(plist, J):

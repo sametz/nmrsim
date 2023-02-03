@@ -6,10 +6,10 @@ import numbers
 
 import numpy as np
 
-from nmrsim.firstorder import first_order_spin_system, multiplet
-from nmrsim.math import reduce_peaks, add_lorentzians
-from nmrsim.qm import qm_spinsystem
-from nmrsim._utils import low_high
+from src.nmrsim.firstorder import first_order_spin_system, multiplet
+from src.nmrsim.math import reduce_peaks, add_lorentzians
+from src.nmrsim.qm import qm_spinsystem
+from src.nmrsim._utils import low_high
 
 from ._descriptors import Number, Couplings
 

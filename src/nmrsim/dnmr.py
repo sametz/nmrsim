@@ -27,7 +27,7 @@ References
 
 import numpy as np
 
-from nmrsim._utils import is_number, is_decimal_fraction, is_tuple_of_two_numbers, is_positive, is_integer
+from src.nmrsim._utils import is_number, is_decimal_fraction, is_tuple_of_two_numbers, is_positive, is_integer
 
 
 def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
