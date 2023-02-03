@@ -14,8 +14,8 @@ The plt module provides the following functions:
 """
 import numpy as np
 
-from src.nmrsim.math import add_lorentzians
-from src.nmrsim._utils import low_high
+from nmrsim.math import add_lorentzians
+from nmrsim._utils import low_high
 
 # Pyplot assumes a TkAgg backend as a default. This can cause problems in
 # environments where Tkinter is not available (e.g. some Unix systems;

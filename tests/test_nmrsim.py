@@ -1,10 +1,10 @@
 import numpy as np
 import pytest
 
-from src.nmrsim import Multiplet, SpinSystem, Spectrum
-from src.nmrsim import extract_components
-from src.nmrsim import first_order_spin_system
-from src.nmrsim import add_lorentzians
+from nmrsim import Multiplet, SpinSystem, Spectrum
+from nmrsim import extract_components
+from nmrsim import first_order_spin_system
+from nmrsim import add_lorentzians
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.qm_arguments import rioux
 
