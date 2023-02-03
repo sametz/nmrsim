@@ -1,7 +1,7 @@
 import numpy as np
 
-from nmrsim import multiplet, first_order_spin_system
-from nmrsim import reduce_peaks
+from nmrsim.firstorder import multiplet, first_order_spin_system
+from nmrsim.math import reduce_peaks
 from tests.qm_arguments import rioux
 
 

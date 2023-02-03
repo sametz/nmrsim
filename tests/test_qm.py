@@ -2,7 +2,7 @@ import copy
 import pathlib
 import numpy as np
 
-from nmrsim import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,  # noqa
+from nmrsim.qm import (_tm_cache, hamiltonian_dense, hamiltonian_sparse,  # noqa
                         secondorder_dense, secondorder_sparse, _so_sparse,  # noqa
                         qm_spinsystem)
 from tests.accepted_data import HAMILTONIAN_RIOUX, SPECTRUM_RIOUX
