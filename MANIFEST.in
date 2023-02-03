@@ -1,2 +1,2 @@
-include nmrsim/bin/*.npz
+include src/nmrsim/bin/*.npz
 exclude docs/*
