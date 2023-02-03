@@ -1,2 +1,7 @@
-include src/nmrsim/bin/*.npz
-exclude docs/*
+graft src
+
+global-exclude *~ *.py[cod] *.so
+
+# old config below
+# include src/nmrsim/bin/*.npz
+# exclude docs/*
