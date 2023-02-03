@@ -10,6 +10,7 @@ __pycache__/
 .ipynb_checkpoints
 env/
 venv/
+.venv/
 eggs/
 .eggs/
 *.egg-info/
@@ -17,5 +18,6 @@ build
 dist
 .vscode/
 docs/build
+docs/source/_build/
 .tox
 .DS_Store
