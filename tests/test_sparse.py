@@ -14,6 +14,8 @@ from sparse._utils import assert_eq  # noqa
 
 from .qm_arguments import spin2
 
+pytestmark = pytest.mark.skip("tests of broken sparse 0.11/0.12 are being retained in case there is a regression in the future with sparse>0.13.0")
+
 
 # The following three tests are copied over from the sparse project.
 # They pass in sparse >=0.11.0
