@@ -52,7 +52,6 @@ nmrsim.qm module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 
