@@ -104,6 +104,5 @@ class Couplings(Validated):
 
         _, n = testarray.shape
         if n != 2:
-            raise ValueError('J should have a second dimension of 2 '
-                             'for J value, # of nuclei.')
+            raise ValueError('J should have a second dimension of 2 for J value, # of nuclei.')
         return value
