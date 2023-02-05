@@ -11,6 +11,7 @@ class AutoStorage:
 
     See L. Ramalho, "Fluent Python", Ch. 20.
     """
+
     """Downside of this method is non-informative docstrings for attributes.
     Consider another implementation.
     """
@@ -40,6 +41,7 @@ class Validated(abc.ABC, AutoStorage):
 
     See L. Ramalho, "Fluent Python", Ch. 20.
     """
+
     def __set__(self, instance, value):
         value = self.validate(instance, value)
         super().__set__(instance, value)
@@ -50,8 +52,7 @@ class Validated(abc.ABC, AutoStorage):
 
 
 class Number(Validated):
-    """A descriptor used to validate that a class attribute is a real number.
-    """
+    """A descriptor used to validate that a class attribute is a real number."""
 
     def validate(self, instance, value):
         """Verify that value is a real number.
@@ -78,6 +79,7 @@ class Couplings(Validated):
     """A descriptor used to validate that a value resembles an array of number
     pairs (for each J/# of nuclei entry.
     """
+
     def validate(self, instance, value):
         """Test that J resembles an array of number pairs (for each J/# of
         nuclei entry.

@@ -63,6 +63,7 @@ class Multiplet:
     Similarly, multiplets can be divided or divided in-place by a scalar.
 
     """
+
     v = Number()
     I = Number()
     J = Couplings()
@@ -159,6 +160,7 @@ class SpinSystem:
     Addition returns a Spectrum object with the SpinSystem as a component.
 
     """
+
     def __init__(self, v, J, w=0.5, second_order=True):
         self._nuclei_number = len(v)
         self.v = v
@@ -283,6 +285,7 @@ class Spectrum:
     objects, to return a new Spectrum object. In-place addition is also
     recognized, modifying the Spectrum object in-place and returning self.
     """
+
     def __init__(self, components, vmin=None, vmax=None):
         combo = [extract_components(c) for c in components]
         result = list(itertools.chain.from_iterable(combo))
@@ -300,8 +303,7 @@ class Spectrum:
             self.vmax = vmax
 
     def _add_peaklist(self, other):
-        self._peaklist = sorted(reduce_peaks(
-            itertools.chain(self._peaklist, other.peaklist())))
+        self._peaklist = sorted(reduce_peaks(itertools.chain(self._peaklist, other.peaklist())))
         self._reset_minmax()
 
     def _reset_minmax(self):
@@ -366,8 +368,7 @@ class Spectrum:
         """
         vmin, vmax = low_high((self.vmin, self.vmax))
         x = np.linspace(vmin, vmax, points)
-        y = [add_lorentzians(x, c.peaklist(), c.w)
-             for c in self._components]
+        y = [add_lorentzians(x, c.peaklist(), c.w) for c in self._components]
         y_sum = np.sum(y, 0)
         return x, y_sum
 

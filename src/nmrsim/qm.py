@@ -91,8 +91,7 @@ def _so_dense(nspins):
     sigma_z = np.array([[1 / 2, 0], [0, -1 / 2]])
     unit = np.array([[1, 0], [0, 1]])
 
-    L = np.empty((3, nspins, 2 ** nspins, 2 ** nspins),
-                 dtype=np.complex128)  # TODO: consider other dtype?
+    L = np.empty((3, nspins, 2**nspins, 2**nspins), dtype=np.complex128)  # TODO: consider other dtype?
     for n in range(nspins):
         Lx_current = 1
         Ly_current = 1
@@ -278,7 +277,7 @@ def _transition_matrix_dense(nspins):
     """
     # function was optimized by only calculating upper triangle and then adding
     # the lower.
-    n = 2 ** nspins
+    n = 2**nspins
     T = np.zeros((n, n))
     for i in range(n - 1):
         for j in range(i + 1, n):

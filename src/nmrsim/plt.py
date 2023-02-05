@@ -21,6 +21,7 @@ from nmrsim._utils import low_high
 # environments where Tkinter is not available (e.g. some Unix systems;
 # BeeWare's Briefcase packaging for Windows).
 import matplotlib
+
 try:
     import tkinter as tk  # noqa: F401
 except ImportError:
