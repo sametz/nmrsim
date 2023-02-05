@@ -95,7 +95,7 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
         _P = P - tau * 4 * pi_squared * (_Dv ** 2)
         _Q = Q + tau * 2 * pi * _Dv
         _R = R + _Dv * r
-        return(_P * p + _Q * _R) / (_P ** 2 + _R ** 2)
+        return (_P * p + _Q * _R) / (_P ** 2 + _R ** 2)
     return _maker
 
 

@@ -2,7 +2,7 @@ import numpy as np
 from pytest import approx
 
 from nmrsim.math import (add_peaks, get_intensity, lorentz, reduce_peaks,
-                        _normalize, normalize_peaklist)
+                         _normalize, normalize_peaklist)
 from tests.dnmr_standards import TWOSPIN_SLOW
 
 
