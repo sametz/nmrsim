@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows: [Code Quality]
     branches:
+      - pyproject
       - develop
     types:
       - completed
