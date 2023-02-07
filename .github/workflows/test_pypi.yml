@@ -2,7 +2,7 @@ name: Publish to TestPyPI
 
 on:
   workflow_run:
-    workflows: ["Code Quality"]
+    workflows: [ "Code Quality" ]
     branches:
       - pyproject
       - develop
