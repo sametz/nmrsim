@@ -21,4 +21,4 @@ docs/build
 docs/source/_build/
 .tox
 .DS_Store
-.coverage
+.coverage*
