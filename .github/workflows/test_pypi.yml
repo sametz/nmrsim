@@ -1,17 +1,18 @@
 name: Publish to TestPyPI
 
 on:
-  workflow_run:
-    workflows: [ "Code Quality" ]
+  push:
     branches:
       - pyproject
       - develop
-    types:
-      - completed
 
 jobs:
+  call_codequality:
+    uses: ./.github/workflows/codequality.yml
+
   build_source_dist:
     name: Build source distribution
+    needs: call_codequality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,6 +33,7 @@ jobs:
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
+    needs: build_source_dist
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -66,7 +68,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: artifact
-          path: ./dist # Update to match root of package
+          path: ./not_dist  # unmangle to `./dist` to actually publish
 
       - uses: pypa/gh-action-pypi-publish@v1.5.0
         with:

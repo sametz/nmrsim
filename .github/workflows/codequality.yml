@@ -1,7 +1,8 @@
 name: Code Quality
 
 on:
-  - push
+#  - push
+  - workflow_call
 
 jobs:
   format:
