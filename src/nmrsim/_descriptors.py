@@ -22,7 +22,7 @@ class AutoStorage:
         cls = self.__class__
         prefix = cls.__name__
         index = cls.__counter
-        self.storage_name = '_{}#{}'.format(prefix, index)
+        self.storage_name = f"_{prefix}#{index}"
         cls.__counter += 1
 
     def __get__(self, instance, owner):
@@ -71,7 +71,7 @@ class Number(Validated):
             If the value is not a real number.
         """
         if not isinstance(value, numbers.Real):
-            raise TypeError('value must be a real number')
+            raise TypeError("value must be a real number")
         return value
 
 
@@ -101,10 +101,10 @@ class Couplings(Validated):
         if testarray.shape == (0,):  # empty list
             return value
         if len(testarray.shape) != 2:
-            print('first entry in array is: ', value[0])
-            raise TypeError('J should be 2D array-like')
+            print("first entry in array is: ", value[0])
+            raise TypeError("J should be 2D array-like")
 
         _, n = testarray.shape
         if n != 2:
-            raise ValueError('J should have a second dimension of 2 for J value, # of nuclei.')
+            raise ValueError("J should have a second dimension of 2 for J value, # of nuclei.")
         return value
