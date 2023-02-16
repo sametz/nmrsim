@@ -20,7 +20,7 @@ jobs:
       run:
         python setup.py sdist
     - name: upload sdist
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         path: dist
