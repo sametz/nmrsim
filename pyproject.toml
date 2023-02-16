@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 119
+target-version = ['py37', 'py38', 'py39', 'py310']
+force-exclude = '''
+/(
+    jupyter
+  | tests
+)/
+'''
+

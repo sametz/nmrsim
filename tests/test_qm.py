@@ -13,7 +13,7 @@ def test_so_sparse_creates_files(fs):
     test_bin = (pathlib.Path(__file__)
                 .resolve()
                 .parent.parent
-                .joinpath('nmrsim', 'bin'))
+                .joinpath('src', 'nmrsim', 'bin'))
     fs.add_real_directory(test_bin, read_only=False)
     expected_Lz = test_bin.joinpath('Lz3.npz')
     expected_Lproduct = test_bin.joinpath('Lproduct3.npz')
@@ -33,7 +33,7 @@ def test_tm_cache_creates_file(fs):
     test_bin = (pathlib.Path(__file__)
                 .resolve()
                 .parent.parent
-                .joinpath('nmrsim', 'bin'))
+                .joinpath('src', 'nmrsim', 'bin'))
     fs.add_real_directory(test_bin, read_only=False)
     expected_T = test_bin.joinpath('T3.npz')
     assert expected_T.exists()

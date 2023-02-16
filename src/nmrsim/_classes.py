@@ -63,6 +63,7 @@ class Multiplet:
     Similarly, multiplets can be divided or divided in-place by a scalar.
 
     """
+
     v = Number()
     I = Number()
     J = Couplings()
@@ -75,11 +76,11 @@ class Multiplet:
         self._peaklist = multiplet((v, I), J)
 
     def __eq__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
+        if hasattr(other, "peaklist") and callable(other.peaklist):
             return np.allclose(self.peaklist(), other.peaklist())
 
     def __add__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
+        if hasattr(other, "peaklist") and callable(other.peaklist):
             return Spectrum([self, other])
         else:
             return NotImplemented
@@ -159,6 +160,7 @@ class SpinSystem:
     Addition returns a Spectrum object with the SpinSystem as a component.
 
     """
+
     def __init__(self, v, J, w=0.5, second_order=True):
         self._nuclei_number = len(v)
         self.v = v
@@ -181,9 +183,9 @@ class SpinSystem:
     @v.setter
     def v(self, vlist):
         if len(vlist) != self._nuclei_number:
-            raise ValueError('v length must match J shape.')
+            raise ValueError("v length must match J shape.")
         if not isinstance(vlist[0], numbers.Real):
-            raise TypeError('v must be an array of numbers.')
+            raise TypeError("v must be an array of numbers.")
         self._v = vlist
 
     @property
@@ -207,10 +209,10 @@ class SpinSystem:
         if (m != n) or (m != self._nuclei_number):
             raise TypeError("J dimensions don't match v length.")
         if not np.allclose(J, J.T):
-            raise ValueError('J must be diagonal-symmetric.')
+            raise ValueError("J must be diagonal-symmetric.")
         for i in range(m):
             if J[i, i] != 0:
-                raise ValueError('Diagonal elements of J must be 0.')
+                raise ValueError("Diagonal elements of J must be 0.")
         self._J = J_array
 
     @property
@@ -232,7 +234,7 @@ class SpinSystem:
         if isinstance(boolean, bool):
             self._second_order = boolean
         else:
-            raise TypeError('second_order must be a boolean')
+            raise TypeError("second_order must be a boolean")
 
     def peaklist(self):
         """Return a list of (frequency, intensity) signals.
@@ -248,11 +250,11 @@ class SpinSystem:
             return first_order_spin_system(self._v, self._J)
 
     def __eq__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
+        if hasattr(other, "peaklist") and callable(other.peaklist):
             return np.allclose(self.peaklist(), other.peaklist())
 
     def __add__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
+        if hasattr(other, "peaklist") and callable(other.peaklist):
             return Spectrum([self, other])
         else:
             return NotImplemented
@@ -283,6 +285,7 @@ class Spectrum:
     objects, to return a new Spectrum object. In-place addition is also
     recognized, modifying the Spectrum object in-place and returning self.
     """
+
     def __init__(self, components, vmin=None, vmax=None):
         combo = [extract_components(c) for c in components]
         result = list(itertools.chain.from_iterable(combo))
@@ -300,8 +303,7 @@ class Spectrum:
             self.vmax = vmax
 
     def _add_peaklist(self, other):
-        self._peaklist = sorted(reduce_peaks(
-            itertools.chain(self._peaklist, other.peaklist())))
+        self._peaklist = sorted(reduce_peaks(itertools.chain(self._peaklist, other.peaklist())))
         self._reset_minmax()
 
     def _reset_minmax(self):
@@ -326,7 +328,7 @@ class Spectrum:
         return self.vmin, self.vmax
 
     def __eq__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
+        if hasattr(other, "peaklist") and callable(other.peaklist):
             return np.allclose(self.peaklist(), other.peaklist())
 
     def __add__(self, other):
@@ -335,7 +337,7 @@ class Spectrum:
         return new_spectrum
 
     def __iadd__(self, other):
-        if hasattr(other, 'peaklist') and callable(other.peaklist):
+        if hasattr(other, "peaklist") and callable(other.peaklist):
             if isinstance(other, Spectrum):
                 for component in other._components:
                     self.__iadd__(component)
@@ -344,7 +346,7 @@ class Spectrum:
                 self._components.append(other)
             return self
         else:
-            raise TypeError('Item being added to Spectrum object not compatible')
+            raise TypeError("Item being added to Spectrum object not compatible")
 
     def peaklist(self):
         """Return the peaklist for the spectrum.
@@ -366,8 +368,7 @@ class Spectrum:
         """
         vmin, vmax = low_high((self.vmin, self.vmax))
         x = np.linspace(vmin, vmax, points)
-        y = [add_lorentzians(x, c.peaklist(), c.w)
-             for c in self._components]
+        y = [add_lorentzians(x, c.peaklist(), c.w) for c in self._components]
         y_sum = np.sum(y, 0)
         return x, y_sum
 

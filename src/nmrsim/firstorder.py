@@ -59,7 +59,7 @@ def multiplet(signal, couplings):
     """
     res = [signal]
     for coupling in couplings:
-        for i in range(coupling[1]):
+        for _ in range(coupling[1]):
             res = _doublet(res, coupling[0])
     return sorted(reduce_peaks(res))
 

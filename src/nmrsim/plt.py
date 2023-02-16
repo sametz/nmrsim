@@ -21,11 +21,12 @@ from nmrsim._utils import low_high
 # environments where Tkinter is not available (e.g. some Unix systems;
 # BeeWare's Briefcase packaging for Windows).
 import matplotlib
+
 try:
     import tkinter as tk  # noqa: F401
 except ImportError:
-    matplotlib.use('Agg')
-    print('WARNING: Tkinter not found--plots will not display on screen!')
+    matplotlib.use("Agg")
+    print("WARNING: Tkinter not found--plots will not display on screen!")
 
 import matplotlib.pyplot as plt
 
@@ -36,7 +37,7 @@ import matplotlib.pyplot as plt
 # TODO: possibly refactor plot routines to avoid repetitive code
 
 
-def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
+def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None, hidden=False):
     """
     A matplotlib plot of the simulated lineshape for a peaklist.
 
@@ -54,6 +55,8 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
         Number of data points.
     limits : (float, float)
         Frequency limits for the plot.
+    hidden: bool
+        Whether showing the plot should be omitted (e.g. to not block CI tests)
 
     Returns
     -------
@@ -73,11 +76,12 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None):
     # noinspection PyTypeChecker
     lines = plt.plot(x, y)
     print(lines)
-    plt.show()
+    if not hidden:
+        plt.show()
     return x, y
 
 
-def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
+def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     """A  matplotlib plot of a spectrum in "stick" (stem) style.
 
     Parameters
@@ -90,6 +94,8 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
         Maximum intensity for the plot.
     limits : (float, float)
         Frequency limits for the plot.
+    hidden: bool
+        Whether showing the plot should be omitted (e.g. to not block CI tests)
 
     Returns
     -------
@@ -111,14 +117,14 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
-    ax.stem(x, y, markerfmt=' ', basefmt='C0-',
-            use_line_collection=True)  # suppress warning until mpl 3.3
-    plt.show()
+    ax.stem(x, y, markerfmt=" ", basefmt="C0-", use_line_collection=True)  # suppress warning until mpl 3.3
+    if not hidden:
+        plt.show()
     return x, y
     # TODO: or return plt object? Decide behavior.
 
 
-def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
+def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None, hidden=False):
     """
     A matplotlib plot that accepts arrays of x and y coordinates.
 
@@ -134,6 +140,8 @@ def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
         Maximum intensity for the plot. Default is 110% max y.
     limits : (float, float)
         Frequency limits for the plot.
+    hidden: bool
+        Whether showing the plot should be omitted (e.g. to not block CI tests)
 
     Returns
     -------
@@ -154,5 +162,6 @@ def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None):
     plt.xlim(r_limit, l_limit)  # should invert x axis
     plt.ylim(y_min, y_max)
     plt.plot(x, y)
-    plt.show()
+    if not hidden:
+        plt.show()
     return x, y

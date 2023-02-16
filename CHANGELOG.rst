@@ -22,20 +22,36 @@ the author interprets the terms below as follows:
   Code testing and optimization, API adjustments,
   addition of new features and tests,
   and creating packaging requirements will be ongoing.
-  The package can be installed via setup.py.
 
 * **beta status**:
   All anticipated Version 1.0.0 features are implemented and documented.
-  The package can be
-  'pip install'ed via TestPyPI and possibly PyPI.
+  However, breaking changes to the API are still possible.
+  The package can be pip-installed.
 
 * **release candidate status**:
-  The package passes tests on multiple platforms and python/dependency versions.
-  The package can be pip installed from PyPI.
+  No further changes to the API are expected before the next release.
 
 * **Version 1.0.0 release**:
   API is stable.
   The package is available on PyPI (and perhaps conda).
+
+0.6.0 - 2023-02-16 (beta release)
+---------------------------------
+Changed
+^^^^^^^
+* Python 3.6 reached its End of Life, and is no longer supported.
+* Requirement for the :code:`sparse` library is now<=v0.10.0 *or* >=0.13.0.
+  The library maintainers introduced bugs in :code:`sparse 0.11` that broke :code:`nmrsim`,
+  but they were fixed in :code:`0.13`.
+
+Added
+^^^^^
+* nmrsim.plt: the plot functions have the optional boolean argument :code:`hidden`.
+  The default :code:`hidden=False` retains previous behavior,
+  where a plot is displayed when possible.
+  When :code:`hidden=True`, the :code:`.show()` method is not executed,
+  and the plot is not displayed.
+  The main use for this is to allow automated tests to run in CI without hanging.
 
 0.5.2 - 2021-07-21 (beta release)
 ---------------------------------

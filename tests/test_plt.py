@@ -29,7 +29,7 @@ def test_add_signals():
 
 def test_mplplot_defaults():
     doublet = [(399, 1), (401, 1)]
-    x, y = mplplot(doublet)
+    x, y = mplplot(doublet, hidden=True)
     assert len(x) == 800
     assert x[0] == 399 - 50
     assert x[-1] == 401 + 50
@@ -39,13 +39,13 @@ def test_mplplot_defaults():
 def test_mplplot_limit_error(limits):
     doublet = [(399, 1), (401, 1)]
     with pytest.raises((AttributeError, TypeError, ValueError)):
-        mplplot(doublet, limits=limits)  # noqa
+        mplplot(doublet, limits=limits, hidden=True)  # noqa
 
 
 def test_mplplot():
     doublet = [(399, 1), (401, 1)]
     limits = (410, 390)  # deliberately opposite order
-    x, y = mplplot(doublet, points=200, limits=limits)
+    x, y = mplplot(doublet, points=200, limits=limits, hidden=True)
     # test was written before normalization of height vs width was built into
     #  lorentz(). Fudge-factor added to scale old accepted data.
     y = y * 2
@@ -56,7 +56,7 @@ def test_mplplot():
 
 def test_mplplot_stick_defaults():
     doublet = [(399, 1), (401, 1)]
-    x, y = mplplot_stick(doublet)
+    x, y = mplplot_stick(doublet, hidden=True)
     assert len(x) == 4
     assert x[-2] == 399 - 50
     assert x[-1] == 401 + 50
@@ -66,13 +66,13 @@ def test_mplplot_stick_defaults():
 def test_mplplot_stick_limit_error(limits):
     doublet = [(399, 1), (401, 1)]
     with pytest.raises((AttributeError, TypeError, ValueError)):
-        mplplot_stick(doublet, limits=limits)
+        mplplot_stick(doublet, limits=limits, hidden=True)
 
 
 def test_mplplot_stick():
     doublet = [(399, 1), (401, 1)]
     limits = (410, 390)  # deliberately opposite order
-    x, y = mplplot_stick(doublet, limits=limits)
+    x, y = mplplot_stick(doublet, limits=limits, hidden=True)
     result_xy = list(zip(x, y))
     expected_xy = [(399, 1), (401, 1), (390, 0.001), (410, 0.001)]
     assert np.allclose(np.array(result_xy), np.array(expected_xy))
@@ -82,7 +82,7 @@ def test_mpl_lineshape_defaults():
     # Currently a human-checked test.
     # TODO: have plt object returned from mplplot_lineshape and introspect
     x, y = TWOSPIN_SLOW
-    mplplot_lineshape(x, y, limits=(100, 200))
+    mplplot_lineshape(x, y, limits=(100, 200), hidden=True)
     # Check that x goes from 200 to 100 (i.e. is also reversed)
     assert 1 == 1
 
@@ -90,7 +90,7 @@ def test_mpl_lineshape_defaults():
 def test_mpl_lineshape_swaps_limits():
     # Currently a human-checked test
     x, y = TWOSPIN_SLOW
-    mplplot_lineshape(x, y, limits=(200, 100))
+    mplplot_lineshape(x, y, limits=(200, 100), hidden=True)
     # Check that x goes from 200 to 100 (i.e. is also reversed)
     assert 1 == 1
 
@@ -99,7 +99,7 @@ def test_mpl_lineshape_swaps_limits():
 def test_mpl_lineshape_limit_error(limits):
     x, y = TWOSPIN_SLOW
     with pytest.raises((AttributeError, TypeError, ValueError)):
-        mplplot_lineshape(x, y, limits=limits)
+        mplplot_lineshape(x, y, limits=limits, hidden=True)
 
 
 def test_mpl_lineshape():
@@ -107,6 +107,6 @@ def test_mpl_lineshape():
     # TODO: have plt object returned from mplplot_lineshape and introspect
     x, y = TWOSPIN_SLOW
     y_max = max(y) * 1.1
-    mplplot_lineshape(x, y, y_min=0, y_max=y_max)
+    mplplot_lineshape(x, y, y_min=0, y_max=y_max, hidden=True)
     # check that y goes from 0 to max+10%
     assert 1 == 1

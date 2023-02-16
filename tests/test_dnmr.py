@@ -4,7 +4,7 @@ import pytest
 from nmrsim.dnmr import (dnmr_two_singlets, _dnmr_AB_func, dnmr_AB,
                          DnmrTwoSinglets, DnmrAB)
 from nmrsim.math import get_maxima
-from tests.plottools import popplot
+# from tests.plottools import popplot
 from tests.dnmr_standards import (AB_WINDNMR, TWOSPIN_COALESCE, TWOSPIN_FAST,
                                   TWOSPIN_SLOW)
 
@@ -13,8 +13,8 @@ class TestDnmrTwoSinglets:
     def test_dnmr_two_singlets_commute(self):
         freqorder_ab = dnmr_two_singlets(165.00, 135.00, 1.50, 2.50, 0.50, 0.75)
         freqorder_ba = dnmr_two_singlets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
-        popplot(*freqorder_ab)
-        popplot(*freqorder_ba)
+        # popplot(*freqorder_ab)
+        # popplot(*freqorder_ba)
         np.testing.assert_array_almost_equal(freqorder_ab, freqorder_ba)
 
     def test_dnmr_two_singlets_limits(self):
@@ -75,25 +75,25 @@ def test_DnmrTwoSinglets_properties():
 def test_DnmrTwoSinglets_limit_error(limits):
     with pytest.raises((AttributeError, TypeError, ValueError)):
         sim = DnmrTwoSinglets(limits=limits)
-        assert sim
+        assert sim  # TODO: coverage shows this never executes; review?
 
 
 def test_DnmrTwoSinglets_slow_exchange():
     sim = DnmrTwoSinglets(165, 135, 1.5, 0.5, 0.5, 0.5)
     assert np.allclose(sim.lineshape(), TWOSPIN_SLOW)
-    popplot(*sim.lineshape())
+    # popplot(*sim.lineshape())
 
 
 def test_DnmrTwoSinglets_coalesce():
     sim = DnmrTwoSinglets(165, 135, 65.9, 0.5, 0.5, 0.5)
     assert np.allclose(sim.lineshape(), TWOSPIN_COALESCE)
-    popplot(*sim.lineshape())
+    # popplot(*sim.lineshape())
 
 
 def test_DnmrTwoSinglets_fastexchange():
     sim = DnmrTwoSinglets(165, 135, 1000, 0.5, 0.5, 0.5)
     assert np.allclose(sim.lineshape(), TWOSPIN_FAST)
-    popplot(*sim.lineshape())
+    # popplot(*sim.lineshape())
 
 
 def test_DnmrTwoSinglets_limits():
@@ -117,8 +117,8 @@ def test_DnmrTwoSinglets_frequencies_commute():
     ba = DnmrTwoSinglets(135.00, 165.00, 1.50, 0.50, 2.50, 0.25)
     ab_spec = ab.lineshape()  # doing this saves a function call (faster test)
     ba_spec = ba.lineshape()
-    popplot(*ab_spec)
-    popplot(*ba_spec)
+    # popplot(*ab_spec)
+    # popplot(*ba_spec)
     np.testing.assert_array_almost_equal(ab_spec, ba_spec)
 
 
@@ -144,8 +144,8 @@ def test_dnmr_AB_frequencies_commute():
     freqorder_ab = dnmr_AB(165.00, 135.00, 12.00, 12.00, 0.50,
                            limits=(215, 85), points=800)
     freqorder_ba = dnmr_AB(135.00, 165.00, 12.00, 12.00, 0.50)
-    popplot(*freqorder_ab)
-    popplot(*freqorder_ba)
+    # popplot(*freqorder_ab)
+    # popplot(*freqorder_ba)
     np.testing.assert_array_almost_equal(freqorder_ab, freqorder_ba)
 
 
@@ -176,7 +176,7 @@ def test_DnmrAB_properties():
 def test_DnmrAB_limit_error(limits):
     with pytest.raises((AttributeError, TypeError, ValueError)):
         sim = DnmrAB(limits=limits)
-        assert sim
+        assert sim  # TODO: coverage shows this never executes; review?
 
 
 def test_DnmrAB_WINDNMR_defaults():

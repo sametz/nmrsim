@@ -1,10 +1,16 @@
-{rebuild binaries}
-flake8
-pytest
+{rebuild binaries} <-- so far, not necessary
+tox -e flake8
+tox -e format
+tox
 bump version
 cd docs; make html; make clean
-python setup.py sdist bdist_wheel
-CHECK BUILD for bin, and no jupyter or other extras
+nbstripout
+python setup.py sdist bdist_wheel <--now a GH Action
+CHECK BUILD for bin, and no jupyter or other extras <-- learn how Hynek does this
+
+Below are now done in GH Actions
 twine check dist/*
 twine upload --repository testpypi dist/*  for pypi
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ nmrsim
+
+Remember to update "About" section of GitHub to latest version when done.

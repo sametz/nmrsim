@@ -5,6 +5,7 @@ exclude =
     docs/source/conf.py,
     env,
     venv,
+    .venv,
     .tox,
     jupyter,
     tests/dnmr_standards.py,

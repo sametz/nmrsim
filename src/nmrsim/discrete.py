@@ -60,7 +60,7 @@ def AB(Jab, Vab, Vcentr, normalize=True):
     """
     J = Jab
     dv = Vab
-    c = ((dv ** 2 + J ** 2) ** 0.5) / 2
+    c = ((dv**2 + J**2) ** 0.5) / 2
     center = Vcentr
     v1 = center - c - (J / 2)
     v2 = v1 + J
@@ -107,13 +107,13 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
 
     # Also, inconsistencies in WINDNMR GUI, internal WINDNMR code, and Pople
     # equations require a conversion.
-    dV = - dV
+    dV = -dV
     va = Vab + (dV / 2)
     vb = va - dV
 
     Jmod = J * (3 / 4)
-    C_plus = sqrt(dV ** 2 + dV * J + (9 / 4) * (J ** 2)) / 2
-    C_minus = sqrt(dV ** 2 - dV * J + (9 / 4) * (J ** 2)) / 2
+    C_plus = sqrt(dV**2 + dV * J + (9 / 4) * (J**2)) / 2
+    C_minus = sqrt(dV**2 - dV * J + (9 / 4) * (J**2)) / 2
     cos2theta_plus = (dV / 2 + J / 4) / C_plus
     cos2theta_minus = (dV / 2 - J / 4) / C_minus
     sintheta_plus = sqrt((1 - cos2theta_plus) / 2)
@@ -194,8 +194,8 @@ def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
     cp = Jax + Jbx
     M = dVab + cm
     L = dVab - cm
-    D_plus = sqrt(M ** 2 + Jab ** 2) / 2
-    D_minus = sqrt(L ** 2 + Jab ** 2) / 2
+    D_plus = sqrt(M**2 + Jab**2) / 2
+    D_minus = sqrt(L**2 + Jab**2) / 2
     sin2phi_plus = Jab / (2 * D_plus)
     sin2phi_minus = Jab / (2 * D_minus)
     cos2phi_plus = M / (2 * D_plus)
@@ -315,8 +315,8 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
     M = Jaa - Jxx
     L = Jax - Jax_prime
     N = Jax + Jax_prime
-    p = sqrt((K ** 2 + L ** 2)) / 2
-    r = sqrt((M ** 2 + L ** 2)) / 2
+    p = sqrt(K**2 + L**2) / 2
+    r = sqrt(M**2 + L**2) / 2
     sin2theta_s = (1 - K / (2 * p)) / 2
     sin2theta_a = (1 - M / (2 * r)) / 2
     cos2theta_s = (1 + K / (2 * p)) / 2
@@ -378,6 +378,7 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
         a list of (frequency, intensity) tuples.
     """
     from nmrsim.qm import qm_spinsystem
+
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
     freqlist = [va, va, vb, vb]
