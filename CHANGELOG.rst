@@ -22,16 +22,14 @@ the author interprets the terms below as follows:
   Code testing and optimization, API adjustments,
   addition of new features and tests,
   and creating packaging requirements will be ongoing.
-  The package can be installed via setup.py.
 
 * **beta status**:
   All anticipated Version 1.0.0 features are implemented and documented.
-  The package can be
-  'pip install'ed via TestPyPI and possibly PyPI.
+  However, breaking changes to the API are still possible.
+  The package can be pip-installed.
 
 * **release candidate status**:
-  The package passes tests on multiple platforms and python/dependency versions.
-  The package can be pip installed from PyPI.
+  No further changes to the API are expected before the next release.
 
 * **Version 1.0.0 release**:
   API is stable.

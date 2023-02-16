@@ -32,7 +32,7 @@ Features
 Examples
 --------
 
-See the Jupyter folder for examples of typical use cases.
+See the documentation, or the notebooks in the Jupyter folder, for examples of typical use cases.
 
 Installation
 ------------
