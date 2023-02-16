@@ -61,7 +61,7 @@ SPARSE = True  # the sparse library is available
 
 def _bin_path():
     """Return a Path to the nmrsim/bin directory."""
-    init_path_context = resources.path(nmrsim.bin, '__init__.py')
+    init_path_context = resources.path(nmrsim.bin, "__init__.py")
     with init_path_context as p:
         init_path = p
     bin_path = init_path.parent
@@ -91,8 +91,7 @@ def _so_dense(nspins):
     sigma_z = np.array([[1 / 2, 0], [0, -1 / 2]])
     unit = np.array([[1, 0], [0, 1]])
 
-    L = np.empty((3, nspins, 2 ** nspins, 2 ** nspins),
-                 dtype=np.complex128)  # TODO: consider other dtype?
+    L = np.empty((3, nspins, 2**nspins, 2**nspins), dtype=np.complex128)  # TODO: consider other dtype?
     for n in range(nspins):
         Lx_current = 1
         Ly_current = 1
@@ -150,8 +149,8 @@ def _so_sparse(nspins):
     # Also, need to consider different users with different system capabilities
     # (e.g. at extreme, Raspberry Pi). Some way to let user select, or select
     # for user?
-    filename_Lz = f'Lz{nspins}.npz'
-    filename_Lproduct = f'Lproduct{nspins}.npz'
+    filename_Lz = f"Lz{nspins}.npz"
+    filename_Lproduct = f"Lproduct{nspins}.npz"
     bin_path = _bin_path()
     path_Lz = bin_path.joinpath(filename_Lz)
     path_Lproduct = bin_path.joinpath(filename_Lproduct)
@@ -164,8 +163,8 @@ def _so_sparse(nspins):
         Lproduct = sparse.load_npz(path_Lproduct)
         return Lz, Lproduct
     except FileNotFoundError:
-        print('no SO file ', path_Lz, ' found.')
-        print(f'creating {filename_Lz} and {filename_Lproduct}')
+        print("no SO file ", path_Lz, " found.")
+        print(f"creating {filename_Lz} and {filename_Lproduct}")
     Lz, Lproduct = _so_dense(nspins)
     Lz_sparse = sparse.COO(Lz)
     Lproduct_sparse = sparse.COO(Lproduct)
@@ -224,9 +223,9 @@ def hamiltonian_sparse(v, J):
     nspins = len(v)
     Lz, Lproduct = _so_sparse(nspins)  # noqa
     # TODO: remove the following lines once tests pass
-    print('From hamiltonian_sparse:')
-    print('Lz is type: ', type(Lz))
-    print('Lproduct is type: ', type(Lproduct))
+    print("From hamiltonian_sparse:")
+    print("Lz is type: ", type(Lz))
+    print("Lproduct is type: ", type(Lproduct))
     assert isinstance(Lz, (sparse.COO, np.ndarray, scipy.sparse.spmatrix))
     # On large spin systems, converting v and J to sparse improved speed of
     # sparse.tensordot calls with them.
@@ -278,11 +277,11 @@ def _transition_matrix_dense(nspins):
     """
     # function was optimized by only calculating upper triangle and then adding
     # the lower.
-    n = 2 ** nspins
+    n = 2**nspins
     T = np.zeros((n, n))
     for i in range(n - 1):
         for j in range(i + 1, n):
-            if bin(i ^ j).count('1') == 1:
+            if bin(i ^ j).count("1") == 1:
                 T[i, j] = 1
     T += T.T
     return T
@@ -350,7 +349,7 @@ def _tm_cache(nspins):
     """
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
-    filename = f'T{nspins}.npz'
+    filename = f"T{nspins}.npz"
     # init_path_context = resources.path(nmrsim.bin, '__init__.py')
     # with init_path_context as p:
     #     init_path = p
@@ -362,10 +361,10 @@ def _tm_cache(nspins):
         T_sparse = sparse.load_npz(path)
         return T_sparse
     except FileNotFoundError:
-        print(f'creating {filename}')
+        print(f"creating {filename}")
         T_sparse = _transition_matrix_dense(nspins)
         T_sparse = sparse.COO(T_sparse)
-        print('_tm_cache will save on path: ', path)
+        print("_tm_cache will save on path: ", path)
         sparse.save_npz(path, T_sparse)
         return T_sparse
 

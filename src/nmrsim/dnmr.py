@@ -68,16 +68,16 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
 
     """
     pi = np.pi
-    pi_squared = pi ** 2
+    pi_squared = pi**2
     T2a = 1 / (pi * wa)
     T2b = 1 / (pi * wb)
     pb = 1 - pa
     tau = pb / ka
     dv = va - vb
     Dv = (va + vb) / 2
-    P = tau * (1 / (T2a * T2b) + pi_squared * (dv ** 2)) + (pa / T2a + pb / T2b)
+    P = tau * (1 / (T2a * T2b) + pi_squared * (dv**2)) + (pa / T2a + pb / T2b)
     p = 1 + tau * ((pb / T2a) + (pa / T2b))
-    Q = tau * (- pi * dv * (pa - pb))
+    Q = tau * (-pi * dv * (pa - pb))
     R = pi * dv * tau * ((1 / T2b) - (1 / T2a)) + pi * dv * (pa - pb)
     r = 2 * pi * (1 + tau * ((1 / T2a) + (1 / T2b)))
 
@@ -92,10 +92,11 @@ def _dnmr_two_singlets_func(va, vb, ka, wa, wb, pa):
         # outer scope whose values are changed in the inner scope.
 
         _Dv = Dv - v
-        _P = P - tau * 4 * pi_squared * (_Dv ** 2)
+        _P = P - tau * 4 * pi_squared * (_Dv**2)
         _Q = Q + tau * 2 * pi * _Dv
         _R = R + _Dv * r
-        return(_P * p + _Q * _R) / (_P ** 2 + _R ** 2)
+        return (_P * p + _Q * _R) / (_P**2 + _R**2)
+
     return _maker
 
 
@@ -175,8 +176,7 @@ class DnmrTwoSinglets:
 
     """
 
-    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5,
-                 limits=None, points=800):
+    def __init__(self, va=1, vb=0, k=0.01, wa=0.5, wb=0.5, pa=0.5, limits=None, points=800):
         # rethink default kwargs for v/k/w
 
         self.va = va
@@ -336,8 +336,9 @@ class DnmrTwoSinglets:
 
         """
         x = np.linspace(self._vmin, self._vmax, self.points)
-        x, y = dnmr_two_singlets(self.va, self.vb, self.k, self.wa, self.wb, self.pa,
-                                 limits=self.limits, points=self.points)
+        x, y = dnmr_two_singlets(
+            self.va, self.vb, self.k, self.wa, self.wb, self.pa, limits=self.limits, points=self.points
+        )
         return x, y
 
 
@@ -380,18 +381,16 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
     vo = (v1 + v2) / 2
     tau = 1 / k
     tau2 = 1 / (pi * w)
-    a1_plus = 4 * pi ** 2 * (vo - v + J / 2) ** 2
-    a1_minus = 4 * pi ** 2 * (vo - v - J / 2) ** 2
-    a2 = - ((1 / tau) + (1 / tau2)) ** 2
-    a3 = - pi ** 2 * (v1 - v2) ** 2
-    a4 = - pi ** 2 * J ** 2 + (1 / tau ** 2)
+    a1_plus = 4 * pi**2 * (vo - v + J / 2) ** 2
+    a1_minus = 4 * pi**2 * (vo - v - J / 2) ** 2
+    a2 = -(((1 / tau) + (1 / tau2)) ** 2)
+    a3 = -(pi**2) * (v1 - v2) ** 2
+    a4 = -(pi**2) * J**2 + (1 / tau**2)
     a_plus = a1_plus + a2 + a3 + a4
     a_minus = a1_minus + a2 + a3 + a4
 
-    b_plus = 4 * pi * (vo - v + J / 2) * (
-        (1 / tau) + (1 / tau2)) - 2 * pi * J / tau
-    b_minus = 4 * pi * (vo - v - J / 2) * (
-        (1 / tau) + (1 / tau2)) + 2 * pi * J / tau
+    b_plus = 4 * pi * (vo - v + J / 2) * ((1 / tau) + (1 / tau2)) - 2 * pi * J / tau
+    b_minus = 4 * pi * (vo - v - J / 2) * ((1 / tau) + (1 / tau2)) + 2 * pi * J / tau
 
     r_plus = 2 * pi * (vo - v + J)
     r_minus = 2 * pi * (vo - v - J)
@@ -399,9 +398,9 @@ def _dnmr_AB_func(v, v1, v2, J, k, w):
     s = (2 / tau) + (1 / tau2)
 
     n1 = r_plus * b_plus - s * a_plus
-    d1 = a_plus ** 2 + b_plus ** 2
+    d1 = a_plus**2 + b_plus**2
     n2 = r_minus * b_minus - s * a_minus
-    d2 = a_minus ** 2 + b_minus ** 2
+    d2 = a_minus**2 + b_minus**2
 
     I = (n1 / d1) + (n2 / d2)
     return I
@@ -484,8 +483,7 @@ class DnmrAB:
 
     """
 
-    def __init__(self, va=165.0, vb=135.0, J=12.0, k=12.0, w=0.5,
-                 limits=None, points=800):
+    def __init__(self, va=165.0, vb=135.0, J=12.0, k=12.0, w=0.5, limits=None, points=800):
         self.va = va
         self.vb = vb
         self.J = J

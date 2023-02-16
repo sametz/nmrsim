@@ -3,3 +3,10 @@ semantic line breaks: https://sembr.org/
 automatic builds failing to "no such kernel named...": add ipykernel to doc
 requirements.txt:
 https://nbsphinx.readthedocs.io/en/0.8.6/installation.html
+
+At some point, in conf.py, `source_suffix = [".rst", ".ipynb"] became an error.
+It was tolerated for a while,
+but since .rst is the default and .ipynb is added by nbsphinx,
+it now causes errors.
+(https://github.com/spatialaudio/nbsphinx/issues/595#issuecomment-902148464)
+

@@ -11,6 +11,7 @@ class AutoStorage:
 
     See L. Ramalho, "Fluent Python", Ch. 20.
     """
+
     """Downside of this method is non-informative docstrings for attributes.
     Consider another implementation.
     """
@@ -21,7 +22,7 @@ class AutoStorage:
         cls = self.__class__
         prefix = cls.__name__
         index = cls.__counter
-        self.storage_name = '_{}#{}'.format(prefix, index)
+        self.storage_name = f"_{prefix}#{index}"
         cls.__counter += 1
 
     def __get__(self, instance, owner):
@@ -40,6 +41,7 @@ class Validated(abc.ABC, AutoStorage):
 
     See L. Ramalho, "Fluent Python", Ch. 20.
     """
+
     def __set__(self, instance, value):
         value = self.validate(instance, value)
         super().__set__(instance, value)
@@ -50,8 +52,7 @@ class Validated(abc.ABC, AutoStorage):
 
 
 class Number(Validated):
-    """A descriptor used to validate that a class attribute is a real number.
-    """
+    """A descriptor used to validate that a class attribute is a real number."""
 
     def validate(self, instance, value):
         """Verify that value is a real number.
@@ -70,7 +71,7 @@ class Number(Validated):
             If the value is not a real number.
         """
         if not isinstance(value, numbers.Real):
-            raise TypeError('value must be a real number')
+            raise TypeError("value must be a real number")
         return value
 
 
@@ -78,6 +79,7 @@ class Couplings(Validated):
     """A descriptor used to validate that a value resembles an array of number
     pairs (for each J/# of nuclei entry.
     """
+
     def validate(self, instance, value):
         """Test that J resembles an array of number pairs (for each J/# of
         nuclei entry.
@@ -99,11 +101,10 @@ class Couplings(Validated):
         if testarray.shape == (0,):  # empty list
             return value
         if len(testarray.shape) != 2:
-            print('first entry in array is: ', value[0])
-            raise TypeError('J should be 2D array-like')
+            print("first entry in array is: ", value[0])
+            raise TypeError("J should be 2D array-like")
 
         _, n = testarray.shape
         if n != 2:
-            raise ValueError('J should have a second dimension of 2 '
-                             'for J value, # of nuclei.')
+            raise ValueError("J should have a second dimension of 2 for J value, # of nuclei.")
         return value

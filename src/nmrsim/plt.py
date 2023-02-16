@@ -21,11 +21,12 @@ from nmrsim._utils import low_high
 # environments where Tkinter is not available (e.g. some Unix systems;
 # BeeWare's Briefcase packaging for Windows).
 import matplotlib
+
 try:
     import tkinter as tk  # noqa: F401
 except ImportError:
-    matplotlib.use('Agg')
-    print('WARNING: Tkinter not found--plots will not display on screen!')
+    matplotlib.use("Agg")
+    print("WARNING: Tkinter not found--plots will not display on screen!")
 
 import matplotlib.pyplot as plt
 
@@ -111,8 +112,7 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None):
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
-    ax.stem(x, y, markerfmt=' ', basefmt='C0-',
-            use_line_collection=True)  # suppress warning until mpl 3.3
+    ax.stem(x, y, markerfmt=" ", basefmt="C0-", use_line_collection=True)  # suppress warning until mpl 3.3
     plt.show()
     return x, y
     # TODO: or return plt object? Decide behavior.

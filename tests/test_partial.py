@@ -7,7 +7,7 @@ from nmrsim.discrete import (AB, AB2, ABX, ABX3, AAXX, AABB)
 def test_convert_refspec():
     refspec = [(1, 1), (2, 3), (3, 3), (4, 1)]
     new_refspec = normalize_peaklist(refspec, 2)
-    print(sum([y for x, y in new_refspec]))
+    print(sum(y for x, y in new_refspec))
     assert new_refspec == [(1, 0.25), (2, 0.75), (3, 0.75), (4, 0.25)]
 
 
@@ -21,12 +21,12 @@ def test_AB():
     refspec_normalized = normalize_peaklist(refspec, 2)
     print('ref normalized:')
     print(refspec_normalized)
-    print(sum([y for x, y in refspec_normalized]))
+    print(sum(y for x, y in refspec_normalized))
     print(sum(refspec_normalized[1]))
     testspec = AB(**ABdict)
     print('testspec:')
     print(testspec)
-    print(sum([y for x, y in testspec]))
+    print(sum(y for x, y in testspec))
     np.testing.assert_array_almost_equal(testspec,
                                          refspec_normalized,
                                          decimal=2)
@@ -46,12 +46,12 @@ def test_AB2():
     refspec = normalize_peaklist(refspec, 3)
     print('ref normalized;')
     print(refspec)
-    print(sum([y for x, y in refspec]))
+    print(sum(y for x, y in refspec))
     testspec = sorted(AB2(**dcp))
     # testspec.sort()
     print('testspec:')
     print(testspec)
-    print(sum([y for x, y in testspec]))
+    print(sum(y for x, y in testspec))
     np.testing.assert_array_almost_equal(sorted(testspec), refspec, decimal=2)
 
 
@@ -74,11 +74,11 @@ def test_ABX():
     refspec = sorted(normalize_peaklist(refspec, 3))
     print('ref normalized;')
     print(refspec)
-    print(sum([y for x, y in refspec]))
+    print(sum(y for x, y in refspec))
     testspec = sorted(ABX(**ABXdict, vx=100))
     print('testspec:')
     print(testspec)
-    print(sum([y for x, y in testspec]))
+    print(sum(y for x, y in testspec))
     np.testing.assert_array_almost_equal(sorted(testspec), refspec, decimal=2)
 
 

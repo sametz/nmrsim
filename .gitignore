@@ -1,7 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
 .ipynb_checkpoints
-nmrsim/.cache/
+src/nmrsim/.cache/
 .cache
 /coverage/
 __pycache__/
@@ -21,3 +21,4 @@ docs/build
 docs/source/_build/
 .tox
 .DS_Store
+.coverage*

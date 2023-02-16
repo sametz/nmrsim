@@ -75,7 +75,7 @@ def test_DnmrTwoSinglets_properties():
 def test_DnmrTwoSinglets_limit_error(limits):
     with pytest.raises((AttributeError, TypeError, ValueError)):
         sim = DnmrTwoSinglets(limits=limits)
-        assert sim
+        assert sim  # TODO: coverage shows this never executes; review?
 
 
 def test_DnmrTwoSinglets_slow_exchange():
@@ -176,7 +176,7 @@ def test_DnmrAB_properties():
 def test_DnmrAB_limit_error(limits):
     with pytest.raises((AttributeError, TypeError, ValueError)):
         sim = DnmrAB(limits=limits)
-        assert sim
+        assert sim  # TODO: coverage shows this never executes; review?
 
 
 def test_DnmrAB_WINDNMR_defaults():
