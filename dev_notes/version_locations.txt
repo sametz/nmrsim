@@ -5,7 +5,7 @@ surrounding context (v vs version, alpha/beta, etc).
 a.b.c format:
     top level:
         CHANGELOG.rst a.b.c
-        setup.py version="a.b.c"
+        setup.cfg version="a.b.c"
     binder:
         environment.yml (update after the new version is on PyPI)
     docs:
