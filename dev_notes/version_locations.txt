@@ -23,3 +23,5 @@ a.b.c format:
 Location of year:
     top level:
         LICENSE
+    docs:
+        conf.py

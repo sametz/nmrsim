@@ -1,3 +1,5 @@
+
+
 .. image:: https://mybinder.org/badge_logo.svg
  :target: https://mybinder.org/v2/gh/sametz/nmrsim/master?filepath=docs%2Fsource%2Fjupyter
 
@@ -8,6 +10,9 @@ to see how **nmrsim** can be used in Jupyter notebooks.
 
 nmrsim (version 0.5.2 beta)
 ============================
+
+.. image:: https://img.shields.io/pypi/v/nmrsim
+ :target: https://pypi.org/project/nmrsim/
 
 **nmrsim** is a Python library for the simulation of solution-state nuclear magnetic resonance (NMR) spectra.
 

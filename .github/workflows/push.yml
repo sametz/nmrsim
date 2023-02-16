@@ -1,0 +1,8 @@
+name: Check Code Quality On Push
+
+on:
+  push
+
+jobs:
+  call_codequality:
+    uses: ./.github/workflows/codequality.yml
