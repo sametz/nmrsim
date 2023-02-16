@@ -5,17 +5,14 @@ surrounding context (v vs version, alpha/beta, etc).
 a.b.c format:
     top level:
         CHANGELOG.rst a.b.c
-        README.rst version 0.2.0 alpha
-        setup.py version="0.2.0"
+        setup.py version="a.b.c"
     binder:
         environment.yml (update after the new version is on PyPI)
     docs:
         source
-            conf.py release='0.2.0-alpha'; version = '0.2'
-            introduction.rst v0.2.0 (alpha)
-
+            conf.py Now dynamic! can ignore
     nmrsim:
-        __init__ __version__ = '0.2.0'
+        __init__ __version__ = '0.2.0' but can make dynamic in Python 3.8
 
     GitHub:
         "About" header of project
