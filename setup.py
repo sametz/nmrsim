@@ -33,7 +33,7 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=['matplotlib',
                       'numpy',
-                      'sparse<=0.10.0',
+                      'sparse<0.14.0',
                       "importlib_resources ; python_version<'3.7'"
                       ],
     extras_require={
