@@ -8,8 +8,8 @@ to see how **nmrsim** can be used in Jupyter notebooks.
 
 `Documentation on Read the Docs <https://nmrsim.readthedocs.io/>`_
 
-nmrsim (version 0.5.2 beta)
-============================
+nmrsim
+======
 
 .. image:: https://img.shields.io/pypi/v/nmrsim
  :target: https://pypi.org/project/nmrsim/

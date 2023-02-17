@@ -21,4 +21,4 @@ twine check dist/*
 twine upload --repository testpypi dist/*
 
 Note: tox project uses a 'tasks' directory for useful scripts, e.g. release.py.
-May be a good model.
+May be a good model

@@ -11,7 +11,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-from importlib import metadata
 import os
 import sys
 
@@ -25,12 +24,13 @@ project = "nmrsim"
 copyright = "2023, Geoffrey M. Sametz"
 author = "Geoffrey M. Sametz"
 
-PACKAGE_VERSION = metadata.version("nmrsim")
-version = release = PACKAGE_VERSION
+# PACKAGE_VERSION = metadata.version("nmrsim")
+# version = release = PACKAGE_VERSION
+
 # The short X.Y version
-# version = '0.5'
+version = "0.6"
 # The full version, including alpha/beta/rc tags
-# release = '0.5.2-beta'
+release = "0.6.0"
 
 
 # -- General configuration ---------------------------------------------------
