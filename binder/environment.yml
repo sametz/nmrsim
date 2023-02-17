@@ -9,6 +9,6 @@ dependencies:
   - ipywidgets
   - jupyter
   - python=3.10
-  - sparse=0.10.0
+  - sparse
   - pip:
-      - nmrsim==0.5.2
+      - nmrsim
