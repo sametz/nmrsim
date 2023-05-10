@@ -1,9 +1,9 @@
 name: Publish to PyPI
 
 on:
-  create:
+  push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   call_codequality:
