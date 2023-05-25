@@ -1,0 +1,13 @@
+Notes on potential speed optimizations.
+
+Potentially useful lead: https://forum.image.sc/t/array-operations-on-apple-silicon-gpu-alternatives-to-cupy-jax/54689
+
+Considerations:
+- By far the slow step for large spin systems is the eigensolution of the dense Hamiltonian.
+  Sparse eigensolutions a) don't give all eigenvectors, and b) aren't performant.
+
+- CuPy at this time requires CUDA, so no gains for macOS. However, it looks like PyTorch and Tensorflow can use M1.
+
+- Numpy may also have some acceleration on new macs, as well as Tensorflow and PyTorch:
+  https://medium.com/@i.johnmedina/how-to-optimize-data-science-packages-in-python-for-apple-silicon-m1-m2-d659d53ecea8
+
