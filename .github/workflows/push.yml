@@ -1,7 +1,14 @@
 name: Check Code Quality On Push
 
 on:
-  push
+  push:
+    branches:
+      - master
+      - develop
+      - release-*
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   call_codequality:
