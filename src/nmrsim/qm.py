@@ -281,7 +281,12 @@ def _transition_matrix_dense(nspins):
     T = np.zeros((n, n))
     for i in range(n - 1):
         for j in range(i + 1, n):
-            if bin(i ^ j).count("1") == 1:
+            m = i ^ j
+            # Check if m is a power of two:
+            # If m is a power of two, it will look like 100[...]00 in binary
+            # m-1 will look like 011[...]11 in binary.
+            # Using a binary and, we should then get 0.
+            if m > 0 and m & (m-1) == 0:
                 T[i, j] = 1
     T += T.T
     return T
