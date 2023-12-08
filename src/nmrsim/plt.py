@@ -117,7 +117,7 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
-    ax.stem(x, y, markerfmt=" ", basefmt="C0-", use_line_collection=True)  # suppress warning until mpl 3.3
+    ax.stem(x, y, markerfmt=" ", basefmt="C0-")
     if not hidden:
         plt.show()
     return x, y
