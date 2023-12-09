@@ -40,16 +40,10 @@ required. The qm module for now provides two sets of functions for
 calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
-import sys
-
-import scipy.sparse
-
-if sys.version_info >= (3, 7):
-    from importlib import resources
-else:
-    import importlib_resources as resources
+from importlib import resources
 
 import numpy as np  # noqa: E402
+import scipy.sparse
 import sparse  # noqa: E402
 
 import nmrsim.bin  # noqa: E402
