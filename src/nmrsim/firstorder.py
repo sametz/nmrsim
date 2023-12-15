@@ -8,6 +8,7 @@ The nmrsim.firstorder module provides the following functions:
     same v/J parameters that are used for second-order spin systems.
     See nmrsim.qm for details on these parameters.
 """
+from scipy.special import binom
 
 from nmrsim.math import reduce_peaks
 
@@ -46,10 +47,10 @@ def multiplet(signal, couplings):
     signal : (float, float)
         a (frequency (Hz), intensity) tuple;
     couplings : [(float, int)...]
-        A list of (*J*, # of nuclei) tuples. The order of the tuples in
+        a list of (*J*, # of nuclei) tuples. The order of the tuples in
         couplings does not matter.
         e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:
-        ``couplings = [(8, 2), (5, 3)]``
+        ``couplings = [(8, 1), (5, 2)]``
 
     Returns
     -------
@@ -61,6 +62,78 @@ def multiplet(signal, couplings):
     for coupling in couplings:
         for _ in range(coupling[1]):
             res = _doublet(res, coupling[0])
+    return sorted(reduce_peaks(res))
+
+
+def _multiplet(signal, coupling):
+    """
+    Splits a single signal into a first-order multiplet using binomial coefficients.
+
+    Parameters
+    ---------
+    signal : (float, float)
+        a (frequency (Hz), intensity) tuple;
+    couplings : (float, int)
+        a (*J*, # of nuclei) tuple.
+        e.g. to split a signal into a *t* with *J* = 8 Hz, use:
+        ``couplings = (8, 2)``
+
+    Returns
+    -------
+    [(float, float)...]
+        a sorted peaklist for the multiplet that results from splitting the
+        signal by each J.
+    """
+
+    shift, intensity = signal
+    J, nsplit = coupling
+
+    # Calculate the chemical shift of the first peak of the multiplet
+    # s -> no offset
+    # d -> offset by J/2
+    # t -> offset by J
+    # ...
+    first_peak = shift - J * nsplit / 2
+
+    new_signal = []
+
+    # Precalculate binomial coefficients
+    coeffs = [binom(nsplit, i) for i in range(nsplit + 1)]
+    normalization_constant = intensity / sum(coeffs)
+    for i in range(nsplit + 1):
+        new_signal.append((first_peak + i * J, coeffs[i] * normalization_constant))
+
+    return new_signal
+
+
+def binomial_multiplet(signal, couplings):
+    """
+    Splits a set of signals into first-order multiplets using Pascal's triangle/binomial coefficients.
+    Equivalent to ```nmrsim.firstorder.multiplet```
+
+    Parameters
+    ---------
+    signal : (float, float)
+        a (frequency (Hz), intensity) tuple;
+    couplings : [(float, int)...]
+        a list of (*J*, # of nuclei) tuples. The order of the tuples in
+        couplings does not matter.
+        e.g. to split a signal into a *dt, J* = 8, 5 Hz, use:
+        ``couplings = [(8, 1), (5, 2)]``
+
+    Returns
+    -------
+    [(float, float)...]
+        a sorted peaklist for the multiplet that results from splitting the
+        signal by each J.
+    """
+    res = [signal]
+    for coupling in couplings:
+        new_res = []
+        for sig in res:
+            new_res += _multiplet(sig, coupling)
+        res = new_res
+
     return sorted(reduce_peaks(res))
 
 
