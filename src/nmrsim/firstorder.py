@@ -8,7 +8,7 @@ The nmrsim.firstorder module provides the following functions:
     same v/J parameters that are used for second-order spin systems.
     See nmrsim.qm for details on these parameters.
 """
-from scipy.special import binom
+from math import comb
 
 from nmrsim.math import reduce_peaks
 
@@ -98,7 +98,7 @@ def _multiplet(signal, coupling):
     new_signal = []
 
     # Precalculate binomial coefficients
-    coeffs = [binom(nsplit, i) for i in range(nsplit + 1)]
+    coeffs = [comb(nsplit, i) for i in range(nsplit + 1)]
     normalization_constant = intensity / sum(coeffs)
     for i in range(nsplit + 1):
         new_signal.append((first_peak + i * J, coeffs[i] * normalization_constant))
