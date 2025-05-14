@@ -4,7 +4,7 @@ import pytest
 from nmrsim import Multiplet, SpinSystem, Spectrum
 from nmrsim._classes import extract_components
 from nmrsim.firstorder import first_order_spin_system
-from nmrsim.math import add_lorentzians
+from nmrsim.math import add_lorentzians_limitable
 from tests.accepted_data import SPECTRUM_RIOUX
 from tests.qm_arguments import rioux
 
@@ -239,8 +239,8 @@ class TestSpectrum:
         m1 = Multiplet(100, 1, [(10, 2)])
         m2 = Multiplet(80, 1, [(10, 2)])
         s = Spectrum([m1, m2])
-        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
-                                    (70, 0.25)])
+        expected_peaklist = sorted([(110, 0.25, 0.5), (100, 0.5, 0.5), (90, 0.5, 0.5), (80, 0.5, 0.5),
+                                    (70, 0.25, 0.5)])
         result = s.peaklist()
         assert np.array_equal(expected_peaklist, result)
 
@@ -251,15 +251,15 @@ class TestSpectrum:
         s2 = m1 + m2
         assert s == s2
         s3 = m1 + m1 + m2 + m2  # test for more than two objects being added
-        expected_peaklist = sorted([(110, 0.5), (100, 1), (90, 1), (80, 1),
-                                    (70, 0.5)])
+        expected_peaklist = sorted([(110, 0.5, 0.5), (100, 1, 0.5), (90, 1, 0.5), (80, 1, 0.5),
+                                    (70, 0.5, 0.5)])
         assert np.allclose(s3.peaklist(), expected_peaklist)
         with pytest.raises(TypeError):
             _ = s + 1
 
     def test_add_appends_to_components(self):
-        m1 = Multiplet(100, 1, [(10, 2)])
-        m2 = Multiplet(80, 1, [(10, 2)])
+        m1 = Multiplet(100, 1, [(10, 2)], 0.5)
+        m2 = Multiplet(80, 1, [(10, 2)], 0.5)
         s = Spectrum([m1])
         s2 = s + m2
         assert s2._components == [m1, m2]
@@ -270,8 +270,8 @@ class TestSpectrum:
         # also test vmin/vmax work
         spectrum = Spectrum([m1, m2], vmin=0.0, vmax=200.0)
         x = np.linspace(0.0, 200.0, 1000)
-        y1 = add_lorentzians(x, m1.peaklist(), m1.w)
-        y2 = add_lorentzians(x, m2.peaklist(), m2.w)
+        y1 = add_lorentzians_limitable(x, m1.peaklist())
+        y2 = add_lorentzians_limitable(x, m2.peaklist())
         y_sum = [sum(i) for i in zip(y1, y2)]
         spec_x, spec_y = spectrum.lineshape(points=1000)
         assert np.allclose(spec_x, x)
@@ -294,8 +294,8 @@ class TestSpectrum:
         spectrum2 = m3 + subspectrum
         assert spectrum._components == [m1, m2, m3]
         assert spectrum2._components == [m3, m1, m2]
-        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
-                                    (70, 0.25), (50, 0.25), (40, 0.5), (30, 0.25)])
+        expected_peaklist = sorted([(110, 0.25, 0.5), (100, 0.5, 0.5), (90, 0.5, 0.5), (80, 0.5, 0.5),
+                                    (70, 0.25, 0.5), (50, 0.25, 0.5), (40, 0.5, 0.5), (30, 0.25, 0.5)])
         assert np.allclose(expected_peaklist, spectrum.peaklist())
         assert np.allclose(expected_peaklist, spectrum2.peaklist())
 
@@ -305,8 +305,8 @@ class TestSpectrum:
         m3 = Multiplet(40, 1, [(10, 2)])
         spectrum = Spectrum([m1, m2])
         spectrum += m3
-        expected_peaklist = sorted([(110, 0.25), (100, 0.5), (90, 0.5), (80, 0.5),
-                                    (70, 0.25), (50, 0.25), (40, 0.5), (30, 0.25)])
+        expected_peaklist = sorted([(110, 0.25, 0.5), (100, 0.5, 0.5), (90, 0.5, 0.5), (80, 0.5, 0.5),
+                                    (70, 0.25, 0.5), (50, 0.25, 0.5), (40, 0.5, 0.5), (30, 0.25, 0.5)])
         assert np.allclose(expected_peaklist, spectrum.peaklist())
         spectrum2 = Spectrum([m1])
         spectrum += spectrum2

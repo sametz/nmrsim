@@ -7,7 +7,7 @@ import numbers
 import numpy as np
 
 from nmrsim.firstorder import first_order_spin_system, multiplet
-from nmrsim.math import reduce_peaks, add_lorentzians
+from nmrsim.math import reduce_peaks, add_lorentzians_limitable
 from nmrsim.qm import qm_spinsystem
 from nmrsim._utils import low_high
 
@@ -73,7 +73,7 @@ class Multiplet:
         self.I = I
         self.J = J
         self.w = w
-        self._peaklist = multiplet((v, I), J)
+        self._peaklist = multiplet((v, I, w), J)
 
     def __eq__(self, other):
         if hasattr(other, "peaklist") and callable(other.peaklist):
@@ -87,7 +87,7 @@ class Multiplet:
 
     def __mul__(self, scalar):
         if isinstance(scalar, numbers.Real):
-            return Multiplet(self.v, self.I * scalar, self.J)
+            return Multiplet(self.v, self.I * scalar, self.J, self.w)
         else:
             return NotImplemented
 
@@ -105,7 +105,7 @@ class Multiplet:
         return self.__imul__(1 / scalar)
 
     def _refresh(self):
-        self._peaklist = multiplet((self.v, self.I), self.J)
+        self._peaklist = multiplet((self.v, self.I, self.w), self.J)
 
     def peaklist(self):
         """
@@ -245,9 +245,9 @@ class SpinSystem:
             Array of (frequency, intensity) signals.
         """
         if self._second_order:
-            return qm_spinsystem(self._v, self._J)
+            return qm_spinsystem(self._v, self._J, width=self.w)
         else:
-            return first_order_spin_system(self._v, self._J)
+            return first_order_spin_system(self._v, self._J, self.w)
 
     def __eq__(self, other):
         if hasattr(other, "peaklist") and callable(other.peaklist):
@@ -368,7 +368,7 @@ class Spectrum:
         """
         vmin, vmax = low_high((self.vmin, self.vmax))
         x = np.linspace(vmin, vmax, points)
-        y = [add_lorentzians(x, c.peaklist(), c.w) for c in self._components]
+        y = [add_lorentzians_limitable(x, c.peaklist()) for c in self._components]
         y_sum = np.sum(y, 0)
         return x, y_sum
 

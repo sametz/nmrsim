@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 
 from nmrsim.plt import mplplot, mplplot_stick, mplplot_lineshape
-from nmrsim.math import add_lorentzians
+from nmrsim.math import add_lorentzians_limitable
 from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.dnmr_standards import TWOSPIN_SLOW
 
@@ -18,8 +18,8 @@ def test_add_signals():
     # test was written before normalization of height vs width was built into
     #  lorentz(). Fudge-factor added to scale old accepted data.
     x = np.linspace(390, 410, 200)
-    doublet = [(399, 1), (401, 1)]
-    y = add_lorentzians(x, doublet, 1)
+    doublet = [(399, 1, 1), (401, 1, 1)]
+    y = add_lorentzians_limitable(x, doublet, None)
     X = np.array([x for x, _ in ADD_SIGNALS_DATASET])
     Y = np.array([y * 0.5 for _, y in ADD_SIGNALS_DATASET])
 
@@ -28,24 +28,28 @@ def test_add_signals():
 
 
 def test_mplplot_defaults():
-    doublet = [(399, 1), (401, 1)]
-    x, y = mplplot(doublet, hidden=True)
+    doublet = [(399, 1, 1), (401, 1, 1)]
+    x, y = mplplot(doublet, hidden=False)
     assert len(x) == 800
-    assert x[0] == 399 - 50
-    assert x[-1] == 401 + 50
+    assert x[0] == 401 + 50
+    assert x[-1] == 399 - 50
 
 
 @pytest.mark.parametrize('limits', ['foo', (1,), (1, 'foo'), (1, 2, 3)])
 def test_mplplot_limit_error(limits):
-    doublet = [(399, 1), (401, 1)]
+    doublet = [(399, 1, 1), (401, 1, 1)]
     with pytest.raises((AttributeError, TypeError, ValueError)):
         mplplot(doublet, limits=limits, hidden=True)  # noqa
 
 
 def test_mplplot():
-    doublet = [(399, 1), (401, 1)]
+    doublet = [(399, 1, 1), (401, 1, 1)]
     limits = (410, 390)  # deliberately opposite order
     x, y = mplplot(doublet, points=200, limits=limits, hidden=True)
+    # Added an inversion to fit the ADD_SIGNALS_DATASET because create_lineshape
+    # now inverts the line by default.
+    x = x[::-1]
+    y = y[::-1]
     # test was written before normalization of height vs width was built into
     #  lorentz(). Fudge-factor added to scale old accepted data.
     y = y * 2
