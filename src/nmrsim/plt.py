@@ -14,7 +14,7 @@ The plt module provides the following functions:
 """
 import numpy as np
 
-from nmrsim.math import add_lorentzians
+from nmrsim.math import create_lineshape
 from nmrsim._utils import low_high
 
 # Pyplot assumes a TkAgg backend as a default. This can cause problems in
@@ -37,16 +37,14 @@ import matplotlib.pyplot as plt
 # TODO: possibly refactor plot routines to avoid repetitive code
 
 
-def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None, hidden=False):
+def mplplot(peaklist, y_min=-0.01, y_max=1, points=800, limits=None, hidden=False):
     """
     A matplotlib plot of the simulated lineshape for a peaklist.
 
     Parameters
     ----------
-    peaklist : [(float, float)...]
-        A list of (frequency, intensity) tuples.
-    w : float
-        Peak width at half height
+    peaklist : [(float, float, float)...]
+        A list of (frequency, intensity, width) tuples.
     y_min : float or int
         Minimum intensity for the plot.
     y_max : float or int
@@ -63,18 +61,14 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None, hidden
     x, y : numpy.array
         Arrays for frequency (x) and intensity (y) for the simulated lineshape.
     """
-    peaklist.sort()
-    if limits:
-        l_limit, r_limit = low_high(limits)
-    else:
-        l_limit = peaklist[0][0] - 50
-        r_limit = peaklist[-1][0] + 50
-    x = np.linspace(l_limit, r_limit, points)
-    plt.ylim(y_min, y_max)
-    plt.gca().invert_xaxis()  # reverses the x axis
-    y = add_lorentzians(x, peaklist, w)
+    # Enforce peaklist has 3 values.
+    # Allows uses with the previous peaklist parameter of only height/width.
+    peaklist = [(peak[0], peak[1], peak[2]) if len(peak) == 3 else (peak[0], peak[1], 0.5) for peak in peaklist]
+    x, y = create_lineshape(peaklist, points=points, limits=limits, function='lorentzian')
     # noinspection PyTypeChecker
     lines = plt.plot(x, y)
+    plt.ylim(y_min, y_max)
+    plt.gca().invert_xaxis()  # reverses the x axis
     print(lines)
     if not hidden:
         plt.show()
@@ -102,6 +96,9 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     numpy.array, numpy.array
         The arrays of x and y coordinates used for the plot.
     """
+    # Enforce peaklist has 2 values.
+    # Allows users to provide the same peaklist parameter as mplplot without breaking.
+    peaklist = [(peak[0], peak[1]) if len(peak) == 3 else peak for peak in peaklist]
     fig, ax = plt.subplots()
     if limits:
         l_limit, r_limit = low_high(limits)
@@ -117,7 +114,7 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     y = np.append(y, [0.001, 0.001])
     plt.xlim(r_limit, l_limit)
     plt.ylim(y_min, y_max)
-    ax.stem(x, y, markerfmt=" ", basefmt="C0-", use_line_collection=True)  # suppress warning until mpl 3.3
+    ax.stem(x, y, markerfmt=" ", basefmt="C0-")  # suppress warning until mpl 3.3
     if not hidden:
         plt.show()
     return x, y

@@ -30,9 +30,9 @@ def _doublet(plist, J):
         a list of (frequency, intensity) tuples.
     """
     res = []
-    for v, i in plist:
-        res.append((v - J / 2, i / 2))
-        res.append((v + J / 2, i / 2))
+    for v, i, w in plist:
+        res.append((v - J / 2, i / 2, w))
+        res.append((v + J / 2, i / 2, w))
     return res
 
 
@@ -43,8 +43,8 @@ def multiplet(signal, couplings):
 
     Parameters
     ---------
-    signal : (float, float)
-        a (frequency (Hz), intensity) tuple;
+    signal : (float, float, float)
+        a (frequency (Hz), intensity, width (Hz)) tuple;
     couplings : [(float, int)...]
         A list of (*J*, # of nuclei) tuples. The order of the tuples in
         couplings does not matter.
@@ -64,7 +64,7 @@ def multiplet(signal, couplings):
     return sorted(reduce_peaks(res))
 
 
-def first_order_spin_system(v, J):
+def first_order_spin_system(v, J, w):
     """
     Create a first-order peaklist of several multiplets from the same v/J
     arguments used for qm calculations.
@@ -80,16 +80,18 @@ def first_order_spin_system(v, J):
         an array of frequencies
     J : 2D array-like (square)
         a matrix of J coupling constants
+    w : float or int
+        peak width at half height (Hz)
 
     Returns
     -------
-    [(float, float)...]
+    [(float, float, float)...]
         a combined peaklist of signals for all the multiplets in the spin
         system.
     """
     result = []
     for i, v_ in enumerate(v):
         couplings = ((j, 1) for j in J[i] if j != 0)
-        signal = multiplet((v_, 1), couplings)
+        signal = multiplet((v_, 1, w), couplings)
         result += signal
     return reduce_peaks(sorted(result))

@@ -55,8 +55,8 @@ def AB(Jab, Vab, Vcentr, normalize=True):
 
     Returns
     -------
-    [(float, float)...]
-        A list of four (frequency, intensity) tuples.
+    [(float, float, float)...]
+        A list of four (frequency, intensity, width) tuples.
     """
     J = Jab
     dv = Vab
@@ -73,9 +73,10 @@ def AB(Jab, Vab, Vcentr, normalize=True):
     I4 = I1
     vList = [v1, v2, v3, v4]
     IList = [I1, I2, I3, I4]
+    wList = [0.5 for _ in range(len(IList))]
     if normalize:
         _normalize(IList, 2)
-    return list(zip(vList, IList))
+    return list(zip(vList, IList, wList))
 
 
 def AB2(Jab, Vab, Vcentr, normalize=True):
@@ -96,8 +97,8 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
 
     Returns
     -------
-    [(float, float)...]
-        a list of (frequency, intensity) tuples.
+    [(float, float, float)...]
+        a list of (frequency, intensity, width) tuples.
     """
     # There is a disconnect between the variable names in the WINDNMR GUI and
     # the variable names in this function.
@@ -148,10 +149,11 @@ def AB2(Jab, Vab, Vcentr, normalize=True):
     I9 = (sqrt(2) * sin_dtheta + sintheta_plus * sintheta_minus) ** 2
     vList = [V1, V2, V3, V4, V5, V6, V7, V8, V9]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9]
+    wList = [0.5 for _ in range(len(IList))]
 
     if normalize:
         _normalize(IList, 3)
-    return list(zip(vList, IList))
+    return list(zip(vList, IList, wList))
 
 
 def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
@@ -181,8 +183,8 @@ def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
 
     Returns
     -------
-    [(float, float)...]
-        a list of (frequency, intensity) tuples.
+    [(float, float, float)...]
+        a list of (frequency, intensity, width) tuples.
     """
     # Contradictions in naming between WINDNMR's interface, internal code, and
     # Pople/Schneider/Bernstein "fixed" with these reassignments:
@@ -239,9 +241,10 @@ def ABX(Jab, Jax, Jbx, Vab, Vcentr, vx, normalize=True):
     I14 = I13
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14]
+    wList = [0.5 for _ in range(len(IList))]
     if normalize:
         _normalize(IList, 3)
-    return list(zip(VList, IList))
+    return list(zip(VList, IList, wList))
 
 
 def ABX3(Jab, Jax, Jbx, Vab, Vcentr):
@@ -264,14 +267,14 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr):
 
     Returns
     -------
-    [(float, float)...]
-        a list of (frequency, intensity) tuples.
+    [(float, float, float)...]
+        a list of (frequency, intensity, width) tuples.
     """
     # First: simulate two quartets for va and vb ("Jab turned off")
     va = Vcentr - Vab / 2
     vb = Vcentr + Vab / 2
-    a_quartet = multiplet((va, 1), [(Jax, 3)])
-    b_quartet = multiplet((vb, 1), [(Jbx, 3)])
+    a_quartet = multiplet((va, 1, 0.5), [(Jax, 3)])
+    b_quartet = multiplet((vb, 1, 0.5), [(Jbx, 3)])
     res = []
     # Then: for each pair of a and b singlets in the quartets, calculate an
     # AB quartet ("Turn Jab on").
@@ -280,7 +283,7 @@ def ABX3(Jab, Jax, Jbx, Vab, Vcentr):
         abcenter = (b_quartet[i][0] + a_quartet[i][0]) / 2
         sub_abq = AB(Jab, dv, abcenter, normalize=True)
         scale_factor = a_quartet[i][1]
-        scaled_sub_abq = [(v, i * scale_factor) for v, i in sub_abq]
+        scaled_sub_abq = [(v, i * scale_factor, w) for v, i, w in sub_abq]
         res.extend(scaled_sub_abq)
     return res
 
@@ -305,8 +308,8 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
 
     Returns
     -------
-    [(float, float)...]
-        a list of (frequency, intensity) tuples.
+    [(float, float, float)...]
+        a list of (frequency, intensity, width) tuples.
     """
     # Define the constants required to calculate frequencies and intensities
 
@@ -347,9 +350,10 @@ def AAXX(Jaa, Jxx, Jax, Jax_prime, Vcentr, normalize=True):
 
     VList = [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10]
     IList = [I1, I2, I3, I4, I5, I6, I7, I8, I9, I10]
+    wList = [0.5 for _ in range(len(IList))]
     if normalize:
         _normalize(IList, 2)
-    return list(zip(VList, IList))
+    return list(zip(VList, IList, wList))
 
 
 def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
@@ -374,7 +378,7 @@ def AABB(Vab, Jaa, Jbb, Jab, Jab_prime, Vcentr, normalize=True, **kwargs):
 
     Returns
     -------
-    [(float, float)...]
+    [(float, float, float)...]
         a list of (frequency, intensity) tuples.
     """
     from nmrsim.qm import qm_spinsystem

@@ -222,10 +222,6 @@ def hamiltonian_sparse(v, J):
     """
     nspins = len(v)
     Lz, Lproduct = _so_sparse(nspins)  # noqa
-    # TODO: remove the following lines once tests pass
-    print("From hamiltonian_sparse:")
-    print("Lz is type: ", type(Lz))
-    print("Lproduct is type: ", type(Lproduct))
     assert isinstance(Lz, (sparse.COO, np.ndarray, scipy.sparse.spmatrix))
     # On large spin systems, converting v and J to sparse improved speed of
     # sparse.tensordot calls with them.
@@ -393,7 +389,7 @@ def _intensity_and_energy(H, nspins):
     return I, E
 
 
-def _compile_peaklist(I, E, cutoff=0.001):
+def _compile_peaklist(I, E, cutoff=0.001, width=0.5):
     """
     Generate a peaklist from intensity and energy matrices.
 
@@ -414,8 +410,9 @@ def _compile_peaklist(I, E, cutoff=0.001):
     I_upper = np.triu(I)
     E_matrix = np.abs(E[:, np.newaxis] - E)
     E_upper = np.triu(E_matrix)
-    combo = np.stack([E_upper, I_upper])
-    iv = combo.reshape(2, I.shape[0] ** 2).T
+    W = np.full(I_upper.shape, width)
+    combo = np.stack([E_upper, I_upper, W])
+    iv = combo.reshape(3, I.shape[0] ** 2).T
     return iv[iv[:, 1] >= cutoff]
 
 
