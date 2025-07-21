@@ -134,6 +134,10 @@ class SpinSystem:
         corresponds to the column and row order in the matrix, e.g.
         couplings[0][1] and [1]0] are the J coupling between the nuclei of
         freqs[0] and freqs[1].
+    s : array-like of float, optional (default = None)
+        A list or array containing the spin quantum number (I) for each nucleus.
+        If None, all nuclei are assumed to be spin-1/2 (I=0.5).
+        E.g., np.array([0.5, 0.5, 1.0]) for two spin-1/2 and one spin-1 nucleus.
     w : float or int (optional, default = 0.5)
         the peak width (in Hz) at half-height.
         Currently only used when SpinSystem is a component of a nmrsim.Spectrum
@@ -146,6 +150,8 @@ class SpinSystem:
     ----------
     v
     J
+    s : np.ndarray
+        Array of spin quantum numbers for each nucleus.
     w : float or int (optional, default = 0.5)
         the peak width (in Hz) at half-height.
         Currently only used when SpinSystem is a component of a nmrsim.Spectrum
@@ -160,14 +166,50 @@ class SpinSystem:
     Addition returns a Spectrum object with the SpinSystem as a component.
 
     """
+    # Add 's' to the __init__ signature with a default of None
+    def __init__(self, v, J, s=None, w=0.5, second_order=True):
 
-    def __init__(self, v, J, w=0.5, second_order=True):
         self._nuclei_number = len(v)
         self.v = v
         self.J = J
+        # Handle 's' (spin quantum numbers)
+        if s is None:
+            # Default to all spin-1/2 if 's' is not provided
+            self._s = np.full(self._nuclei_number, 0.5)
+        else:
+            # Convert to numpy array and validate
+            s_array = np.array(s)
+            if len(s_array) != self._nuclei_number:
+                raise ValueError("Length of 's' (spin quantum numbers) must match length of 'v'.")
+            if not np.all(np.isin(s_array, [0.5, 1.0])):  # Validate spin values
+                raise ValueError("Only spin quantum numbers 0.5 and 1.0 are currently supported.")
+            self._s = s_array
         self.w = w
         self._second_order = second_order
-        self._peaklist = self.peaklist()
+        self._peaklist = None
+
+    # Add a property for 's' (spin quantum numbers)
+    @property
+    def s(self):
+        """An array of the spin quantum number for each nucleus.
+
+        Returns
+        -------
+        np.ndarray
+        """
+        return self._s
+
+    # Add a setter for 's' for potential future updates, with validation
+    @s.setter
+    def s(self, s_list):
+        s_array = np.array(s_list)
+        if len(s_array) != self._nuclei_number:
+            raise ValueError("Length of 's' (spin quantum numbers) must match the number of nuclei.")
+        if not np.all(np.isin(s_array, [0.5, 1.0])):
+            raise ValueError("Only spin quantum numbers 0.5 and 1.0 are currently supported.")
+        self._s = s_array
+        # If 's' changes, the peaklist might change, so invalidate it
+        self._peaklist = None  # or self.peaklist() if you want it recomputed immediately
 
     @property
     def v(self):
@@ -186,7 +228,7 @@ class SpinSystem:
             raise ValueError("v length must match J shape.")
         if not isinstance(vlist[0], numbers.Real):
             raise TypeError("v must be an array of numbers.")
-        self._v = vlist
+        self._v = np.array(vlist)  # Ensure it's stored as a numpy array
 
     @property
     def J(self):
@@ -213,7 +255,7 @@ class SpinSystem:
         for i in range(m):
             if J[i, i] != 0:
                 raise ValueError("Diagonal elements of J must be 0.")
-        self._J = J_array
+        self._J = J  # Store as numpy array already
 
     @property
     def second_order(self):
@@ -236,7 +278,7 @@ class SpinSystem:
         else:
             raise TypeError("second_order must be a boolean")
 
-    def peaklist(self):
+    def peaklist(self, **kwargs):
         """Return a list of (frequency, intensity) signals.
 
         Returns
@@ -244,16 +286,40 @@ class SpinSystem:
         [(float, float)...]
             Array of (frequency, intensity) signals.
         """
+        if self._peaklist is not None:  # Check if peaklist is already computed
+            if kwargs:
+                pass  # Proceed to computation
+            else:
+                return self._peaklist
+
         if self._second_order:
-            return qm_spinsystem(self._v, self._J)
+            # Pass the new 's' attribute to the qm_spinsystem function
+            # Make sure qm is imported at the top of the file: from . import qm
+            # Or if it's top-level: from nmrsim import qm
+            # Pass the new 's' attribute AND **kwargs to the qm_spinsystem function
+            computed_peaklist = qm_spinsystem(self._v, self._J, s=self._s, **kwargs)
         else:
-            return first_order_spin_system(self._v, self._J)
+            # first_order_spin_system might also need 's' in the future,
+            # but for now, it's assumed to be spin-1/2 only.
+            # If first_order_spin_system also takes normalize, you'd pass kwargs here too.
+            computed_peaklist = first_order_spin_system(self._v, self._J)
+
+        # Only cache if no kwargs are passed (i.e., default unnormalized peaklist)
+        # Or, implement a more sophisticated caching strategy for normalized/cutoff variations
+        if not kwargs:
+            self._peaklist = computed_peaklist  # Cache the computed peaklist
+
+        return computed_peaklist
 
     def __eq__(self, other):
         if hasattr(other, "peaklist") and callable(other.peaklist):
+            # Ensure both peaklists are computed before comparing
             return np.allclose(self.peaklist(), other.peaklist())
+        return NotImplemented # Important for proper __eq__ behavior
 
     def __add__(self, other):
+        # Assuming Spectrum is imported correctly
+        # e.g., from nmrsim.spec import Spectrum
         if hasattr(other, "peaklist") and callable(other.peaklist):
             return Spectrum([self, other])
         else:

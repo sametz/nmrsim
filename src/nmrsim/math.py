@@ -48,35 +48,68 @@ def add_peaks(plist):
 
 def reduce_peaks(plist_, tolerance=0):
     """
-    Takes a list of (x, y) tuples and adds together tuples whose values are
-    within a certain tolerance limit.
+    Takes a list of (frequency, intensity) peaks and combines those whose frequencies
+    are within a specified tolerance limit.
+
+    This function is used to simplify peak lists by merging very close or
+    numerically identical peaks that should appear as a single signal in a spectrum.
 
     Parameters
-    ---------
-    plist_ : [(float, float)...]
-        A list of (x, y) tuples
+    ----------
+    plist_ : list of (float, float) tuples or np.ndarray
+        The input peak list. Can be:
+        - A standard Python list of (frequency, intensity) tuples.
+        - A 2D NumPy array where each row is a [frequency, intensity] pair.
     tolerance : float
-        tuples that differ in x by <= tolerance are combined using `add_peaks`
+        The maximum absolute difference in frequency (x-value) for two peaks
+        to be considered "close enough" to be combined. Frequencies are in Hz.
 
     Returns
     -------
-    [(float, float)...]
-        a list of (x, y) tuples where all x values differ by > `tolerance`
+    list of (float, float) tuples
+        A new list of (frequency, intensity) tuples where closely spaced
+        peaks have been combined. Frequencies are sorted in ascending order.
     """
+
+    # Convert NumPy array input to a list of tuples to ensure consistent processing
+    # by the subsequent sorting and reduction logic, which expects a list of tuples.
+    if isinstance(plist_, np.ndarray):
+        # Handle empty NumPy array explicitly to prevent errors in list comprehension.
+        if plist_.size == 0:
+            return []
+        
+        # Convert each NumPy array row (e.g., [frequency, intensity]) into a tuple.
+        # This is crucial for `sorted()` to work correctly on the elements.
+        plist = [tuple(row) for row in plist_]
+    else:
+        # If the input is not a NumPy array, assume it's already a list of tuples
+        # or a compatible sequence, and proceed directly. This maintains
+        # backward compatibility with original usage.
+        plist = plist_
+
+    # Sorts the peak list by frequency (the first element of each tuple).
+    # This is essential for the reduction algorithm to correctly group
+    # adjacent peaks within the specified tolerance.
+    plist_sorted = sorted(plist)
+
     res = []
-    work = []  # an accumulator of peaks to be added
-    plist = sorted(plist_)
-    for peak in plist:
+    work = []  
+    
+    for peak in plist_sorted:
         if not work:
             work.append(peak)
             continue
+        
+        # Check if the current peak's frequency is within tolerance of the last
+        # peak added to the `work` group.
         if peak[0] - work[-1][0] <= tolerance:
             work.append(peak)
-            continue
         else:
             res.append(add_peaks(work))
             work = [peak]
-    if work:  # process any remaining work after for loop
+    # After the loop finishes, there might be peaks left in `work` that
+    # haven't been added to `res`. Combine and add them.            
+    if work:  
         res.append(add_peaks(work))
 
     return res
@@ -217,3 +250,61 @@ def get_maxima(lineshape):
             print((lineshape[0][index], val))
             res.append((lineshape[0][index], val))
     return res
+
+
+def ppm_to_hz_from_nuclei_info(ppm_positions, nuclei_types, gyromagnetic_ratios_MHz_per_T, spectrometer_1H_MHz):
+    """
+    Converts an array of ppm chemical shifts to absolute frequencies (Hz) based on
+    nuclear types and user-provided gyromagnetic ratios, given a reference 1H spectrometer frequency.
+
+    Parameters
+    ----------
+    ppm_positions : np.ndarray
+        Array of chemical shifts in ppm for each nucleus.
+    nuclei_types : list of str
+        List of nuclear symbols (e.g., '1H', '2H', '13C') corresponding to ppm_positions.
+        This list's order should match `gyromagnetic_ratios_MHz_per_T`.
+    gyromagnetic_ratios_MHz_per_T : list of float
+        List of gyromagnetic ratios in MHz/Tesla for each nucleus in the order
+        they appear in `nuclei_types`. This allows users to input exotic nuclei.
+    spectrometer_1H_MHz : float
+        The reference frequency of the spectrometer in MHz (e.g., 600.0 MHz for 1H).
+        This value, along with the hardcoded 1H gyromagnetic ratio, is used to calculate
+        the B0 magnetic field strength.
+
+    Returns
+    -------
+    np.ndarray
+        An array of absolute frequencies in Hz for each nucleus, suitable for `SpinSystem(v, ...)`.
+
+    Raises
+    ------
+    ValueError
+        If input array lengths do not match.
+    """
+
+    # Hardcoded 1H gyromagnetic ratio in MHz/Tesla
+    # This is a fundamental constant used to calculate B0 from the spectrometer's 1H frequency.
+    _GAMMA_1H_MHZ_PER_T = 42.577478461 
+
+    if not (len(ppm_positions) == len(nuclei_types) == len(gyromagnetic_ratios_MHz_per_T)):
+        raise ValueError("All input arrays (ppm_positions, nuclei_types, gyromagnetic_ratios_MHz_per_T) "
+                         "must have the same length.")
+
+    # Calculate the B0 field strength in Tesla using the hardcoded 1H gamma
+    # and the user-provided spectrometer's 1H frequency.
+    B0_Tesla = spectrometer_1H_MHz / _GAMMA_1H_MHZ_PER_T
+
+    v_calculated = []
+    for i, ppm in enumerate(ppm_positions):
+        gamma_nucleus_MHz_per_T = gyromagnetic_ratios_MHz_per_T[i]
+
+        # Calculate the Larmor frequency of *this specific nucleus* at the calculated B0 field, in Hz
+        nucleus_larmor_freq_Hz = gamma_nucleus_MHz_per_T * B0_Tesla * 1_000_000 # Convert MHz to Hz
+
+        # Calculate the actual frequency of the signal in Hz based on its ppm shift.
+        chemical_shift_in_Hz = ppm * (nucleus_larmor_freq_Hz / 1_000_000) # (Hz/ppm) * ppm
+
+        v_calculated.append(chemical_shift_in_Hz)
+
+    return np.array(v_calculated)

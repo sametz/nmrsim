@@ -22,3 +22,5 @@ docs/source/_build/
 .tox
 .DS_Store
 .coverage*
+# Ignore generated NMRsim binary files
+*.npz
