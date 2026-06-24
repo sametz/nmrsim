@@ -70,13 +70,13 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None, hidden
         l_limit = peaklist[0][0] - 50
         r_limit = peaklist[-1][0] + 50
     x = np.linspace(l_limit, r_limit, points)
-    plt.ylim(y_min, y_max)
-    plt.gca().invert_xaxis()  # reverses the x axis
     y = add_lorentzians(x, peaklist, w)
     # noinspection PyTypeChecker
-    lines = plt.plot(x, y)
     print(lines)
     if not hidden:
+        lines = plt.plot(x, y)
+        plt.ylim(y_min, y_max)
+        plt.gca().invert_xaxis()  # reverses the x axis
         plt.show()
     return x, y
 
