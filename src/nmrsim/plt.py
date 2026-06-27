@@ -73,8 +73,7 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None, hidden
     y = add_lorentzians(x, peaklist, w)
     # noinspection PyTypeChecker
     if not hidden:
-        lines = plt.plot(x, y)
-        print(lines)
+        plt.plot(x, y)
         plt.ylim(y_min, y_max)
         plt.gca().invert_xaxis()  # reverses the x axis
         plt.show()
@@ -102,7 +101,6 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     numpy.array, numpy.array
         The arrays of x and y coordinates used for the plot.
     """
-    fig, ax = plt.subplots()
     if limits:
         l_limit, r_limit = low_high(limits)
     else:
@@ -116,9 +114,9 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
     if not hidden:
+        fig, ax = plt.subplots()
         plt.xlim(r_limit, l_limit)
         plt.ylim(y_min, y_max)
-        # suppress warning until mpl 3.3
         ax.stem(x, y, markerfmt=" ", basefmt="C0-")
         plt.show()
     return x, y
@@ -160,9 +158,9 @@ def mplplot_lineshape(x, y, y_min=None, y_max=None, limits=None, hidden=False):
             y_min = min(y) - margin
         if y_max is None:
             y_max = max(y) + margin
-    plt.xlim(r_limit, l_limit)  # should invert x axis
-    plt.ylim(y_min, y_max)
-    plt.plot(x, y)
     if not hidden:
+        plt.xlim(r_limit, l_limit)  # should invert x axis
+        plt.ylim(y_min, y_max)
+        plt.plot(x, y)
         plt.show()
     return x, y
