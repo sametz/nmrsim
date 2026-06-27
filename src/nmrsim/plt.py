@@ -72,9 +72,9 @@ def mplplot(peaklist, w=1, y_min=-0.01, y_max=1, points=800, limits=None, hidden
     x = np.linspace(l_limit, r_limit, points)
     y = add_lorentzians(x, peaklist, w)
     # noinspection PyTypeChecker
-    print(lines)
     if not hidden:
         lines = plt.plot(x, y)
+        print(lines)
         plt.ylim(y_min, y_max)
         plt.gca().invert_xaxis()  # reverses the x axis
         plt.show()
@@ -115,10 +115,11 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     # baseline.
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
-    plt.xlim(r_limit, l_limit)
-    plt.ylim(y_min, y_max)
-    ax.stem(x, y, markerfmt=" ", basefmt="C0-", use_line_collection=True)  # suppress warning until mpl 3.3
     if not hidden:
+        plt.xlim(r_limit, l_limit)
+        plt.ylim(y_min, y_max)
+        # suppress warning until mpl 3.3
+        ax.stem(x, y, markerfmt=" ", basefmt="C0-")
         plt.show()
     return x, y
     # TODO: or return plt object? Decide behavior.
