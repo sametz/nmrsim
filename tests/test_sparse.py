@@ -10,7 +10,10 @@ import numpy as np
 import pytest
 import sparse
 from sparse import COO
-from sparse._utils import assert_eq  # noqa
+# Not clear from Sparse documentation when the location of assert_eq changed.
+# Original is commented out below
+#from sparse._utils import assert_eq  # noqa
+from sparse.numba_backend._utils import assert_eq
 
 from .qm_arguments import spin2
 
@@ -43,7 +46,7 @@ pytestmark = pytest.mark.skip(
     [("coo", "coo"), ("coo", "gcxs"), ("gcxs", "coo"), ("gcxs", "gcxs")],
 )
 def test_tensordot(a_shape, b_shape, axes, a_format, b_format):
-    from sparse._compressed import GCXS
+    from sparse.numba_backend._compressed import GCXS
     # else:
     #     assert 1 == 2
     sa = sparse.random(a_shape, density=0.5, format=a_format)
@@ -133,16 +136,18 @@ def test_numpy_tensordot():
                                [4928., 5306.]]
                           ))
 
-
-@pytest.mark.xfail(reason="sparse bug")
+# if this problem ever re-appears, un-comment next line
+# @pytest.mark.xfail(reason="sparse bug")
 def test_sparse_tensordot():
     """Tests to see if sparse_tensordot can pass the numpy tensordot test above.
-    Fails for all sparse versions. See:
+    Previously found fails for all sparse versions. See:
     https://github.com/pydata/sparse/issues/493
 
     nmrsim luckily always worked prior to sparse v0.11 because
     np arrays were never used as inputs for sparse.tensordot,
     so this bug with sparse was never encountered.
+
+    2026-07-23: this now appears to work with current sparse versions
     """
     # GIVEN accepted numpy doc example for tensordot
     a = np.arange(60.).reshape(3, 4, 5)  # noqa
@@ -150,7 +155,10 @@ def test_sparse_tensordot():
     # WHEN the sparse version of tensordot is performed
     c_sparse = sparse.tensordot(a, b, axes=([1, 0], [0, 1]))
     # THEN the expected results are seen
-    c = c_sparse.todense()
+    if isinstance(c_sparse, np.ndarray):
+        c = c_sparse
+    else:
+        c = c_sparse.todense()
     assert c.shape == (5, 2)
     assert np.array_equal(c,
                           np.array(
