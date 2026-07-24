@@ -26,6 +26,7 @@ References
    McGraw-Hill, 1959.
 
 """
+
 # TODO: refactor away from legacy argument/variable names to user-friendly,
 # pythonic ones.
 from math import sqrt
