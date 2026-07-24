@@ -1,4 +1,4 @@
-""" Functions for calculating first-order spectra.
+"""Functions for calculating first-order spectra.
 
 The nmrsim.firstorder module provides the following functions:
 

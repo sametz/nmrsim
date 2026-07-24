@@ -136,6 +136,7 @@ def test_numpy_tensordot():
                                [4928., 5306.]]
                           ))
 
+
 # if this problem ever re-appears, un-comment next line
 # @pytest.mark.xfail(reason="sparse bug")
 def test_sparse_tensordot():

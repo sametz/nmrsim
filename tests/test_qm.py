@@ -39,7 +39,7 @@ def test_tm_cache_creates_file(fs):
     assert expected_T.exists()
     fs.remove_object(str(expected_T))
     assert not expected_T.exists()
-    T = _tm_cache(3)
+    _ = _tm_cache(3)  # _ was formerly T
     # assert T # Sparse changed how __bool__ is implemented
     assert expected_T.exists()
 
