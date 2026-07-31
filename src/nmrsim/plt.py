@@ -102,6 +102,7 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     numpy.array, numpy.array
         The arrays of x and y coordinates used for the plot.
     """
+    fig, ax = plt.subplots()
     if limits:
         l_limit, r_limit = low_high(limits)
     else:
