@@ -12,6 +12,7 @@ The plt module provides the following functions:
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
   and returns the x, y plot data.
 """
+
 import numpy as np
 
 from nmrsim.math import add_lorentzians
@@ -113,6 +114,9 @@ def mplplot_stick(peaklist, y_min=-0.01, y_max=1, limits=None, hidden=False):
     # baseline.
     x = np.append(x, [l_limit, r_limit])
     y = np.append(y, [0.001, 0.001])
+    plt.xlim(r_limit, l_limit)
+    plt.ylim(y_min, y_max)
+    ax.stem(x, y, markerfmt=" ", basefmt="C0-")
     if not hidden:
         fig, ax = plt.subplots()
         plt.xlim(r_limit, l_limit)
