@@ -48,7 +48,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.mathjax",  # imgmath requires some helpers to be installed
     "sphinx.ext.viewcode",
-    "sphinxcontrib.napoleon",
+    "sphinx.ext.napoleon",
     "nbsphinx",
 ]
 
