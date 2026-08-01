@@ -217,10 +217,6 @@ def hamiltonian_sparse(v, J):
     """
     nspins = len(v)
     Lz, Lproduct = _so_sparse(nspins)  # noqa
-    # TODO: remove the following lines once tests pass
-    print("From hamiltonian_sparse:")
-    print("Lz is type: ", type(Lz))
-    print("Lproduct is type: ", type(Lproduct))
     assert isinstance(Lz, (sparse.COO, np.ndarray, scipy.sparse.spmatrix))
     # On large spin systems, converting v and J to sparse improved speed of
     # sparse.tensordot calls with them.
@@ -350,11 +346,6 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f"T{nspins}.npz"
-    # init_path_context = resources.path(nmrsim.bin, '__init__.py')
-    # with init_path_context as p:
-    #     init_path = p
-    # print('path to init: ', init_path)
-    # bin_path = init_path.parent
     bin_path = _bin_path()
     path = bin_path.joinpath(filename)
     try:
