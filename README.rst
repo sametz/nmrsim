@@ -16,8 +16,10 @@ nmrsim
 
 **nmrsim** is a Python library for the simulation of solution-state nuclear magnetic resonance (NMR) spectra.
 
-The project is inspired by the program `WINDNMR <https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm>`_ by Hans
-Reich. The goal for Version 1.0 of **nmrsim** is to provide Python tools for the same types of simulations that
+The project is inspired by the program
+`WINDNMR <https://www.chem.wisc.edu/areas/reich/plt/windnmr.htm>`_
+by Hans Reich.
+The goal for Version 1.0 of **nmrsim** is to provide Python tools for the same types of simulations that
 WINDNMR did--first- and second-order simulation of spin-1/2 spin systems, plus simulation of some dynamic NMR (DNMR)
 lineshapes. A longer-term goal is to expand the toolset (e.g. to allow higher-spin nuclei, or new DNMR models).
 
