@@ -40,6 +40,7 @@ required. The qm module for now provides two sets of functions for
 calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
+
 import sys
 
 import scipy.sparse
