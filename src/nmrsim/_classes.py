@@ -1,6 +1,7 @@
 """
 This module provides high-level API classes for abstract NMR concepts such as spin systems and spectra.
 """
+
 import itertools
 import numbers
 

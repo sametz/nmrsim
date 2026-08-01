@@ -1,6 +1,7 @@
 """A temporary home for some descriptor classes. These were originally used
 to validate class setters. May be deleted in future.
 """
+
 import abc
 import numbers
 import numpy as np
