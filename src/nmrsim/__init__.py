@@ -60,9 +60,10 @@ implementation).
 
 """
 
+from importlib.metadata import version
 from ._classes import Multiplet, SpinSystem, Spectrum  # noqa: F401
 
-__version__ = "0.6.0"
+__version__ = version("nmrsim")
 
 # When Python 3.7 sunsets, consider the following for dynamic versioning:
 # __version__ = __import__('importlib.metadata').metadata.version(__package__)
