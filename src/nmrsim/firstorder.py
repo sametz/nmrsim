@@ -8,6 +8,7 @@ The nmrsim.firstorder module provides the following functions:
     same v/J parameters that are used for second-order spin systems.
     See nmrsim.qm for details on these parameters.
 """
+
 from math import comb
 
 from nmrsim.math import reduce_peaks
@@ -109,7 +110,8 @@ def _multiplet(signal, coupling):
 def binomial_multiplet(signal, couplings):
     """
     Splits a set of signals into first-order multiplets using Pascal's triangle/binomial coefficients.
-    Equivalent to ```nmrsim.firstorder.multiplet```
+    Equivalent to ```nmrsim.firstorder.multiplet```,
+    but can be faster for large multiplets.
 
     Parameters
     ---------
