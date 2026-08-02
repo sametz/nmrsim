@@ -35,6 +35,15 @@ the author interprets the terms below as follows:
   API is stable.
   The package is available on PyPI (and perhaps conda).
 
+0.7.0 - 2026-08-01 (beta release)
+---------------------------------
+Changed
+^^^^^^^
+* Supported Python versions updated to 3.10-3.13.
+* increased speed of _transition_matrix_dense (#23 by @RaphaelRobidas)
+* several plotting updates and improvements (#32 by @weisscharlesj)
+* finally removed some annoying print-debug statements
+
 0.6.0 - 2023-02-16 (beta release)
 ---------------------------------
 Changed

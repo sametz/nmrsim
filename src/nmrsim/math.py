@@ -20,6 +20,7 @@ Provides the following functions:
 * get_intensity: given a lineshape and a frequency, find the intensity at the
   datapoint closest to that frequency.
 """
+
 import numpy as np
 
 
@@ -213,7 +214,5 @@ def get_maxima(lineshape):
         nextvalue = lineshape[1][index + 1]
 
         if lastvalue < val and nextvalue < val:
-            print("MAXIMUM FOUND AT: ")
-            print((lineshape[0][index], val))
             res.append((lineshape[0][index], val))
     return res
