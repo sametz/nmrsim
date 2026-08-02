@@ -35,6 +35,12 @@ the author interprets the terms below as follows:
   API is stable.
   The package is available on PyPI (and perhaps conda).
 
+0.7.1 - 2026-08-02 (beta release)
+---------------------------------
+Fixed
+^^^^^
+* Fixed `nmrsim.__version__` to display the correct version number (pulled from `setup.cfg`).
+
 0.7.0 - 2026-08-01 (beta release)
 ---------------------------------
 Changed
