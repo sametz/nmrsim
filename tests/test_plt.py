@@ -1,10 +1,15 @@
 import numpy as np
+import matplotlib
 import pytest
 
 from nmrsim.plt import mplplot, mplplot_stick, mplplot_lineshape
 from nmrsim.math import add_lorentzians
 from tests.accepted_data import ADD_SIGNALS_DATASET
 from tests.dnmr_standards import TWOSPIN_SLOW
+
+# GitHub Actions: test_mplplot_stick failed tox with latest Windows and Python 3.14
+# The following line should circumvent the problem but perhaps remove in future
+matplotlib.use("Agg")
 
 # TODO: currently plot routines are returning x, y data. Change to returning
 # the plt object, and introspect it for this x, y data if needed for tests.
