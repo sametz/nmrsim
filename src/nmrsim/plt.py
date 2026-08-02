@@ -12,6 +12,7 @@ The plt module provides the following functions:
 * mplplot_lineshape: Creates a lineshape plot from provided x, y lineshape data
   and returns the x, y plot data.
 """
+
 import numpy as np
 
 from nmrsim.math import add_lorentzians

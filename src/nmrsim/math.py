@@ -20,6 +20,7 @@ Provides the following functions:
 * get_intensity: given a lineshape and a frequency, find the intensity at the
   datapoint closest to that frequency.
 """
+
 import numpy as np
 
 
