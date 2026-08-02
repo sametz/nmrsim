@@ -41,16 +41,10 @@ calculating second-order spectra: one using pydata/sparse and caching,
 and the other using neither.
 """
 
-import sys
-
-import scipy.sparse
-
-if sys.version_info >= (3, 7):
-    from importlib import resources
-else:
-    import importlib_resources as resources
+from importlib import resources
 
 import numpy as np  # noqa: E402
+import scipy.sparse
 import sparse  # noqa: E402
 
 import nmrsim.bin  # noqa: E402
@@ -223,10 +217,6 @@ def hamiltonian_sparse(v, J):
     """
     nspins = len(v)
     Lz, Lproduct = _so_sparse(nspins)  # noqa
-    # TODO: remove the following lines once tests pass
-    print("From hamiltonian_sparse:")
-    print("Lz is type: ", type(Lz))
-    print("Lproduct is type: ", type(Lproduct))
     assert isinstance(Lz, (sparse.COO, np.ndarray, scipy.sparse.spmatrix))
     # On large spin systems, converting v and J to sparse improved speed of
     # sparse.tensordot calls with them.
@@ -282,7 +272,12 @@ def _transition_matrix_dense(nspins):
     T = np.zeros((n, n))
     for i in range(n - 1):
         for j in range(i + 1, n):
-            if bin(i ^ j).count("1") == 1:
+            m = i ^ j
+            # Check if m is a power of two:
+            # If m is a power of two, it will look like 100[...]00 in binary
+            # m-1 will look like 011[...]11 in binary.
+            # Using a binary and, we should then get 0.
+            if m > 0 and m & (m - 1) == 0:
                 T[i, j] = 1
     T += T.T
     return T
@@ -351,11 +346,6 @@ def _tm_cache(nspins):
     # Speed tests indicated that using sparse-array transition matrices
     # provides a modest speed improvement on larger spin systems.
     filename = f"T{nspins}.npz"
-    # init_path_context = resources.path(nmrsim.bin, '__init__.py')
-    # with init_path_context as p:
-    #     init_path = p
-    # print('path to init: ', init_path)
-    # bin_path = init_path.parent
     bin_path = _bin_path()
     path = bin_path.joinpath(filename)
     try:

@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath("../../"))
 # -- Project information -----------------------------------------------------
 
 project = "nmrsim"
-copyright = "2023, Geoffrey M. Sametz"
+copyright = "2026, Geoffrey M. Sametz"
 author = "Geoffrey M. Sametz"
 
 # PACKAGE_VERSION = metadata.version("nmrsim")
@@ -48,7 +48,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.mathjax",  # imgmath requires some helpers to be installed
     "sphinx.ext.viewcode",
-    "sphinxcontrib.napoleon",
+    "sphinx.ext.napoleon",
     "nbsphinx",
 ]
 
