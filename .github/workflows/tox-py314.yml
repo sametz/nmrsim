@@ -1,0 +1,26 @@
+name: Tox Cross-Platform
+
+on:
+  push:
+    branches:
+      - py314
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python: ["3.14", "3.15"]
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox and Dependencies
+        run: pip install tox
+      - name: Run Tox
+        run: tox -e py
