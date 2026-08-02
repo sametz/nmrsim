@@ -9,7 +9,7 @@ jobs:
     name: Check formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v4
         with:
@@ -25,7 +25,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v4
         with:
@@ -52,7 +52,7 @@ jobs:
           - version: "3.13"
             toxenv: "py313"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-python@v4
         with:
